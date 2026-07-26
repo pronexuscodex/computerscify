@@ -1,0 +1,920 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { pdfjs, Document, Page } from 'react-pdf';
+import 'react-pdf/dist/Page/TextLayer.css';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Minimize2,
+  Bookmark,
+  BookOpen,
+  FileText,
+  Copy,
+  Check,
+  MessageSquare,
+  HelpCircle,
+  ExternalLink,
+  Loader2,
+  PanelLeftClose,
+  PanelLeftOpen,
+  RotateCw,
+  Sparkles,
+  X,
+  Rows,
+  Square
+} from 'lucide-react';
+import { BookResource, ResearchPaper } from '../../types/curriculum';
+import { fixArxivPdfUrl, fixGitHubPdfUrl, getCorsCompatiblePdfUrl, isNormalWebPage, isCorsSafePdfDomain } from '../../utils/embedUtils';
+import { PdfUnavailableState } from '../common/ResourceErrorStates';
+
+// Configure matching PDF.js worker using exact pdfjs.version or fallback CDN
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version || '3.11.174'}/build/pdf.worker.min.mjs`;
+
+const FALLBACK_VERIFIED_PDF = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+
+interface InAppPdfReaderProps {
+  document: BookResource | ResearchPaper;
+  savedPage?: number;
+  bookmarkedPages?: number[];
+  initialNote?: string;
+  onPageChange?: (page: number, totalPages: number) => void;
+  onBookmarkToggle?: (page: number) => void;
+  onSaveNote?: (note: string) => void;
+  onMarkCompleted?: () => void;
+  isCompleted?: boolean;
+  onClose?: () => void;
+}
+
+// Helper wrapper for individual Page item in continuous view mode to track intersection
+const ContinuousPageItem: React.FC<{
+  pageNumber: number;
+  pageWidth: number;
+  scale: number;
+  rotation: number;
+  onVisible: (pageNumber: number) => void;
+}> = ({ pageNumber, pageWidth, scale, rotation, onVisible }) => {
+  const itemRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!itemRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            onVisible(pageNumber);
+          }
+        });
+      },
+      { rootMargin: '100px 0px 100px 0px', threshold: [0.3, 0.6] }
+    );
+    observer.observe(itemRef.current);
+    return () => observer.disconnect();
+  }, [pageNumber, onVisible]);
+
+  return (
+    <div
+      ref={itemRef}
+      id={`pdf-page-${pageNumber}`}
+      className="relative my-3 bg-white border border-stone-800 rounded-lg shadow-2xl overflow-hidden flex items-center justify-center transition-all shrink-0"
+    >
+      <Page
+        pageNumber={pageNumber}
+        width={pageWidth > 0 ? pageWidth : undefined}
+        scale={scale}
+        rotate={rotation}
+        renderTextLayer={true}
+        renderAnnotationLayer={true}
+        loading={
+          <div className="w-[300px] h-[400px] bg-stone-900 border border-stone-800 flex items-center justify-center text-xs text-stone-400 font-mono gap-2">
+            <Loader2 className="w-4 h-4 animate-spin text-[#BE94F5]" /> Loading Page {pageNumber}...
+          </div>
+        }
+      />
+    </div>
+  );
+};
+
+export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
+  document,
+  savedPage = 1,
+  bookmarkedPages = [],
+  initialNote = '',
+  onPageChange,
+  onBookmarkToggle,
+  onSaveNote,
+  onMarkCompleted,
+  isCompleted = false,
+  onClose,
+}) => {
+  const isPaper = 'authors' in document && 'summary' in document;
+  const paper = isPaper ? (document as ResearchPaper) : null;
+  const book = !isPaper ? (document as BookResource) : null;
+
+  const initialRawUrl =
+    book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || 'https://arxiv.org/pdf/1706.03762.pdf';
+
+  const [activeUrl, setActiveUrl] = useState<string>(() => {
+    return getCorsCompatiblePdfUrl(initialRawUrl);
+  });
+
+  const [triedCorsProxy, setTriedCorsProxy] = useState<boolean>(false);
+  const [useEmbedFrame, setUseEmbedFrame] = useState<boolean>(false);
+  const [embedMode, setEmbedMode] = useState<'native' | 'google'>('native');
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const viewerAreaRef = useRef<HTMLDivElement | null>(null);
+
+  const [currentPage, setCurrentPage] = useState<number>(savedPage);
+  const [numPages, setNumPages] = useState<number>(1);
+  const [scale, setScale] = useState<number>(1.0);
+  const [rotation, setRotation] = useState<number>(0);
+  const [fitMode, setFitMode] = useState<'custom' | 'fit-width' | 'fit-page'>('fit-width');
+  
+  // Continuous vs Single page view mode
+  const [viewMode, setViewMode] = useState<'continuous' | 'single'>(() => {
+    try {
+      const saved = localStorage.getItem('computerfy_pdf_view_mode');
+      return saved === 'single' ? 'single' : 'continuous';
+    } catch {
+      return 'continuous';
+    }
+  });
+
+  const [containerWidth, setContainerWidth] = useState<number>(800);
+
+  const [loadingStage, setLoadingStage] = useState<'loading' | 'ready' | 'failed'>('loading');
+  const [errorDetails, setErrorDetails] = useState<string | null>(null);
+
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  // Collapsible internal details sidebar state (persisted)
+  const [isPanelOpen, setIsPanelOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('computerfy_pdf_panel_open');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
+
+  const [activeTab, setActiveTab] = useState<'reader' | 'notes' | 'questions'>('reader');
+  const [bookmarks, setBookmarks] = useState<number[]>(bookmarkedPages);
+  const [userNote, setUserNote] = useState<string>(initialNote);
+  const [copiedCitation, setCopiedCitation] = useState<boolean>(false);
+  const [inputPage, setInputPage] = useState<string>(savedPage.toString());
+
+  // Save view mode preference
+  useEffect(() => {
+    try {
+      localStorage.setItem('computerfy_pdf_view_mode', viewMode);
+    } catch (e) {
+      // ignore
+    }
+  }, [viewMode]);
+
+  // Save panel preference
+  useEffect(() => {
+    try {
+      localStorage.setItem('computerfy_pdf_panel_open', JSON.stringify(isPanelOpen));
+    } catch (e) {
+      // ignore
+    }
+  }, [isPanelOpen]);
+
+  // Observe container width
+  useEffect(() => {
+    if (!viewerAreaRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(viewerAreaRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Handle URL change if document prop changes
+  useEffect(() => {
+    const u = getCorsCompatiblePdfUrl(initialRawUrl);
+    setActiveUrl(u);
+    setTriedCorsProxy(false);
+    setUseEmbedFrame(!isCorsSafePdfDomain(u));
+    setLoadingStage('loading');
+  }, [initialRawUrl]);
+
+  // Keyboard shortcuts (Ctrl+B for details panel)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        setIsPanelOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setLoadingStage('ready');
+    setErrorDetails(null);
+    const validPage = Math.min(Math.max(savedPage, 1), numPages);
+    setCurrentPage(validPage);
+    setInputPage(validPage.toString());
+  };
+
+  const onDocumentLoadError = (err: Error) => {
+    setErrorDetails(err?.message || 'Cross-origin or CORS restrictions encountered.');
+    setUseEmbedFrame(true);
+    setLoadingStage('ready');
+  };
+
+  // Handle Page Navigation
+  const scrollToPage = useCallback((pageNum: number) => {
+    const validPage = Math.min(Math.max(pageNum, 1), numPages);
+    setCurrentPage(validPage);
+    setInputPage(validPage.toString());
+    onPageChange?.(validPage, numPages);
+
+    if (viewMode === 'continuous') {
+      const pageEl = document.getElementById(`pdf-page-${validPage}`);
+      if (pageEl) {
+        pageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [numPages, onPageChange, viewMode]);
+
+  const handleInputPageSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = parseInt(inputPage, 10);
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= numPages) {
+      scrollToPage(parsed);
+    } else {
+      setInputPage(currentPage.toString());
+    }
+  };
+
+  // Zoom & Fit Controls
+  const handleZoomIn = () => {
+    setFitMode('custom');
+    setScale((s) => Math.min(s + 0.15, 3.0));
+  };
+
+  const handleZoomOut = () => {
+    setFitMode('custom');
+    setScale((s) => Math.max(s - 0.15, 0.5));
+  };
+
+  const handleRotate = () => {
+    setRotation((r) => (r + 90) % 360);
+  };
+
+  // Toggle bookmark
+  const toggleBookmark = () => {
+    let updated: number[];
+    if (bookmarks.includes(currentPage)) {
+      updated = bookmarks.filter((p) => p !== currentPage);
+    } else {
+      updated = [...bookmarks, currentPage].sort((a, b) => a - b);
+    }
+    setBookmarks(updated);
+    onBookmarkToggle?.(currentPage);
+  };
+
+  // Save Note
+  const handleSaveNote = () => {
+    onSaveNote?.(userNote);
+  };
+
+  // Copy Citation
+  const handleCopyCitation = () => {
+    const citationText = isPaper
+      ? `${paper?.authors.join(', ')} (${paper?.year}). ${paper?.title}. ${paper?.venue}. DOI/ArXiv: ${paper?.doiOrArxiv || 'N/A'}`
+      : `${book?.authors.join(', ')}. ${book?.title}. ${book?.publisherOrInstitution || 'Academic Press'}.`;
+    navigator.clipboard.writeText(citationText);
+    setCopiedCitation(true);
+    setTimeout(() => setCopiedCitation(false), 2000);
+  };
+
+  const handleUseVerifiedFallback = () => {
+    setUseEmbedFrame(true);
+    setLoadingStage('ready');
+    setErrorDetails(null);
+  };
+
+  const progressPercentage = Math.round((currentPage / (numPages || 1)) * 100);
+
+  // Compute page width based on fit mode and container width
+  const calculatedPageWidth = Math.max(
+    280,
+    fitMode === 'fit-width'
+      ? containerWidth - 48
+      : fitMode === 'fit-page'
+      ? Math.min(containerWidth - 48, 720)
+      : (containerWidth - 48) * scale
+  );
+
+  return (
+    <div
+      ref={containerRef}
+      className={`flex flex-col bg-[#151313] text-white transition-all duration-200 ${
+        isFullscreen
+          ? 'fixed inset-0 z-50 p-0 rounded-none h-screen'
+          : 'relative rounded-2xl border border-stone-800 shadow-2xl overflow-hidden min-h-[680px]'
+      }`}
+    >
+      {/* Top Controls Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[#1e1b1b] border-b border-stone-800 px-3 sm:px-4 py-2.5 text-xs select-none">
+        {/* Title & Panel Toggle */}
+        <div className="flex items-center gap-2 min-w-0">
+          {/* Desktop Panel Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            aria-expanded={isPanelOpen}
+            aria-controls="pdf-internal-details-sidebar"
+            className="p-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-300 hover:text-white hover:border-stone-700 transition-colors hidden md:flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-[#BE94F5]"
+            title={isPanelOpen ? 'Collapse side panel' : 'Expand side panel'}
+          >
+            {isPanelOpen ? <PanelLeftClose className="w-4 h-4 text-[#BE94F5]" /> : <PanelLeftOpen className="w-4 h-4 text-[#82E0AA]" />}
+            <span className="font-medium text-[11px] hidden sm:inline">
+              {isPanelOpen ? 'Hide Details' : 'Show Details'}
+            </span>
+          </button>
+
+          {/* Mobile Drawer Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsMobileDrawerOpen(true)}
+            className="p-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-300 md:hidden flex items-center gap-1 min-h-[44px]"
+          >
+            <PanelLeftOpen className="w-4 h-4 text-[#82E0AA]" />
+            <span className="text-xs font-bold">Details</span>
+          </button>
+
+          <BookOpen className="w-4 h-4 text-[#BE94F5] shrink-0 ml-1 hidden sm:block" />
+          <div className="min-w-0">
+            <h3 className="font-semibold text-stone-100 truncate max-w-xs sm:max-w-md">{document.title}</h3>
+            <p className="text-[11px] text-stone-400 truncate hidden sm:block">
+              {isPaper ? paper?.authors.join(', ') : book?.authors.join(', ')}
+            </p>
+          </div>
+        </div>
+
+        {/* Center Page Controls & View Mode Toggle */}
+        <div className="flex items-center gap-2">
+          {/* Continuous vs Single Page Mode */}
+          <div className="flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
+            <button
+              onClick={() => setViewMode('continuous')}
+              title="Continuous Vertical Scroll Mode"
+              className={`p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition-all ${
+                viewMode === 'continuous' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Rows className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Continuous</span>
+            </button>
+            <button
+              onClick={() => setViewMode('single')}
+              title="Single Page Mode"
+              className={`p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition-all ${
+                viewMode === 'single' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Square className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Single</span>
+            </button>
+          </div>
+
+          {/* Page Selector Input */}
+          <div className="flex items-center gap-1.5 bg-stone-900 border border-stone-800 px-2.5 py-1 rounded-xl">
+            <button
+              onClick={() => scrollToPage(currentPage - 1)}
+              disabled={currentPage <= 1 || loadingStage !== 'ready'}
+              aria-label="Previous Page"
+              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-300 transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <form onSubmit={handleInputPageSubmit} className="flex items-center gap-1">
+              <input
+                type="text"
+                value={inputPage}
+                disabled={loadingStage !== 'ready'}
+                onChange={(e) => setInputPage(e.target.value)}
+                onBlur={handleInputPageSubmit}
+                aria-label="Current Page Number"
+                className="w-9 text-center bg-stone-800 border border-stone-700 rounded-md text-xs py-0.5 font-mono text-stone-200 focus:outline-none focus:border-[#BE94F5]"
+              />
+              <span className="text-xs text-stone-400 font-mono">/ {numPages}</span>
+            </form>
+
+            <button
+              onClick={() => scrollToPage(currentPage + 1)}
+              disabled={currentPage >= numPages || loadingStage !== 'ready'}
+              aria-label="Next Page"
+              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-300 transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Right Toolbar Actions */}
+        <div className="flex items-center gap-1.5">
+          {/* Zoom controls */}
+          <div className="hidden sm:flex items-center gap-1 bg-stone-900 border border-stone-800 px-2 py-0.5 rounded-xl">
+            <button
+              onClick={handleZoomOut}
+              aria-label="Zoom Out"
+              title="Zoom Out"
+              className="p-1 hover:bg-stone-800 rounded text-stone-300"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              onClick={() => setFitMode('fit-width')}
+              title="Fit to Width"
+              className={`px-1.5 py-0.5 text-[10px] font-mono rounded font-bold ${
+                fitMode === 'fit-width' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              Width
+            </button>
+
+            <button
+              onClick={handleZoomIn}
+              aria-label="Zoom In"
+              title="Zoom In"
+              className="p-1 hover:bg-stone-800 rounded text-stone-300"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              onClick={handleRotate}
+              title="Rotate 90 degrees"
+              className="p-1 hover:bg-stone-800 rounded text-stone-400 hover:text-stone-200"
+            >
+              <RotateCw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Bookmark Button */}
+          <button
+            onClick={toggleBookmark}
+            aria-label={bookmarks.includes(currentPage) ? 'Remove Bookmark' : 'Bookmark Page'}
+            title="Bookmark this page"
+            className={`p-2 rounded-xl border transition-colors ${
+              bookmarks.includes(currentPage)
+                ? 'bg-[#FCCC42]/20 border-[#FCCC42] text-[#FCCC42]'
+                : 'bg-stone-900 border-stone-800 text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            <Bookmark className="w-4 h-4" fill={bookmarks.includes(currentPage) ? 'currentColor' : 'none'} />
+          </button>
+
+          {/* Mark Complete */}
+          {onMarkCompleted && (
+            <button
+              onClick={onMarkCompleted}
+              aria-label="Mark document as read"
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
+                isCompleted
+                  ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
+                  : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700'
+              }`}
+            >
+              <Check className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">{isCompleted ? 'Completed' : 'Complete'}</span>
+            </button>
+          )}
+
+          {/* Contextual Fullscreen Toggle */}
+          <button
+            onClick={() => setIsFullscreen((f) => !f)}
+            aria-label={isFullscreen ? 'Exit full width' : 'Enter full width'}
+            title={isFullscreen ? 'Exit full width' : 'Enter full width'}
+            className="p-2 bg-stone-900 border border-stone-800 rounded-xl text-stone-300 hover:text-white transition-colors"
+          >
+            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+          </button>
+
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-xl text-xs font-medium"
+            >
+              Close
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="w-full bg-stone-900 h-1">
+        <div
+          className="bg-[#BE94F5] h-full transition-all duration-300"
+          style={{ width: `${progressPercentage}%` }}
+        />
+      </div>
+
+      {/* Active Document Status Bar */}
+      <div className="bg-[#82E0AA]/20 border-b border-[#82E0AA]/40 px-4 py-1.5 text-xs text-emerald-300 flex items-center justify-between font-mono">
+        <span className="flex items-center gap-1.5 truncate max-w-lg">
+          <Sparkles className="w-3.5 h-3.5 text-[#BE94F5] shrink-0" />
+          <span>Viewing Document: <strong>{document.title}</strong></span>
+        </span>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={() => {
+              setUseEmbedFrame(!useEmbedFrame);
+              setLoadingStage('loading');
+            }}
+            className="text-[11px] bg-stone-900 border border-stone-700 hover:border-stone-500 px-2 py-0.5 rounded text-stone-200 transition-colors"
+          >
+            {useEmbedFrame ? 'Switch to Canvas Reader' : 'Switch to Embedded Frame'}
+          </button>
+          <a
+            href={document.canonicalUrl || document.sourcePageUrl || initialRawUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-white flex items-center gap-1 text-[11px]"
+          >
+            Open Source <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex flex-1 overflow-hidden min-h-[580px] relative">
+        {/* Desktop Internal Side Panel */}
+        {isPanelOpen && (
+          <div
+            id="pdf-internal-details-sidebar"
+            className="w-64 bg-[#191717] border-r border-stone-800 flex flex-col hidden md:flex shrink-0 transition-all duration-200"
+          >
+            <div className="flex border-b border-stone-800 text-xs font-medium">
+              <button
+                onClick={() => setActiveTab('reader')}
+                className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
+                  activeTab === 'reader'
+                    ? 'border-[#BE94F5] text-[#BE94F5]'
+                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Summary</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('notes')}
+                className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
+                  activeTab === 'notes'
+                    ? 'border-[#BE94F5] text-[#BE94F5]'
+                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Notes</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('questions')}
+                className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
+                  activeTab === 'questions'
+                    ? 'border-[#BE94F5] text-[#BE94F5]'
+                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>Questions</span>
+              </button>
+            </div>
+
+            <div className="p-4 overflow-y-auto flex-1 space-y-4 text-xs">
+              {activeTab === 'reader' && (
+                <div className="space-y-4 text-stone-300">
+                  {isPaper && paper && (
+                    <>
+                      <div>
+                        <h4 className="font-semibold text-stone-200 mb-1">Why It Matters</h4>
+                        <p className="text-stone-400 leading-relaxed">{paper.whyItMatters}</p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-stone-200 mb-1">Sections to Read</h4>
+                        <p className="text-[#BE94F5] font-mono">{paper.sectionsToRead}</p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-stone-200 mb-1">Paper Summary</h4>
+                        <p className="text-stone-400 leading-relaxed">{paper.summary}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {book && (
+                    <div>
+                      <h4 className="font-semibold text-stone-200 mb-1">Recommended Chapter</h4>
+                      <p className="text-stone-300 font-medium">{book.recommendedChapter}</p>
+                      <p className="text-stone-400 mt-2">Publisher: {book.publisherOrInstitution || 'Academic Press'}</p>
+                    </div>
+                  )}
+
+                  {/* Bookmarks Section */}
+                  <div className="pt-2 border-t border-stone-800">
+                    <h4 className="font-semibold text-stone-200 mb-2 flex items-center justify-between">
+                      <span>Bookmarked Pages</span>
+                      <span className="text-stone-500 font-mono">{bookmarks.length}</span>
+                    </h4>
+                    {bookmarks.length === 0 ? (
+                      <p className="text-stone-500 italic">No bookmarks saved yet.</p>
+                    ) : (
+                      <div className="flex flex-wrap gap-1.5">
+                        {bookmarks.map((p) => (
+                          <button
+                            key={p}
+                            onClick={() => scrollToPage(p)}
+                            className={`px-2 py-1 rounded text-xs font-mono border transition-colors ${
+                              p === currentPage
+                                ? 'bg-[#BE94F5]/20 border-[#BE94F5] text-[#BE94F5]'
+                                : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700'
+                            }`}
+                          >
+                            p. {p}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Citation Box */}
+                  <div className="pt-2 border-t border-stone-800">
+                    <button
+                      onClick={handleCopyCitation}
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-stone-900 border border-stone-800 hover:border-stone-700 rounded-lg text-stone-200 transition-colors"
+                    >
+                      {copiedCitation ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span className="text-emerald-400">Citation Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-stone-400" />
+                          <span>Copy Citation</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'notes' && (
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-stone-200">Personal Reading Notes</h4>
+                  <textarea
+                    value={userNote}
+                    onChange={(e) => setUserNote(e.target.value)}
+                    placeholder="Type personal notes, key formulas, or insights..."
+                    rows={8}
+                    className="w-full bg-stone-900 border border-stone-800 rounded-lg p-3 text-xs text-stone-200 focus:outline-none focus:border-[#BE94F5] resize-none font-mono"
+                  />
+                  <button
+                    onClick={handleSaveNote}
+                    className="w-full py-2 bg-[#BE94F5] hover:bg-[#a370eb] text-[#151313] font-bold rounded-lg transition-colors text-xs"
+                  >
+                    Save Note
+                  </button>
+                </div>
+              )}
+
+              {activeTab === 'questions' && (
+                <div className="space-y-3 text-stone-300">
+                  <h4 className="font-semibold text-stone-200">Reading Comprehension</h4>
+                  {isPaper && paper?.readingQuestions ? (
+                    <ul className="space-y-2 list-disc list-inside text-stone-400">
+                      {paper.readingQuestions.map((q, idx) => (
+                        <li key={idx} className="leading-relaxed">
+                          {q}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-stone-500 italic">No specific questions for this textbook chapter.</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Slide-Over Drawer */}
+        {isMobileDrawerOpen && (
+          <div className="fixed inset-0 z-50 bg-black/70 flex justify-end md:hidden animate-fade-in">
+            <div className="w-80 bg-[#191717] h-full border-l border-stone-800 p-5 overflow-y-auto space-y-4">
+              <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+                <h3 className="font-bold text-sm text-stone-100 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-[#BE94F5]" /> Resource Details
+                </h3>
+                <button
+                  onClick={() => setIsMobileDrawerOpen(false)}
+                  className="p-1 rounded-lg bg-stone-900 text-stone-400 hover:text-stone-200"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {isPaper && paper && (
+                <div className="space-y-3 text-xs text-stone-300">
+                  <div>
+                    <h4 className="font-bold text-stone-100">Why It Matters</h4>
+                    <p className="text-stone-400">{paper.whyItMatters}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-stone-100">Paper Summary</h4>
+                    <p className="text-stone-400">{paper.summary}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2 pt-2 border-t border-stone-800">
+                <h4 className="font-bold text-xs text-stone-100">Personal Notes</h4>
+                <textarea
+                  value={userNote}
+                  onChange={(e) => setUserNote(e.target.value)}
+                  rows={4}
+                  className="w-full bg-stone-900 border border-stone-800 rounded-lg p-2.5 text-xs text-stone-200 focus:outline-none focus:border-[#BE94F5] font-mono"
+                />
+                <button
+                  onClick={() => {
+                    handleSaveNote();
+                    setIsMobileDrawerOpen(false);
+                  }}
+                  className="w-full py-2 bg-[#BE94F5] text-[#151313] font-bold text-xs rounded-lg"
+                >
+                  Save Notes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Document Viewer Viewport */}
+        <div
+          ref={viewerAreaRef}
+          className="flex-1 bg-stone-950 flex flex-col items-center overflow-y-auto p-3 sm:p-6 relative min-h-[500px]"
+        >
+          {useEmbedFrame ? (
+            <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-stone-950 relative space-y-3">
+              <div className="w-full flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-stone-900/90 border border-stone-800 rounded-xl text-xs text-stone-300">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-medium text-stone-200">
+                    {embedMode === 'native' ? 'Native Browser PDF Reader' : 'Google Docs PDF Viewer'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={() => setUseEmbedFrame(false)}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-[11px] font-bold border border-stone-700 transition-all"
+                  >
+                    Try Canvas Reader
+                  </button>
+                  <button
+                    onClick={() => setEmbedMode(embedMode === 'native' ? 'google' : 'native')}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-[11px] font-bold border border-stone-700 transition-all"
+                  >
+                    Switch to {embedMode === 'native' ? 'Google Docs Viewer' : 'Native Browser Frame'}
+                  </button>
+                  <a
+                    href={initialRawUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2.5 py-1 bg-[#BE94F5] hover:bg-[#a372e6] text-[#151313] font-extrabold rounded-lg text-[11px] flex items-center gap-1 transition-all"
+                  >
+                    <span>Open Original PDF</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+              {embedMode === 'native' ? (
+                <object
+                  data={fixArxivPdfUrl(fixGitHubPdfUrl(initialRawUrl))}
+                  type="application/pdf"
+                  className="w-full flex-1 min-h-[600px] rounded-xl border border-stone-800 bg-white"
+                >
+                  <div className="flex flex-col items-center justify-center p-8 bg-stone-900 border border-stone-800 rounded-xl text-center space-y-4 my-auto">
+                    <FileText className="w-12 h-12 text-[#BE94F5]" />
+                    <h4 className="text-stone-200 font-bold text-base">Direct Frame Preview Restricted</h4>
+                    <p className="text-stone-400 text-xs max-w-md">
+                      The publisher server requires opening the PDF document in a direct browser window or downloading the file.
+                    </p>
+                    <div className="flex items-center gap-3 pt-2">
+                      <a
+                        href={initialRawUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2.5 bg-[#BE94F5] hover:bg-[#a372e6] text-[#151313] font-extrabold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow"
+                      >
+                        <span>Open Direct PDF Source</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                      <button
+                        onClick={() => setEmbedMode('google')}
+                        className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold rounded-xl text-xs border border-stone-700"
+                      >
+                        Try Google Docs Viewer
+                      </button>
+                    </div>
+                  </div>
+                </object>
+              ) : (
+                <iframe
+                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(fixArxivPdfUrl(fixGitHubPdfUrl(initialRawUrl)))}&embedded=true`}
+                  className="w-full flex-1 min-h-[600px] rounded-xl border border-stone-800 bg-white"
+                  title={document.title}
+                />
+              )}
+            </div>
+          ) : (
+            <Document
+              file={activeUrl}
+              onLoadSuccess={onDocumentLoadSuccess}
+              onLoadError={onDocumentLoadError}
+              loading={
+                <div className="flex flex-col items-center justify-center space-y-3 text-stone-400 py-28 my-auto">
+                  <Loader2 className="w-8 h-8 animate-spin text-[#BE94F5]" />
+                  <p className="text-sm font-medium font-mono">Loading PDF document via React-PDF...</p>
+                </div>
+              }
+              error={
+                <PdfUnavailableState
+                  title={document.title}
+                  institution={isPaper ? paper?.authors.join(', ') : book?.publisherOrInstitution || 'Academic Source'}
+                  sourcePageUrl={initialRawUrl}
+                  technicalDetails={errorDetails || 'Remote server blocked cross-origin PDF frame requests.'}
+                  onRetry={() => {
+                    setErrorDetails(null);
+                    setUseEmbedFrame(true);
+                    setLoadingStage('ready');
+                  }}
+                  onUseFallback={() => setUseEmbedFrame(true)}
+                />
+              }
+            >
+              {loadingStage === 'ready' && (
+                viewMode === 'continuous' ? (
+                  <div className="w-full flex flex-col items-center py-4 space-y-6">
+                    {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => (
+                      <ContinuousPageItem
+                        key={`page_${pageNum}`}
+                        pageNumber={pageNum}
+                        pageWidth={calculatedPageWidth}
+                        scale={scale}
+                        rotation={rotation}
+                        onVisible={(p) => {
+                          setCurrentPage(p);
+                          setInputPage(p.toString());
+                          onPageChange?.(p, numPages);
+                        }}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="my-auto py-4 flex justify-center">
+                    <div
+                      id={`pdf-page-${currentPage}`}
+                      className="relative bg-white border border-stone-800 rounded-lg shadow-2xl overflow-hidden flex items-center justify-center transition-all"
+                    >
+                      <Page
+                        pageNumber={currentPage}
+                        width={calculatedPageWidth > 0 ? calculatedPageWidth : undefined}
+                        scale={scale}
+                        rotate={rotation}
+                        renderTextLayer={true}
+                        renderAnnotationLayer={true}
+                        loading={
+                          <div className="w-[300px] h-[400px] bg-stone-900 border border-stone-800 flex items-center justify-center text-xs text-stone-400 font-mono gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin text-[#BE94F5]" /> Loading Page {currentPage}...
+                          </div>
+                        }
+                      />
+                    </div>
+                  </div>
+                )
+              )}
+            </Document>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

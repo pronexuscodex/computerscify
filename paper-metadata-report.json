@@ -1,0 +1,298 @@
+{
+  "timestamp": "2026-07-25T21:32:58.041Z",
+  "summary": {
+    "totalPapers": 14,
+    "validMetadataCount": 14,
+    "doiValidatedCount": 9,
+    "arxivValidatedCount": 1,
+    "metadataMismatches": 0
+  },
+  "papers": [
+    {
+      "topicId": "p0-m1-t1",
+      "topicTitle": "Information Representation: Bits, Bytes, and Encodings",
+      "paperId": "paper-shannon-1948",
+      "title": "A Mathematical Theory of Communication",
+      "authors": [
+        "Claude E. Shannon"
+      ],
+      "year": 1948,
+      "venue": "Bell System Technical Journal",
+      "doiOrArxiv": "10.1002/j.1538-7305.1948.tb01338.x",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p0-m1-t2",
+      "topicTitle": "Operating Systems, Memory, and File Abstractions",
+      "paperId": "paper-ritchie-1974",
+      "title": "The UNIX Time-Sharing System",
+      "authors": [
+        "Dennis M. Ritchie",
+        "Ken L. Thompson"
+      ],
+      "year": 1974,
+      "venue": "Communications of the ACM",
+      "doiOrArxiv": "10.1145/361011.361061",
+      "paperType": "historical",
+      "difficulty": "beginner",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p1-m2-t1",
+      "topicTitle": "Functions, Logarithms, and Asymptotic Growth",
+      "paperId": "paper-knuth-asymptotic",
+      "title": "Big Omicron, Big Omega, and Big Theta",
+      "authors": [
+        "Donald E. Knuth"
+      ],
+      "year": 1976,
+      "venue": "SIGACT News",
+      "doiOrArxiv": "10.1145/1008328.1008329",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p1-m3-t1",
+      "topicTitle": "Propositional Logic, Sets, and Mathematical Proofs",
+      "paperId": "paper-turing-1936",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "authors": [
+        "Alan M. Turing"
+      ],
+      "year": 1936,
+      "venue": "Proceedings of the London Mathematical Society",
+      "doiOrArxiv": "10.1112/plms/s2-42.1.230",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p1-m4-t1",
+      "topicTitle": "Vectors, Matrices, and Linear Transformations",
+      "paperId": "paper-page-1999",
+      "title": "The PageRank Citation Ranking: Bringing Order to the Web",
+      "authors": [
+        "Larry Page",
+        "Sergey Brin",
+        "Rajeev Motwani",
+        "Terry Winograd"
+      ],
+      "year": 1999,
+      "venue": "Stanford InfoLab Technical Report",
+      "paperType": "applied",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p2-m8-t1",
+      "topicTitle": "Python Syntax, Data Structures, and Control Flow",
+      "paperId": "paper-vanrossum-1991",
+      "title": "Python Reference Manual",
+      "authors": [
+        "Guido van Rossum"
+      ],
+      "year": 1991,
+      "venue": "CWI Report CS-R9525",
+      "paperType": "historical",
+      "difficulty": "beginner",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p2-m10-t1",
+      "topicTitle": "NumPy Array Vectorization & Broadcasting",
+      "paperId": "paper-harris-2020",
+      "title": "Array programming with NumPy",
+      "authors": [
+        "Charles R. Harris",
+        "K. Jarrod Millman",
+        "Stéfan J. van der Walt et al."
+      ],
+      "year": 2020,
+      "venue": "Nature",
+      "doiOrArxiv": "10.1038/s41586-020-2649-2",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p2-m11-t1",
+      "topicTitle": "Relational Data Model, SQL Queries, and Window Functions",
+      "paperId": "paper-codd-1970",
+      "title": "A Relational Model of Data for Large Shared Data Banks",
+      "authors": [
+        "E. F. Codd"
+      ],
+      "year": 1970,
+      "venue": "Communications of the ACM",
+      "doiOrArxiv": "10.1145/362384.362685",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p3-m13-t1",
+      "topicTitle": "Asymptotic Analysis, Trees, Heaps, and Graph Algorithms",
+      "paperId": "paper-dijkstra-1959",
+      "title": "A Note on Two Problems in Connexion with Graphs",
+      "authors": [
+        "E. W. Dijkstra"
+      ],
+      "year": 1959,
+      "venue": "Numerische Mathematik",
+      "doiOrArxiv": "10.1007/BF01386390",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p4-m15-t1",
+      "topicTitle": "Statistical Hypothesis Testing & A/B Experimentation",
+      "paperId": "paper-student-1908",
+      "title": "The Probable Error of a Mean",
+      "authors": [
+        "Student (William Sealy Gosset)"
+      ],
+      "year": 1908,
+      "venue": "Biometrika",
+      "doiOrArxiv": "10.2307/2331554",
+      "paperType": "historical",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p5-m16-t1",
+      "topicTitle": "Linear & Logistic Regression from Scratch via Gradient Descent",
+      "paperId": "paper-cortes-vapnik-1995",
+      "title": "Support-Vector Networks",
+      "authors": [
+        "Corinna Cortes",
+        "Vladimir Vapnik"
+      ],
+      "year": 1995,
+      "venue": "Machine Learning",
+      "doiOrArxiv": "10.1007/BF00994018",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p6-m17-t1",
+      "topicTitle": "Backpropagation and Transformer Self-Attention",
+      "paperId": "paper-vaswani-2017",
+      "title": "Attention Is All You Need",
+      "authors": [
+        "Ashish Vaswani",
+        "Noam Shazeer",
+        "Niki Parmar",
+        "Jakob Uszkoreit",
+        "Llion Jones",
+        "Aidan N. Gomez",
+        "Łukasz Kaiser",
+        "Illia Polosukhin"
+      ],
+      "year": 2017,
+      "venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+      "doiOrArxiv": "arXiv:1706.03762",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p7-m18-t1",
+      "topicTitle": "REST APIs, Docker Containers, and Model Drift Monitoring",
+      "paperId": "paper-sculley-2015",
+      "title": "Hidden Technical Debt in Machine Learning Systems",
+      "authors": [
+        "D. Sculley",
+        "Gary Holt",
+        "Daniel Golovin",
+        "Eugene Davydov",
+        "Todd Phillips",
+        "Dietmar Ebner",
+        "Vinay Chaudhary",
+        "Michael Young",
+        "Jean-François Crespo",
+        "Dan Webb"
+      ],
+      "year": 2015,
+      "venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "p8-m19-t1",
+      "topicTitle": "Distributed Consensus, CAP Theorem, and Raft Protocol",
+      "paperId": "paper-ongaro-2014",
+      "title": "In Search of an Understandable Consensus Algorithm (Raft)",
+      "authors": [
+        "Diego Ongaro",
+        "John Ousterhout"
+      ],
+      "year": 2014,
+      "venue": "USENIX Annual Technical Conference (ATC)",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    }
+  ]
+}
