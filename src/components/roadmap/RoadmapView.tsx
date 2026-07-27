@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   GraduationCap,
   BookOpen,
@@ -435,7 +436,7 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-[#000000]/80 backdrop-blur-sm animate-fade-in"
       onClick={onClose}
@@ -445,7 +446,7 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="courseModal bg-[#FEF8F7] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded-t sm:rounded w-full max-w-3xl max-h-[100dvh] sm:max-h-[min(52rem,calc(100dvh-2rem))] h-[92dvh] sm:h-auto grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden text-[#1D1B1B] dark:text-[#F6EFEF]"
+        className="courseModal bg-[#FEF8F7] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded-t sm:rounded w-full sm:w-[92vw] max-w-5xl max-h-[100dvh] sm:max-h-[calc(100dvh-3rem)] h-[92dvh] sm:h-[min(46rem,calc(100dvh-3rem))] grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden text-[#1D1B1B] dark:text-[#F6EFEF]"
       >
         {/* Fixed Header */}
         <div className="p-4 sm:p-6 border-b-4 border-[#000000] flex items-start justify-between gap-4 bg-[#DFD9D8] dark:bg-[#111010] shrink-0">
@@ -460,7 +461,7 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
             </div>
             <h2
               id="course-modal-title"
-              className="font-display font-black text-xl sm:text-2xl text-[#000000] dark:text-[#F6EFEF] uppercase leading-snug break-words"
+              className="font-display font-black text-xl sm:text-3xl text-[#000000] dark:text-[#F6EFEF] uppercase leading-snug break-words"
             >
               {course.title}
             </h2>
@@ -476,21 +477,21 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
         </div>
 
         {/* Independently Scrollable Body */}
-        <div className="p-4 sm:p-6 space-y-5 text-xs sm:text-sm min-h-0 overflow-y-auto font-bold leading-relaxed">
+        <div className="p-4 sm:p-7 space-y-6 text-sm sm:text-base min-h-0 overflow-y-auto font-bold leading-relaxed">
           {/* Description */}
           <div className="space-y-1">
-            <h3 className="font-black text-xs sm:text-sm text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-1.5">
-              <FileText className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Course Description
+            <h3 className="font-black text-sm sm:text-base text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-2">
+              <FileText className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Course Description
             </h3>
-            <p className="text-[#000000]/80 dark:text-[#F6EFEF]/80 leading-relaxed text-xs sm:text-sm font-medium">{course.description}</p>
+            <p className="text-[#000000]/80 dark:text-[#F6EFEF]/80 leading-relaxed text-sm sm:text-base font-medium">{course.description}</p>
           </div>
 
           {/* Learning Outcomes */}
           <div className="space-y-2 pt-3 border-t-2 border-[#000000]">
-            <h3 className="font-black text-xs sm:text-sm text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-1.5">
-              <GraduationCap className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Learning Outcomes
+            <h3 className="font-black text-sm sm:text-base text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-2">
+              <GraduationCap className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Learning Outcomes
             </h3>
-            <ul className="space-y-1.5 list-disc list-inside text-[#000000]/80 dark:text-[#F6EFEF]/80 pl-1 text-xs sm:text-sm font-medium">
+            <ul className="space-y-2 list-disc list-inside text-[#000000]/80 dark:text-[#F6EFEF]/80 pl-1 text-sm sm:text-base font-medium">
               {course.learningOutcomes.map((out, idx) => (
                 <li key={idx} className="leading-relaxed">
                   {out}
@@ -501,24 +502,24 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
 
           {/* Curriculum Sections & Topics */}
           <div className="space-y-2 pt-3 border-t-2 border-[#000000]">
-            <h3 className="font-black text-xs sm:text-sm text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Curriculum Sections & Topics
+            <h3 className="font-black text-sm sm:text-base text-[#000000] dark:text-[#F6EFEF] uppercase tracking-wide flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Curriculum Sections & Topics
             </h3>
             <div className="space-y-2">
               {course.sections.map((sec) => (
                 <div
                   key={sec.id}
-                  className="p-3 bg-[#FFFFFF] dark:bg-[#2B2929] border-2 border-[#000000] rounded space-y-1.5 neo-shadow-sm"
+                  className="p-4 bg-[#FFFFFF] dark:bg-[#2B2929] border-2 border-[#000000] rounded space-y-2 neo-shadow-sm"
                 >
-                  <h4 className="font-black text-xs text-[#000000] dark:text-[#F6EFEF] uppercase">{sec.title}</h4>
-                  <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 font-medium">{sec.summary}</p>
+                  <h4 className="font-black text-sm text-[#000000] dark:text-[#F6EFEF] uppercase">{sec.title}</h4>
+                  <p className="text-sm text-[#000000]/70 dark:text-[#F6EFEF]/70 font-medium">{sec.summary}</p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {sec.topics.map((top) => {
                       const topCompleted = progress.completedTopicIds.includes(top.id);
                       return (
                         <span
                           key={top.id}
-                          className={`px-2 py-0.5 rounded text-[11px] font-mono border flex items-center gap-1 ${
+                          className={`px-2.5 py-1 rounded text-xs font-mono border flex items-center gap-1 ${
                             topCompleted
                               ? 'bg-[#82E0AA] border-[#000000] text-[#000000] font-black'
                               : 'bg-[#DFD9D8] dark:bg-stone-800 border-[#000000] text-[#000000] dark:text-[#F6EFEF]'
@@ -564,7 +565,7 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
             >
               Close
             </button>
-            <span className="text-xs font-mono font-black text-[#000000] dark:text-[#F6EFEF]">
+            <span className="text-xs sm:text-sm font-mono font-black text-[#000000] dark:text-[#F6EFEF]">
               {isCompleted ? (
                 <span className="inline-flex items-center gap-1 text-[#000000] dark:text-[#F2C94C]">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Course Completed
@@ -588,6 +589,7 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

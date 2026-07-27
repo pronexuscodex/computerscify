@@ -116,7 +116,7 @@ if (input.length >= 2) {
     },
     relatedLessons: ['p1-m1-t1', 'p1-m2-t1'],
     nextProblems: ['prob-f2-binary-search-bounds'],
-    authoringSource: 'Computerfy First Principles Problem Bank'
+    authoringSource: 'ComputerSciFy First Principles Problem Bank'
   },
 
   // --- BINARY SEARCH ---
@@ -253,7 +253,7 @@ if (input.length >= 2 && input[0].trim()) {
     },
     relatedLessons: ['p1-m1-t2'],
     nextProblems: ['prob-f3-longest-increasing-subsequence'],
-    authoringSource: 'Computerfy First Principles Problem Bank'
+    authoringSource: 'ComputerSciFy First Principles Problem Bank'
   },
 
   // --- DYNAMIC PROGRAMMING ---
@@ -361,7 +361,7 @@ if (input.length > 0 && input[0].trim()) {
     },
     relatedLessons: ['p1-m2-t2'],
     nextProblems: ['prob-f4-sql-window-rank'],
-    authoringSource: 'Computerfy First Principles Problem Bank'
+    authoringSource: 'ComputerSciFy First Principles Problem Bank'
   },
 
   // --- SQL & DATA ENGINEERING ---
@@ -444,7 +444,7 @@ def solve(emp_df, dept_df):
     },
     relatedLessons: ['p1-m3-t1'],
     nextProblems: ['prob-f5-ml-linear-regression-from-scratch'],
-    authoringSource: 'Computerfy First Principles Problem Bank'
+    authoringSource: 'ComputerSciFy First Principles Problem Bank'
   },
 
   // --- MACHINE LEARNING FROM SCRATCH ---
@@ -555,7 +555,7 @@ class RidgeRegression {
     },
     relatedLessons: ['p1-m4-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles Problem Bank'
+    authoringSource: 'ComputerSciFy First Principles Problem Bank'
   },
   {
     id: 'prob-f6-valid-parentheses-stack',
@@ -663,7 +663,7 @@ console.log(isValid(s) ? 'True' : 'False');
     },
     relatedLessons: ['p0-m1-t1', 'p2-m1-t2'],
     nextProblems: ['prob-f10-lru-cache-doubly-linked'],
-    authoringSource: 'Computerfy Core Data Structures'
+    authoringSource: 'ComputerSciFy Core Data Structures'
   },
   {
     id: 'prob-f7-binary-tree-inorder',
@@ -766,7 +766,7 @@ console.log(inorderTraversal(root));
     },
     relatedLessons: ['p3-m2-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles Algorithms'
+    authoringSource: 'ComputerSciFy First Principles Algorithms'
   },
   {
     id: 'prob-f8-softmax-loss-vectorized',
@@ -850,7 +850,7 @@ if (line) {
     },
     relatedLessons: ['p5-m1-t1', 'p6-m1-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles Deep Learning'
+    authoringSource: 'ComputerSciFy First Principles Deep Learning'
   },
   {
     id: 'prob-f9-sql-multi-join-aggregation',
@@ -915,7 +915,7 @@ ORDER BY total_spent DESC;`
     },
     relatedLessons: ['p2-m3-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles Data Engineering'
+    authoringSource: 'ComputerSciFy First Principles Data Engineering'
   },
   {
     id: 'prob-f10-lru-cache-doubly-linked',
@@ -1028,7 +1028,7 @@ console.log(lru.get(1));
     },
     relatedLessons: ['p0-m1-t1', 'p3-m1-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles System Design'
+    authoringSource: 'ComputerSciFy First Principles System Design'
   },
   {
     id: 'prob-f11-matrix-multiplication',
@@ -1118,7 +1118,7 @@ console.log(matmul(A, B));
     },
     relatedLessons: ['p1-m1-t1', 'p5-m1-t1'],
     nextProblems: [],
-    authoringSource: 'Computerfy First Principles Linear Algebra'
+    authoringSource: 'ComputerSciFy First Principles Linear Algebra'
   }
 ];
 

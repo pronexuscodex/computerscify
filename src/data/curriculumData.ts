@@ -114,8 +114,8 @@ export function normalizeTopicResourceArrays(topic: Topic): Topic {
   const mp = topic.masteryPack;
   const curated = getCuratedResourcesForTopic(topic.id);
 
-  let pdfBooks: any[] = [];
-  let researchPapers: any[] = [];
+  let pdfBooks: BookResource[] = [];
+  let researchPapers: ResearchPaper[] = [];
 
   if (curated && curated.length > 0) {
     const curatedBooksRaw = curated.filter((r) => r.kind !== 'research-paper' && r.kind !== 'academic-notes');
@@ -139,7 +139,18 @@ export function normalizeTopicResourceArrays(topic: Topic): Topic {
 
     researchPapers = curatedPapersRaw.map((r) => {
       const isDirectPdf = r.deliveryMode === 'in-app-pdf-candidate';
+      const authoredPaper = [
+        mp?.authoritativeResearchSource,
+        mp?.modernSurveyOrTutorial,
+      ].find(
+        (paper) =>
+          paper?.title.toLocaleLowerCase() === r.title.toLocaleLowerCase() ||
+          (paper?.year === r.year &&
+            paper?.authors?.some((author) => r.authors.includes(author)))
+      );
+
       return {
+        ...authoredPaper,
         id: r.id,
         topicIds: [topic.id],
         title: r.title,
@@ -151,10 +162,20 @@ export function normalizeTopicResourceArrays(topic: Topic): Topic {
         paperType: r.role === 'foundational' ? 'seminal' : 'applied',
         difficulty: 'intermediate',
         prerequisites: [],
-        summary: `${r.title} by ${r.authors.join(', ')}`,
-        whyItMatters: `Authoritative foundational paper for ${topic.title}`,
-        recommendedSections: ['Full Paper'],
-        readingQuestions: ['What is the core theoretical or system contribution?'],
+        summary:
+          authoredPaper?.summary ||
+          `A primary research source selected to connect ${topic.title} with its original academic foundations.`,
+        whyItMatters:
+          authoredPaper?.whyItMatters ||
+          `Shows how the central ideas in ${topic.title} were developed, evaluated, or applied in the research literature.`,
+        sectionsToRead:
+          authoredPaper?.sectionsToRead || 'Abstract, introduction, and conclusion',
+        readingQuestions:
+          authoredPaper?.readingQuestions?.length
+            ? authoredPaper.readingQuestions
+            : [
+                `What problem does this work address, and how does its contribution connect to ${topic.title}?`,
+              ],
         relatedTopicIds: [topic.id],
         openAccess: r.openAccess,
         deliveryMode: r.deliveryMode,

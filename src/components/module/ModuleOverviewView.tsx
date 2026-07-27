@@ -155,7 +155,7 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
       {/* Module Capstone Preview */}
       <div className="bg-[#F2C94C] border-4 border-[#000000] neo-shadow rounded p-6 text-[#000000]">
         <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2">
-          <Award className="w-4 h-4" /> Un-Guided Module Capstone Milestone
+          <Award className="w-4 h-4" /> Independent Module Capstone
         </div>
         <h3 className="font-display font-black text-xl uppercase mb-2">
           {module.capstone.title}

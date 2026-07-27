@@ -32,7 +32,7 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
       <div className="border-b-4 border-[#000000] pb-6">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#000000] text-[#FFFFFF] text-xs font-black font-mono uppercase tracking-wider mb-2">
           <Award className="w-3.5 h-3.5 text-[#F2C94C]" />
-          Un-Guided Capstones
+          Independent Capstones
         </div>
         <h1 className="font-display font-black text-3xl md:text-4xl text-[#000000] dark:text-[#F6EFEF] uppercase tracking-tight">
           Capstone Workspaces

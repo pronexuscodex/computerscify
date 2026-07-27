@@ -6,7 +6,21 @@ export type SemesterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type TrackCategory = 'cs' | 'math' | 'ds' | 'systems' | 'engineering' | 'ml' | 'security' | 'theory' | 'ethics';
 
-export type ResourceAccessStatus = 'verified' | 'open-access' | 'needsVerification';
+export type ResourceAccessStatus =
+  | 'verified'
+  | 'open-access'
+  | 'needsVerification'
+  | 'official-web-book';
+
+export type ResourceDeliveryMode =
+  | 'official-web-resource'
+  | 'in-app-pdf-candidate'
+  | 'official-web-book'
+  | 'official-web-book-with-pdf-download'
+  | 'official-web-book-with-free-personal-copy'
+  | 'official-web-course'
+  | 'official-web-download'
+  | 'official-download-page-personal-use';
 
 export type PaperType = 'seminal' | 'survey' | 'applied' | 'theoretical' | 'historical' | 'implementation';
 
@@ -32,6 +46,7 @@ export interface ResearchPaper {
   readingQuestions: string[];
   relatedTopicIds: string[];
   accessStatus: ResourceAccessStatus;
+  deliveryMode?: ResourceDeliveryMode;
 }
 
 export interface BookResource {
@@ -45,6 +60,7 @@ export interface BookResource {
   recommendedChapter: string;
   accessStatus: ResourceAccessStatus;
   publisherOrInstitution?: string;
+  deliveryMode?: ResourceDeliveryMode;
 }
 
 export interface VideoResource {

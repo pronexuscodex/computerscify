@@ -63,7 +63,12 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
 
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [noteText, setNoteText] = useState(progress.notes[topic.id] || '');
-  const [selectedExerciseAnswers, setSelectedExerciseAnswers] = useState<Record<string, number>>({});
+  const [selectedExerciseAnswers, setSelectedExerciseAnswers] = useState<
+    Record<string, string>
+  >({});
+  const [submittedExerciseIds, setSubmittedExerciseIds] = useState<Set<string>>(
+    () => new Set()
+  );
 
   // Persisted collapsible side panel state
   const [isOutlineOpen, setIsOutlineOpen] = useState<boolean>(() => {
@@ -313,15 +318,57 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
             </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-sm uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Before You Start
+              </h3>
+              {mp.prerequisites.length > 0 ? (
+                <ul className="space-y-2">
+                  {mp.prerequisites.map((prerequisite) => (
+                    <li key={prerequisite} className="flex items-start gap-2 text-xs font-bold text-[#000000]/80 dark:text-[#F6EFEF]/80">
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                      <span>{prerequisite}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/70">
+                  No prior topic is required. You can begin here.
+                </p>
+              )}
+            </div>
+
+            <div className="bg-[#D0BCFF] dark:bg-[#352E45] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-sm uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4" /> Where This Leads
+              </h3>
+              {mp.connectionsToLaterModules.length > 0 ? (
+                <ul className="space-y-2">
+                  {mp.connectionsToLaterModules.map((connection) => (
+                    <li key={connection} className="flex items-start gap-2 text-xs font-bold text-[#000000] dark:text-[#F6EFEF]">
+                      <ChevronRight className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                      <span>{connection}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/70">
+                  This topic strengthens the foundation for the rest of the course.
+                </p>
+              )}
+            </div>
+          </div>
+
           {/* Interactive Resource Card Collections */}
           <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-5">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
               <div>
                 <h3 className="font-display font-black text-[#000000] dark:text-[#F6EFEF] text-base md:text-lg uppercase flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Topic Interactive Resource Collections
+                  <BookOpen className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Study Resources
                 </h3>
                 <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 font-bold">
-                  {pdfsList.length} Textbooks & PDFs • {researchList.length} Foundational Papers
+                  {pdfsList.length} course reading{pdfsList.length === 1 ? '' : 's'} • {researchList.length} research source{researchList.length === 1 ? '' : 's'}
                 </p>
               </div>
               <span className="px-3 py-1 rounded bg-[#F2C94C] border-2 border-[#000000] text-xs font-mono font-black text-[#000000] uppercase neo-shadow-sm">
@@ -332,7 +379,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
             {/* Textbooks & PDF Readings Collection */}
             <div className="space-y-3">
               <h4 className="text-xs font-black uppercase tracking-wider text-[#000000] dark:text-[#F6EFEF] flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Assigned Textbooks & PDF Readings ({pdfsList.length})
+                <FileText className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Course Readings ({pdfsList.length})
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {pdfsList.map((pdf, idx) => (
@@ -348,10 +395,14 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
                         <span className="px-2 py-0.5 rounded bg-[#F2C94C] text-[#000000] font-mono text-[10px] font-black border border-[#000000]">
-                          {pdf.id || `pdf-${idx + 1}`}
+                          {pdf.deliveryMode === 'in-app-pdf-candidate' ? 'PDF Reading' : 'Course Resource'}
                         </span>
                         <span className="text-[10px] font-black text-[#000000] bg-[#82E0AA] px-2 py-0.5 rounded border border-[#000000]">
-                          {pdf.accessStatus || 'Verified Access'}
+                          {pdf.accessStatus === 'official-web-book'
+                            ? 'Official Website'
+                            : pdf.accessStatus === 'needsVerification'
+                            ? 'Check Access'
+                            : 'Verified Access'}
                         </span>
                       </div>
                       <h5 className="font-black text-sm text-[#000000] dark:text-[#F6EFEF] uppercase leading-snug">
@@ -363,7 +414,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                     </div>
                     <div className="flex items-center justify-between pt-2 border-t-2 border-[#000000]">
                       <span className="text-xs font-black text-[#000000] dark:text-[#F2C94C] uppercase flex items-center gap-1">
-                        Read Book in Reader <ChevronRight className="w-3 h-3" />
+                        {pdf.deliveryMode === 'in-app-pdf-candidate' ? 'Read in Study Reader' : 'Open Course Resource'} <ChevronRight className="w-3 h-3" />
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
                     </div>
@@ -375,7 +426,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
             {/* Foundational & Research Papers Collection */}
             <div className="space-y-3 pt-2">
               <h4 className="text-xs font-black uppercase tracking-wider text-[#000000] dark:text-[#F6EFEF] flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Foundational Research Papers Collection ({researchList.length})
+                <FileText className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Research Reading ({researchList.length})
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {researchList.map((paper, idx) => (
@@ -406,7 +457,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                     </div>
                     <div className="flex items-center justify-between pt-2 border-t-2 border-[#000000]">
                       <span className="text-xs font-black text-[#000000] dark:text-[#F2C94C] uppercase flex items-center gap-1">
-                        Open Foundational Paper <ChevronRight className="w-3.5 h-3.5" />
+                        Read Research Source <ChevronRight className="w-3.5 h-3.5" />
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
                     </div>
@@ -580,8 +631,12 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
         <div className="space-y-6">
           {mp.practicalExercises.map((ex, i) => {
             const selectedOpt = selectedExerciseAnswers[ex.id];
-            const isSubmitted = selectedOpt !== undefined;
-            const isCorrect = selectedOpt === ex.correctAnswer;
+            const isSubmitted = submittedExerciseIds.has(ex.id);
+            const correctAnswerText =
+              typeof ex.correctAnswer === 'number' && ex.options
+                ? ex.options[ex.correctAnswer]
+                : String(ex.correctAnswer);
+            const isCorrect = selectedOpt === correctAnswerText;
 
             return (
               <div key={ex.id} className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-3">
@@ -592,14 +647,24 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
 
                 {ex.options && (
                   <div className="space-y-2 pt-2">
-                    {ex.options.map((opt, optIdx) => (
+                    {ex.options.map((opt) => (
                       <button
-                        key={optIdx}
-                        onClick={() =>
-                          setSelectedExerciseAnswers((prev) => ({ ...prev, [ex.id]: optIdx }))
-                        }
+                        key={opt}
+                        type="button"
+                        aria-pressed={selectedOpt === opt}
+                        onClick={() => {
+                          setSelectedExerciseAnswers((prev) => ({
+                            ...prev,
+                            [ex.id]: opt,
+                          }));
+                          setSubmittedExerciseIds((prev) => {
+                            const next = new Set(prev);
+                            next.delete(ex.id);
+                            return next;
+                          });
+                        }}
                         className={`w-full text-left p-3 rounded border-2 border-[#000000] text-xs font-black transition-all ${
-                          selectedOpt === optIdx
+                          selectedOpt === opt
                             ? 'bg-[#F2C94C] text-[#000000] neo-shadow-sm font-black'
                             : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
                         }`}
@@ -608,6 +673,19 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                       </button>
                     ))}
                   </div>
+                )}
+
+                {ex.options && (
+                  <button
+                    type="button"
+                    disabled={selectedOpt === undefined}
+                    onClick={() =>
+                      setSubmittedExerciseIds((prev) => new Set(prev).add(ex.id))
+                    }
+                    className="px-4 py-2.5 rounded border-2 border-[#000000] bg-[#000000] text-[#FFFFFF] hover:bg-[#F2C94C] hover:text-[#000000] disabled:opacity-40 disabled:cursor-not-allowed text-xs font-black uppercase tracking-wider transition-colors"
+                  >
+                    Check Answer
+                  </button>
                 )}
 
                 {isSubmitted && (

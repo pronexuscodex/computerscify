@@ -120,7 +120,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           type="button"
           onClick={() => onNavigate?.('dashboard')}
-          className="flex items-center gap-2 font-display font-black text-[#000000] dark:text-[#F6EFEF] hover:opacity-90 transition-opacity focus:outline-none rounded p-0.5 min-w-0 shrink-0"
+          className="flex md:hidden items-center gap-2 font-display font-black text-[#000000] dark:text-[#F6EFEF] hover:opacity-90 transition-opacity focus:outline-none rounded p-0.5 min-w-0 shrink-0"
           title="ComputerSciFy Platform Home"
           aria-label="ComputerSciFy Home Dashboard"
         >
