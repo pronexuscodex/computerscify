@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Search &amp; Discovery | ComputerSciFy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Kodchasan:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e7e1e0",
+                    "surface-tint": "#745b00",
+                    "on-secondary-fixed": "#27084d",
+                    "surface-bright": "#fef8f7",
+                    "surface-container-low": "#f9f2f1",
+                    "on-tertiary-container": "#4b595e",
+                    "on-surface-variant": "#4d4635",
+                    "on-primary-fixed": "#241a00",
+                    "surface-dim": "#dfd9d8",
+                    "surface-container": "#f3ecec",
+                    "surface": "#fef8f7",
+                    "primary-fixed-dim": "#ebc246",
+                    "surface-container-high": "#ede7e6",
+                    "inverse-on-surface": "#f6efef",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#6c5195",
+                    "on-background": "#1d1b1b",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1d1b1b",
+                    "background": "#fef8f7",
+                    "tertiary": "#536166",
+                    "inverse-surface": "#323030",
+                    "tertiary-fixed": "#d6e5eb",
+                    "on-primary-fixed-variant": "#584400",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#3b494e",
+                    "tertiary-fixed-dim": "#bac9cf",
+                    "primary-fixed": "#ffe08b",
+                    "primary-container": "#f2c94c",
+                    "on-secondary-container": "#5c4184",
+                    "secondary-fixed-dim": "#d7baff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#54397b",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#eddcff",
+                    "on-primary-container": "#6b5400",
+                    "surface-container-highest": "#e7e1e0",
+                    "inverse-primary": "#ebc246",
+                    "primary": "#745b00",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#d0c5af",
+                    "outline": "#7f7663",
+                    "tertiary-container": "#c1d0d6",
+                    "secondary-container": "#d2b3ff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#101d22"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "max-content-width": "1280px",
+                    "margin-desktop": "48px",
+                    "baseline": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "code-block": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Kodchasan"],
+                    "headline-md": ["Kodchasan"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Kodchasan"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-brutalist-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+        .neo-brutalist-shadow-small {
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            background-color: #fef8f7;
+            color: #1d1b1b;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-4 h-16 w-full backdrop-blur-xl bg-opacity-90">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors active:scale-95">settings</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pb-24 max-w-max-content-width mx-auto">
+<!-- Animated Background Header -->
+<section class="relative h-48 overflow-hidden bg-primary-container border-b-2 border-outline">
+
+<div class="relative z-10 p-6 h-full flex flex-col justify-end">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-primary-container leading-none">Discover<br/>Knowledge</h1>
+<p class="font-body-md text-body-md text-on-primary-container opacity-80 mt-2">Explore 2,400+ curated academic resources.</p>
+</div>
+</section>
+<!-- Search Bar -->
+<section class="px-margin-mobile -mt-7 relative z-20">
+<div class="relative flex items-center">
+<span class="absolute left-4 material-symbols-outlined text-outline">search</span>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-lowest border-2 border-outline rounded-none font-body-md focus:outline-none focus:ring-0 focus:border-primary neo-brutalist-shadow transition-all" placeholder="Search algorithms, papers, or courses..." type="text"/>
+</div>
+</section>
+<!-- Horizontal Chips -->
+<section class="mt-8">
+<div class="flex gap-3 overflow-x-auto px-margin-mobile hide-scrollbar">
+<button class="whitespace-nowrap px-6 py-2 bg-primary-container text-on-primary-container border-2 border-outline font-label-sm rounded-none neo-brutalist-shadow-small active:translate-y-1 active:translate-x-1 active:shadow-none transition-all">
+                    All Categories
+                </button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-lowest text-on-surface-variant border-2 border-outline font-label-sm rounded-none hover:bg-surface-container-high transition-all">
+                    Algorithms
+                </button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-lowest text-on-surface-variant border-2 border-outline font-label-sm rounded-none hover:bg-surface-container-high transition-all">
+                    Data Structures
+                </button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-lowest text-on-surface-variant border-2 border-outline font-label-sm rounded-none hover:bg-surface-container-high transition-all">
+                    Machine Learning
+                </button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container-lowest text-on-surface-variant border-2 border-outline font-label-sm rounded-none hover:bg-surface-container-high transition-all">
+                    Calculus
+                </button>
+</div>
+</section>
+<!-- Bento Grid: Recommendations -->
+<section class="mt-8 px-margin-mobile">
+<div class="flex justify-between items-end mb-6">
+<div>
+<span class="text-primary font-label-sm uppercase tracking-widest">Recommended</span>
+<h2 class="font-headline-md text-headline-md leading-tight">Pick up where you left off</h2>
+</div>
+<button class="text-primary font-label-sm flex items-center gap-1 hover:underline">
+                    View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Highlighted Course (Bento Large) -->
+<article class="bg-surface-container-lowest border-2 border-outline neo-brutalist-shadow overflow-hidden group">
+<div class="h-48 bg-secondary-container relative">
+<img class="w-full h-full object-cover" data-alt="A high-contrast conceptual digital illustration of neural networks and binary code flowing into a geometric human brain, styled like a modern textbook cover. Deep purples, golds, and whites dominate the palette. Sharp lines and mathematical precision evoke an academic, neo-brutalist tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ4Qjd-r2-TI_HoUsA52fmUwUna57chwmM5fVM9TJ1chZzPG8ge7NX1d4I6-gVXvW3J-VLu7dhvz5ljqa0MXmez6xJL4V1q4AGO8m3fBAi4z53OWoxTbKpq510vEUlVbUqZFD4OOr2T6bPCDH4jYurr-3cTJVhF9olm8s_K2Gnx-DSFrrfDJiez1phrP_gF6UKSFK7q7ZBgVH7Hl4gtZZLiy2rAaJ1g_Pg8sFNoA5nkacz0RR3GkzVn4EqXOWHcknNTAT_lCiac4SU"/>
+<div class="absolute top-3 left-3 bg-primary-container text-on-primary-container px-3 py-1 border-2 border-outline font-label-sm">
+                            NEW COURSE
+                        </div>
+</div>
+<div class="p-5 border-t-4 border-secondary">
+<div class="flex items-center gap-2 text-outline font-label-sm mb-2">
+<span class="material-symbols-outlined text-sm">terminal</span> Advanced Python
+                        </div>
+<h3 class="font-headline-md text-headline-md mb-2 group-hover:text-primary transition-colors">Mastering Asynchronous Algorithms</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">Dive deep into concurrent programming and high-performance computation patterns.</p>
+<div class="flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-outline bg-surface-container"></div>
+<div class="w-8 h-8 rounded-full border-2 border-outline bg-surface-container-high"></div>
+</div>
+<span class="font-label-sm text-outline italic">12.4k students</span>
+</div>
+</div>
+</article>
+<div class="grid grid-cols-1 gap-6">
+<!-- Research Paper -->
+<article class="bg-surface-container-lowest border-2 border-outline p-4 flex gap-4 neo-brutalist-shadow-small hover:translate-y-[-2px] transition-transform cursor-pointer">
+<div class="w-24 h-24 flex-shrink-0 bg-tertiary-container border-2 border-outline overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed digital artwork representing a complex graph data structure with nodes and edges glowing in neon blue against a stark white background. The composition is clean and technical, reminiscent of an architectural blueprint. The lighting is sharp and clinical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxVNPlSTNE3c_o3IgwuGf9HqQbzvB-dbWPFphzTNsbtOt0yXZBV7_GajRcYKMRjjlJg9kLp5cFidpc0xf4yuSwr4x9YAlyNEzk_C7Rkrf1tVnR6El6YYFDPLkTnm_dLXtjeQampflqj4OSNVs-BLl9V3IELpA6U4RjWFFdFNTWDniGO24pOpNyllYkjyAdK4oDhxPLQ9pXFZZvIaGHLC19HIsmopMn7tot9hdK0qQLuYEH46eGw3aGZSB3QU_W28VDr_J8jewpSyEF"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-tertiary font-label-sm uppercase">Research Paper</span>
+<h4 class="font-body-lg text-body-lg font-bold leading-tight mt-1">Graph Neural Networks: A Review</h4>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-sm text-outline">description</span>
+<span class="text-label-sm text-outline">12 min read</span>
+</div>
+</div>
+</article>
+<!-- Resource Item -->
+<article class="bg-surface-container-lowest border-2 border-outline p-4 flex gap-4 neo-brutalist-shadow-small hover:translate-y-[-2px] transition-transform cursor-pointer">
+<div class="w-24 h-24 flex-shrink-0 bg-primary-fixed border-2 border-outline overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A geometric abstract design featuring overlapping circles and triangles in shades of yellow and black, representing the mathematical concept of Calculus. The style is restrained neo-brutalist with clear outlines and purposeful whitespace. High credibility and academic feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDHDPvEXoZtvu-Lsgsx7uEUng8YLr2wwUwmVAkcILjwuXNW0qOVFYIbUnSXfSIk4laBEmJs93pww0vAsvry9aQ_THQvsEFTCd5A74sMG-J3zdXyCutam1oSDdqMtVWvI-0vrBdBUhFFXWt9507lAtOD6C2V71B6v8G8ph6M74oL18y1819mAydMVTRhTClLG8S0jpJSgL4qap_Z_xe6LxWyuBnTBmrgW6znsBqhKsj7fTxNNSc3OakRTFZ31hxMmaPlSINhPQ6v8tk"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-primary font-label-sm uppercase">Study Guide</span>
+<h4 class="font-body-lg text-body-lg font-bold leading-tight mt-1">Calculus for ML: The Basics</h4>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-sm text-outline" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="text-label-sm text-outline">45 min video</span>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- Trending Topics Section -->
+<section class="mt-12 px-margin-mobile">
+<h3 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                Trending in Tech
+            </h3>
+<div class="space-y-4">
+<div class="bg-surface-container-low border-2 border-outline-variant p-4 flex justify-between items-center group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md text-outline-variant opacity-50 group-hover:opacity-100 transition-opacity">01</span>
+<div>
+<p class="font-body-lg font-bold">Quantum Computing 101</p>
+<p class="text-label-sm text-outline-variant">2.4k searchers this week</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transform group-hover:translate-x-1 transition-all">north_east</span>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-4 flex justify-between items-center group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md text-outline-variant opacity-50 group-hover:opacity-100 transition-opacity">02</span>
+<div>
+<p class="font-body-lg font-bold">Large Language Models</p>
+<p class="text-label-sm text-outline-variant">1.8k searchers this week</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transform group-hover:translate-x-1 transition-all">north_east</span>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-4 flex justify-between items-center group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md text-outline-variant opacity-50 group-hover:opacity-100 transition-opacity">03</span>
+<div>
+<p class="font-body-lg font-bold">Privacy-Preserving AI</p>
+<p class="text-label-sm text-outline-variant">1.1k searchers this week</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transform group-hover:translate-x-1 transition-all">north_east</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant shadow-[0_-4px_0_0_rgba(0,0,0,0.05)] lg:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-label-sm-mobile font-label-sm">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-label-sm-mobile font-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-label-sm-mobile font-label-sm">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-label-sm-mobile font-label-sm">Account</span>
+</a>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button, article').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                if(el.classList.contains('neo-brutalist-shadow')) {
+                    el.style.transform = 'translate(2px, 2px)';
+                    el.style.boxShadow = '2px 2px 0px 0px rgba(0,0,0,1)';
+                } else if(el.classList.contains('neo-brutalist-shadow-small')) {
+                    el.style.transform = 'translate(1px, 1px)';
+                    el.style.boxShadow = '1px 1px 0px 0px rgba(0,0,0,1)';
+                }
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+                el.style.boxShadow = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+                el.style.boxShadow = '';
+            });
+        });
+    </script>
+</body></html>

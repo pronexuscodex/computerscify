@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>ComputerSciFy | Student Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#d6e5eb",
+                    "on-tertiary-fixed-variant": "#3b494e",
+                    "on-secondary-fixed": "#27084d",
+                    "primary": "#745b00",
+                    "on-surface": "#1d1b1b",
+                    "on-surface-variant": "#4d4635",
+                    "primary-container": "#f2c94c",
+                    "surface-bright": "#fef8f7",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#241a00",
+                    "tertiary-fixed-dim": "#bac9cf",
+                    "secondary": "#6c5195",
+                    "on-secondary-container": "#5c4184",
+                    "on-primary-container": "#6b5400",
+                    "surface-variant": "#e7e1e0",
+                    "surface-dim": "#dfd9d8",
+                    "surface-container": "#f3ecec",
+                    "surface-tint": "#745b00",
+                    "secondary-fixed-dim": "#d7baff",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f6efef",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#536166",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1d1b1b",
+                    "outline": "#7f7663",
+                    "inverse-surface": "#323030",
+                    "secondary-fixed": "#eddcff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#c1d0d6",
+                    "primary-fixed": "#ffe08b",
+                    "surface-container-high": "#ede7e6",
+                    "on-tertiary-container": "#4b595e",
+                    "surface-container-low": "#f9f2f1",
+                    "surface": "#fef8f7",
+                    "secondary-container": "#d2b3ff",
+                    "outline-variant": "#d0c5af",
+                    "surface-container-highest": "#e7e1e0",
+                    "primary-fixed-dim": "#ebc246",
+                    "on-tertiary-fixed": "#101d22",
+                    "inverse-primary": "#ebc246",
+                    "on-primary-fixed-variant": "#584400",
+                    "background": "#fef8f7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "max-content-width": "1280px",
+                    "margin-desktop": "48px",
+                    "baseline": "4px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Kodchasan"],
+                    "display-lg": ["Kodchasan"],
+                    "label-sm": ["Inter"],
+                    "code-block": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Kodchasan"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        
+        .neo-brutalist-card {
+            border: 1px solid #1d1b1b;
+            box-shadow: 3px 3px 0px 0px #1d1b1b;
+            transition: all 0.15s ease-out;
+        }
+        
+        .neo-brutalist-card:active {
+            box-shadow: 0px 0px 0px 0px #1d1b1b;
+            transform: translate(3px, 3px);
+        }
+
+        .active-nav-indicator {
+            box-shadow: 2px 2px 0px 0px #1d1b1b;
+        }
+
+        body {
+            background-color: #fef8f7;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7f7663;
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-4 h-16">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ComputerSciFy</h1>
+<div class="flex items-center gap-4">
+<button class="p-2 active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-md mx-auto px-4 pt-6 pb-24">
+<!-- Welcome Section -->
+<section class="mb-8">
+<h2 class="font-headline-md text-headline-md-mobile text-on-surface font-bold">Hello, Alex!</h2>
+<p class="font-body-md text-on-surface-variant">Pick up where you left off today.</p>
+</section>
+<!-- Continue Learning Card -->
+<section class="mb-8">
+<div class="neo-brutalist-card bg-primary-container p-5 rounded-lg border-primary border-4">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="bg-primary text-on-primary px-2 py-0.5 font-label-sm text-[10px] uppercase tracking-widest rounded-sm mb-2 inline-block">Current Course</span>
+<h3 class="font-headline-md text-xl text-on-primary-container font-bold leading-tight">Discrete Mathematics</h3>
+</div>
+<div class="w-12 h-12 bg-white rounded-lg border border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+</div>
+</div>
+<div class="mb-4">
+<div class="flex justify-between text-on-primary-container font-label-sm mb-1">
+<span>Unit 4: Graph Theory</span>
+<span>65%</span>
+</div>
+<div class="w-full bg-white/40 h-3 rounded-full border border-black overflow-hidden">
+<div class="bg-primary h-full w-[65%] border-r border-black"></div>
+</div>
+</div>
+<button class="w-full bg-white text-on-surface py-3 font-bold border border-black neo-brutalist-card flex items-center justify-center gap-2">
+                    Continue Module
+                    <span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</section>
+<!-- Track Progress (Simplified for Mobile) -->
+<section class="mb-8">
+<h3 class="font-headline-md text-lg text-on-surface font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">monitoring</span>
+                Track Progress
+            </h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="neo-brutalist-card bg-surface-container-lowest p-4 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-on-surface-variant uppercase text-[10px]">Weekly Goal</span>
+<span class="font-headline-md text-2xl font-bold text-primary">12/15 hrs</span>
+<div class="mt-auto pt-2">
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-primary border border-black"></div>
+<div class="h-1 flex-1 bg-primary border border-black"></div>
+<div class="h-1 flex-1 bg-primary border border-black"></div>
+<div class="h-1 flex-1 bg-outline-variant border border-black"></div>
+</div>
+</div>
+</div>
+<div class="neo-brutalist-card bg-secondary-container p-4 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-on-secondary-container uppercase text-[10px]">Rank</span>
+<span class="font-headline-md text-2xl font-bold text-on-secondary-container">Top 5%</span>
+<div class="mt-auto pt-2 flex items-center gap-1 text-[10px] font-bold text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        +2 positions
+                    </div>
+</div>
+</div>
+</section>
+<!-- Recent Activity & Upcoming -->
+<section class="mb-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-lg text-on-surface font-bold">Upcoming Task</h3>
+<button class="text-primary font-bold font-label-sm text-[12px] underline">View All</button>
+</div>
+<div class="space-y-4">
+<!-- Activity Card 1 -->
+<div class="neo-brutalist-card bg-white p-4 rounded-lg flex items-center gap-4 relative overflow-hidden border-l-[6px] border-l-secondary">
+<div class="w-10 h-10 rounded border border-black bg-tertiary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container">quiz</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface leading-tight">Data Structures Quiz</h4>
+<p class="text-[12px] text-on-surface-variant">Due: Tomorrow, 11:59 PM</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">chevron_right</span>
+</div>
+<!-- Activity Card 2 -->
+<div class="neo-brutalist-card bg-white p-4 rounded-lg flex items-center gap-4 relative overflow-hidden border-l-[6px] border-l-primary-container">
+<div class="w-10 h-10 rounded border border-black bg-surface-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface">code</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface leading-tight">Python Lab: Recursion</h4>
+<p class="text-[12px] text-on-surface-variant">In Progress • 2 tasks left</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">chevron_right</span>
+</div>
+<!-- Activity Card 3 -->
+<div class="neo-brutalist-card bg-white p-4 rounded-lg flex items-center gap-4 relative overflow-hidden border-l-[6px] border-l-error-container">
+<div class="w-10 h-10 rounded border border-black bg-error-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-error-container">history_edu</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface leading-tight">Logic Gates Lab Report</h4>
+<p class="text-[12px] text-error font-bold">Overdue: 2 days</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Visual Anchor (Asymmetric Bento Element) -->
+<section class="mt-8">
+<div class="neo-brutalist-card bg-tertiary text-on-tertiary p-6 rounded-xl flex items-center justify-between gap-4">
+<div class="max-w-[60%]">
+<h3 class="font-headline-md text-lg font-bold mb-1">Resource Library</h3>
+<p class="text-xs opacity-90 leading-relaxed">Access 500+ curated PDFs, cheat sheets, and practice exams.</p>
+<button class="mt-4 bg-white text-tertiary px-4 py-2 text-xs font-bold border border-black neo-brutalist-card">Explore Vault</button>
+</div>
+<div class="w-24 h-24 flex-shrink-0 bg-white/10 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-5xl">menu_book</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-[0_-4px_0_0_rgba(0,0,0,0.05)] lg:hidden">
+<!-- Learn (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-5 py-1 border border-black active-nav-indicator active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-sm-mobile text-[10px] mt-0.5">Learn</span>
+</a>
+<!-- Explore -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-[10px] mt-0.5">Explore</span>
+</a>
+<!-- Library -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm-mobile text-[10px] mt-0.5">Library</span>
+</a>
+<!-- Account -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<div class="w-6 h-6 rounded-full border border-black overflow-hidden bg-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist profile avatar design on a neutral off-white background. The style is modern and professional, using a restrained neo-brutalist approach with sharp outlines and high contrast. The character is abstract and stylized with geometric features, fitting a high-end educational learning portal's aesthetic. Soft warm lighting and sharp edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH6crkYjl8ZLjGynUN5KFtd5I_EWsL3t3ZlhRPh-b7xKRLhGWgH-7g7zx9vKKnefKdj9xjmmA1qFTz9a4mGtO_ogTS8vfYjNHa2wBdCcf3Mrdg5idEX0T426xR9-mTK35FIwHyfX0w5DBdXK-2p-IHFb2YdxLU3DNXTkZtVNtPKpjYd-WXIpUQys469gn1heoOharpiSqVgWi1HHqaYdc0mE4fAaZxgJXlqsstP_NzxA7sewfcVdiX96BE3FRfp-htzQyH3zvi18lr"/>
+</div>
+<span class="font-label-sm-mobile text-[10px] mt-0.5">Account</span>
+</a>
+</nav>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('touchstart', function() {
+                this.classList.add('opacity-80');
+            });
+            el.addEventListener('touchend', function() {
+                this.classList.remove('opacity-80');
+            });
+        });
+        
+        // Simple progress bar animation on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.querySelector('.bg-primary.h-full');
+            if (progressBar) {
+                progressBar.style.width = '0%';
+                setTimeout(() => {
+                    progressBar.style.transition = 'width 1s cubic-bezier(0.65, 0, 0.35, 1)';
+                    progressBar.style.width = '65%';
+                }, 300);
+            }
+        });
+    </script>
+</body></html>

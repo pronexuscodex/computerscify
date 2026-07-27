@@ -1,0 +1,381 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ComputerSciFy - QuickSort Algorithm</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Kodchasan:wght@600;700&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Kodchasan:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-brutalist-card {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+            transition: transform 0.1s ease-in-out;
+        }
+        .neo-brutalist-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+        }
+        .neo-brutalist-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #745b00;
+            border-radius: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fef8f7",
+                        "outline": "#7f7663",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#6b5400",
+                        "primary": "#745b00",
+                        "outline-variant": "#d0c5af",
+                        "primary-container": "#f2c94c",
+                        "on-tertiary-fixed": "#101d22",
+                        "secondary-fixed": "#eddcff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dfd9d8",
+                        "on-tertiary-fixed-variant": "#3b494e",
+                        "inverse-primary": "#ebc246",
+                        "on-background": "#1d1b1b",
+                        "tertiary-container": "#c1d0d6",
+                        "surface-tint": "#745b00",
+                        "surface-container-low": "#f9f2f1",
+                        "on-secondary-fixed-variant": "#54397b",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#4b595e",
+                        "primary-fixed": "#ffe08b",
+                        "tertiary-fixed": "#d6e5eb",
+                        "on-secondary-container": "#5c4184",
+                        "primary-fixed-dim": "#ebc246",
+                        "inverse-surface": "#323030",
+                        "inverse-on-surface": "#f6efef",
+                        "on-primary-fixed": "#241a00",
+                        "surface-container-highest": "#e7e1e0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#4d4635",
+                        "surface-container": "#f3ecec",
+                        "on-secondary-fixed": "#27084d",
+                        "tertiary": "#536166",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d2b3ff",
+                        "surface-container-high": "#ede7e6",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#bac9cf",
+                        "surface": "#fef8f7",
+                        "secondary": "#6c5195",
+                        "secondary-fixed-dim": "#d7baff",
+                        "on-primary-fixed-variant": "#584400",
+                        "surface-variant": "#e7e1e0",
+                        "background": "#fef8f7",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1d1b1b",
+                        "knowledge-lavender": "#C6A7F2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "max-content-width": "1280px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Kodchasan"],
+                        "display-lg-mobile": ["Kodchasan"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Kodchasan"],
+                        "body-lg": ["Inter"],
+                        "code-block": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (Shared Component) -->
+<nav class="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-low border-r border-outline-variant shadow-[4px_0_0_0_rgba(0,0,0,1)] z-[60] py-4 space-y-2">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</h1>
+<p class="text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">Learning Portal</p>
+</div>
+<div class="flex flex-col flex-grow">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 border-2 border-outline active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-body-md font-bold">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-body-md">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md">Profile</span>
+</a>
+</div>
+
+<div class="pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm">Help</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="lg:ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<header class="w-full sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gutter h-16">
+<div class="flex items-center gap-4">
+<button class="lg:hidden p-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container text-on-surface-variant pl-10 pr-4 py-1.5 rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 text-sm" placeholder="Search algorithms..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">settings</span>
+<div class="h-6 w-[1px] bg-outline-variant mx-1"></div>
+<button class="text-on-surface-variant font-bold hover:text-primary px-3 py-1 transition-colors active:scale-95 duration-150">Log In</button>
+<button class="bg-primary-container text-on-primary-container font-bold px-4 py-1.5 rounded-lg border-2 border-outline active:scale-95 duration-150">Sign Up</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-grow p-4 lg:p-12">
+<div class="max-w-[1200px] mx-auto flex flex-col xl:flex-row gap-12">
+<!-- Long-form Content Section -->
+<article class="flex-grow max-w-[720px]">
+<div class="mb-10">
+<span class="inline-block px-3 py-1 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-widest rounded-sm border border-outline mb-4">Sorting Algorithms</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight mb-4">QuickSort: Divide and Conquer</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            QuickSort is an efficient, comparison-based, in-place sorting algorithm that follows the divide-and-conquer paradigm. Invented by Tony Hoare in 1959, it remains one of the most widely used sorting techniques due to its exceptional cache performance and speed.
+                        </p>
+</div>
+<!-- Intro Image -->
+<div class="mb-12">
+<div class="aspect-video w-full neo-brutalist-shadow border-2 border-outline relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist 3D rendering of various sized rectangular blocks being organized by a central dividing line in a high-key digital workspace. The lighting is soft and neutral, typical of a modern academic light-mode UI. The color palette features a base of ivory white with accents of primary gold and deep charcoal outlines, reflecting a sophisticated technical and educational mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADA3ZzoNNu4pU6wU4qGHSye96U4R5IPIZkoH3e1teLcFiLnLuvl_cBj6q34pHeQ4bwA0MsXo6p555SEfRXZIeP5Bq0qS1dZWUKRV1WSW3MpFrdA_sTh_9jckEsn9kbQUzaZLOBRli_gj_NBtU0z0ofMnRIHXdVlWrcc1ztluHdccY5mDdJ5ndKpjlVnt33YY2xKAgI71D2fYWDqa4_k--jEsw1erdk1fL2MLKXp-BpkNneP39x7xMAhxtY0sgEa6PPuFe1_7aDfz9x">
+</div>
+<p class="mt-4 text-sm text-on-surface-variant italic font-label-sm">Fig 1.1: The pivot-based partitioning process visualized as a spatial organization task.</p>
+</div>
+<!-- Core Mechanics -->
+<section class="space-y-8">
+<h2 class="font-headline-md text-headline-md text-on-surface border-b-2 border-primary-container pb-2 inline-block">The Pivot Strategy</h2>
+<p class="font-body-md text-body-md leading-relaxed">
+                            The efficiency of QuickSort hinges entirely on the selection of a <strong class="text-primary">pivot element</strong>. The array is partitioned into two sub-arrays: elements smaller than the pivot and elements larger than the pivot.
+                        </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+<div class="p-6 bg-surface-container-low border border-outline neo-brutalist-card">
+<h3 class="font-bold mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span> Partitioning
+                                </h3>
+<p class="text-sm">Rearrange the array so that elements less than pivot are on the left, and elements greater are on the right.</p>
+</div>
+<div class="p-6 bg-surface-container-low border border-outline neo-brutalist-card">
+<h3 class="font-bold mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">rebase_edit</span> Recursion
+                                </h3>
+<p class="text-sm">Recursively apply the same logic to the resulting sub-arrays until the base case (single element) is reached.</p>
+</div>
+</div>
+</section>
+<!-- Code Block -->
+<section class="my-12">
+<div class="flex justify-between items-center bg-surface-dim border-x border-t border-outline px-4 py-2 rounded-t-lg">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error border border-outline"></div>
+<div class="w-3 h-3 rounded-full bg-primary-container border border-outline"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary border border-outline"></div>
+</div>
+<span class="text-xs font-code-block font-bold">quicksort.py</span>
+<button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-tighter hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy
+                            </button>
+</div>
+<div class="bg-surface-container-highest border border-outline p-6 rounded-b-lg font-code-block text-code-block overflow-x-auto custom-scrollbar">
+<pre class="text-on-surface leading-6"><span class="text-secondary font-bold">def</span> <span class="text-primary font-bold">quicksort</span>(arr):
+    <span class="text-outline-variant italic"># Base case: arrays with 0 or 1 element are already sorted</span>
+    <span class="text-secondary font-bold">if</span> <span class="text-primary">len</span>(arr) &lt;= <span class="text-on-secondary-fixed-variant">1</span>:
+        <span class="text-secondary font-bold">return</span> arr
+    
+    <span class="text-outline-variant italic"># Choose the middle element as the pivot</span>
+    pivot = arr[<span class="text-primary">len</span>(arr) // <span class="text-on-secondary-fixed-variant">2</span>]
+    
+    <span class="text-outline-variant italic"># Partitioning logic</span>
+    left = [x <span class="text-secondary font-bold">for</span> x <span class="text-secondary font-bold">in</span> arr <span class="text-secondary font-bold">if</span> x &lt; pivot]
+    middle = [x <span class="text-secondary font-bold">for</span> x <span class="text-secondary font-bold">in</span> arr <span class="text-secondary font-bold">if</span> x == pivot]
+    right = [x <span class="text-secondary font-bold">for</span> x <span class="text-secondary font-bold">in</span> arr <span class="text-secondary font-bold">if</span> x &gt; pivot]
+    
+    <span class="text-outline-variant italic"># Combine and recurse</span>
+    <span class="text-secondary font-bold">return</span> quicksort(left) + middle + quicksort(right)</pre>
+</div>
+</section>
+<!-- Complexity Table -->
+<section class="my-12">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Complexity Analysis</h2>
+<div class="border-2 border-outline overflow-hidden rounded-lg neo-brutalist-shadow">
+<table class="w-full text-left border-collapse">
+<thead class="bg-primary text-on-primary">
+<tr>
+<th class="p-4 font-bold border-r border-outline/20">Case</th>
+<th class="p-4 font-bold">Time Complexity</th>
+</tr>
+</thead>
+<tbody class="bg-surface">
+<tr class="border-t border-outline">
+<td class="p-4 border-r border-outline font-bold bg-surface-container-low">Best Case</td>
+<td class="p-4 font-code-block">O(n log n)</td>
+</tr>
+<tr class="border-t border-outline">
+<td class="p-4 border-r border-outline font-bold bg-surface-container-low">Average Case</td>
+<td class="p-4 font-code-block">O(n log n)</td>
+</tr>
+<tr class="border-t border-outline">
+<td class="p-4 border-r border-outline font-bold bg-surface-container-low">Worst Case</td>
+<td class="p-4 font-code-block text-error">O(n²)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</article>
+<!-- Side Panel (Resources) -->
+<aside class="w-full xl:w-80 flex-shrink-0">
+<div class="sticky top-24 space-y-8">
+<!-- Related Resources Card -->
+<div class="bg-surface border-t-4 border-knowledge-lavender p-6 neo-brutalist-shadow border-x border-b border-outline">
+<h3 class="font-headline-md text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">library_books</span> Related
+                            </h3>
+<ul class="space-y-4">
+<li class="">
+<a class="group block" href="#">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Article</p>
+<p class="font-bold border-b border-transparent group-hover:border-primary inline">Merge Sort vs QuickSort</p>
+</a>
+</li>
+<li class="">
+<a class="group block" href="#">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Visualizer</p>
+<p class="font-bold border-b border-transparent group-hover:border-primary inline">Interactive Pivot Tool</p>
+</a>
+</li>
+<li class="">
+<a class="group block" href="#">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Whitepaper</p>
+<p class="font-bold border-b border-transparent group-hover:border-primary inline">Dual-Pivot Optimization</p>
+</a>
+</li>
+</ul>
+</div>
+<!-- Knowledge Check Card -->
+<div class="bg-primary-container p-6 border-2 border-outline neo-brutalist-shadow">
+<h3 class="font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">quiz</span> Knowledge Check
+                            </h3>
+<p class="text-sm mb-6 text-on-primary-fixed-variant leading-relaxed">
+                                Why is QuickSort often preferred over Merge Sort for large in-memory arrays despite having a worse worst-case complexity?
+                            </p>
+<button class="w-full bg-surface text-on-surface font-bold py-2 border-2 border-outline hover:translate-y-[-2px] hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all">
+                                Reveal Answer
+                            </button>
+</div>
+<!-- Ad/Promo Area -->
+<div class="relative h-48 border-2 border-outline group overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A macro photography shot of an advanced processor chip on a sleek, dark motherboard. The lighting is dramatic and technical, with vibrant blue and gold light trails representing data flow. The style is professional and modern, aligning with a high-end tech learning platform's aesthetics. Soft bokeh in the background ensures focus remains on the intricate circuitry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfFNxdEdMwNtxKru9TdquuGeCbY8CVcyU8VueoqrSR2bgKCIsMpXH_RKwKt04oDjMsYMd_RciFNqV4MU1-IJn0aNGHhcA3AQwzdeA_gVNAEyROdT4tHG0-zgSlIHkvmaJBc7K0xWGUe_TWCR9H0TVXNJMXJkgblR4FcUoNxDHApyzSTs9OIs0MFtkovc3ZIgPF4rSV5W94rz1_LDQdYZpfwvjvTcOM1ry14rW_kYveRRJa_tMfaz1yC7SAqy_v83UE6bE9Mx84BrqB">
+<div class="absolute inset-0 bg-black/40 flex flex-col justify-end p-4">
+<p class="text-white font-bold text-lg leading-tight">Master Complexity Theory</p>
+<p class="text-white/80 text-xs mt-1">Enroll in Advanced Algorithms</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto border-t border-outline-variant py-8 px-gutter flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-variant bg-surface-container-lowest">
+<p class="font-label-sm">© 2024 ComputerSciFy. Built for Mastery.</p>
+<div class="flex gap-6">
+<a class="text-sm hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-sm hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-sm hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant lg:hidden shadow-[0_-4px_0_0_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined">school</span>
+<span class="text-[10px] font-label-sm">Learn</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-label-sm">Explore</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-label-sm">Library</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-label-sm">Account</span>
+</button>
+</nav>
+</main>
+<script>
+        // Micro-interactions for button presses
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 100);
+            });
+        });
+    </script>
+
+
+</body></html>

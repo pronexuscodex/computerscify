@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ComputerSciFy | Interactive Coding Lab</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Kodchasan:wght@600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#d7baff",
+                        "error-container": "#ffdad6",
+                        "surface": "#fef8f7",
+                        "outline": "#7f7663",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#ede7e6",
+                        "surface-bright": "#fef8f7",
+                        "on-tertiary-container": "#4b595e",
+                        "on-surface": "#1d1b1b",
+                        "on-tertiary-fixed": "#101d22",
+                        "primary-fixed-dim": "#ebc246",
+                        "outline-variant": "#d0c5af",
+                        "on-tertiary-fixed-variant": "#3b494e",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f3ecec",
+                        "tertiary-fixed-dim": "#bac9cf",
+                        "on-secondary-container": "#5c4184",
+                        "surface-dim": "#dfd9d8",
+                        "primary": "#745b00",
+                        "inverse-primary": "#ebc246",
+                        "tertiary": "#536166",
+                        "surface-variant": "#e7e1e0",
+                        "secondary-fixed": "#eddcff",
+                        "on-secondary-fixed": "#27084d",
+                        "primary-fixed": "#ffe08b",
+                        "on-background": "#1d1b1b",
+                        "background": "#fef8f7",
+                        "on-surface-variant": "#4d4635",
+                        "on-primary-container": "#6b5400",
+                        "on-primary-fixed": "#241a00",
+                        "secondary-container": "#d2b3ff",
+                        "inverse-on-surface": "#f6efef",
+                        "primary-container": "#f2c94c",
+                        "on-secondary-fixed-variant": "#54397b",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#584400",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c1d0d6",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f9f2f1",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e7e1e0",
+                        "tertiary-fixed": "#d6e5eb",
+                        "secondary": "#6c5195",
+                        "surface-tint": "#745b00",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#323030"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-content-width": "1280px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "code-block": ["JetBrains Mono"],
+                        "display-lg": ["Kodchasan"],
+                        "display-lg-mobile": ["Kodchasan"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Kodchasan"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .neo-brutalist-card {
+            border: 1px solid #7f7663;
+            box-shadow: 4px 4px 0px 0px #1d1b1b;
+            transition: all 0.2s ease;
+        }
+        .neo-brutalist-card:hover {
+            box-shadow: 2px 2px 0px 0px #1d1b1b;
+            transform: translate(2px, 2px);
+        }
+        .neo-brutalist-button {
+            border: 2px solid #1d1b1b;
+            box-shadow: 4px 4px 0px 0px #1d1b1b;
+            transition: all 0.15s active;
+        }
+        .neo-brutalist-button:active {
+            box-shadow: 0px 0px 0px 0px #1d1b1b;
+            transform: translate(4px, 4px);
+        }
+        .code-syntax-keyword { color: #d7baff; }
+        .code-syntax-func { color: #ebc246; }
+        .code-syntax-string { color: #bac9cf; }
+        .code-syntax-comment { color: #7f7663; opacity: 0.7; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d0c5af; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Anchor (Manual Implementation matching JSON specs) -->
+<header class="bg-surface sticky top-0 z-50 border-b border-outline-variant flex justify-between items-center px-gutter h-16 w-full">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</span>
+<!-- Breadcrumbs -->
+<nav class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-sm uppercase tracking-wider">
+<span class="hover:text-primary cursor-pointer transition-colors">CS</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="hover:text-primary cursor-pointer transition-colors">Algorithms</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="hover:text-primary cursor-pointer transition-colors">QuickSort</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold border-b-2 border-primary">Lab</span>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<!-- Timer -->
+<div class="flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-lg border border-outline">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">timer</span>
+<span class="font-code-block text-on-surface font-bold" id="timer">45:00</span>
+</div>
+<div class="flex gap-2">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors">settings</button>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Panel: Concept Guide -->
+<aside class="w-1/4 min-w-[320px] flex flex-col border-r border-outline-variant bg-surface-container-low overflow-y-auto p-6 space-y-8">
+<section>
+<h2 class="font-headline-md text-headline-md text-primary mb-4">QuickSort Fundamentals</h2>
+<div class="prose prose-sm font-body-md text-on-surface-variant leading-relaxed space-y-4">
+<p>QuickSort is a highly efficient sorting algorithm and is based on partitioning of array of data into smaller arrays. A large array is partitioned into two arrays one of which holds values smaller than the specified value, say pivot, based on which the partition is made and another array holds values greater than the pivot value.</p>
+<div class="p-4 bg-surface-container-highest border-l-4 border-primary rounded-r-lg">
+<p class="italic text-on-surface">"Divide and Conquer is the secret to algorithmic efficiency."</p>
+</div>
+<h3 class="font-bold text-on-surface mt-6">Algorithm Steps:</h3>
+<ul class="list-none space-y-2">
+<li class="flex items-start gap-2">
+<span class="w-2 h-2 mt-2 bg-primary flex-shrink-0"></span>
+<span>Pick an element, called a pivot, from the array.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="w-2 h-2 mt-2 bg-primary flex-shrink-0"></span>
+<span>Partitioning: reorder the array so that all elements with values less than the pivot come before the pivot.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="w-2 h-2 mt-2 bg-primary flex-shrink-0"></span>
+<span>Recursively apply the above steps to the sub-array of elements with smaller values and larger values.</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- Task Card -->
+<section class="neo-brutalist-card bg-surface p-5 rounded-lg border-2 border-primary-container">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<h3 class="font-bold text-on-surface">Lab Task #1</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-4">
+                    Complete the <code class="font-code-block bg-surface-container px-1">partition</code> function to correctly split the array around the last element as the pivot.
+                </p>
+<div class="flex justify-between items-center text-xs font-label-sm">
+<span class="text-secondary font-bold">REWARD: 50 XP</span>
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded">ALGORITHMS I</span>
+</div>
+</section>
+</aside>
+<!-- Center Panel: Professional Code Editor -->
+<section class="flex-1 flex flex-col bg-[#1e1e1e] border-x border-outline-variant relative">
+<div class="h-10 flex items-center justify-between px-4 bg-[#252526] border-b border-[#333333]">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-primary-fixed-variant font-label-sm border-b-2 border-primary-fixed h-10 px-2">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>quicksort.py</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="neo-brutalist-button bg-primary-container text-on-primary-container px-4 py-1 rounded font-bold text-sm flex items-center gap-1 active:scale-95 duration-75">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Run
+                    </button>
+<button class="px-3 py-1 text-[#cccccc] hover:text-white text-sm flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+                        Reset
+                    </button>
+</div>
+</div>
+<!-- Code Content -->
+<div class="flex-1 p-6 font-code-block text-code-block overflow-y-auto leading-relaxed">
+<div class="flex gap-4">
+<div class="text-[#858585] select-none text-right w-8">
+                        1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20
+                    </div>
+<div class="text-[#d4d4d4] flex-1">
+<span class="code-syntax-keyword">def</span> <span class="code-syntax-func">quick_sort</span>(arr, low, high):<br/>
+                            <span class="code-syntax-keyword">if</span> low &lt; high:<br/>
+                                <span class="code-syntax-comment"># pi is partitioning index</span><br/>
+                                pi = partition(arr, low, high)<br/>
+                                quick_sort(arr, low, pi - 1)<br/>
+                                quick_sort(arr, pi + 1, high)<br/>
+<br/>
+<span class="code-syntax-keyword">def</span> <span class="code-syntax-func">partition</span>(arr, low, high):<br/>
+                            pivot = arr[high]<br/>
+                            i = low - 1<br/>
+                            <span class="code-syntax-keyword">for</span> j <span class="code-syntax-keyword">in</span> <span class="code-syntax-func">range</span>(low, high):<br/>
+                                <span class="code-syntax-comment"># TASK: Add logic to swap elements if</span><br/>
+                                <span class="code-syntax-comment"># current element is smaller than pivot</span><br/>
+                                <span class="animate-pulse bg-[#333333] inline-block w-20 h-4 align-middle"></span><br/>
+<br/>
+                            arr[i+1], arr[high] = arr[high], arr[i+1]<br/>
+                            <span class="code-syntax-keyword">return</span> i + 1<br/>
+<br/>
+<span class="code-syntax-comment"># Initial array</span><br/>
+                        data = [10, 7, 8, 9, 1, 5]<br/>
+                        quick_sort(data, 0, <span class="code-syntax-func">len</span>(data)-1)
+                    </div>
+</div>
+</div>
+<!-- Sticky Copy Action -->
+<button class="absolute right-4 bottom-4 px-3 py-1.5 bg-[#333333] border border-outline text-[#cccccc] text-xs font-label-sm uppercase hover:bg-[#444444] transition-colors rounded">
+                Copy Code
+            </button>
+</section>
+<!-- Right Panel: Output & Visualization -->
+<aside class="w-1/3 min-w-[380px] flex flex-col bg-surface overflow-hidden">
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant">
+<button class="flex-1 py-3 font-label-sm text-primary border-b-2 border-primary bg-surface transition-all" id="tab-output" onclick="switchTab('output')">OUTPUT</button>
+<button class="flex-1 py-3 font-label-sm text-on-surface-variant hover:bg-surface-container transition-all" id="tab-viz" onclick="switchTab('viz')">VISUALIZATION</button>
+</div>
+<!-- Content Area -->
+<div class="flex-1 flex flex-col overflow-hidden relative">
+<!-- Output Console -->
+<div class="flex-1 p-6 flex flex-col" id="content-output">
+<div class="flex justify-between items-center mb-4">
+<span class="font-bold text-on-surface-variant text-sm uppercase">Console Log</span>
+<span class="text-xs text-outline">v1.2.4-python3</span>
+</div>
+<div class="flex-1 bg-on-surface text-surface-container p-4 font-code-block text-sm rounded border-2 border-outline-variant overflow-y-auto">
+<p class="text-tertiary-fixed-dim">&gt; Python interpreter initialized...</p>
+<p class="text-tertiary-fixed-dim">&gt; Running quicksort.py</p>
+<p class="mt-2 text-primary-fixed-dim">Step 1: Pivot 5 chosen from [10, 7, 8, 9, 1, 5]</p>
+<p class="text-primary-fixed-dim">Step 2: Partitioning...</p>
+<p class="mt-2 text-error-container">Runtime Error: NameError 'i' is not defined in partition loop.</p>
+<span class="inline-block w-2 h-4 bg-primary animate-pulse ml-1 align-middle"></span>
+</div>
+</div>
+<!-- Visualization Tab -->
+<div class="hidden absolute inset-0 bg-surface-container-low p-6 flex flex-col" id="content-viz">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-on-surface">Live Data Structure</h3>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+</div>
+</div>
+<!-- Array/Linked List Visualizer -->
+<div class="flex-1 flex items-center justify-center overflow-x-auto gap-4">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 bg-surface border-2 border-outline flex items-center justify-center font-bold text-headline-md text-primary neo-brutalist-card">10</div>
+<span class="mt-2 text-xs font-label-sm text-outline">Index 0</span>
+</div>
+<div class="material-symbols-outlined text-outline">trending_flat</div>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 bg-surface border-2 border-outline flex items-center justify-center font-bold text-headline-md text-primary neo-brutalist-card">7</div>
+<span class="mt-2 text-xs font-label-sm text-outline">Index 1</span>
+</div>
+<div class="material-symbols-outlined text-outline">trending_flat</div>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 bg-primary-container border-2 border-primary flex items-center justify-center font-bold text-headline-md text-on-primary-container neo-brutalist-card" style="box-shadow: 4px 4px 0px 0px #745b00;">5</div>
+<span class="mt-2 text-xs font-label-sm text-primary font-bold">PIVOT</span>
+</div>
+</div>
+<div class="mt-auto bg-surface p-4 rounded border border-outline-variant">
+<p class="text-xs text-on-surface-variant font-bold uppercase mb-2">Legend</p>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 text-xs">
+<div class="w-3 h-3 bg-primary-container border border-primary"></div>
+<span>Pivot Element</span>
+</div>
+<div class="flex items-center gap-2 text-xs">
+<div class="w-3 h-3 bg-surface border border-outline"></div>
+<span>Unsorted</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Meta -->
+<div class="p-4 border-t border-outline-variant flex justify-between items-center text-xs text-on-surface-variant">
+<span>CPU Usage: 4%</span>
+<span>RAM: 124MB</span>
+<span class="text-primary font-bold">● CONNECTED</span>
+</div>
+</aside>
+</main>
+<!-- Mobile Bottom Nav Suppression: Following JSON "Shell Visibility" Rule -->
+<!-- Not rendered as this is a focused task/lab screen -->
+<script>
+        // Tab Switcher Logic
+        function switchTab(tab) {
+            const outTab = document.getElementById('tab-output');
+            const vizTab = document.getElementById('tab-viz');
+            const outContent = document.getElementById('content-output');
+            const vizContent = document.getElementById('content-viz');
+
+            if (tab === 'output') {
+                outTab.classList.add('border-primary', 'text-primary');
+                outTab.classList.remove('text-on-surface-variant');
+                vizTab.classList.remove('border-primary', 'text-primary');
+                vizTab.classList.add('text-on-surface-variant');
+                
+                outContent.classList.remove('hidden');
+                vizContent.classList.add('hidden');
+            } else {
+                vizTab.classList.add('border-primary', 'text-primary');
+                vizTab.classList.remove('text-on-surface-variant');
+                outTab.classList.remove('border-primary', 'text-primary');
+                outTab.classList.add('text-on-surface-variant');
+                
+                vizContent.classList.remove('hidden');
+                outContent.classList.add('hidden');
+            }
+        }
+
+        // Timer Logic
+        let seconds = 2700; // 45 minutes
+        const timerEl = document.getElementById('timer');
+        
+        setInterval(() => {
+            if (seconds > 0) {
+                seconds--;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+
+        // Interaction for "Run" button
+        document.querySelector('.bg-primary-container').addEventListener('click', function() {
+            const consoleBox = document.querySelector('#content-output .bg-on-surface');
+            const newLog = document.createElement('p');
+            newLog.className = 'text-primary-fixed-dim mt-1';
+            newLog.textContent = '> Re-compiling... Execution successful.';
+            consoleBox.appendChild(newLog);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+            
+            // Micro-interaction
+            this.classList.add('translate-y-1', 'shadow-none');
+            setTimeout(() => {
+                this.classList.remove('translate-y-1', 'shadow-none');
+            }, 100);
+        });
+    </script>
+</body></html>

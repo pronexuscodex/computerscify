@@ -1,0 +1,396 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ComputerSciFy Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Kodchasan:wght@600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#fef8f7",
+                    "outline": "#7f7663",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#6b5400",
+                    "primary": "#745b00",
+                    "outline-variant": "#d0c5af",
+                    "primary-container": "#f2c94c",
+                    "on-tertiary-fixed": "#101d22",
+                    "secondary-fixed": "#eddcff",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#dfd9d8",
+                    "on-tertiary-fixed-variant": "#3b494e",
+                    "inverse-primary": "#ebc246",
+                    "on-background": "#1d1b1b",
+                    "tertiary-container": "#c1d0d6",
+                    "surface-tint": "#745b00",
+                    "surface-container-low": "#f9f2f1",
+                    "on-secondary-fixed-variant": "#54397b",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#4b595e",
+                    "primary-fixed": "#ffe08b",
+                    "tertiary-fixed": "#d6e5eb",
+                    "on-secondary-container": "#5c4184",
+                    "primary-fixed-dim": "#ebc246",
+                    "inverse-surface": "#323030",
+                    "inverse-on-surface": "#f6efef",
+                    "on-primary-fixed": "#241a00",
+                    "surface-container-highest": "#e7e1e0",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#4d4635",
+                    "surface-container": "#f3ecec",
+                    "on-secondary-fixed": "#27084d",
+                    "tertiary": "#536166",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#d2b3ff",
+                    "surface-container-high": "#ede7e6",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9cf",
+                    "surface": "#fef8f7",
+                    "secondary": "#6c5195",
+                    "secondary-fixed-dim": "#d7baff",
+                    "on-primary-fixed-variant": "#584400",
+                    "surface-variant": "#e7e1e0",
+                    "background": "#fef8f7",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1d1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "max-content-width": "1280px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "baseline": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Kodchasan"],
+                    "display-lg-mobile": ["Kodchasan"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Kodchasan"],
+                    "body-lg": ["Inter"],
+                    "code-block": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(127, 118, 99, 1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(127, 118, 99, 1);
+        }
+        .neo-shadow-gold {
+            box-shadow: 4px 4px 0px 0px #745b00;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-gutter h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ComputerSciFy</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:scale-95 duration-150" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:scale-95 duration-150" href="#">Catalog</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:scale-95 duration-150" href="#">Community</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border border-outline px-10 py-1.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-64" placeholder="Search topics..." type="text">
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">settings</button>
+<div class="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">JD</div>
+</div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="h-screen w-64 fixed left-0 top-16 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline shadow-[4px_0_0_0_rgba(0,0,0,1)] dark:shadow-[4px_0_0_0_rgba(255,255,255,0.1)] py-4 space-y-2 z-40">
+<div class="px-6 py-4 border-b border-outline-variant mb-4">
+<h2 class="font-headline-md text-primary">Learning Portal</h2>
+<p class="text-label-sm text-outline">Current Focus: AI Ethics</p>
+</div>
+<nav class="flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-lg px-4 py-3 border-2 border-outline hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-sm">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-sm">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm">Profile</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4 pb-20">
+
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high rounded-lg" href="#"><span class="material-symbols-outlined">settings</span><span class="text-label-sm">Settings</span></a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high rounded-lg" href="#"><span class="material-symbols-outlined">help</span><span class="text-label-sm">Help</span></a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-64 p-6 md:p-margin-desktop min-h-screen">
+<div class="max-w-[1000px] mx-auto space-y-8">
+<!-- Hero: Resume Learning -->
+<section class="relative bg-surface-container-lowest border-2 border-outline p-8 rounded-lg overflow-hidden neo-shadow group transition-transform hover:-translate-y-1 focus:ring-2 focus:ring-primary">
+<div class="absolute top-0 right-0 w-32 h-full opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+
+</div>
+<div class="relative z-10 space-y-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-label-sm">CONTINUE LEARNING</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-background max-w-2xl">Discrete Mathematics: Graph Theory Foundations</h1>
+<div class="flex flex-col md:flex-row gap-6 md:items-center">
+<div class="flex-1">
+<div class="w-full bg-surface-container-high h-3 rounded-full border border-outline overflow-hidden">
+<div class="bg-primary-container h-full w-[65%] border-r border-outline"></div>
+</div>
+<p class="mt-2 text-label-sm text-on-surface-variant">65% Complete • Next: Dijkstra's Algorithm</p>
+</div>
+<button class="bg-[#F2C94C] text-on-primary-fixed border-2 border-outline px-8 py-3 font-bold text-headline-md rounded-lg neo-shadow-gold active:translate-y-1 active:translate-x-1 active:shadow-none transition-all flex items-center gap-2 animate-pulse focus:ring-2 focus:ring-primary">
+                            Resume <span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Stats & Activity -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Track Progress Card -->
+<div class="md:col-span-2 bg-surface border-2 border-outline p-6 rounded-lg neo-shadow flex flex-col gap-6 transition-transform hover:-translate-y-1 focus:ring-2 focus:ring-primary">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span> Track Progress
+                        </h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container border border-outline rounded-lg space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-bold text-primary">Computer Science</span>
+<span class="text-label-sm font-code-block">78%</span>
+</div>
+<div class="w-full h-2 bg-white rounded-full border border-outline-variant overflow-hidden">
+<div class="bg-primary h-full w-[78%]"></div>
+</div>
+<p class="text-[12px] text-outline italic">Advanced Algorithms &amp; Systems Design</p>
+</div>
+<div class="p-4 bg-surface-container border border-outline rounded-lg space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-bold text-secondary">Data Science</span>
+<span class="text-label-sm font-code-block">42%</span>
+</div>
+<div class="w-full h-2 bg-white rounded-full border border-outline-variant overflow-hidden">
+<div class="bg-secondary h-full w-[42%]"></div>
+</div>
+<p class="text-[12px] text-outline italic">Statistical Inference &amp; Neural Nets</p>
+</div>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="bg-surface-container-low border-2 border-outline p-6 rounded-lg neo-shadow flex flex-col transition-transform hover:-translate-y-1 focus:ring-2 focus:ring-primary">
+<h3 class="font-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">history</span> Activity
+                    </h3>
+<div class="space-y-4 flex-1 overflow-y-auto">
+<div class="flex gap-3 items-start group">
+<div class="mt-1 w-2 h-2 rounded-full bg-primary-container border border-outline"></div>
+<div>
+<p class="text-label-sm leading-tight group-hover:text-primary transition-colors cursor-pointer">Solved "Two Sum" in Python</p>
+<span class="text-[10px] text-outline uppercase font-bold">2 hours ago</span>
+</div>
+</div>
+<div class="flex gap-3 items-start group">
+<div class="mt-1 w-2 h-2 rounded-full bg-secondary-container border border-outline"></div>
+<div>
+<p class="text-label-sm leading-tight group-hover:text-secondary transition-colors cursor-pointer">Read "Attention is All You Need"</p>
+<span class="text-[10px] text-outline uppercase font-bold">Yesterday</span>
+</div>
+</div>
+<div class="flex gap-3 items-start group">
+<div class="mt-1 w-2 h-2 rounded-full bg-primary-container border border-outline"></div>
+<div>
+<p class="text-label-sm leading-tight group-hover:text-primary transition-colors cursor-pointer">Completed OS Quiz</p>
+<span class="text-[10px] text-outline uppercase font-bold">3 days ago</span>
+</div>
+</div>
+</div>
+<button class="mt-4 text-primary text-label-sm font-bold text-center w-full py-2 hover:bg-primary-container/10 transition-colors focus:ring-2 focus:ring-primary">View All</button>
+</div>
+</div>
+<!-- Asymmetric Grid: Bookmarks & Assessments -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Bookmarked Papers -->
+<section class="space-y-4">
+<h2 class="font-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">bookmarks</span> Bookmarked Papers
+                    </h2>
+<div class="space-y-3">
+<div class="bg-[#D8E7ED] border-2 border-outline p-4 rounded-lg flex justify-between items-start hover:translate-x-1 transition-transform cursor-pointer neo-shadow-sm group">
+<div class="max-w-[80%]">
+<h4 class="font-bold text-tertiary-fixed-dim leading-snug group-hover:underline">Deep Residual Learning for Image Recognition</h4>
+<p class="text-label-sm text-outline-variant mt-1">Kaiming He, et al. • 2015</p>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</div>
+<div class="bg-surface border border-outline p-4 rounded-lg flex justify-between items-start hover:translate-x-1 transition-transform cursor-pointer neo-shadow-sm group">
+<div class="max-w-[80%]">
+<h4 class="font-bold text-on-surface leading-snug group-hover:text-primary">An Image is Worth 16x16 Words: Transformers for Image Recognition</h4>
+<p class="text-label-sm text-outline mt-1">Dosovitskiy, et al. • 2020</p>
+</div>
+<span class="material-symbols-outlined text-outline">bookmark</span>
+</div>
+<div class="bg-surface border border-outline p-4 rounded-lg flex justify-between items-start hover:translate-x-1 transition-transform cursor-pointer neo-shadow-sm group">
+<div class="max-w-[80%]">
+<h4 class="font-bold text-on-surface leading-snug group-hover:text-primary">Mastering the Game of Go without Human Knowledge</h4>
+<p class="text-label-sm text-outline mt-1">Silver, et al. • 2017</p>
+</div>
+<span class="material-symbols-outlined text-outline">bookmark</span>
+</div>
+</div>
+</section>
+<!-- Upcoming Assessments -->
+<section class="space-y-4">
+<h2 class="font-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-error">event_upcoming</span> Upcoming Assessments
+                    </h2>
+<div class="bg-surface-container border-2 border-outline p-2 rounded-lg flex flex-col gap-2">
+<div class="bg-surface p-4 border border-outline rounded-lg flex items-center gap-4">
+<div class="bg-error-container text-on-error-container h-12 w-12 rounded flex flex-col items-center justify-center border border-outline">
+<span class="font-bold text-lg">24</span>
+<span class="text-[8px] uppercase">Oct</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Data Structures Final</h4>
+<p class="text-label-sm text-outline">10:00 AM • Online</p>
+</div>
+<button class="bg-surface-container-high border border-outline px-4 py-1.5 rounded font-bold text-label-sm hover:bg-outline-variant transition-colors focus:ring-2 focus:ring-primary">Details</button>
+</div>
+<div class="bg-surface p-4 border border-outline rounded-lg flex items-center gap-4">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed h-12 w-12 rounded flex flex-col items-center justify-center border border-outline">
+<span class="font-bold text-lg">28</span>
+<span class="text-[8px] uppercase">Oct</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">SQL Injection Workshop</h4>
+<p class="text-label-sm text-outline">02:30 PM • Lab 4</p>
+</div>
+<button class="bg-surface-container-high border border-outline px-4 py-1.5 rounded font-bold text-label-sm hover:bg-outline-variant transition-colors focus:ring-2 focus:ring-primary">Details</button>
+</div>
+<div class="bg-surface p-4 border border-outline rounded-lg flex items-center gap-4 opacity-60 grayscale">
+<div class="bg-surface-dim h-12 w-12 rounded flex flex-col items-center justify-center border border-outline">
+<span class="font-bold text-lg">02</span>
+<span class="text-[8px] uppercase">Nov</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Ethics in AI Webinar</h4>
+<p class="text-label-sm text-outline">11:00 AM • Zoom</p>
+</div>
+<button class="bg-surface-container-high border border-outline px-4 py-1.5 rounded font-bold text-label-sm focus:ring-2 focus:ring-primary" disabled="">Locked</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Custom Code-Style Card -->
+<section class="bg-surface-container-lowest border-2 border-outline rounded-lg overflow-hidden neo-shadow transition-transform hover:-translate-y-1 focus:ring-2 focus:ring-primary">
+<div class="bg-outline-variant px-4 py-2 flex items-center justify-between border-b border-outline">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<div class="w-3 h-3 rounded-full bg-[#F2C94C]"></div>
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+</div>
+<span class="font-code-block text-[12px] font-bold text-on-surface-variant uppercase tracking-widest">Algorithm Spotlight: Quicksort</span>
+<button class="text-on-surface-variant hover:text-primary flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                    </button>
+</div>
+<div class="p-6 font-code-block text-code-block bg-[#282C34] text-white">
+<pre><code><span class="text-[#c678dd]">def</span> <span class="text-[#61afef]">quicksort</span>(arr):
+    <span class="text-[#c678dd]">if</span> <span class="text-[#e06c75]">len</span>(arr) &lt;= <span class="text-[#d19a66]">1</span>:
+        <span class="text-[#c678dd]">return</span> arr
+    pivot = arr[<span class="text-[#e06c75]">len</span>(arr) // <span class="text-[#d19a66]">2</span>]
+    left = [x <span class="text-[#c678dd]">for</span> x <span class="text-[#c678dd]">in</span> arr <span class="text-[#c678dd]">if</span> x &lt; pivot]
+    middle = [x <span class="text-[#c678dd]">for</span> x <span class="text-[#c678dd]">in</span> arr <span class="text-[#c678dd]">if</span> x == pivot]
+    right = [x <span class="text-[#c678dd]">for</span> x <span class="text-[#c678dd]">in</span> arr <span class="text-[#c678dd]">if</span> x &gt; pivot]
+    <span class="text-[#c678dd]">return</span> quicksort(left) + middle + quicksort(right)</code></pre>
+</div>
+<div class="p-4 border-t border-outline flex justify-between items-center bg-white">
+<p class="text-label-sm italic text-outline">Complexity: O(n log n) average</p>
+<a class="text-primary font-bold hover:underline" href="#">Explore Sorting Algorithms →</a>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-[0_-4px_0_0_rgba(0,0,0,0.05)] lg:hidden">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-sm-mobile text-[10px]">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-[10px]">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm-mobile text-[10px]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm-mobile text-[10px]">Account</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for quicksort snippet
+        const copyBtn = document.querySelector('button span.material-symbols-outlined:first-child');
+        if (copyBtn) {
+            copyBtn.parentElement.addEventListener('click', () => {
+                const originalText = copyBtn.parentElement.innerHTML;
+                copyBtn.parentElement.innerHTML = `<span class="material-symbols-outlined text-[14px]">done</span> Copied!`;
+                setTimeout(() => {
+                    copyBtn.parentElement.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+
+
+
+
+</body></html>

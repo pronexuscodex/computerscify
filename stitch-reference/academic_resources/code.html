@@ -1,0 +1,393 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ComputerSciFy | Library &amp; Research</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Kodchasan:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#fef8f7",
+                    "outline": "#7f7663",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#6b5400",
+                    "primary": "#745b00",
+                    "outline-variant": "#d0c5af",
+                    "primary-container": "#f2c94c",
+                    "on-tertiary-fixed": "#101d22",
+                    "secondary-fixed": "#eddcff",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#dfd9d8",
+                    "on-tertiary-fixed-variant": "#3b494e",
+                    "inverse-primary": "#ebc246",
+                    "on-background": "#1d1b1b",
+                    "tertiary-container": "#c1d0d6",
+                    "surface-tint": "#745b00",
+                    "surface-container-low": "#f9f2f1",
+                    "on-secondary-fixed-variant": "#54397b",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#4b595e",
+                    "primary-fixed": "#ffe08b",
+                    "tertiary-fixed": "#d6e5eb",
+                    "on-secondary-container": "#5c4184",
+                    "primary-fixed-dim": "#ebc246",
+                    "inverse-surface": "#323030",
+                    "inverse-on-surface": "#f6efef",
+                    "on-primary-fixed": "#241a00",
+                    "surface-container-highest": "#e7e1e0",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#4d4635",
+                    "surface-container": "#f3ecec",
+                    "on-secondary-fixed": "#27084d",
+                    "tertiary": "#536166",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#d2b3ff",
+                    "surface-container-high": "#ede7e6",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9cf",
+                    "surface": "#fef8f7",
+                    "secondary": "#6c5195",
+                    "secondary-fixed-dim": "#d7baff",
+                    "on-primary-fixed-variant": "#584400",
+                    "surface-variant": "#e7e1e0",
+                    "background": "#fef8f7",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1d1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "max-content-width": "1280px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "baseline": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Kodchasan"],
+                    "display-lg-mobile": ["Kodchasan"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Kodchasan"],
+                    "body-lg": ["Inter"],
+                    "code-block": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-brutalist-card {
+            border: 1px solid #7f7663;
+            box-shadow: 4px 4px 0px 0px #7f7663;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .neo-brutalist-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #7f7663;
+        }
+        .glass-header {
+            background: rgba(254, 248, 247, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-background min-h-screen">
+<!-- TopNavBar (Fixed) -->
+<header class="bg-surface sticky top-0 z-50 w-full border-b border-outline-variant glass-header">
+<div class="flex justify-between items-center px-gutter h-16 w-full max-w-[1440px] mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Learn</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md" href="#">Library</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Explore</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex bg-surface-container-high rounded-full px-4 py-1.5 items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[20px] text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-48" placeholder="Search papers..." type="text">
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full cursor-pointer">notifications</span>
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full cursor-pointer">settings</span>
+</div>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-bold border-2 border-primary active:scale-95 duration-150 hidden md:block">Sign Up</button>
+</div>
+</div>
+</header>
+<!-- Main Container -->
+<div class="flex max-w-[1440px] mx-auto">
+<!-- SideNavBar -->
+<aside class="h-[calc(100vh-64px)] w-64 sticky top-16 hidden lg:flex flex-col bg-surface-container-low border-r border-outline-variant py-4 space-y-2">
+<div class="px-6 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center border-2 border-outline">
+<span class="material-symbols-outlined text-on-primary-container">person</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface font-bold">Alex Chen</p>
+<p class="text-[11px] text-outline uppercase tracking-wider">Research Fellow</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-body-md">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md">Data Science</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 border-2 border-outline transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">library_books</span>
+<span class="font-body-md font-bold">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md">Profile</span>
+</a>
+</nav>
+<div class="px-4 pt-4 border-t border-outline-variant mt-auto">
+
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:text-primary" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:text-primary" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="text-label-sm">Help</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-grow p-gutter md:p-12 bg-surface-bright min-h-[calc(100vh-64px)]">
+<!-- Page Header -->
+<div class="mb-10 max-w-[max-content-width]">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Research Library</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">A curated collection of seminal papers and textbooks defining the future of computation, machine intelligence, and structural logic.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-lg font-bold text-on-surface-variant hover:border-primary transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-lg font-bold text-on-surface-variant hover:border-primary transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">sort</span>
+                            Sort
+                        </button>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-2 mt-8">
+<span class="px-4 py-1.5 bg-primary text-on-primary rounded-full font-label-sm flex items-center gap-1 border-2 border-primary">All Resources</span>
+<span class="px-4 py-1.5 bg-surface border-2 border-outline-variant text-on-surface-variant rounded-full font-label-sm hover:border-primary cursor-pointer transition-colors">Neural Networks</span>
+<span class="px-4 py-1.5 bg-surface border-2 border-outline-variant text-on-surface-variant rounded-full font-label-sm hover:border-primary cursor-pointer transition-colors">Distributed Systems</span>
+<span class="px-4 py-1.5 bg-surface border-2 border-outline-variant text-on-surface-variant rounded-full font-label-sm hover:border-primary cursor-pointer transition-colors">Algorithms</span>
+<span class="px-4 py-1.5 bg-surface border-2 border-outline-variant text-on-surface-variant rounded-full font-label-sm hover:border-primary cursor-pointer transition-colors">Cybersecurity</span>
+<span class="px-4 py-1.5 bg-surface border-2 border-outline-variant text-on-surface-variant rounded-full font-label-sm hover:border-primary cursor-pointer transition-colors">2020 - 2024</span>
+</div>
+</div>
+<!-- Bento/Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-[max-content-width]">
+<!-- Card 1 (Main Feature) -->
+<article class="md:col-span-2 neo-brutalist-card bg-surface overflow-hidden group flex flex-col md:flex-row h-full">
+<div class="md:w-1/2 relative h-64 md:h-full bg-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A highly detailed close-up of a high-tech hardcover book cover with the title 'Architectures of Intelligence' in a sleek, neo-brutalist typography. The cover is a deep navy blue with gold foil circuit board patterns embossed on the surface. The lighting is dramatic and professional, emphasizing the texture of the paper and the reflective gold elements. This image is styled as a premium educational product photography with a focus blue color palette influence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQZ7-ZM9K0xJVAY7JxS96OQyIoIh3ci2GsaiDd_ocZcORG4US15aC7v5L_rXGl-PboQW-sunjsc7ByDC9-18eYkMa5pdYWfjFvc7UPTSySZ-b6agG2VCGjUWvx91EJMrmnMZ9cprhJoJmjl6_kXFYpvhm8LxQst9wqVQMCcmcbfsjOfG78TglB_UzirAOhhaW7Lr3Aga8Ip8oXXSRv1wxatuX6Bq9FvLYcxgP0JRji05F0Qpom7hRHgm1caCHCWJKYM3jppZ-OCK_J">
+</div>
+<div class="md:w-1/2 p-6 flex flex-col justify-between border-t md:border-t-0 md:border-l border-outline">
+<div>
+<div class="flex gap-2 mb-4">
+<span class="bg-[#D8E7ED] text-[#2C4A57] px-3 py-1 rounded-md font-label-sm border border-[#A8BDC7]">Research Paper</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-md font-label-sm border border-outline-variant">2023</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Large Language Models: A Unified Survey and Taxonomy</h3>
+<p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">A comprehensive review of modern transformer architectures, pre-training objectives, and the emergence of reasoning capabilities in massive neural networks.</p>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-outline">edit</span>
+<span class="text-label-sm text-outline font-bold">Dr. Elena Rodriguez, et al.</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded font-bold border-2 border-primary active:scale-95 duration-100 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                                Download PDF
+                            </button>
+<button class="bg-transparent text-primary px-6 py-2.5 rounded font-bold border-2 border-primary active:scale-95 duration-100">Details</button>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="neo-brutalist-card bg-surface overflow-hidden group">
+<div class="h-48 bg-tertiary-container relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-tertiary/20 to-tertiary-fixed-dim"></div>
+<div class="absolute bottom-4 left-4 right-4 bg-surface/90 border border-outline p-4 rounded backdrop-blur">
+<h4 class="font-bold text-on-surface truncate">Distributed Hash Tables</h4>
+</div>
+</div>
+<div class="p-6">
+<div class="flex gap-2 mb-4">
+<span class="bg-[#D8E7ED] text-[#2C4A57] px-3 py-1 rounded-md font-label-sm border border-[#A8BDC7]">Textbook</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-md font-label-sm border border-outline-variant">2018</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Modern Systems Design</h3>
+<p class="text-on-surface-variant text-body-md mb-6 line-clamp-2">The fundamental guide to building scalable, fault-tolerant infrastructure in the cloud era.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-4">
+<span class="text-label-sm text-outline">Author: Mark S. Miller</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">bookmark</span>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="neo-brutalist-card bg-surface overflow-hidden group">
+<div class="h-48 bg-primary-container/30 relative">
+<img class="w-full h-full object-cover" data-alt="A minimalist, academic-style digital illustration of a stylized brain made of glowing fiber-optic cables and glowing nodes on a clean, off-white background. The style is restrained neo-brutalist, using thin black outlines and a focus blue color palette for the highlights. The overall mood is intellectual, clean, and futuristic yet grounded in scientific research." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZx96OPoWGvnDpLyOLVNjokDOscgm2J2ebrqeAht-2cbSW9Wr7k16jANGcyApcctW2ppXk3DweqfM6lSOqQPqgbemH5plok26hKEMC5KXzW7_Vr275F-8a-LUOxYChyWnJrrRN1PBSJweXbe7sEYumm3dMxvwF5tv59XESRGAKoCiiA4UuYbGaX36ZzZTB5fc1yhacKxLGkQyKJKkOSIi8PwFMzgLiRQpEemomHxAkJY5L1XfdNw0ZfP1opAAFu4BmKzojX208ugxE">
+</div>
+<div class="p-6">
+<div class="flex gap-2 mb-4">
+<span class="bg-[#D8E7ED] text-[#2C4A57] px-3 py-1 rounded-md font-label-sm border border-[#A8BDC7]">Paper</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-md font-label-sm border border-outline-variant">2015</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Neural Turing Machines</h3>
+<p class="text-on-surface-variant text-body-md mb-6 line-clamp-2">Exploring the synthesis of neural networks with external memory components for complex reasoning.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-4">
+<span class="text-label-sm text-outline">Google DeepMind</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">open_in_new</span>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="neo-brutalist-card bg-surface overflow-hidden group">
+<div class="p-6 flex flex-col h-full border-t-4 border-primary">
+<div class="flex gap-2 mb-4">
+<span class="bg-[#D8E7ED] text-[#2C4A57] px-3 py-1 rounded-md font-label-sm border border-[#A8BDC7]">Pre-print</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-md font-label-sm border border-outline-variant">2024</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Quantum Supremacy in Cryptography</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">A deep dive into post-quantum algorithms and the impending obsolescence of standard RSA encryption protocols.</p>
+<div class="flex items-center gap-4 mt-4 border-t border-outline-variant pt-4">
+<div class="flex-grow">
+<p class="text-[11px] text-outline uppercase font-bold">Cited By</p>
+<p class="font-headline-md text-primary">1,402</p>
+</div>
+<button class="p-2 border border-outline hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 5 (Horizontal List Style Item) -->
+<article class="neo-brutalist-card bg-surface overflow-hidden group xl:col-span-2">
+<div class="p-6 flex flex-col md:flex-row gap-6">
+<div class="w-16 h-16 bg-secondary-container rounded-xl flex-shrink-0 flex items-center justify-center border-2 border-outline">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">terminal</span>
+</div>
+<div class="flex-grow">
+<div class="flex flex-wrap items-center gap-3 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Structure and Interpretation of Computer Programs</h3>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[11px] font-bold border border-outline-variant uppercase">Classic Textbook</span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-4">The legendary "Wizard Book" from MIT. A masterpiece on abstraction, programming paradigms, and the foundational elements of computer science logic.</p>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-1 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                    Published: 1985 (2nd Ed: 1996)
+                                </div>
+<div class="flex items-center gap-1 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+                                    657 Pages
+                                </div>
+</div>
+</div>
+<div class="md:border-l border-outline-variant md:pl-6 flex flex-col justify-center gap-2">
+<button class="w-full bg-surface-container-high hover:bg-outline-variant text-on-surface-variant px-4 py-2 rounded font-bold text-label-sm transition-colors border border-outline-variant">View Online</button>
+<button class="w-full bg-primary-container text-on-primary-container px-4 py-2 rounded font-bold text-label-sm transition-colors border border-outline">Add to Library</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Load More -->
+<div class="mt-16 flex flex-col items-center gap-4">
+<button class="px-8 py-3 bg-surface border-2 border-outline hover:bg-surface-container-low transition-all active:translate-y-1 font-bold text-on-surface-variant flex items-center gap-3">
+<span class="material-symbols-outlined">expand_more</span>
+                    Load More Resources
+                </button>
+<p class="text-label-sm text-outline">Showing 6 of 1,248 indexed papers</p>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant lg:hidden shadow-[0_-4px_0_0_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-[10px] font-semibold mt-1">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-semibold mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="text-[10px] font-bold mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-semibold mt-1">Account</span>
+</a>
+</nav>
+<!-- Contextual FAB (Only for main landing library) -->
+<div class="fixed right-6 bottom-20 lg:bottom-10 z-40">
+<button class="w-14 h-14 bg-primary-container text-on-primary-container rounded-2xl flex items-center justify-center shadow-[4px_4px_0_0_#745b00] border-2 border-primary hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#745b00] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<script>
+        // Simple search interactivity
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('border-primary');
+            searchInput.parentElement.classList.remove('border-outline-variant');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('border-primary');
+            searchInput.parentElement.classList.add('border-outline-variant');
+        });
+
+        // Theme switching (optional micro-interaction)
+        // Default is light as requested.
+    </script>
+
+
+</body></html>

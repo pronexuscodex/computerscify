@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Programming Practice Arena | ComputerSciFy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Kodchasan:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#101d22",
+                    "background": "#fef8f7",
+                    "surface-container-low": "#f9f2f1",
+                    "on-secondary-container": "#5c4184",
+                    "surface-container-highest": "#e7e1e0",
+                    "surface-variant": "#e7e1e0",
+                    "secondary-fixed": "#eddcff",
+                    "secondary-container": "#d2b3ff",
+                    "inverse-primary": "#ebc246",
+                    "primary": "#745b00",
+                    "primary-fixed-dim": "#ebc246",
+                    "surface-dim": "#dfd9d8",
+                    "surface-container-high": "#ede7e6",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#fef8f7",
+                    "outline-variant": "#d0c5af",
+                    "surface-container": "#f3ecec",
+                    "tertiary-container": "#c1d0d6",
+                    "on-primary-container": "#6b5400",
+                    "surface": "#fef8f7",
+                    "outline": "#7f7663",
+                    "tertiary": "#536166",
+                    "on-surface": "#1d1b1b",
+                    "surface-tint": "#745b00",
+                    "inverse-on-surface": "#f6efef",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#f2c94c",
+                    "inverse-surface": "#323030",
+                    "on-surface-variant": "#4d4635",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9cf",
+                    "secondary-fixed-dim": "#d7baff",
+                    "tertiary-fixed": "#d6e5eb",
+                    "on-secondary-fixed": "#27084d",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#4b595e",
+                    "on-tertiary-fixed-variant": "#3b494e",
+                    "on-primary-fixed": "#241a00",
+                    "on-secondary-fixed-variant": "#54397b",
+                    "on-background": "#1d1b1b",
+                    "on-primary-fixed-variant": "#584400",
+                    "primary-fixed": "#ffe08b",
+                    "secondary": "#6c5195"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "max-content-width": "1280px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "baseline": "4px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Kodchasan"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Kodchasan"],
+                    "display-lg-mobile": ["Kodchasan"],
+                    "body-md": ["Inter"],
+                    "code-block": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(242, 201, 76, 0.3);
+        }
+        body {
+            background-color: #fef8f7;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3ecec;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7f7663;
+            border-radius: 0;
+        }
+        .code-editor-bg {
+            background-image: radial-gradient(#d0c5af 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar Navigation (SideNavBar Anchor) -->
+<aside class="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-low border-r border-outline-variant shadow-[4px_0_0_0_rgba(0,0,0,1)] z-50 py-4 space-y-2">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Learning Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline duration-100 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 border-2 border-outline shadow-sm" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm text-label-sm">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-sm text-label-sm">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<div class="p-4 bg-tertiary-container rounded-lg border-2 border-outline neo-shadow-sm mb-4">
+<p class="font-label-sm text-label-sm font-bold mb-2">Pro Access</p>
+<button class="w-full bg-primary text-on-primary py-2 text-label-sm font-bold rounded border border-on-primary active:scale-95 transition-transform">Upgrade to Pro</button>
+</div>
+<div class="space-y-1 pb-4">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Help</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar Anchor -->
+<header class="w-full sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter h-16">
+<div class="flex items-center gap-4">
+<span class="lg:hidden material-symbols-outlined text-primary cursor-pointer">menu</span>
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Practice Arena</h2>
+</div>
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-64" placeholder="Search challenges..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<button class="font-label-sm text-label-sm font-bold text-primary hover:underline">Log In</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full border-2 border-outline font-label-sm text-label-sm font-bold neo-shadow-sm active:translate-y-0.5 transition-all">Sign Up</button>
+</div>
+</header>
+<!-- Arena Grid Layout -->
+<div class="flex-1 grid grid-cols-12 gap-0">
+<!-- Left Panel: Challenge List -->
+<section class="col-span-12 xl:col-span-3 border-r border-outline-variant bg-surface-container-lowest flex flex-col max-h-[calc(100vh-64px)] overflow-y-auto">
+<div class="p-6 border-b-4 border-secondary">
+<h3 class="font-headline-md text-headline-md font-bold mb-2">Daily Challenges</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Level up your logic</p>
+</div>
+<div class="p-4 space-y-4">
+<!-- Category: Algorithms -->
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-outline mb-3">Algorithms</p>
+<div class="space-y-2">
+<div class="p-4 bg-secondary-container border-2 border-outline neo-shadow-sm cursor-pointer active:scale-[0.98] transition-all">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-bold text-on-secondary-container">Balanced Parentheses</span>
+<span class="px-2 py-0.5 bg-on-secondary-container text-white text-[10px] rounded uppercase font-bold">Easy</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-[16px]">groups</span>
+<span class="text-[12px] font-label-sm">1,240 Participants</span>
+</div>
+</div>
+<div class="p-4 bg-surface border-2 border-outline-variant hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-bold">QuickSort Implementation</span>
+<span class="px-2 py-0.5 bg-primary text-white text-[10px] rounded uppercase font-bold">Medium</span>
+</div>
+<p class="text-[12px] font-label-sm text-on-surface-variant mt-2">Time Complexity: O(n log n)</p>
+</div>
+</div>
+</div>
+<!-- Category: Data Structures -->
+<div class="pt-4">
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-outline mb-3">Data Structures</p>
+<div class="space-y-2">
+<div class="p-4 bg-surface border-2 border-outline-variant hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-bold">Invert Binary Tree</span>
+<span class="px-2 py-0.5 bg-error text-white text-[10px] rounded uppercase font-bold">Hard</span>
+</div>
+<p class="text-[12px] font-label-sm text-on-surface-variant mt-2">Recursive approach</p>
+</div>
+<div class="p-4 bg-surface border-2 border-outline-variant hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-bold">LRU Cache Design</span>
+<span class="px-2 py-0.5 bg-primary text-white text-[10px] rounded uppercase font-bold">Medium</span>
+</div>
+<p class="text-[12px] font-label-sm text-on-surface-variant mt-2">HashMaps & LinkedLists</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Center Panel: Code Editor -->
+<section class="col-span-12 xl:col-span-6 bg-surface flex flex-col max-h-[calc(100vh-64px)]">
+<!-- Challenge Header -->
+<div class="p-6 border-b border-outline-variant bg-white">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<h4 class="font-headline-md text-headline-md font-bold">Balanced Parentheses</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                        Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+                    </p>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container-low border border-outline-variant rounded">
+<p class="font-label-sm text-label-sm uppercase opacity-50 mb-1">Example Input</p>
+<code class="font-code-block text-code-block text-primary">"()[]{}"</code>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant rounded">
+<p class="font-label-sm text-label-sm uppercase opacity-50 mb-1">Expected Output</p>
+<code class="font-code-block text-code-block text-secondary">true</code>
+</div>
+</div>
+</div>
+<!-- Actual Editor Shell -->
+<div class="flex-1 relative code-editor-bg overflow-hidden flex flex-col">
+<div class="flex items-center justify-between px-4 py-2 bg-on-surface text-surface text-[12px] font-code-block">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-error"></span> solution.js</span>
+<span class="opacity-50">JavaScript (Node.js)</span>
+</div>
+<button class="flex items-center gap-1 hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">content_copy</span> Copy
+                        </button>
+</div>
+<div class="flex-1 p-6 font-code-block text-code-block leading-relaxed bg-on-surface text-surface-variant overflow-y-auto">
+<div class="flex gap-4">
+<div class="text-outline text-right select-none opacity-40 pr-2 border-r border-outline-variant w-8">
+                                1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12
+                            </div>
+<div class="flex-1">
+<span class="text-secondary-container">function</span> <span class="text-primary-fixed-dim">isValid</span>(s) {<br/>
+                                  <span class="text-secondary-container">const</span> stack = [];<br/>
+                                  <span class="text-secondary-container">const</span> map = {<br/>
+                                    <span class="text-primary-fixed-dim">'('</span>: <span class="text-primary-fixed-dim">')'</span>,<br/>
+                                    <span class="text-primary-fixed-dim">'['</span>: <span class="text-primary-fixed-dim">']'</span>,<br/>
+                                    <span class="text-primary-fixed-dim">'{'</span>: <span class="text-primary-fixed-dim">'}'</span><br/>
+                                  };<br/><br/>
+                                  <span class="text-secondary-container">for</span> (<span class="text-secondary-container">let</span> char <span class="text-secondary-container">of</span> s) {<br/>
+                                    <span class="text-outline-variant">// TODO: Implement logic here</span><br/>
+                                  }<br/>
+                                  <span class="text-secondary-container">return</span> stack.length === <span class="text-primary-fixed-dim">0</span>;<br/>
+                                }
+                            </div>
+</div>
+</div>
+<!-- Editor Footer Actions -->
+<div class="p-6 border-t-2 border-outline bg-surface-container-high flex justify-end gap-4">
+<button class="px-6 py-3 border-2 border-outline font-label-sm text-label-sm font-bold bg-surface hover:bg-surface-container-highest transition-all neo-shadow-sm active:translate-y-0.5">
+                            Run Tests
+                        </button>
+<button class="px-8 py-3 border-2 border-outline font-label-sm text-label-sm font-bold bg-primary-container text-on-primary-container neo-shadow active:translate-y-1 transition-all">
+                            Submit Solution
+                        </button>
+</div>
+</div>
+</section>
+<!-- Right Panel: Leaderboard & Stats -->
+<section class="col-span-12 xl:col-span-3 border-l border-outline-variant bg-surface-container-low p-6 flex flex-col gap-6 max-h-[calc(100vh-64px)] overflow-y-auto">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                        Leaderboard
+                    </h3>
+<div class="space-y-3">
+<!-- Top 1 -->
+<div class="flex items-center gap-3 p-3 bg-white border-2 border-outline neo-shadow-sm">
+<span class="font-headline-md text-primary font-bold w-6">1</span>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young computer science student with a focused expression, high-end photography with soft studio lighting against a clean, architectural light-mode background. The aesthetic is professional, academic, and minimalist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvdRJNz4t9ZNYnL_Mna2CDvCZZzfXjkzcHZzqR4OLVpMJLWd_WRmltbFY5IvuYmfH9WvCscc1vkHXpQ8a8woG2hHEGORGYAW5mkyHwuy4j2_RYlkeippmkEGUAjmE65usb1P6bAnjhfUf5ugJ19G1CK96xJMFFR_3WCYbOeQ2RVgkooK4fAgoqz1fdUT6zQdTh6bxIoJU8lS1s0aB2L7c6A9kZ_4sXT2IlAURj8Gu4LGeQtFcdRGTLXQiNaJA5AK1nu99t_lOQiZgs"/>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm font-bold">Alex Chen</p>
+<p class="text-[10px] font-label-sm opacity-60">Level 42 Architect</p>
+</div>
+<span class="font-code-block text-[12px] font-bold text-primary">2,450 XP</span>
+</div>
+<!-- Top 2 -->
+<div class="flex items-center gap-3 p-3 bg-white border-2 border-outline-variant">
+<span class="font-headline-md text-outline font-bold w-6">2</span>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female software engineer, minimalist styling, bright daylighting, neutral professional tones. The image emphasizes intellectual mastery and a modern tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBakS1qRQzm9tHJIPsBnf8PpIGv4d92bAkS-v0E1_fjy1euX0GQNnjDYCofzfovGhTrOTeooTAYCED60YUX6yKn0dtAa_jX2P7t94-cwQContLhhbFf0u6kK08jNNyqvHyH78HpMbIvZRCfwYqRFrgsQlYN-3_pPCumQQCWPgKe0OGGiUGKFVU1OwP4kHzXp-18qb9Bd9QlYJKnD_ImLl73JXIDPnlZL46C-mpCpkZb2L48duSVAPYyb4TxqpKWAIfoTwhAyUyO3deY"/>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm font-bold">Sofia V.</p>
+<p class="text-[10px] font-label-sm opacity-60">Algorithm Master</p>
+</div>
+<span class="font-code-block text-[12px] font-bold">2,120 XP</span>
+</div>
+<!-- Top 3 -->
+<div class="flex items-center gap-3 p-3 bg-white border-2 border-outline-variant">
+<span class="font-headline-md text-outline font-bold w-6">3</span>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A profile photo of a diverse young professional male, wearing minimalist spectacles, with a slight confident smile. Lighting is soft and high-key, reflecting a premium learning platform identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKF-LMvGouRqg3PRMsVD9JwovmvYa_OUhYgsKF--umGzf7nwiRAmWeHvfBiCfqwsHahpY1Xop5kw2AX8I7WE2fN-ho3YmYNkmsOlRSTIk45NTqO3EMbQPt82cquOV25G3BgcwqqV5fPNsqEQGOpDxMm6tQh9ewjGnYyDX-eUC-ryzJdzF96-wfGeeBF-xKtNJej8g5i38PpoMuJ0xzKdrjbbdt6HmKLrJhUeLR90woX5DkdxfsrKQRloHhjdTZcKJS3c2CHEw5UaP8"/>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm font-bold">Jordan Lee</p>
+<p class="text-[10px] font-label-sm opacity-60">Logic Ninja</p>
+</div>
+<span class="font-code-block text-[12px] font-bold">1,980 XP</span>
+</div>
+</div>
+</div>
+<div class="mt-4 p-5 bg-secondary-container border-2 border-outline rounded-xl neo-shadow-sm">
+<h4 class="font-label-sm text-label-sm font-bold text-on-secondary-container uppercase tracking-widest mb-4">Your Progress</h4>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[12px] font-bold mb-1">
+<span>Weekly Goal</span>
+<span>4 / 7</span>
+</div>
+<div class="h-2 w-full bg-white/40 rounded-full overflow-hidden">
+<div class="h-full bg-on-secondary-container w-[60%]"></div>
+</div>
+</div>
+<div class="flex justify-between items-center bg-white/20 p-2 rounded">
+<span class="text-[12px]">Current Streak</span>
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                                12 Days
+                            </span>
+</div>
+</div>
+</div>
+<!-- Achievement Card -->
+<div class="mt-auto border-2 border-dashed border-outline-variant p-4 text-center group cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[48px] text-tertiary-fixed-dim mb-2 group-hover:scale-110 transition-transform">military_tech</span>
+<p class="font-label-sm text-label-sm font-bold">Unlock 'Regex Wizard'</p>
+<p class="text-[11px] opacity-60">Complete 3 more String challenges</p>
+</div>
+</section>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant shadow-[0_-4px_0_0_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm text-[10px]">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-label-sm text-[10px]">Arena</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm text-[10px]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-[10px]">Account</span>
+</a>
+</nav>
+</main>
+<script>
+        // Micro-interaction for code lines
+        document.querySelectorAll('.flex-1 code').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.classList.add('bg-on-surface-variant/20');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('bg-on-surface-variant/20');
+            });
+        });
+
+        // Simple button active state simulation
+        const submitBtn = document.querySelector('button.bg-primary-container');
+        if(submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Running...';
+                setTimeout(() => {
+                    submitBtn.innerHTML = 'Submit Solution';
+                    alert('All test cases passed! +50 XP');
+                }, 1500);
+            });
+        }
+    </script>
+</body></html>

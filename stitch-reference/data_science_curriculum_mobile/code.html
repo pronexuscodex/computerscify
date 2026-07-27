@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>ComputerSciFy | Data Science Curriculum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-fixed-variant": "#3b494e",
+                "on-background": "#1d1b1b",
+                "on-surface-variant": "#4d4635",
+                "primary-fixed-dim": "#ebc246",
+                "on-secondary-fixed-variant": "#54397b",
+                "primary-fixed": "#ffe08b",
+                "on-primary-container": "#6b5400",
+                "error": "#ba1a1a",
+                "on-primary": "#ffffff",
+                "inverse-primary": "#ebc246",
+                "on-secondary-fixed": "#27084d",
+                "surface-variant": "#e7e1e0",
+                "secondary-fixed": "#eddcff",
+                "tertiary-fixed-dim": "#bac9cf",
+                "surface-container-high": "#ede7e6",
+                "primary": "#745b00",
+                "on-tertiary-fixed": "#101d22",
+                "on-tertiary-container": "#4b595e",
+                "on-primary-fixed-variant": "#584400",
+                "surface-bright": "#fef8f7",
+                "secondary-fixed-dim": "#d7baff",
+                "outline-variant": "#d0c5af",
+                "surface-tint": "#745b00",
+                "surface-container": "#f3ecec",
+                "surface-dim": "#dfd9d8",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary-container": "#5c4184",
+                "surface": "#fef8f7",
+                "outline": "#7f7663",
+                "error-container": "#ffdad6",
+                "on-error": "#ffffff",
+                "secondary": "#6c5195",
+                "inverse-surface": "#323030",
+                "tertiary": "#536166",
+                "on-surface": "#1d1b1b",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed": "#d6e5eb",
+                "primary-container": "#f2c94c",
+                "background": "#fef8f7",
+                "on-error-container": "#93000a",
+                "tertiary-container": "#c1d0d6",
+                "surface-container-highest": "#e7e1e0",
+                "secondary-container": "#d2b3ff",
+                "on-primary-fixed": "#241a00",
+                "surface-container-low": "#f9f2f1",
+                "on-tertiary": "#ffffff",
+                "inverse-on-surface": "#f6efef"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-desktop": "48px",
+                "gutter": "24px",
+                "margin-mobile": "16px",
+                "baseline": "4px",
+                "max-content-width": "1280px"
+            },
+            "fontFamily": {
+                "headline-md": ["Kodchasan"],
+                "body-lg": ["Inter"],
+                "display-lg-mobile": ["Kodchasan"],
+                "code-block": ["JetBrains Mono"],
+                "label-sm": ["Inter"],
+                "display-lg": ["Kodchasan"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(29, 27, 27, 1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(29, 27, 27, 1);
+        }
+        .neo-border {
+            border: 2px solid #1d1b1b;
+        }
+        .active-pill {
+            box-shadow: inset 0 0 0 2px #745b00;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen pb-24">
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-4 h-16 w-full">
+<div class="font-headline-md text-headline-md font-bold text-primary">ComputerSciFy</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant active:scale-95 duration-150">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-on-surface-variant active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a student, light mode aesthetic with soft shadows, high-key lighting, focused and intelligent expression, minimalist academic background, consistent with the neo-brutalist intellectual tone of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmzBnnU5DV5-vLcfQZ2FgfBo9W3InRnrwtGDERdFgK8vvnC_p2_hI4YI_RgqxjpVOPTRK4cJqx9bSg68is1VhubZQDR-whpPSF4ePvyPX8V8c-hQ6RlyWwRtQnpyYo8iFhBr7cyFcv4VZajUU9Fala8pgLU2DyDR5vUoYTLOW-JE0um4aDa7vZ4qp9eAI-lkWcwTmnwnEX1xElTvXFSRgiriUyUK1ujrqqujCq-lwH-qrL74ngKjxeHC1iLwDSgkMq4rRv9Gg-8rTy"/>
+</div>
+</div>
+</header>
+<main class="px-4 py-6 max-w-md mx-auto">
+<!-- Hero Context -->
+<section class="mb-8">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-background mb-2">Data Science</h1>
+<p class="text-on-surface-variant font-body-md">Advanced specialization track. Master the mathematical rigor and engineering pipelines of modern AI.</p>
+</section>
+<!-- Foundation Section -->
+<div class="mb-10">
+<div class="flex items-center gap-2 mb-6">
+<div class="h-[2px] flex-grow bg-outline-variant"></div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant px-2">Foundation Year</span>
+<div class="h-[2px] flex-grow bg-outline-variant"></div>
+</div>
+<!-- Mathematical Foundations Module Card -->
+<div class="bg-surface-container-low neo-border neo-shadow mb-6 overflow-hidden">
+<div class="h-40 relative">
+<img class="w-full h-full object-cover" data-alt="Abstract geometric visualization of linear algebra and calculus concepts, featuring grid lines, vector arrows, and 3D plane intersections. Styled in a clean light-mode academic aesthetic with a primary palette of gold and deep ink, emphasizing mathematical precision and intellectual focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8DSnLu8eI5zStqAkt5zqxFsqDNCfmbezOp72QdrQ3Rw1iMxEByIf3fLnuuBraxjqSz_XF64_2iMehi0-M0-KcE_ukx8TpBBOlaRH3nNaIQmcEFfugmwOYTayTSrb-BKVuZaEUoCy9ZwMocTeYg1tM9VbpCnXB2XHxCVC6VC-J4iHyDv86OOxrNeuf95NYcCMxkFemVyt7hnhd-tPDfir236ppnDC4BOGSuphXxL1tWCXV9BKfheEj0OvLFxX7KVbIIrAZwPw8jhNZ"/>
+<div class="absolute top-3 left-3 bg-primary-container text-on-primary-container px-3 py-1 font-label-sm text-label-sm neo-border neo-shadow-sm">
+                        REQUIRED
+                    </div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-headline-md mb-2">Mathematical Foundations</h3>
+<p class="text-on-surface-variant text-sm mb-4">Linear Algebra, Calculus, and Probability Theory tailored for high-dimensional data analysis.</p>
+<div class="mb-6">
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span>Progress</span>
+<span>64%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest neo-border overflow-hidden">
+<div class="h-full bg-primary" style="width: 64%"></div>
+</div>
+</div>
+<button class="w-full h-11 bg-primary-container text-on-primary-fixed font-bold neo-border neo-shadow-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2">
+                        Resume Learning
+                        <span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Specialization Section -->
+<div class="mb-10">
+<div class="flex items-center gap-2 mb-6">
+<div class="h-[2px] flex-grow bg-outline-variant"></div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant px-2">Specialization Year</span>
+<div class="h-[2px] flex-grow bg-outline-variant"></div>
+</div>
+<!-- Machine Learning Pipelines Module Card -->
+<div class="bg-surface-container-low neo-border neo-shadow mb-6 overflow-hidden border-t-4 border-t-secondary">
+<div class="h-40 relative">
+<img class="w-full h-full object-cover" data-alt="Technical schematic diagram of a machine learning workflow, showing data ingestion, preprocessing, training, and deployment stages. The style is restrained neo-brutalist with sharp lines, blueprint-like clarity, and a sophisticated color palette of focus blue and deep black on a warm paper-white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnfb0cA6u81zw2mlsrswTTeUPiqLS7kG_FgHksBOn1BupZ_hoANTmqqFbY8ePV-U6EJXnnsOEBXUK8ftVbCwkrfQ1N-rWoyajJePSjFF7n2OYp7XXmz7Q3Xg7gsBY9FgGL4XIKcg_LC_Og8b2axfR5izPn4xhOoFwr5cfJCFOIPr20WySBAOb9cGplOQTWhysXDgZidDjxeO4adEcpqG3oidmsvdVAnIbXEXYJfemIqvdSQgtQkH706jxffzpeZrj4IF8MG9vcpcH9"/>
+<div class="absolute top-3 right-3 bg-secondary-container text-on-secondary-container px-3 py-1 font-label-sm text-label-sm neo-border neo-shadow-sm">
+                        ADVANCED
+                    </div>
+</div>
+<div class="p-5">
+<div class="flex items-start justify-between mb-2">
+<h3 class="font-headline-md text-headline-md">Machine Learning Pipelines</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-4">End-to-end MLOps: from exploratory data analysis to scalable cloud deployment architectures.</p>
+<div class="mb-6">
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span>Progress</span>
+<span>12%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest neo-border overflow-hidden">
+<div class="h-full bg-secondary" style="width: 12%"></div>
+</div>
+</div>
+<button class="w-full h-11 bg-primary-container text-on-primary-fixed font-bold neo-border neo-shadow-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2">
+                        Resume Module
+                        <span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Additional Path Card (Locked State) -->
+<div class="bg-surface-variant/30 border-2 border-dashed border-outline-variant p-5 rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center rounded neo-border">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<div>
+<h4 class="font-bold text-on-background">Neural Architectures</h4>
+<p class="text-xs text-on-surface-variant">Unlocks after Math Foundations</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant shadow-[0_-4px_0_0_rgba(0,0,0,0.05)]">
+<!-- Learn (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-6 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-sm text-[10px] mt-0.5">Learn</span>
+</a>
+<!-- Explore -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-[10px] mt-0.5">Explore</span>
+</a>
+<!-- Library -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm text-[10px] mt-0.5">Library</span>
+</a>
+<!-- Account -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-[10px] mt-0.5">Account</span>
+</a>
+</nav>
+<script>
+        // Subtle interaction for the progress bars
+        document.querySelectorAll('.bg-primary, .bg-secondary').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 1s cubic-bezier(0.65, 0, 0.35, 1)';
+                bar.style.width = width;
+            }, 300);
+        });
+
+        // Simple button active state reinforcement
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'translate(2px, 2px)';
+                btn.classList.remove('neo-shadow-sm');
+                btn.classList.remove('neo-shadow');
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'translate(0, 0)';
+                if(btn.classList.contains('w-full')) {
+                   btn.classList.add('neo-shadow-sm');
+                }
+            });
+        });
+    </script>
+</body></html>

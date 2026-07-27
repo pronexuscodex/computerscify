@@ -1,0 +1,455 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ComputerSciFy | Data Science Curriculum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Kodchasan:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(216, 231, 237, 0.4);
+        }
+        .roadmap-line {
+            background-image: linear-gradient(to bottom, #7f7663 50%, transparent 50%);
+            background-size: 2px 12px;
+            background-repeat: repeat-y;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#fef8f7",
+                      "outline": "#7f7663",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#6b5400",
+                      "primary": "#745b00",
+                      "outline-variant": "#d0c5af",
+                      "primary-container": "#f2c94c",
+                      "on-tertiary-fixed": "#101d22",
+                      "secondary-fixed": "#eddcff",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#dfd9d8",
+                      "on-tertiary-fixed-variant": "#3b494e",
+                      "inverse-primary": "#ebc246",
+                      "on-background": "#1d1b1b",
+                      "tertiary-container": "#c1d0d6",
+                      "surface-tint": "#745b00",
+                      "surface-container-low": "#f9f2f1",
+                      "on-secondary-fixed-variant": "#54397b",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#4b595e",
+                      "primary-fixed": "#ffe08b",
+                      "tertiary-fixed": "#d6e5eb",
+                      "on-secondary-container": "#5c4184",
+                      "primary-fixed-dim": "#ebc246",
+                      "inverse-surface": "#323030",
+                      "inverse-on-surface": "#f6efef",
+                      "on-primary-fixed": "#241a00",
+                      "surface-container-highest": "#e7e1e0",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#4d4635",
+                      "surface-container": "#f3ecec",
+                      "on-secondary-fixed": "#27084d",
+                      "tertiary": "#536166",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#d2b3ff",
+                      "surface-container-high": "#ede7e6",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#bac9cf",
+                      "surface": "#fef8f7",
+                      "secondary": "#6c5195",
+                      "secondary-fixed-dim": "#d7baff",
+                      "on-primary-fixed-variant": "#584400",
+                      "surface-variant": "#e7e1e0",
+                      "background": "#fef8f7",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#1d1b1b",
+                      "focus-blue": "#D8E7ED"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "max-content-width": "1280px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "baseline": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Kodchasan"],
+                      "display-lg-mobile": ["Kodchasan"],
+                      "label-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Kodchasan"],
+                      "body-lg": ["Inter"],
+                      "code-block": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-dim w-full sticky top-0 z-50 border-b border-outline-variant dark:border-outline flex justify-between items-center px-gutter h-16 w-full">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ComputerSciFy</h1>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors duration-150" href="#">Catalog</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary font-body-md text-body-md" href="#">Curriculum</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors duration-150" href="#">Labs</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-high px-3 py-1.5 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-body-md" placeholder="Search algorithms..." type="text">
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150">settings</button>
+<button class="ml-2 bg-primary text-on-primary px-4 py-1.5 rounded-lg font-label-sm text-label-sm neo-shadow-sm active:scale-95 transition-all">Sign Up</button>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low dark:bg-surface-container-lowest h-[calc(100vh-64px)] w-64 sticky left-0 top-16 hidden lg:flex flex-col border-r border-outline-variant dark:border-outline shadow-[4px_0_0_0_rgba(0,0,0,0.05)] py-4 space-y-2">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-10 h-10 bg-primary-container rounded-lg border-2 border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Alex Rivera</p>
+<p class="text-xs text-on-surface-variant">DS Track • Lv. 4</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline rounded-lg" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm text-label-sm">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-lg px-4 py-3 mx-2 border-2 border-outline active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">database</span>
+<span class="font-label-sm text-label-sm font-bold">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline rounded-lg" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all hover:border-2 hover:border-outline rounded-lg" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+
+<div class="space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="text-xs font-semibold">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="text-xs font-semibold">Help</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1000px] mx-auto px-margin-mobile md:px-margin-desktop py-12 pb-32 lg:pb-12">
+<!-- Header Section -->
+<div class="mb-12">
+<div class="flex items-center gap-2 text-primary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="uppercase font-bold tracking-widest text-xs">Curriculum Specialized</span>
+</div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Data Science &amp; Analytics</h2>
+<p class="text-body-lg text-on-surface-variant max-w-[720px]">
+                    Master the intersection of mathematics, engineering, and statistics. From foundational linear algebra to deploying distributed ML models on massive datasets.
+                </p>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+<div class="bg-focus-blue p-6 border-2 border-outline rounded-2xl neo-shadow flex flex-col justify-between">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-4xl mb-4">functions</span>
+<div>
+<h4 class="font-headline-md text-on-tertiary-fixed">Mathematical Rigor</h4>
+<p class="text-sm text-on-tertiary-fixed-variant mt-2">Calculus, Linear Algebra, and Probability foundations.</p>
+</div>
+</div>
+<div class="bg-white p-6 border-2 border-outline rounded-2xl neo-shadow flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">hub</span>
+</div>
+<span class="material-symbols-outlined text-primary text-4xl mb-4">psychology</span>
+<div>
+<h4 class="font-headline-md text-on-surface">Machine Learning</h4>
+<p class="text-sm text-on-surface-variant mt-2">Supervised, unsupervised, and deep learning architectures.</p>
+</div>
+</div>
+<div class="bg-primary-container p-6 border-2 border-outline rounded-2xl neo-shadow flex flex-col justify-between">
+<span class="material-symbols-outlined text-on-primary-fixed text-4xl mb-4">cloud</span>
+<div>
+<h4 class="font-headline-md text-on-primary-fixed">Big Data</h4>
+<p class="text-sm text-on-primary-fixed-variant mt-2">Spark, Hadoop, and high-velocity stream processing.</p>
+</div>
+</div>
+</div>
+<!-- The Roadmap -->
+<div class="relative pl-8 md:pl-12">
+<!-- Vertical Line -->
+<div class="absolute left-3.5 md:left-5 top-0 bottom-0 w-1 roadmap-line"></div>
+<!-- Stage 1: Mathematical Foundations -->
+<div class="relative mb-20 group">
+<div class="absolute -left-12 top-0 w-8 h-8 bg-surface border-2 border-outline rounded-full flex items-center justify-center z-10 group-hover:bg-primary transition-colors">
+<span class="text-xs font-bold text-outline group-hover:text-white">01</span>
+</div>
+<div class="bg-surface-container border-t-4 border-outline p-8 rounded-tr-3xl rounded-b-xl border-l border-r border-b border-outline neo-shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Mathematical Foundations</h3>
+<p class="text-sm text-on-surface-variant">Estimated time: 12 weeks • 4 Courses</p>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-secondary-container"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-tertiary-fixed flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-white border-2 border-outline p-4 rounded-xl flex items-start gap-4 hover:bg-focus-blue transition-colors cursor-pointer">
+<div class="p-2 bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">square_foot</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Linear Algebra for DS</p>
+<p class="text-xs text-on-surface-variant">Vectors, Matrices, Eigenvalues</p>
+</div>
+</div>
+<div class="bg-white border-2 border-outline p-4 rounded-xl flex items-start gap-4 hover:bg-focus-blue transition-colors cursor-pointer">
+<div class="p-2 bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">show_chart</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Probabilistic Models</p>
+<p class="text-xs text-on-surface-variant">Bayesian Inference, Distributions</p>
+</div>
+</div>
+<div class="bg-white border-2 border-outline p-4 rounded-xl flex items-start gap-4 hover:bg-focus-blue transition-colors cursor-pointer">
+<div class="p-2 bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">calculate</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Multivariate Calculus</p>
+<p class="text-xs text-on-surface-variant">Gradients, Hessians, Optimization</p>
+</div>
+</div>
+<div class="bg-focus-blue border-2 border-outline p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-white rounded-lg border border-outline">
+<span class="material-symbols-outlined text-secondary">analytics</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Stats &amp; Hypothesis Testing</p>
+<p class="text-xs text-on-surface-variant">Active Module</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">play_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 2: Machine Learning & Intelligence -->
+<div class="relative mb-20 group">
+<div class="absolute -left-12 top-0 w-8 h-8 bg-surface border-2 border-outline rounded-full flex items-center justify-center z-10 group-hover:bg-primary transition-colors">
+<span class="text-xs font-bold text-outline group-hover:text-white">02</span>
+</div>
+<div class="bg-white border-t-4 border-primary p-8 rounded-tr-3xl rounded-b-xl border-l border-r border-b border-outline neo-shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Machine Learning Pipelines</h3>
+<p class="text-sm text-on-surface-variant">Estimated time: 16 weeks • 5 Courses</p>
+</div>
+<div class="px-3 py-1 bg-primary-container text-on-primary-fixed rounded-full text-xs font-bold border border-outline">UNLOCKED</div>
+</div>
+<div class="space-y-4">
+<!-- Course Item -->
+<div class="flex items-center gap-4 p-4 border border-outline-variant rounded-xl hover:border-primary transition-colors group/item relative overflow-hidden">
+<div class="h-10 w-1 bg-outline-variant group-hover/item:bg-primary absolute left-0 transition-colors"></div>
+<span class="material-symbols-outlined text-outline group-hover/item:text-primary">scatter_plot</span>
+<div class="flex-grow">
+<p class="font-bold">Supervised Learning Mastery</p>
+<p class="text-xs text-on-surface-variant">Regression, SVMs, Random Forests</p>
+</div>
+<div class="hidden md:flex gap-2">
+<span class="text-[10px] bg-surface-container px-2 py-1 border border-outline-variant rounded font-mono">Python</span>
+<span class="text-[10px] bg-surface-container px-2 py-1 border border-outline-variant rounded font-mono">Scikit-Learn</span>
+</div>
+<button class="material-symbols-outlined">chevron_right</button>
+</div>
+<!-- Course Item -->
+<div class="flex items-center gap-4 p-4 border border-outline-variant rounded-xl hover:border-primary transition-colors group/item relative overflow-hidden">
+<div class="h-10 w-1 bg-outline-variant group-hover/item:bg-primary absolute left-0 transition-colors"></div>
+<span class="material-symbols-outlined text-outline group-hover/item:text-primary">neurology</span>
+<div class="flex-grow">
+<p class="font-bold">Neural Networks &amp; Deep Learning</p>
+<p class="text-xs text-on-surface-variant">Backprop, CNNs, RNNs basics</p>
+</div>
+<div class="hidden md:flex gap-2">
+<span class="text-[10px] bg-surface-container px-2 py-1 border border-outline-variant rounded font-mono">PyTorch</span>
+</div>
+<button class="material-symbols-outlined">chevron_right</button>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-sm">code</span>
+<span class="font-bold text-xs uppercase tracking-tighter">Applied Labs</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<div class="bg-surface-container p-3 border border-outline-variant rounded-lg hover:bg-white transition-all cursor-pointer">
+<p class="text-xs font-bold mb-1">Stock Price Predictor</p>
+<div class="w-full bg-outline-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+</div>
+<div class="bg-surface-container p-3 border border-outline-variant rounded-lg hover:bg-white transition-all cursor-pointer">
+<p class="text-xs font-bold mb-1">Sentiment Analysis</p>
+<div class="w-full bg-outline-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-0"></div>
+</div>
+</div>
+<div class="bg-surface-container p-3 border border-outline-variant rounded-lg hover:bg-white transition-all cursor-pointer">
+<p class="text-xs font-bold mb-1">Image Classifier</p>
+<div class="w-full bg-outline-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-0"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 3: Data Engineering & Big Data -->
+<div class="relative opacity-60 group grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+<div class="absolute -left-12 top-0 w-8 h-8 bg-surface border-2 border-outline-variant rounded-full flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-xs text-outline">lock</span>
+</div>
+<div class="bg-white border-t-4 border-outline-variant p-8 rounded-tr-3xl rounded-b-xl border-l border-r border-b border-outline">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">Data Engineering &amp; Scale</h3>
+<span class="text-xs font-bold text-on-surface-variant">Complete Stage 2 to unlock</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-grow h-4 bg-surface-container rounded border border-outline-variant relative">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20 w-1/4 animate-[shimmer_2s_infinite]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Article Section -->
+<section class="mt-24">
+<div class="bg-on-background text-surface p-12 rounded-3xl relative overflow-hidden flex flex-col md:flex-row items-center gap-12">
+<!-- Background Noise Pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/60-lines.png')"></div>
+<div class="flex-1 z-10">
+<span class="text-primary-container font-mono text-sm tracking-widest mb-4 block">WEEKLY INSIGHT</span>
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md text-white mb-6">The Future of Distributed Computing in ML</h2>
+<p class="text-surface-dim mb-8 text-body-md">Dive deep into how modern LLMs are trained across thousands of nodes using 3D parallelism techniques. Learn why data engineering is the new bottleneck.</p>
+<button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-xl font-bold neo-shadow-sm hover:translate-y-[-2px] transition-transform">Read Thesis</button>
+</div>
+<div class="flex-1 z-10 w-full md:w-auto">
+<div class="bg-surface-container-highest/20 backdrop-blur-md border border-white/20 p-6 rounded-2xl">
+<div class="w-full aspect-square relative rounded-xl overflow-hidden border-2 border-primary-container/30">
+<img class="object-cover w-full h-full" data-alt="A high-tech digital representation of a neural network being distributed across a global grid of server clusters. The visual style is restrained neo-brutalist with glowing cyan and focus blue connections against a dark obsidian background. Mathematical symbols and data streams flow between nodes. The lighting is dramatic and focused on the central data core." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHsuS2tDjK2P3I8BFal9retUCdErlray4ZBiLKZ0O_Be6x8PN_pLrL-6Zn7JabHLW-WuNTtCOkNuSvJZ7zbXQ8Nla4hd8qPsoTmExY__KyCNcGmaVPoTm8n3-i0Jo78TXV-SUaFYbTwlk1uRxuHAQ3XvwVXXj2AZWI5xpkXMIiZbi20gUJdZKhTyURs2sb7voGRmVwEc_Wx_DcNxWKH0UZMYsWXeWwZnQz2npL2rAETt2surLfsXlI2Db9LbuDVZn8p2lciyMcPNSm">
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant lg:hidden shadow-[0_-4px_0_0_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-2" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm-mobile text-[10px]">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-2" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-[10px]">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">database</span>
+<span class="font-label-sm-mobile text-[10px]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-2" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm-mobile text-[10px]">Account</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-6 lg:bottom-12 lg:right-12 w-16 h-16 bg-primary text-on-primary rounded-2xl neo-shadow flex items-center justify-center active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-3xl">chat_bubble</span>
+</button>
+<script>
+        // Simple scroll interaction for the roadmap line
+        window.addEventListener('scroll', () => {
+            const progress = document.querySelector('.roadmap-line');
+            if(progress) {
+                const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+                // Additional logic for dynamic line color could be added here
+            }
+        });
+        
+        // Interactive Course items
+        document.querySelectorAll('.group\\/item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.classList.add('neo-shadow-sm');
+                item.style.transform = 'translate(-2px, -2px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('neo-shadow-sm');
+                item.style.transform = 'translate(0, 0)';
+            });
+        });
+    </script>
+
+
+</body></html>

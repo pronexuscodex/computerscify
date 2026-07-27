@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit Project | ComputerSciFy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#101d22",
+                        "background": "#fef8f7",
+                        "surface-container-low": "#f9f2f1",
+                        "on-secondary-container": "#5c4184",
+                        "surface-container-highest": "#e7e1e0",
+                        "surface-variant": "#e7e1e0",
+                        "secondary-fixed": "#eddcff",
+                        "secondary-container": "#d2b3ff",
+                        "inverse-primary": "#ebc246",
+                        "primary": "#745b00",
+                        "primary-fixed-dim": "#ebc246",
+                        "surface-dim": "#dfd9d8",
+                        "surface-container-high": "#ede7e6",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fef8f7",
+                        "outline-variant": "#d0c5af",
+                        "surface-container": "#f3ecec",
+                        "tertiary-container": "#c1d0d6",
+                        "on-primary-container": "#6b5400",
+                        "surface": "#fef8f7",
+                        "outline": "#7f7663",
+                        "tertiary": "#536166",
+                        "on-surface": "#1d1b1b",
+                        "surface-tint": "#745b00",
+                        "inverse-on-surface": "#f6efef",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#f2c94c",
+                        "inverse-surface": "#323030",
+                        "on-surface-variant": "#4d4635",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#bac9cf",
+                        "secondary-fixed-dim": "#d7baff",
+                        "tertiary-fixed": "#d6e5eb",
+                        "on-secondary-fixed": "#27084d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#4b595e",
+                        "on-tertiary-fixed-variant": "#3b494e",
+                        "on-primary-fixed": "#241a00",
+                        "on-secondary-fixed-variant": "#54397b",
+                        "on-background": "#1d1b1b",
+                        "on-primary-fixed-variant": "#584400",
+                        "primary-fixed": "#ffe08b",
+                        "secondary": "#6c5195"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-content-width": "1280px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Kodchasan"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Kodchasan"],
+                        "display-lg-mobile": ["Kodchasan"],
+                        "body-md": ["Inter"],
+                        "code-block": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-brutalist-card {
+            box-shadow: 4px 4px 0px 0px rgba(29, 27, 27, 1);
+        }
+        .neo-brutalist-card:hover {
+            box-shadow: 6px 6px 0px 0px rgba(29, 27, 27, 1);
+        }
+        .neo-brutalist-btn {
+            box-shadow: 2px 2px 0px 0px rgba(29, 27, 27, 1);
+        }
+        .neo-brutalist-btn:active {
+            box-shadow: 0px 0px 0px 0px rgba(29, 27, 27, 1);
+            transform: translate(2px, 2px);
+        }
+        .code-container {
+            border: 1px solid #7f7663;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim w-full sticky top-0 z-50 border-b border-outline-variant dark:border-outline flex justify-between items-center px-6 h-16">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+            ComputerSciFy
+        </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary py-1" href="#">Computer Science</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">Resources</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
+<div class="w-8 h-8 rounded-full border border-outline bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a student in a minimalist tech environment, neutral soft lighting, high contrast aesthetic with sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzjTQfCg9loAT50DxlaEyO2w3i0izS7VagP4vZtuEml3qJC0SHIQsmWQGEudZZymv0Shma-4mmUizM8niWI3t1KhV9APqH2hfxrWjezGa-rgNM_1iTu2YLC4rLFIiob2wZHBBw60Hc_Z8R5ahwaq-3RVjPj5Vpn3qDnLFzca-hp69Ju1Fnn5lr6euUz0OJfwVQoqWIMsUoxOYfVfJSUa7XbTNNGligyeQVu3Nl6JTxHyMcfqQnSBAJxMVIjcetwbFB5mu5SSEO92tN"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline shadow-[4px_0_0_0_rgba(0,0,0,1)] dark:shadow-[4px_0_0_0_rgba(255,255,255,0.1)] py-4 pt-20 z-40">
+<div class="flex flex-col h-full py-4 space-y-2">
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-lg px-4 py-3 mx-2 border-2 border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm text-label-sm">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-sm text-label-sm">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<div class="mt-auto px-4">
+<button class="w-full bg-secondary text-on-secondary font-label-sm text-label-sm py-3 rounded-lg border-2 border-outline neo-brutalist-btn hover:bg-on-secondary-fixed-variant transition-colors">
+                    Upgrade to Pro
+                </button>
+</div>
+<div class="pt-4 border-t border-outline-variant mt-4">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Help</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 p-4 md:p-8 lg:p-12 min-h-[calc(100vh-64px)]">
+<div class="max-w-4xl mx-auto space-y-12">
+<!-- Header Section -->
+<header class="border-b-4 border-primary pb-6">
+<div class="flex items-center gap-4 text-tertiary mb-2">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-label-sm text-label-sm tracking-widest uppercase">Distributed Systems (CS-402)</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Capstone Project Submission</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Implementation of a Fault-Tolerant Distributed Key-Value Store.</p>
+</header>
+<!-- Project Brief Section -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="md:col-span-2 space-y-6">
+<div class="bg-surface border-2 border-outline p-6 neo-brutalist-card">
+<h2 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span>
+                            Technical Requirements
+                        </h2>
+<article class="prose prose-slate font-body-md text-on-surface-variant space-y-4">
+<p>Implement a distributed key-value store using the **Raft Consensus Algorithm**. Your solution must handle network partitions and node failures without compromising linearizability.</p>
+<div class="code-container bg-surface-container-low p-4 rounded font-code-block text-code-block relative overflow-hidden">
+<span class="absolute top-2 right-2 px-2 py-1 bg-outline text-surface text-[10px] uppercase font-bold tracking-tighter">Markdown</span>
+<p class="text-on-secondary-container"># Required Features</p>
+<ul class="list-disc ml-4 space-y-1">
+<li>Leader Election mechanism</li>
+<li>Log Replication with consistency checks</li>
+<li>Safety property verification</li>
+<li>Client interaction via gRPC</li>
+</ul>
+</div>
+<p class="font-bold text-on-surface mt-4">Constraints:</p>
+<ul class="space-y-2">
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-error text-sm">square</span>
+<span>Must support at least 5 concurrent nodes.</span>
+</li>
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-error text-sm">square</span>
+<span>Average latency for PUT operations &lt; 50ms.</span>
+</li>
+</ul>
+</article>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-tertiary-container text-on-tertiary-container border-2 border-outline p-6 neo-brutalist-card">
+<h3 class="font-headline-md text-headline-md-mobile font-bold mb-2">Deadline</h3>
+<p class="font-display-lg text-display-lg-mobile">Nov 24</p>
+<p class="font-label-sm text-label-sm opacity-80 uppercase tracking-tighter mt-1">23:59 GMT+0</p>
+<div class="mt-4 pt-4 border-t border-on-tertiary-container/20">
+<p class="font-body-md italic">"Complexity is the enemy of reliability."</p>
+</div>
+</div>
+<div class="h-48 w-full border-2 border-outline neo-brutalist-card bg-cover bg-center" data-alt="A clean, minimalist 3D render of network nodes connected by glowing lines, representing a distributed system architecture. Soft blue and gold accents on a white background, neo-brutalist clean composition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAJy_SNpS--O-MHwpZK3KSIfrmCKI5hyjM25ujsSrR9xD8HlG9HwldhFBJqIpOIQJ3ldpfXIKW2CPB2S2XoyYGfczu9yIu3A09v9s-BnVJhpdyENANB9J-APhdWdqVe7n8hqHZ5OH_-GyeefeHIvXKCz1W7YMWXkmsG2CpwIwalXd0ABayMH68TJrCEEXQqJ-IbwEvnO_T_ExAjmh4ODbszXGVAn8cjClPYXT4M7qYqmxG7Zx5r3e2t-9isPCdNRnt-Vsneaaj666B4')">
+</div>
+</div>
+</section>
+<!-- File Upload Zone -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">upload_file</span>
+                    Submit Assets
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Documentation PDF -->
+<div class="group relative bg-white border-2 border-dashed border-outline-variant hover:border-secondary transition-all p-8 flex flex-col items-center justify-center text-center cursor-pointer">
+<input accept=".pdf" class="absolute inset-0 opacity-0 cursor-pointer" type="file"/>
+<div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-container text-4xl">picture_as_pdf</span>
+</div>
+<p class="font-headline-md text-headline-md-mobile text-on-surface">Upload Documentation</p>
+<p class="font-body-md text-on-surface-variant">PDF format only (Max 15MB)</p>
+<div class="mt-4 px-4 py-2 bg-on-secondary-fixed-variant text-white font-label-sm text-label-sm rounded border-2 border-outline">Browse Files</div>
+</div>
+<!-- Source Code ZIP -->
+<div class="group relative bg-white border-2 border-dashed border-outline-variant hover:border-secondary transition-all p-8 flex flex-col items-center justify-center text-center cursor-pointer">
+<input accept=".zip" class="absolute inset-0 opacity-0 cursor-pointer" type="file"/>
+<div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-container text-4xl">folder_zip</span>
+</div>
+<p class="font-headline-md text-headline-md-mobile text-on-surface">Upload Source Code</p>
+<p class="font-body-md text-on-surface-variant">ZIP archive only (Max 100MB)</p>
+<div class="mt-4 px-4 py-2 bg-on-secondary-fixed-variant text-white font-label-sm text-label-sm rounded border-2 border-outline">Browse Files</div>
+</div>
+</div>
+<div class="flex justify-end pt-4">
+<button class="bg-primary-container text-on-primary-container font-headline-md text-headline-md-mobile px-12 py-4 rounded-lg border-2 border-outline neo-brutalist-btn active:scale-95 transition-all">
+                        Submit Project
+                    </button>
+</div>
+</section>
+<!-- Submission History Table -->
+<section class="space-y-6 pb-20">
+<h2 class="font-headline-md text-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">history</span>
+                    Submission History
+                </h2>
+<div class="overflow-x-auto border-2 border-outline neo-brutalist-card">
+<table class="w-full text-left bg-surface border-collapse">
+<thead class="bg-surface-container-high border-b-2 border-outline">
+<tr>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Attempt</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Date Submitted</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Feedback</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-body-md font-bold text-on-surface">#02</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 12, 2023 • 14:22</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-xs font-bold border border-outline">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                                        GRADED
+                                    </span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant max-w-xs truncate">Excellent implementation of log truncation...</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-label-sm text-label-sm">View Report</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-body-md font-bold text-on-surface">#01</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 05, 2023 • 09:10</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-3 py-1 bg-error-container text-on-error-container rounded-full text-xs font-bold border border-outline">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                        REJECTED
+                                    </span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant max-w-xs truncate">Failed safety property check on 5-node cluster.</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline font-label-sm text-label-sm">View Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-[0_-4px_0_0_rgba(0,0,0,0.05)] lg:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Learn</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Library</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Account</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for file upload visualization
+        const inputs = document.querySelectorAll('input[type="file"]');
+        inputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                const fileName = e.target.files[0]?.name;
+                if (fileName) {
+                    const label = e.target.nextElementSibling.nextElementSibling;
+                    label.textContent = `Selected: ${fileName}`;
+                    label.classList.add('text-primary', 'font-bold');
+                }
+            });
+        });
+    </script>
+</body></html>

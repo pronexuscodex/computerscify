@@ -1,0 +1,440 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Intro to Algorithms - ComputerSciFy</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Kodchasan:wght@600;700&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Kodchasan:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fef8f7",
+                        "outline": "#7f7663",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#6b5400",
+                        "primary": "#745b00",
+                        "outline-variant": "#d0c5af",
+                        "primary-container": "#f2c94c",
+                        "on-tertiary-fixed": "#101d22",
+                        "secondary-fixed": "#eddcff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dfd9d8",
+                        "on-tertiary-fixed-variant": "#3b494e",
+                        "inverse-primary": "#ebc246",
+                        "on-background": "#1d1b1b",
+                        "tertiary-container": "#c1d0d6",
+                        "surface-tint": "#745b00",
+                        "surface-container-low": "#f9f2f1",
+                        "on-secondary-fixed-variant": "#54397b",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#4b595e",
+                        "primary-fixed": "#ffe08b",
+                        "tertiary-fixed": "#d6e5eb",
+                        "on-secondary-container": "#5c4184",
+                        "primary-fixed-dim": "#ebc246",
+                        "inverse-surface": "#323030",
+                        "inverse-on-surface": "#f6efef",
+                        "on-primary-fixed": "#241a00",
+                        "surface-container-highest": "#e7e1e0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#4d4635",
+                        "surface-container": "#f3ecec",
+                        "on-secondary-fixed": "#27084d",
+                        "tertiary": "#536166",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d2b3ff",
+                        "surface-container-high": "#ede7e6",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#bac9cf",
+                        "surface": "#fef8f7",
+                        "secondary": "#6c5195",
+                        "secondary-fixed-dim": "#d7baff",
+                        "on-primary-fixed-variant": "#584400",
+                        "surface-variant": "#e7e1e0",
+                        "background": "#fef8f7",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1d1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "max-content-width": "1280px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "baseline": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Kodchasan"],
+                        "display-lg-mobile": ["Kodchasan"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Kodchasan"],
+                        "body-lg": ["Inter"],
+                        "code-block": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "code-block": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-brutalist-card {
+            border: 2px solid #1d1b1b;
+            box-shadow: 4px 4px 0px 0px #1d1b1b;
+        }
+        .neo-brutalist-button {
+            border: 2px solid #1d1b1b;
+            transition: all 0.15s ease;
+        }
+        .neo-brutalist-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px #1d1b1b;
+        }
+        .neo-brutalist-button:hover {
+            box-shadow: 4px 4px 0px 0px #1d1b1b;
+        }
+        .tab-active {
+            border-bottom: 4px solid #745b00;
+        }
+        .glass-header {
+            backdrop-filter: blur(20px);
+            background-color: rgba(254, 248, 247, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-gutter h-16 w-full glass-header">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ComputerSciFy</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-bold border-b-2 border-primary" href="#">Courses</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Library</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Mentors</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary w-64 outline-none" placeholder="Search courses..." type="text">
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="A high-quality professional portrait of a young computer science student with a friendly expression. The background is a clean, minimalist academic office with soft daylight and warm wood textures. The aesthetic is professional, sharp, and scholarly, matching the neo-brutalist design with clear lines and high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuY44SZe6jMVaHtohsBqO7bvIoh28wCcEJN5mvlx52I9RbFXVIbR3_-IhFKQsIif23i6Fx2qZOL65SC3AjkI8CQGCJUiw0cCsIBMXyCPZk0Uw1G0YymI00VNu3_uY9eTdPexkDu3lmv5L9S9O2xFt5-nV1kfQxNZ12IkFfFnj5I-smtoyyPlBmkahnl3d6t96gLSoedcxqTRIvU92ZtB6LshGDla9fBURfxjDsyNMuTPZxKXf3GSFsTiG2lrCJPSXcg22ZF18WIgcy">
+</div>
+</div>
+</header>
+<!-- Sidebar & Main Content Wrapper -->
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline shadow-[4px_0_0_0_rgba(0,0,0,1)] dark:shadow-[4px_0_0_0_rgba(255,255,255,0.1)] z-40 py-4 pt-20">
+<nav class="flex flex-col h-full py-4 space-y-2">
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-lg px-4 py-3 mx-2 border-2 border-outline hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm text-label-sm">Computer Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-sm text-label-sm">Data Science</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-outline-variant px-4 py-3 mx-2 hover:bg-surface-container-high hover:border-2 hover:border-outline transition-all active:translate-x-1 duration-100" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+
+<div class="pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-sm">Help</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 px-margin-mobile md:px-margin-desktop py-8">
+<div class="max-w-[1100px] mx-auto">
+<!-- Course Hero Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row gap-8 items-start">
+<div class="w-full md:w-1/3 neo-brutalist-card bg-surface overflow-hidden aspect-video md:aspect-square">
+<img class="w-full h-full object-cover" data-alt="A professional abstract digital art piece representing complex algorithms. It features clean, interweaving golden lines on a deep charcoal background, symbolizing data structures and sorting paths. The style is technical and elegant, using high contrast and sharp geometrical shapes consistent with a learning portal's visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC99zMfTYDlmUNByhCScUTQykFAeGuZzSUVeYQb-np2g-fMTohYdKHJEI2NT_CXOdlEJs5x5II_m97n4UvnacATaRZmmcFFlr32awbbHN2fK15QPVxU26Woh2PHTAgT3LYYaB6ZMq6BzRImCt2gg7cGZE-uaaVonBr4i2Y4JyL3O9panfwdvaL1Fq_v_Y7EE7aJqVaCgzKWvStdNkHdjAxQ4ddDfpqV1wEUZUq_PLtnVbHS1DFIhzbTK4RZs51-AG6SMfMa_QiwQfV1">
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold border border-outline">COMPUTER SCIENCE</span>
+<span class="text-on-surface-variant text-sm flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 12 Weeks</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">Intro to Algorithms</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6 max-w-[720px]">
+                                Master the foundational building blocks of computer science. This course covers complexity analysis, sorting, searching, and advanced graph algorithms with a focus on real-world problem-solving and efficiency.
+                            </p>
+<div class="flex flex-wrap gap-4">
+<button class="px-8 py-4 neo-brutalist-button bg-primary-container text-on-primary-fixed font-bold rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                    Continue Course
+                                </button>
+<button class="px-6 py-4 neo-brutalist-button bg-surface text-on-surface font-bold rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined">share</span>
+                                    Share
+                                </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Tabs Navigation -->
+<nav class="border-b border-outline-variant mb-8 flex gap-8">
+<button class="pb-4 font-bold text-primary tab-active flex items-center gap-2" id="tab-overview" onclick="switchTab('overview')">
+                        Overview
+                    </button>
+<button class="pb-4 font-bold text-on-surface-variant hover:text-primary flex items-center gap-2" id="tab-syllabus" onclick="switchTab('syllabus')">
+                        Syllabus
+                    </button>
+<button class="pb-4 font-bold text-on-surface-variant hover:text-primary flex items-center gap-2" id="tab-resources" onclick="switchTab('resources')">
+                        Resources
+                    </button>
+</nav>
+<!-- Content Sections -->
+<div class="space-y-12" id="content-overview">
+<!-- Progress Card -->
+<div class="neo-brutalist-card p-6 bg-white flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex-1 w-full">
+<div class="flex justify-between mb-2">
+<span class="font-bold text-on-surface">Overall Course Progress</span>
+<span class="font-bold text-primary">45%</span>
+</div>
+<div class="w-full h-4 bg-surface-container-highest border border-outline overflow-hidden rounded-full">
+<div class="h-full bg-primary" style="width: 45%;"></div>
+</div>
+</div>
+<div class="flex gap-8 text-center shrink-0">
+<div>
+<div class="text-headline-md font-bold text-on-surface">12/24</div>
+<div class="text-label-sm text-on-surface-variant uppercase">Lessons</div>
+</div>
+<div>
+<div class="text-headline-md font-bold text-on-surface">4/8</div>
+<div class="text-label-sm text-on-surface-variant uppercase">Labs</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid for Syllabus Highlights -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 neo-brutalist-card p-6 bg-tertiary-container relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md mb-2">Module 4: Sorting Excellence</h3>
+<p class="text-on-tertiary-container mb-4">Deep dive into QuickSort, MergeSort, and RadixSort with complexity visualization.</p>
+<button class="neo-brutalist-button bg-white px-4 py-2 font-bold rounded">Resume Module</button>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-white/20 transform rotate-12 group-hover:rotate-0 transition-transform">sort</span>
+</div>
+<div class="neo-brutalist-card p-6 bg-primary-container">
+<h3 class="font-headline-md text-headline-md mb-2">Quiz Due</h3>
+<p class="text-on-primary-container mb-4">Mastering Big O Notation is due in 2 days.</p>
+<span class="material-symbols-outlined text-4xl">timer</span>
+</div>
+</div>
+</div>
+<div class="hidden space-y-4" id="content-syllabus">
+<h2 class="font-headline-md text-headline-md mb-6">Course Syllabus</h2>
+<!-- Module List -->
+<div class="space-y-4">
+<!-- Module 1 -->
+<div class="neo-brutalist-card bg-white p-4 flex items-center justify-between group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold border border-black">01</div>
+<div>
+<h4 class="font-bold text-on-surface">Introduction &amp; Big O Notation</h4>
+<p class="text-sm text-on-surface-variant">4 Lessons • 2 Labs</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+<!-- Module 2 -->
+<div class="neo-brutalist-card bg-white p-4 flex items-center justify-between group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold border border-black">02</div>
+<div>
+<h4 class="font-bold text-on-surface">Sorting and Searching</h4>
+<p class="text-sm text-on-surface-variant">6 Lessons • 3 Labs</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+<!-- Module 3 (Current) -->
+<div class="neo-brutalist-card bg-surface-container p-4 flex items-center justify-between border-primary group cursor-pointer hover:bg-white transition-colors" style="border-left-width: 8px;">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-bold border border-black">03</div>
+<div>
+<h4 class="font-bold text-on-surface">Data Structures: Trees &amp; Graphs</h4>
+<p class="text-sm text-on-surface-variant">Current Module • 2/5 Lessons completed</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 h-2 bg-outline-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 40%;"></div>
+</div>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+<!-- Module 4 -->
+<div class="neo-brutalist-card bg-white/50 opacity-75 p-4 flex items-center justify-between group cursor-not-allowed">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-bold border border-black">04</div>
+<div>
+<h4 class="font-bold text-on-surface">Dynamic Programming</h4>
+<p class="text-sm text-on-surface-variant">Locked • Complete Module 3 to unlock</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-outline">lock</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="hidden" id="content-resources">
+<h2 class="font-headline-md text-headline-md mb-6">Learning Resources</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Resource Item -->
+<div class="neo-brutalist-card p-6 bg-white text-center hover:bg-primary-container group transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-4xl mb-3 block group-hover:scale-110 transition-transform">menu_book</span>
+<div class="text-headline-md font-bold">12</div>
+<div class="text-label-sm font-bold uppercase text-on-surface-variant">Books</div>
+</div>
+<div class="neo-brutalist-card p-6 bg-white text-center hover:bg-primary-container group transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-4xl mb-3 block group-hover:scale-110 transition-transform">picture_as_pdf</span>
+<div class="text-headline-md font-bold">45</div>
+<div class="text-label-sm font-bold uppercase text-on-surface-variant">PDFs</div>
+</div>
+<div class="neo-brutalist-card p-6 bg-white text-center hover:bg-primary-container group transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-4xl mb-3 block group-hover:scale-110 transition-transform">terminal</span>
+<div class="text-headline-md font-bold">08</div>
+<div class="text-label-sm font-bold uppercase text-on-surface-variant">Labs</div>
+</div>
+<div class="neo-brutalist-card p-6 bg-white text-center hover:bg-primary-container group transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-4xl mb-3 block group-hover:scale-110 transition-transform">video_library</span>
+<div class="text-headline-md font-bold">24</div>
+<div class="text-label-sm font-bold uppercase text-on-surface-variant">Videos</div>
+</div>
+</div>
+<div class="mt-12">
+<h3 class="font-headline-md text-headline-md mb-4">Recommended for you</h3>
+<div class="bg-surface-container-low border-2 border-outline border-dashed p-8 text-center rounded-xl">
+<span class="material-symbols-outlined text-5xl text-outline-variant mb-4">recommend</span>
+<p class="font-body-lg text-on-surface-variant">Finish Module 3 to unlock tailored textbook recommendations based on your quiz performance.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-[0_-4px_0_0_rgba(0,0,0,0.05)] lg:hidden">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Account</span>
+</a>
+</nav>
+<!-- FAB for quick actions -->
+<button class="fixed bottom-24 right-6 lg:bottom-12 lg:right-12 w-16 h-16 bg-primary-container text-on-primary-fixed neo-brutalist-button rounded-full shadow-[6px_6px_0px_0px_#1d1b1b] flex items-center justify-center active:translate-x-1 active:translate-y-1 active:shadow-none transition-all z-50">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+<script>
+        function switchTab(tabName) {
+            // Hide all sections
+            document.getElementById('content-overview').classList.add('hidden');
+            document.getElementById('content-syllabus').classList.add('hidden');
+            document.getElementById('content-resources').classList.add('hidden');
+
+            // Reset tab styles
+            const tabs = ['overview', 'syllabus', 'resources'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                btn.classList.remove('tab-active', 'text-primary');
+                btn.classList.add('text-on-surface-variant');
+            });
+
+            // Show selected section
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            
+            // Set active tab style
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.classList.add('tab-active', 'text-primary');
+            activeBtn.classList.remove('text-on-surface-variant');
+        }
+
+        // Interaction for module accordion
+        document.querySelectorAll('.neo-brutalist-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'translate(2px, 2px)';
+                card.style.boxShadow = '2px 2px 0px 0px #1d1b1b';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translate(0px, 0px)';
+                card.style.boxShadow = '4px 4px 0px 0px #1d1b1b';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translate(0px, 0px)';
+                card.style.boxShadow = '4px 4px 0px 0px #1d1b1b';
+            });
+        });
+    </script>
+
+
+</body></html>
