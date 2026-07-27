@@ -131,6 +131,31 @@ export async function saveLearnerProgress(progress: LearnerProgress): Promise<vo
   }
 }
 
+/**
+ * Atomically updates learner progress using the latest persisted value.
+ * Use this for partial updates so a stale component snapshot cannot overwrite
+ * unrelated progress fields saved by another view.
+ */
+export async function updateLearnerProgress(
+  updater: (current: LearnerProgress) => LearnerProgress
+): Promise<LearnerProgress | null> {
+  try {
+    const db = await getDB();
+    const transaction = db.transaction('progress', 'readwrite');
+    const store = transaction.objectStore('progress');
+    const stored = await store.get('learner_state');
+    const current = stored ? { ...INITIAL_PROGRESS, ...stored } : { ...INITIAL_PROGRESS };
+    const updated = updater(current);
+
+    await store.put(updated, 'learner_state');
+    await transaction.done;
+    return updated;
+  } catch (err) {
+    console.error('Failed to update progress in IndexedDB:', err);
+    return null;
+  }
+}
+
 export async function saveLabDraft(labId: string, code: string): Promise<void> {
   try {
     const db = await getDB();

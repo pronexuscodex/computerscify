@@ -1,34 +1,41 @@
 import React, { forwardRef, useId } from 'react';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SharedInputProps {
   label?: string;
   error?: string;
   helperText?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  multiline?: boolean;
-  rows?: number;
   containerClassName?: string;
 }
 
+type SingleLineInputProps = SharedInputProps &
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    multiline?: false;
+  };
+
+type MultilineInputProps = SharedInputProps &
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    multiline: true;
+  };
+
+export type InputProps = SingleLineInputProps | MultilineInputProps;
+
 export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
-  (
-    {
+  (allProps, ref) => {
+    const {
       label,
       error,
       helperText,
       leftIcon,
       rightIcon,
       multiline = false,
-      rows = 3,
       disabled = false,
       className = '',
       containerClassName = '',
       id,
-      ...props
-    },
-    ref
-  ) => {
+      ...fieldProps
+    } = allProps;
     const generatedId = useId();
     const inputId = id || generatedId;
 
@@ -69,9 +76,8 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
               ref={ref as React.Ref<HTMLTextAreaElement>}
               id={inputId}
               disabled={disabled}
-              rows={rows}
               className={`${baseInputStyles} ${paddingLeft} ${paddingRight} ${errorStyles} ${disabledStyles} ${className}`}
-              {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+              {...(fieldProps as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
             />
           ) : (
             <input
@@ -79,7 +85,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
               id={inputId}
               disabled={disabled}
               className={`${baseInputStyles} ${paddingLeft} ${paddingRight} ${errorStyles} ${disabledStyles} ${className}`}
-              {...props}
+              {...(fieldProps as React.InputHTMLAttributes<HTMLInputElement>)}
             />
           )}
 

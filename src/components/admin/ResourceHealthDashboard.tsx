@@ -48,7 +48,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
         lectures.forEach((lec) => {
           if (!lec || !lec.id || seenResourceIds.has(lec.id)) return;
           seenResourceIds.add(lec.id);
-          const check = verifyResource({ id: lec.id, title: lec.title, type: 'video', url: lec.url || lec.embedUrl } as any);
+          const check = verifyResource({ id: lec.id, title: lec.title, type: 'video', url: lec.url || lec.embedUrl });
           list.push({
             module: mod.title,
             topic: topic.title,
@@ -70,7 +70,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
         pdfBooks.forEach((book) => {
           if (!book || !book.id || seenResourceIds.has(book.id)) return;
           seenResourceIds.add(book.id);
-          const check = verifyResource({ id: book.id, title: book.title, type: 'book', url: book.pdfUrl || book.url } as any);
+          const check = verifyResource({ id: book.id, title: book.title, type: 'book', url: book.pdfUrl || book.url });
           list.push({
             module: mod.title,
             topic: topic.title,
@@ -94,7 +94,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
           if (!paper || !paper.id || seenResourceIds.has(paper.id)) return;
           seenResourceIds.add(paper.id);
           const paperUrl = paper.openAccessUrl || paper.url || '';
-          const check = verifyResource({ id: paper.id, title: paper.title, type: 'paper', url: paperUrl } as any);
+          const check = verifyResource({ id: paper.id, title: paper.title, type: 'paper', url: paperUrl });
           list.push({
             module: mod.title,
             topic: topic.title,
@@ -116,7 +116,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
         interactiveLabs.forEach((lab) => {
           if (!lab || !lab.id || seenResourceIds.has(lab.id)) return;
           seenResourceIds.add(lab.id);
-          const check = verifyResource({ id: lab.id, title: lab.title, type: 'lab', url: '#' } as any);
+          const check = verifyResource({ id: lab.id, title: lab.title, type: 'lab', url: '#' });
           list.push({
             module: mod.title,
             topic: topic.title,

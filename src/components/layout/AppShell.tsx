@@ -1,30 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavigationRail, NavView } from './NavigationRail';
 import { TopBar } from './TopBar';
 import { Breadcrumbs } from './Breadcrumbs';
 import { MobileBottomNav } from './MobileBottomNav';
 import { DashboardView } from '../dashboard/DashboardView';
-import { RoadmapView } from '../roadmap/RoadmapView';
-import { ModuleOverviewView } from '../module/ModuleOverviewView';
-import { LessonPlayerView } from '../player/LessonPlayerView';
-import { ResearchLibraryView } from '../research/ResearchLibraryView';
-import { PracticeArenaView } from '../practice/PracticeArenaView';
-import { SpacedReviewView } from '../practice/SpacedReviewView';
-import { MistakeJournalView } from '../practice/MistakeJournalView';
-import { ProjectPortfolioView } from '../practice/ProjectPortfolioView';
-import { CapstoneView } from '../capstone/CapstoneView';
-import { ProgressView } from '../progress/ProgressView';
-import { SettingsView } from '../settings/SettingsView';
-import { ResourceHealthDashboard } from '../admin/ResourceHealthDashboard';
-import { CurriculumAuditDashboard } from '../admin/CurriculumAuditDashboard';
 import { SearchCommandModal } from '../search/SearchCommandModal';
 import {
   LearnerProgress,
   ProgramType,
   CurriculumModule,
 } from '../../types/curriculum';
-import { loadLearnerProgress, INITIAL_PROGRESS } from '../../services/storage';
+import {
+  loadLearnerProgress,
+  saveLearnerProgress,
+  INITIAL_PROGRESS,
+} from '../../services/storage';
 import {
   resolveValidTopicForProgram,
   resolveValidCourseForProgram,
@@ -38,6 +29,62 @@ import {
   saveUiPreferences
 } from '../../services/uiPreferences';
 import { NavigationProvider, useNavigation } from '../../context/NavigationContext';
+
+const RoadmapView = lazy(() =>
+  import('../roadmap/RoadmapView').then((module) => ({ default: module.RoadmapView }))
+);
+const ModuleOverviewView = lazy(() =>
+  import('../module/ModuleOverviewView').then((module) => ({ default: module.ModuleOverviewView }))
+);
+const LessonPlayerView = lazy(() =>
+  import('../player/LessonPlayerView').then((module) => ({ default: module.LessonPlayerView }))
+);
+const ResearchLibraryView = lazy(() =>
+  import('../research/ResearchLibraryView').then((module) => ({ default: module.ResearchLibraryView }))
+);
+const PracticeArenaView = lazy(() =>
+  import('../practice/PracticeArenaView').then((module) => ({ default: module.PracticeArenaView }))
+);
+const SpacedReviewView = lazy(() =>
+  import('../practice/SpacedReviewView').then((module) => ({ default: module.SpacedReviewView }))
+);
+const MistakeJournalView = lazy(() =>
+  import('../practice/MistakeJournalView').then((module) => ({ default: module.MistakeJournalView }))
+);
+const ProjectPortfolioView = lazy(() =>
+  import('../practice/ProjectPortfolioView').then((module) => ({ default: module.ProjectPortfolioView }))
+);
+const CapstoneView = lazy(() =>
+  import('../capstone/CapstoneView').then((module) => ({ default: module.CapstoneView }))
+);
+const ProgressView = lazy(() =>
+  import('../progress/ProgressView').then((module) => ({ default: module.ProgressView }))
+);
+const SettingsView = lazy(() =>
+  import('../settings/SettingsView').then((module) => ({ default: module.SettingsView }))
+);
+const ResourceHealthDashboard = lazy(() =>
+  import('../admin/ResourceHealthDashboard').then((module) => ({
+    default: module.ResourceHealthDashboard,
+  }))
+);
+const CurriculumAuditDashboard = lazy(() =>
+  import('../admin/CurriculumAuditDashboard').then((module) => ({
+    default: module.CurriculumAuditDashboard,
+  }))
+);
+
+const ViewLoadingFallback: React.FC = () => (
+  <div
+    className="p-4 md:p-8 max-w-7xl mx-auto w-full space-y-5"
+    role="status"
+    aria-live="polite"
+  >
+    <span className="sr-only">Loading view</span>
+    <div className="h-8 w-52 bg-[#F2C94C] border-2 border-[#000000] animate-pulse" />
+    <div className="h-40 bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded animate-pulse" />
+  </div>
+);
 
 const AppShellContent: React.FC = () => {
   const {
@@ -58,22 +105,51 @@ const AppShellContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showResumedToast, setShowResumedToast] = useState(false);
+  const mainScrollRef = useRef<HTMLElement>(null);
+
+  const handleUpdateProgress = useCallback((updated: LearnerProgress) => {
+    setProgress(updated);
+    void saveLearnerProgress(updated);
+  }, []);
 
   // Initialize progress state
   useEffect(() => {
+    let isMounted = true;
+    let toastTimer: ReturnType<typeof setTimeout> | undefined;
+
     async function initProgress() {
       const savedProgress = await loadLearnerProgress();
+      if (!isMounted) return;
+
       setProgress(savedProgress);
 
       const wasSaved = localStorage.getItem('computerfy_last_view') !== null;
       if (wasSaved) {
         setShowResumedToast(true);
-        const timer = setTimeout(() => setShowResumedToast(false), 3500);
-        return () => clearTimeout(timer);
+        toastTimer = setTimeout(() => setShowResumedToast(false), 3500);
       }
     }
-    initProgress();
+
+    void initProgress();
+
+    return () => {
+      isMounted = false;
+      if (toastTimer) clearTimeout(toastTimer);
+    };
   }, []);
+
+  useEffect(() => {
+    mainScrollRef.current?.scrollTo({
+      top: 0,
+      behavior: progress.reducedMotion ? 'auto' : 'smooth',
+    });
+  }, [
+    activeProgram,
+    currentView,
+    selectedCourseId,
+    selectedTopicId,
+    progress.reducedMotion,
+  ]);
 
   // UI Preferences State
   const [sidebarMode, setSidebarMode] = useState<NavigationSidebarMode>(() => {
@@ -172,7 +248,7 @@ const AppShellContent: React.FC = () => {
     <div
       className={`h-screen max-h-screen overflow-hidden flex w-full min-w-0 overflow-x-hidden bg-[#B8D0DA] text-[#151313] ${
         progress.fontSize === 'large' ? 'text-base' : 'text-sm'
-      }`}
+      } ${progress.reducedMotion ? 'reduce-motion' : ''}`}
     >
       {/* Persistent Left Navigation Rail (Desktop) */}
       {!isFullWidth && (
@@ -216,23 +292,30 @@ const AppShellContent: React.FC = () => {
           onOpenSearch={() => setIsSearchOpen(true)}
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
           progress={{ ...progress, selectedProgram: activeProgram }}
-          onUpdateProgress={(updated) => setProgress(updated)}
+          onUpdateProgress={handleUpdateProgress}
           onResumeTopic={() => selectTopic(currentTopic.id)}
           onNavigate={(v) => navigateToView(v)}
         />
 
         <Breadcrumbs />
 
-        <main className="flex-1 overflow-y-auto pb-12 w-full min-w-0 overflow-x-hidden relative">
+        <main
+          ref={mainScrollRef}
+          className="flex-1 overflow-y-auto pb-12 w-full min-w-0 overflow-x-hidden relative"
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeProgram}-${currentView}`}
-              initial={{ opacity: 0, y: 10 }}
+              initial={progress.reducedMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.22, ease: [0.25, 1, 0.5, 1] }}
+              transition={{
+                duration: progress.reducedMotion ? 0 : 0.22,
+                ease: [0.25, 1, 0.5, 1],
+              }}
               className="w-full h-full min-w-0"
             >
+              <Suspense fallback={<ViewLoadingFallback />}>
               {currentView === 'dashboard' && (
                 <DashboardView
                   progress={{ ...progress, selectedProgram: activeProgram }}
@@ -264,7 +347,7 @@ const AppShellContent: React.FC = () => {
                 <LessonPlayerView
                   topic={currentTopic}
                   progress={{ ...progress, selectedProgram: activeProgram }}
-                  onUpdateProgress={setProgress}
+                  onUpdateProgress={handleUpdateProgress}
                   onSelectTopic={(t) => selectTopic(t)}
                   onBack={goBack}
                 />
@@ -273,7 +356,7 @@ const AppShellContent: React.FC = () => {
               {currentView === 'research' && (
                 <ResearchLibraryView
                   progress={{ ...progress, selectedProgram: activeProgram }}
-                  onUpdateProgress={setProgress}
+                  onUpdateProgress={handleUpdateProgress}
                   onSelectPaper={() => navigateToView('research')}
                 />
               )}
@@ -282,7 +365,7 @@ const AppShellContent: React.FC = () => {
                 <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
                   <PracticeArenaView
                     progress={{ ...progress, selectedProgram: activeProgram }}
-                    onUpdateProgress={setProgress}
+                    onUpdateProgress={handleUpdateProgress}
                   />
                 </div>
               )}
@@ -308,14 +391,14 @@ const AppShellContent: React.FC = () => {
               {currentView === 'capstones' && (
                 <CapstoneView
                   progress={{ ...progress, selectedProgram: activeProgram }}
-                  onUpdateProgress={setProgress}
+                  onUpdateProgress={handleUpdateProgress}
                 />
               )}
 
               {currentView === 'progress' && (
                 <ProgressView
                   progress={{ ...progress, selectedProgram: activeProgram }}
-                  onUpdateProgress={setProgress}
+                  onUpdateProgress={handleUpdateProgress}
                   onSelectTopic={(t) => selectTopic(t)}
                 />
               )}
@@ -323,7 +406,7 @@ const AppShellContent: React.FC = () => {
               {currentView === 'settings' && (
                 <SettingsView
                   progress={{ ...progress, selectedProgram: activeProgram }}
-                  onUpdateProgress={setProgress}
+                  onUpdateProgress={handleUpdateProgress}
                 />
               )}
 
@@ -334,6 +417,7 @@ const AppShellContent: React.FC = () => {
               {currentView === 'audit' && (
                 <CurriculumAuditDashboard onClose={() => navigateToView('dashboard')} />
               )}
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </main>

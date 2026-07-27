@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   BookOpen,
   FileText,
@@ -33,7 +33,6 @@ import { LabWorkspaceView } from '../lab/LabWorkspaceView';
 import { InAppPdfReader } from '../reader/InAppPdfReader';
 import { InAppVideoPlayer } from '../player/InAppVideoPlayer';
 import { FocusModeShell } from '../layout/FocusModeShell';
-import { saveLearnerProgress } from '../../services/storage';
 
 interface LessonPlayerViewProps {
   topic: Topic;
@@ -50,9 +49,17 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
   onSelectTopic,
   onBack,
 }) => {
-  const [activeTab, setActiveTab] = useState<
-    'overview' | 'video' | 'pdf' | 'resources' | 'research' | 'practice' | 'lab' | 'checklist' | 'notes'
-  >('overview');
+  type LessonTab =
+    | 'overview'
+    | 'video'
+    | 'pdf'
+    | 'resources'
+    | 'research'
+    | 'practice'
+    | 'lab'
+    | 'checklist'
+    | 'notes';
+  const [activeTab, setActiveTab] = useState<LessonTab>('overview');
 
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [noteText, setNoteText] = useState(progress.notes[topic.id] || '');
@@ -94,6 +101,8 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
   const [selectedResearchIdx, setSelectedResearchIdx] = useState(0);
   const [selectedLabIdx, setSelectedLabIdx] = useState(0);
 
+  const playerTopRef = useRef<HTMLDivElement | null>(null);
+
   // Reset indices when topic changes
   useEffect(() => {
     setSelectedLectureIdx(0);
@@ -101,6 +110,15 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
     setSelectedResearchIdx(0);
     setSelectedLabIdx(0);
   }, [topic.id]);
+
+  // Auto-scroll to top of player view when active tab or resource index changes
+  useEffect(() => {
+    if (playerTopRef.current) {
+      playerTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [activeTab, topic.id, selectedPdfIdx, selectedResearchIdx, selectedLectureIdx]);
 
   const module = getModuleById(topic.moduleId);
   const mp = topic.masteryPack;
@@ -155,7 +173,6 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
     if (progress.lastVisitedTopicId !== topic.id) {
       const updated = { ...progress, lastVisitedTopicId: topic.id };
       onUpdateProgress(updated);
-      saveLearnerProgress(updated);
     }
   }, [topic.id]);
 
@@ -167,7 +184,6 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
       notes: { ...progress.notes, [topic.id]: val },
     };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   // Toggle completion
@@ -180,7 +196,6 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
     }
     const updated = { ...progress, completedTopicIds: Array.from(topicSet) };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   // Toggle bookmark
@@ -193,7 +208,6 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
     }
     const updated = { ...progress, bookmarkedResourceIds: Array.from(bmSet) };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   // Next / Prev topic navigation
@@ -209,7 +223,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
     <div className="space-y-6">
       {/* Player Tab Navigation */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b-4 border-[#000000]">
-        {[
+          {([
           { id: 'overview', label: 'Overview', icon: BookOpen },
           { id: 'video', label: 'In-App Video', icon: Video },
           { id: 'pdf', label: 'In-App Reader', icon: FileText },
@@ -218,13 +232,17 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
           { id: 'lab', label: 'Interactive Lab', icon: Code },
           { id: 'checklist', label: 'Mastery Checklist', icon: CheckSquare },
           { id: 'notes', label: 'Notes', icon: FileSpreadsheet },
-        ].map((tab) => {
+          ] satisfies Array<{
+            id: LessonTab;
+            label: string;
+            icon: React.ComponentType<{ className?: string }>;
+          }>).map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id)}
               className={`px-3.5 py-2 rounded text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 shrink-0 border-2 border-[#000000] ${
                 isActive
                   ? 'bg-[#F2C94C] text-[#000000] neo-shadow-sm font-black'
@@ -318,13 +336,14 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {pdfsList.map((pdf, idx) => (
-                  <div
+                  <button
+                    type="button"
                     key={pdf.id || idx}
                     onClick={() => {
                       setSelectedPdfIdx(idx);
                       setActiveTab('pdf');
                     }}
-                    className="p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all cursor-pointer group flex flex-col justify-between space-y-3"
+                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
@@ -348,7 +367,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -360,13 +379,14 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {researchList.map((paper, idx) => (
-                  <div
+                  <button
+                    type="button"
                     key={paper.id || idx}
                     onClick={() => {
                       setSelectedResearchIdx(idx);
                       setActiveTab('research');
                     }}
-                    className="p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all cursor-pointer group flex flex-col justify-between space-y-3"
+                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
@@ -390,7 +410,7 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -677,7 +697,6 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                         },
                       };
                       onUpdateProgress(updated);
-                      saveLearnerProgress(updated);
                     }}
                     className="w-4 h-4 mt-0.5 accent-[#F2C94C]"
                   />
@@ -723,7 +742,10 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 animate-fade-in text-[#1D1B1B] dark:text-[#F6EFEF] w-full min-w-0 overflow-x-hidden">
+    <div
+      ref={playerTopRef}
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 animate-fade-in text-[#1D1B1B] dark:text-[#F6EFEF] w-full min-w-0 overflow-x-hidden"
+    >
       {/* Top Header Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b-4 border-[#000000] pb-4">
         <button

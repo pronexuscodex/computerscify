@@ -21,6 +21,8 @@ export interface ResearchPaper {
   doiOrArxiv?: string;
   openAccessUrl: string;
   url?: string;
+  canonicalUrl?: string;
+  sourcePageUrl?: string;
   paperType: PaperType;
   difficulty: DifficultyLevel;
   prerequisites: string[];
@@ -38,6 +40,8 @@ export interface BookResource {
   authors: string[];
   url: string;
   pdfUrl?: string; // Direct or open PDF link
+  canonicalUrl?: string;
+  sourcePageUrl?: string;
   recommendedChapter: string;
   accessStatus: ResourceAccessStatus;
   publisherOrInstitution?: string;
@@ -48,12 +52,19 @@ export interface VideoResource {
   title: string;
   provider: string; // e.g., MIT OCW, Harvard CS50, Stanford, Berkeley
   url: string;
+  videoId?: string;
   embedUrl?: string;
+  canonicalUrl?: string;
+  sourcePageUrl?: string;
+  institution?: string;
+  embeddingAllowed?: boolean;
   durationMinutes: number;
   accessStatus: ResourceAccessStatus;
   instructor?: string;
   transcriptText?: string;
   chapters?: { timestampSeconds: number; title: string }[];
+  fallbackResourceIds?: string[];
+  fallbackResources?: VideoResource[];
 }
 
 export type LabLevel = 'level-0' | 'level-1' | 'level-2' | 'level-3' | 'level-4' | 'level-5';
@@ -394,4 +405,3 @@ export interface GlossaryItem {
   definition: string;
   relatedTopicIds: string[];
 }
-

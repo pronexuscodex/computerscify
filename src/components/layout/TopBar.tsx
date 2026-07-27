@@ -25,15 +25,15 @@ import { getTopicById, ALL_TOPICS } from '../../data/curriculumData';
 import { Tooltip } from '../common/Tooltip';
 import { useTheme } from '../../context/ThemeContext';
 import { useNavigation } from '../../context/NavigationContext';
-import { saveLearnerProgress } from '../../services/storage';
+import { NavView } from './NavigationRail';
 
 interface TopBarProps {
   onOpenSearch: () => void;
   onToggleMobileMenu: () => void;
   progress: LearnerProgress;
-  onUpdateProgress?: (newProgress: LearnerProgress) => void;
+  onUpdateProgress: (newProgress: LearnerProgress) => void;
   onResumeTopic: (topicId: string) => void;
-  onNavigate?: (view: any) => void;
+  onNavigate: (view: NavView) => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -91,19 +91,13 @@ export const TopBar: React.FC<TopBarProps> = ({
   const handleSaveDisplayName = () => {
     const trimmed = editingNameValue.trim() || 'Learner';
     const updated = { ...progress, displayName: trimmed };
-    if (onUpdateProgress) {
-      onUpdateProgress(updated);
-    }
-    saveLearnerProgress(updated);
+    onUpdateProgress(updated);
     setIsEditingName(false);
   };
 
   const handleToggleFontSize = (size: 'normal' | 'large') => {
     const updated = { ...progress, fontSize: size };
-    if (onUpdateProgress) {
-      onUpdateProgress(updated);
-    }
-    saveLearnerProgress(updated);
+    onUpdateProgress(updated);
   };
 
   return (
@@ -507,4 +501,3 @@ export const TopBar: React.FC<TopBarProps> = ({
     </header>
   );
 };
-

@@ -35,6 +35,8 @@ import { PdfUnavailableState } from '../common/ResourceErrorStates';
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version || '3.11.174'}/build/pdf.worker.min.mjs`;
 
 const FALLBACK_VERIFIED_PDF = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+const EMPTY_BOOKMARKED_PAGES: number[] = [];
+const MAX_CONTINUOUS_PAGES = 50;
 
 interface InAppPdfReaderProps {
   document: BookResource | ResearchPaper;
@@ -101,7 +103,7 @@ const ContinuousPageItem: React.FC<{
 export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
   document,
   savedPage = 1,
-  bookmarkedPages = [],
+  bookmarkedPages = EMPTY_BOOKMARKED_PAGES,
   initialNote = '',
   onPageChange,
   onBookmarkToggle,
@@ -201,7 +203,8 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  // Handle URL change if document prop changes
+  // Reload the viewer only when the document itself changes. Reading progress
+  // and note updates must not restart PDF loading or move the user's viewport.
   useEffect(() => {
     const raw = book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || '';
     const u = getCorsCompatiblePdfUrl(raw) || FALLBACK_VERIFIED_PDF;
@@ -209,12 +212,26 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     const isCorsSafe = isCorsSafePdfDomain(u);
     setReaderMode(isCorsSafe ? 'canvas' : 'native');
     setLoadingStage('loading');
-    setCurrentPage(savedPage || 1);
-    setInputPage((savedPage || 1).toString());
     setErrorDetails(null);
+
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [docId, initialRawUrl]);
+
+  useEffect(() => {
+    const nextPage = savedPage || 1;
+    setCurrentPage(nextPage);
+    setInputPage(nextPage.toString());
+  }, [docId, savedPage]);
+
+  useEffect(() => {
     setUserNote(initialNote || '');
+  }, [docId, initialNote]);
+
+  useEffect(() => {
     setBookmarks(bookmarkedPages || []);
-  }, [docId, initialRawUrl, savedPage, initialNote]);
+  }, [docId, bookmarkedPages]);
 
   // Keyboard shortcuts (Ctrl+B for details panel)
   useEffect(() => {
@@ -232,6 +249,9 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     setNumPages(numPages);
     setLoadingStage('ready');
     setErrorDetails(null);
+    if (numPages > MAX_CONTINUOUS_PAGES) {
+      setViewMode('single');
+    }
     const validPage = Math.min(Math.max(savedPage, 1), numPages);
     setCurrentPage(validPage);
     setInputPage(validPage.toString());
@@ -287,7 +307,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     onPageChange?.(validPage, numPages);
 
     if (viewMode === 'continuous') {
-      const pageEl = document.getElementById(`pdf-page-${validPage}`);
+      const pageEl = window.document.getElementById(`pdf-page-${validPage}`);
       if (pageEl) {
         pageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -411,9 +431,16 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           <div className="flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
             <button
               onClick={() => setViewMode('continuous')}
-              title="Continuous Vertical Scroll Mode"
+              disabled={numPages > MAX_CONTINUOUS_PAGES}
+              title={
+                numPages > MAX_CONTINUOUS_PAGES
+                  ? `Continuous mode is limited to documents with ${MAX_CONTINUOUS_PAGES} pages or fewer`
+                  : 'Continuous Vertical Scroll Mode'
+              }
               className={`p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition-all ${
-                viewMode === 'continuous' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-200 hover:text-white'
+                viewMode === 'continuous'
+                  ? 'bg-[#BE94F5] text-[#151313]'
+                  : 'text-stone-200 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed'
               }`}
             >
               <Rows className="w-3.5 h-3.5" />
@@ -988,4 +1015,3 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     </div>
   );
 };
-

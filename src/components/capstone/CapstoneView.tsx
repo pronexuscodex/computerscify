@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Award, CheckCircle2, CheckSquare, Sparkles, AlertCircle } from 'lucide-react';
 import { ALL_MODULES } from '../../data/curriculumData';
 import { LearnerProgress, CapstoneProjectMilestone } from '../../types/curriculum';
-import { saveLearnerProgress } from '../../services/storage';
 
 interface CapstoneViewProps {
   progress: LearnerProgress;
@@ -25,7 +24,6 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
       capstoneNotes: { ...progress.capstoneNotes, [selectedCapstone.id]: val },
     };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   return (

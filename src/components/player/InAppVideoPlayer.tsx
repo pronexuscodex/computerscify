@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Play,
   Check,
@@ -51,6 +51,13 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
   const [hasPlaybackError, setHasPlaybackError] = useState<boolean>(false);
   const [activeVideoIndex, setActiveVideoIndex] = useState<number>(0);
 
+  useEffect(() => {
+    setActiveVideoIndex(0);
+    setHasPlaybackError(false);
+    setNoteText(initialNotes);
+    setSavedNotes([]);
+  }, [video.id, initialNotes]);
+
   // Combine primary video and fallbacks into a list
   const videoList = [
     video,
@@ -63,7 +70,7 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
   const { videoId, playlistId } = parseYouTubeResource(activeVideo.url || activeVideo.embedUrl || '');
   const verifiedEmbedUrl = videoId
     ? createYouTubeEmbedUrl(videoId, { playlistId: playlistId || undefined })
-    : activeVideo.embedUrl && !isNormalWebPage(activeVideo.embedUrl)
+    : activeVideo.embedUrl && isAllowedEmbedHost(activeVideo.embedUrl)
     ? activeVideo.embedUrl
     : '';
 

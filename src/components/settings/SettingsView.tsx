@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Settings, Save, Trash2, Download, Shield, CheckCircle2 } from 'lucide-react';
 import { LearnerProgress } from '../../types/curriculum';
-import { saveLearnerProgress, clearAllLocalData } from '../../services/storage';
+import { clearAllLocalData } from '../../services/storage';
 import { ThemeSwitcher } from '../ui/ThemeSwitcher';
 import { Dialog } from '../common';
 
@@ -29,7 +29,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       reducedMotion,
     };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
   };

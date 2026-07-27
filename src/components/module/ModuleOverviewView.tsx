@@ -115,10 +115,11 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
             const isCompleted = progress.completedTopicIds.includes(topic.id);
 
             return (
-              <div
+              <button
+                type="button"
                 key={topic.id}
                 onClick={() => onSelectTopic(topic.id)}
-                className={`p-4 rounded border-2 border-[#000000] transition-all cursor-pointer flex items-center justify-between gap-4 neo-shadow-sm hover:translate-y-[-2px] ${
+                className={`w-full text-left p-4 rounded border-2 border-[#000000] transition-all flex items-center justify-between gap-4 neo-shadow-sm hover:translate-y-[-2px] ${
                   isCompleted ? 'bg-[#82E0AA] text-[#000000]' : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
                 }`}
               >
@@ -145,7 +146,7 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
                   </span>
                   <ChevronRight className="w-5 h-5" />
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>

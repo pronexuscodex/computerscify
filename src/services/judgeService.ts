@@ -1,5 +1,6 @@
 import { PracticeProblem, JudgeResult, SingleTestCaseResult, JudgeOutcomeStatus } from '../types/practice';
-import { analyzeCodeSyntax } from './codeRunner';
+import { analyzeCodeSyntax, loadPyodideEngine } from './codeRunner';
+import { runJavaScriptInSandbox } from './javascriptSandbox';
 
 /**
  * Normalizes stdout/string output by trimming trailing whitespace and line endings.
@@ -75,11 +76,12 @@ export async function executeJudge(
       } else {
         passCount++;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       passed = false;
-      errorMsg = err?.message || String(err);
-      actualOutput = `Error: ${errorMsg}`;
-      if (errorMsg.includes('Timeout') || errorMsg.includes('Time Limit Exceeded')) {
+      const caughtMessage = err instanceof Error ? err.message : String(err);
+      errorMsg = caughtMessage;
+      actualOutput = `Error: ${caughtMessage}`;
+      if (caughtMessage.includes('Timeout') || caughtMessage.includes('Time Limit Exceeded')) {
         overallStatus = 'Time Limit Exceeded';
       } else {
         overallStatus = 'Runtime Error';
@@ -113,158 +115,36 @@ export async function executeJudge(
  * JS-based Python interpreter / evaluator fallback for competitive problem tests.
  */
 async function runPythonCodeInSandbox(code: string, inputData: string): Promise<string> {
-  // Dynamically lazy-load Pyodide CDN script if needed
-  if (typeof window !== 'undefined' && !(window as any).pyodide && !(window as any).__loadingPyodide) {
-    (window as any).__loadingPyodide = true;
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js';
-    script.onload = async () => {
-      try {
-        if ((window as any).loadPyodide) {
-          (window as any).pyodide = await (window as any).loadPyodide();
-        }
-      } catch (e) {
-        console.warn('Pyodide initialization warning:', e);
-      }
-    };
-    document.head.appendChild(script);
+  try {
+    const pyodide = await loadPyodideEngine();
+    let stdout = '';
+    pyodide.setStdin({ isatty: false, error: false, read: () => inputData });
+    pyodide.setStdout({
+      write: (buffer: ArrayBuffer | string) => {
+        const text =
+          typeof buffer === 'string' ? buffer : new TextDecoder().decode(buffer);
+        stdout += text;
+        return text.length;
+      },
+    });
+    await pyodide.runPythonAsync(code);
+    return stdout;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Python Error: ${message}`);
   }
-
-  // Check if Pyodide is globally available in window
-  if (typeof window !== 'undefined' && (window as any).pyodide) {
-    try {
-      const pyodide = (window as any).pyodide;
-      let stdout = '';
-      pyodide.setStdin({ isatty: false, error: false, read: () => inputData });
-      pyodide.setStdout({
-        write: (buf: ArrayBuffer | string) => {
-          const str = typeof buf === 'string' ? buf : new TextDecoder().decode(buf);
-          stdout += str;
-          return str.length;
-        },
-      });
-      await pyodide.runPythonAsync(code);
-      if (stdout.trim()) return stdout;
-    } catch (e: any) {
-      if (e?.message) {
-        throw new Error(`Python Error: ${e.message}`);
-      }
-    }
-  }
-
-  // Fallback solver for standard problem patterns when Pyodide is still loading or unavailable
-  const lines = inputData.split('\n');
-
-  // Pattern 1: Two Sum
-  if (code.includes('seen') && code.includes('target') && lines.length >= 2) {
-    const nums = lines[0].trim().split(/\s+/).map(Number);
-    const target = Number(lines[1]);
-    const seen = new Map<number, number>();
-    for (let i = 0; i < nums.length; i++) {
-      const diff = target - nums[i];
-      if (seen.has(diff)) {
-        return `${seen.get(diff)} ${i}`;
-      }
-      seen.set(nums[i], i);
-    }
-  }
-
-  // Pattern 2: Binary Search / LIS
-  if (code.includes('bisect') || code.includes('tails') || code.includes('longest_increasing_subsequence') || code.includes('lengthOfLIS')) {
-    if (lines.length > 0 && lines[0].trim()) {
-      const nums = lines[0].trim().split(/\s+/).map(Number);
-      const tails: number[] = [];
-      for (const x of nums) {
-        let low = 0, high = tails.length;
-        while (low < high) {
-          let mid = Math.floor((low + high) / 2);
-          if (tails[mid] < x) low = mid + 1;
-          else high = mid;
-        }
-        if (low === tails.length) tails.push(x);
-        else tails[low] = x;
-      }
-      return String(tails.length);
-    }
-  }
-
-  // Pattern 3: Binary Search Range (First & Last Position)
-  if (code.includes('find_bound') || code.includes('solve') || code.includes('searchRange')) {
-    if (lines.length >= 2 && lines[0].trim()) {
-      const nums = lines[0].trim().split(/\s+/).map(Number);
-      const target = Number(lines[1]);
-      let first = -1, last = -1;
-      for (let i = 0; i < nums.length; i++) {
-        if (nums[i] === target) {
-          if (first === -1) first = i;
-          last = i;
-        }
-      }
-      return `${first} ${last}`;
-    }
-  }
-
-  // Pattern 4: Ridge Regression / ML output
-  if (code.includes('Learned W') || code.includes('RidgeRegression') || code.includes('fit')) {
-    return 'Learned W: [3. -2.]\nLearned B: 1.5';
-  }
-
-  return 'Execution finished with sample outputs.';
 }
 
 async function runJavaScriptCodeInSandbox(code: string, inputData: string): Promise<string> {
-  let logs: string[] = [];
-  const customConsole = {
-    log: (...args: any[]) =>
-      logs.push(args.map((a) => (typeof a === 'object' && a !== null ? JSON.stringify(a) : String(a))).join(' ')),
-    error: (...args: any[]) => logs.push('ERROR: ' + args.join(' ')),
-    warn: (...args: any[]) => logs.push('WARN: ' + args.join(' ')),
-    info: (...args: any[]) => logs.push(args.join(' ')),
-  };
-
-  // Mock require and process environments for competitive coding scripts
-  const mockFs = {
-    readFileSync: (fd: any, encoding?: string) => inputData,
-  };
-
-  const mockProcess = {
-    exit: (code: number = 0) => {
-      throw { __isProcessExit: true, exitCode: code };
-    },
-    stdin: {
-      on: (event: string, cb: Function) => {
-        if (event === 'data') cb(inputData);
-        if (event === 'end') cb();
-      },
-    },
-  };
-
-  const mockRequire = (mod: string) => {
-    if (mod === 'fs') return mockFs;
-    return {};
-  };
-
-  try {
-    const evaluator = new Function('console', 'require', 'process', 'fs', 'inputData', 'input', code);
-    const result = evaluator(customConsole, mockRequire, mockProcess, mockFs, inputData, inputData);
-
-    if (logs.length > 0) {
-      return logs.join('\n');
-    }
-
-    if (result !== undefined) {
-      if (Array.isArray(result)) return result.join(' ');
-      if (typeof result === 'object' && result !== null) return JSON.stringify(result);
-      return String(result);
-    }
-
-    return 'Execution completed with no output.';
-  } catch (err: any) {
-    if (err && err.__isProcessExit) {
-      return logs.join('\n');
-    }
-    throw new Error(`Syntax / Runtime Error: ${err.message || String(err)}`);
+  const executableCode = code.replace(
+    /:\s*(string|number|boolean|any|void|unknown)(\[\])?/g,
+    ''
+  );
+  const result = await runJavaScriptInSandbox(executableCode, inputData);
+  if (result.error) {
+    throw new Error(`Syntax / Runtime Error: ${result.error}`);
   }
+  return result.stdout || result.returnValue || 'Execution completed with no output.';
 }
 
 async function runSqlCodeInSandbox(sqlCode: string, inputData: string): Promise<string> {

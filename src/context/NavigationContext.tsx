@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavView } from '../components/layout/NavigationRail';
-import { ProgramType, LearnerProgress, Course, Topic } from '../types/curriculum';
+import { ProgramType, Course, Topic } from '../types/curriculum';
 import { parseRoutePath, formatViewURL } from '../utils/routes';
-import { loadLearnerProgress, saveLearnerProgress, INITIAL_PROGRESS } from '../services/storage';
+import { updateLearnerProgress } from '../services/storage';
 import {
   resolveValidTopicForProgram,
   resolveValidCourseForProgram,
@@ -41,22 +41,12 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [progress, setProgress] = useState<LearnerProgress>(INITIAL_PROGRESS);
   const [activeProgram, setActiveProgramState] = useState<ProgramType>('computer-science');
   const [currentView, setCurrentView] = useState<NavView>('dashboard');
   const [selectedCourseId, setSelectedCourseId] = useState<string>('cs-101');
   const [selectedTopicId, setSelectedTopicId] = useState<string>('p0-m1-t1');
   const [viewHistory, setViewHistory] = useState<ViewHistoryEntry[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  // Initialize progress
-  useEffect(() => {
-    async function initProgress() {
-      const savedProgress = await loadLearnerProgress();
-      setProgress(savedProgress);
-    }
-    initProgress();
-  }, []);
 
   // Synchronize state strictly from HashRouter location.pathname
   useEffect(() => {
@@ -78,8 +68,8 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const targetTopicId = route.topicId || storedTopic;
       const targetCourseId = route.courseId || storedCourse;
 
-      const validTopic = resolveValidTopicForProgram(targetTopicId, prog);
-      const validCourse = resolveValidCourseForProgram(targetCourseId, prog);
+      const validTopic = resolveValidTopicForProgram(targetTopicId || undefined, prog);
+      const validCourse = resolveValidCourseForProgram(targetCourseId || undefined, prog);
 
       setSelectedTopicId(validTopic.id);
       setSelectedCourseId(validCourse?.id || getDefaultCourseIdForProgram(prog));
@@ -116,15 +106,15 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         localStorage.setItem('computerfy_last_view', view);
       } catch (e) {}
 
-      // Update progress state
-      const updatedProgress = {
-        ...progress,
+      // Merge only navigation-owned fields into the latest persisted progress.
+      // Reading the latest value inside the same transaction prevents navigation
+      // from erasing notes, scores, bookmarks, or completions saved by a view.
+      void updateLearnerProgress((latestProgress) => ({
+        ...latestProgress,
         selectedProgram: prog,
         lastVisitedTopicId: validTopic.id,
         lastVisitedCourseId: validCourse?.id || getDefaultCourseIdForProgram(prog),
-      };
-      setProgress(updatedProgress);
-      saveLearnerProgress(updatedProgress);
+      }));
 
       const newUrl = formatViewURL(prog, view, {
         courseId: validCourse?.id,
@@ -135,7 +125,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         navigate(newUrl);
       }
     },
-    [location.pathname, navigate, progress]
+    [location.pathname, navigate]
   );
 
   const setActiveProgram = useCallback(

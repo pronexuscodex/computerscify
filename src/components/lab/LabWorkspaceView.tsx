@@ -396,7 +396,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
                 setCode(val);
                 saveLabDraft(selectedLab.id, val);
               }}
-              language={selectedLab.language}
+              language={selectedLab.language || 'python'}
               onReset={handleReset}
               testResults={
                 isRunning

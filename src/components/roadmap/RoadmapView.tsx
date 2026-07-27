@@ -264,13 +264,16 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                     <div className="space-y-3">
                       {sem.courses.map((course) => {
                         const isCompleted = progStats.expandedCompletedIds.includes(course.id);
-                        const isShared = course.role === 'shared-required' || course.programAssignments?.length! > 1;
+                        const isShared =
+                          course.role === 'shared-required' ||
+                          (course.programAssignments?.length ?? 0) > 1;
 
                         return (
-                          <div
+                          <button
+                            type="button"
                             key={course.id}
                             onClick={() => setSelectedCourseDetail(course)}
-                            className="p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all cursor-pointer space-y-2 group"
+                            className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all space-y-2 group"
                           >
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-1.5">
@@ -313,7 +316,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                                 </span>
                               </div>
                             )}
-                          </div>
+                          </button>
                         );
                       })}
                     </div>
@@ -345,10 +348,11 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                   {y.semesters.flatMap((s) => s.courses).map((course) => {
                     const isCompleted = progStats.expandedCompletedIds.includes(course.id);
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={course.id}
                         onClick={() => setSelectedCourseDetail(course)}
-                        className={`p-3 rounded border-2 border-[#000000] text-xs cursor-pointer transition-all neo-shadow-sm ${
+                        className={`w-full text-left p-3 rounded border-2 border-[#000000] text-xs transition-all neo-shadow-sm ${
                           isCompleted
                             ? 'bg-[#82E0AA] text-[#000000]'
                             : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/30'
@@ -359,7 +363,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                           {isCompleted && <CheckCircle2 className="w-4 h-4 text-[#000000]" />}
                         </div>
                         <div className="font-black uppercase mt-1 truncate">{course.title}</div>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>

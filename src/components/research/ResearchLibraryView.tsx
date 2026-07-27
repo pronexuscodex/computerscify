@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import { getAllResearchPapers } from '../../data/curriculumData';
 import { ResearchPaper, PaperType, LearnerProgress } from '../../types/curriculum';
-import { saveLearnerProgress } from '../../services/storage';
 import { InAppPdfReader } from '../reader/InAppPdfReader';
 
 interface ResearchLibraryViewProps {
@@ -66,7 +65,6 @@ export const ResearchLibraryView: React.FC<ResearchLibraryViewProps> = ({
     else readSet.add(paperId);
     const updated = { ...progress, readPaperIds: Array.from(readSet) };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   return (
@@ -108,14 +106,16 @@ export const ResearchLibraryView: React.FC<ResearchLibraryViewProps> = ({
         <div className="flex items-center gap-2 max-w-full">
           <Filter className="w-4 h-4 text-[#000000] dark:text-[#F2C94C] shrink-0 self-center" />
           <div className="flex flex-wrap sm:flex-nowrap md:flex-wrap items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full">
-            {['all', 'seminal', 'survey', 'applied', 'historical'].map((t) => {
+            {(['all', 'seminal', 'survey', 'applied', 'historical'] satisfies Array<
+              PaperType | 'all'
+            >).map((t) => {
               const isSelected = selectedType === t;
               return (
                 <button
                   key={t}
                   type="button"
                   aria-pressed={isSelected}
-                  onClick={() => setSelectedType(t as any)}
+                  onClick={() => setSelectedType(t)}
                   className={`h-9 px-3 rounded text-xs font-black uppercase tracking-wider transition-all border-2 border-[#000000] shrink-0 flex items-center gap-1.5 ${
                     isSelected
                       ? 'bg-[#000000] text-[#FFFFFF] neo-shadow-sm'

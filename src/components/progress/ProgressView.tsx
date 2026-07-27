@@ -7,9 +7,8 @@ import {
   BookOpen,
   Trash2
 } from 'lucide-react';
-import { LearnerProgress } from '../../types/curriculum';
+import { LearnerProgress, Topic } from '../../types/curriculum';
 import { ALL_TOPICS, getTopicById, getAllResearchPapers } from '../../data/curriculumData';
-import { saveLearnerProgress } from '../../services/storage';
 
 interface ProgressViewProps {
   progress: LearnerProgress;
@@ -31,7 +30,9 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
 
   // Bookmarked items
   const bookmarkedTopics = progress.bookmarkedResourceIds
-    ? progress.bookmarkedResourceIds.map(id => getTopicById(id)).filter(Boolean)
+    ? progress.bookmarkedResourceIds
+        .map(id => getTopicById(id))
+        .filter((topic): topic is Topic => topic !== undefined)
     : [];
 
   // Saved Notes entries
@@ -42,7 +43,6 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
     delete newNotes[topicId];
     const updated = { ...progress, notes: newNotes };
     onUpdateProgress(updated);
-    saveLearnerProgress(updated);
   };
 
   return (
@@ -161,17 +161,18 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
           ) : (
             <div className="space-y-3">
               {bookmarkedTopics.map(topic => (
-                <div
-                  key={topic!.id}
-                  onClick={() => onSelectTopic(topic!.id)}
-                  className="p-4 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#2B2929] hover:bg-[#F2C94C]/20 cursor-pointer flex items-center justify-between gap-3 neo-shadow-sm transition-all min-w-0"
+                <button
+                  type="button"
+                  key={topic.id}
+                  onClick={() => onSelectTopic(topic.id)}
+                  className="w-full text-left p-4 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#2B2929] hover:bg-[#F2C94C]/20 flex items-center justify-between gap-3 neo-shadow-sm transition-all min-w-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-black text-xs text-[#000000] dark:text-[#F6EFEF] uppercase truncate">{topic!.title}</h3>
-                    <p className="text-[11px] text-[#000000]/70 dark:text-[#F6EFEF]/70 font-bold truncate">{topic!.summary}</p>
+                    <h3 className="font-black text-xs text-[#000000] dark:text-[#F6EFEF] uppercase truncate">{topic.title}</h3>
+                    <p className="text-[11px] text-[#000000]/70 dark:text-[#F6EFEF]/70 font-bold truncate">{topic.summary}</p>
                   </div>
                   <BookOpen className="w-4 h-4 text-[#000000] dark:text-[#F2C94C] shrink-0" />
-                </div>
+                </button>
               ))}
             </div>
           )}

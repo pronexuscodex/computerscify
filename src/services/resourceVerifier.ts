@@ -1,4 +1,4 @@
-import { LearningResource, VideoResource, PdfResource, ResourceAccessStatus } from '../types/resources';
+import { LearningResource, ResourceAccessStatus } from '../types/resources';
 import { parseYouTubeResource, isNormalWebPage, fixArxivPdfUrl, fixGitHubPdfUrl } from '../utils/embedUtils';
 
 export interface ResourceVerificationResult {
@@ -12,10 +12,21 @@ export interface ResourceVerificationResult {
   verifiedAt: string;
 }
 
+export type VerifiableResource = {
+  id: string;
+  title: string;
+  type?: LearningResource['type'] | 'book' | 'paper' | 'lab';
+  url?: string;
+  videoId?: string;
+  embedUrl?: string;
+  canonicalUrl?: string;
+  pdfUrl?: string;
+};
+
 /**
  * Verifies a single learning resource.
  */
-export function verifyResource(resource: Partial<LearningResource> & { id: string; title: string }): ResourceVerificationResult {
+export function verifyResource(resource: VerifiableResource): ResourceVerificationResult {
   const issues: string[] = [];
   let status: ResourceAccessStatus = 'verified';
   let embeddable = true;
@@ -24,7 +35,7 @@ export function verifyResource(resource: Partial<LearningResource> & { id: strin
   const resType = resource.type || ('videoId' in resource || 'embedUrl' in resource ? 'video' : 'pdf');
 
   if (resType === 'video') {
-    const rawUrl = (resource as any).url || (resource as any).embedUrl || (resource as any).canonicalUrl || '';
+    const rawUrl = resource.url || resource.embedUrl || resource.canonicalUrl || '';
     const { videoId } = parseYouTubeResource(rawUrl);
 
     if (isNormalWebPage(rawUrl) && !videoId) {
@@ -39,7 +50,7 @@ export function verifyResource(resource: Partial<LearningResource> & { id: strin
       suggestedAction = 'Provide valid 11-character YouTube videoId.';
     }
   } else if (resType === 'pdf') {
-    const pdfUrl = (resource as any).pdfUrl || (resource as any).url || '';
+    const pdfUrl = resource.pdfUrl || resource.url || '';
     const cleaned = fixGitHubPdfUrl(fixArxivPdfUrl(pdfUrl));
 
     if (isNormalWebPage(cleaned) && !cleaned.endsWith('.pdf')) {
@@ -65,6 +76,6 @@ export function verifyResource(resource: Partial<LearningResource> & { id: strin
 /**
  * Verifies a list of resources.
  */
-export function verifyResourceList(resources: any[]): ResourceVerificationResult[] {
+export function verifyResourceList(resources: VerifiableResource[]): ResourceVerificationResult[] {
   return resources.map(verifyResource);
 }

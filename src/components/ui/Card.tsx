@@ -3,7 +3,7 @@ import React from 'react';
 export type CardVariant = 'default' | 'gold' | 'lavender' | 'mint' | 'coral' | 'outline' | 'flat';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   variant?: CardVariant;
   padding?: CardPadding;
   hoverable?: boolean;

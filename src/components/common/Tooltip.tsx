@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
+type TooltipTriggerProps = React.HTMLAttributes<HTMLElement> & {
+  ref?: React.Ref<HTMLElement>;
+};
+
 interface TooltipProps {
   content: React.ReactNode;
   shortcut?: string;
@@ -8,7 +12,7 @@ interface TooltipProps {
   position?: 'right' | 'left' | 'top' | 'bottom';
   delayMs?: number;
   disabled?: boolean;
-  children: React.ReactElement;
+  children: React.ReactElement<TooltipTriggerProps>;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
@@ -90,28 +94,29 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   // Clone element to attach event handlers and ref
   const child = React.Children.only(children);
+  const childProps = child.props;
   const triggerElement = React.cloneElement(child, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
-      const childRef = (child as any).ref;
+      const childRef = childProps.ref;
       if (typeof childRef === 'function') childRef(node);
       else if (childRef && typeof childRef === 'object') childRef.current = node;
     },
-    onMouseEnter: (e: React.MouseEvent) => {
+    onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
       showTooltip();
-      if (child.props.onMouseEnter) child.props.onMouseEnter(e);
+      childProps.onMouseEnter?.(e);
     },
-    onMouseLeave: (e: React.MouseEvent) => {
+    onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
       hideTooltip();
-      if (child.props.onMouseLeave) child.props.onMouseLeave(e);
+      childProps.onMouseLeave?.(e);
     },
-    onFocus: (e: React.FocusEvent) => {
+    onFocus: (e: React.FocusEvent<HTMLElement>) => {
       showTooltip();
-      if (child.props.onFocus) child.props.onFocus(e);
+      childProps.onFocus?.(e);
     },
-    onBlur: (e: React.FocusEvent) => {
+    onBlur: (e: React.FocusEvent<HTMLElement>) => {
       hideTooltip();
-      if (child.props.onBlur) child.props.onBlur(e);
+      childProps.onBlur?.(e);
     },
   });
 

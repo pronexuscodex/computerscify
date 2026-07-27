@@ -59,7 +59,8 @@ const ALLOWED_HOSTS = new Set([
   'mml-book.github.io',
   'jstatsoft.org',
   'nand2tetris.org',
-  'distributed-systems.net'
+  'distributed-systems.net',
+  'nasa.gov',
 ]);
 
 function pdfProxyPlugin(): Plugin {
@@ -75,7 +76,7 @@ function pdfProxyPlugin(): Plugin {
           if (resourceId) {
             for (const t of correctedManifest.topics) {
               for (const r of t.resources) {
-                if ((r as any).id === resourceId || resourceId.includes(t.topicId)) {
+                if ((r as { id?: string }).id === resourceId || resourceId.includes(t.topicId)) {
                   targetUrl = r.url;
                   break;
                 }
@@ -144,10 +145,12 @@ function pdfProxyPlugin(): Plugin {
           res.setHeader('Content-Length', buffer.length.toString());
           res.setHeader('Cache-Control', 'public, max-age=86400');
           res.end(buffer);
-        } catch (err: any) {
+        } catch (err: unknown) {
           res.statusCode = 500;
           res.setHeader('Content-Type', 'text/plain');
-          res.end(`PDF Proxy exception: ${err?.message || 'Unknown error'}`);
+          res.end(
+            `PDF Proxy exception: ${err instanceof Error ? err.message : 'Unknown error'}`
+          );
         }
       });
     },
@@ -162,9 +165,30 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            const normalizedId = id.replaceAll('\\', '/');
+            if (
+              normalizedId.includes('/node_modules/pdfjs-dist/') ||
+              normalizedId.includes('/node_modules/react-pdf/')
+            ) {
+              return 'pdf-viewer';
+            }
+            if (normalizedId.includes('/src/data/modules/')) {
+              return 'curriculum-content';
+            }
+            if (normalizedId.includes('/node_modules/')) {
+              return 'vendor';
+            }
+          },
+        },
+      },
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},

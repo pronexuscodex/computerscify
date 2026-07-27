@@ -6,6 +6,7 @@
  * - SQL via lightweight in-memory relational evaluator
  * - HTML/CSS via sandboxed data-uri frame
  */
+import { runJavaScriptInSandbox } from './javascriptSandbox';
 
 export interface ExecutionResult {
   stdout: string;
@@ -132,19 +133,19 @@ export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnal
   return { hasError: false };
 }
 
-let pyodideInstance: any = null;
-let pyodideLoadPromise: Promise<any> | null = null;
+let pyodideInstance: PyodideApi | null = null;
+let pyodideLoadPromise: Promise<PyodideApi> | null = null;
 
-async function loadPyodideEngine(): Promise<any> {
+export async function loadPyodideEngine(): Promise<PyodideApi> {
   if (pyodideInstance) return pyodideInstance;
   if (pyodideLoadPromise) return pyodideLoadPromise;
 
   pyodideLoadPromise = new Promise((resolve, reject) => {
-    if ((window as any).loadPyodide) {
-      (window as any).loadPyodide({
+    if (window.loadPyodide) {
+      window.loadPyodide({
         indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/',
       })
-        .then((py: any) => {
+        .then((py) => {
           pyodideInstance = py;
           resolve(py);
         })
@@ -155,11 +156,11 @@ async function loadPyodideEngine(): Promise<any> {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js';
     script.onload = () => {
-      if ((window as any).loadPyodide) {
-        (window as any).loadPyodide({
+      if (window.loadPyodide) {
+        window.loadPyodide({
           indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/',
         })
-          .then((py: any) => {
+          .then((py) => {
             pyodideInstance = py;
             resolve(py);
           })
@@ -172,7 +173,12 @@ async function loadPyodideEngine(): Promise<any> {
     document.head.appendChild(script);
   });
 
-  return pyodideLoadPromise;
+  try {
+    return await pyodideLoadPromise;
+  } catch (error) {
+    pyodideLoadPromise = null;
+    throw error;
+  }
 }
 
 export async function runPythonCode(
@@ -217,17 +223,18 @@ export async function runPythonCode(
       executionTimeMs,
       testCaseResults,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     const executionTimeMs = Math.round(performance.now() - startTime);
     return {
       stdout: stdout.trim(),
-      stderr: err.message || String(err),
+      stderr: message,
       executionTimeMs,
       testCaseResults: testCases?.map((tc) => ({
         description: tc.description,
         passed: false,
         expected: tc.expectedOutput,
-        actual: `Runtime Error: ${err.message || String(err)}`,
+        actual: `Runtime Error: ${message}`,
       })),
     };
   }
@@ -242,20 +249,13 @@ export async function runJavaScriptCode(
   let stderr = '';
 
   try {
-    const logs: string[] = [];
-    const customConsole = {
-      log: (...args: any[]) => logs.push(args.map((a) => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ')),
-      warn: (...args: any[]) => logs.push('[WARN] ' + args.join(' ')),
-      error: (...args: any[]) => logs.push('[ERROR] ' + args.join(' ')),
-    };
-
     // Strip TypeScript type annotations if present
     const jsCode = code.replace(/:\s*(string|number|boolean|any|void|UserRecord|boolean)(\[\])?/g, '');
-
-    const runner = new Function('console', jsCode);
-    runner(customConsole);
-
-    stdout = logs.join('\n');
+    const sandboxResult = await runJavaScriptInSandbox(jsCode);
+    if (sandboxResult.error) {
+      throw new Error(sandboxResult.error);
+    }
+    stdout = sandboxResult.stdout || sandboxResult.returnValue || '';
     const executionTimeMs = Math.round(performance.now() - startTime);
 
     const testCaseResults = testCases?.map((tc) => {
@@ -274,17 +274,18 @@ export async function runJavaScriptCode(
       executionTimeMs,
       testCaseResults,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     const executionTimeMs = Math.round(performance.now() - startTime);
     return {
       stdout,
-      stderr: err.message || String(err),
+      stderr: message,
       executionTimeMs,
       testCaseResults: testCases?.map((tc) => ({
         description: tc.description,
         passed: false,
         expected: tc.expectedOutput,
-        actual: `Runtime Error: ${err.message || String(err)}`,
+        actual: `Runtime Error: ${message}`,
       })),
     };
   }
@@ -331,17 +332,18 @@ export async function runSqlCode(
       executionTimeMs,
       testCaseResults,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     const executionTimeMs = Math.round(performance.now() - startTime);
     return {
       stdout: '',
-      stderr: err.message || String(err),
+      stderr: message,
       executionTimeMs,
       testCaseResults: testCases?.map((tc) => ({
         description: tc.description,
         passed: false,
         expected: tc.expectedOutput,
-        actual: `SQL Error: ${err.message || String(err)}`,
+        actual: `SQL Error: ${message}`,
       })),
     };
   }
@@ -383,11 +385,12 @@ export async function runCCode(
       executionTimeMs,
       testCaseResults,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     const executionTimeMs = Math.round(performance.now() - startTime);
     return {
       stdout: '',
-      stderr: err.message || String(err),
+      stderr: message,
       executionTimeMs,
     };
   }
@@ -416,4 +419,3 @@ export async function runCodeByLanguage(
     return runJavaScriptCode(code, testCases);
   }
 }
-

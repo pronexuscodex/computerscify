@@ -14,13 +14,14 @@ import {
 import { LearnerProgress, CurriculumModule, Topic } from '../../types/curriculum';
 import { ALL_MODULES, ALL_TOPICS, getAllResearchPapers } from '../../data/curriculumData';
 import { useNavigation } from '../../context/NavigationContext';
+import { NavView } from '../layout/NavigationRail';
 
 interface DashboardViewProps {
   progress: LearnerProgress;
   onSelectTopic: (topicId: string) => void;
   onSelectModule: (moduleId: string) => void;
   onSelectPaper: (paperId: string) => void;
-  onNavigate: (view: any) => void;
+  onNavigate: (view: NavView) => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -149,10 +150,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             const pct = Math.round((done / modTopicIds.length) * 100);
 
             return (
-              <div
+              <article
                 key={mod.id}
-                className="neo-card p-5 flex flex-col justify-between h-full cursor-pointer min-w-0"
-                onClick={() => onSelectModule(mod.id)}
+                className="neo-card p-5 flex flex-col justify-between h-full min-w-0"
               >
                 <div className="min-w-0">
                   <div className="flex items-center justify-between mb-3">
@@ -171,16 +171,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </div>
                   {/* Primary Call to Action: Learning Gold #F2C94C */}
                   <button
-                    onClick={e => {
-                      e.stopPropagation();
-                      onSelectModule(mod.id);
-                    }}
+                    type="button"
+                    onClick={() => onSelectModule(mod.id)}
                     className="w-full py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider neo-btn flex items-center justify-center gap-2 transition-all min-h-[44px]"
                   >
                     <Play className="w-4 h-4 fill-[#000000]" /> Resume Module
                   </button>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
@@ -195,10 +193,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </h2>
           <div className="space-y-3">
             {nextTopics.map((topic, idx) => (
-              <div
+              <button
+                type="button"
                 key={topic.id}
                 onClick={() => onSelectTopic(topic.id)}
-                className="p-4 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#2B2929] hover:bg-[#F2C94C]/20 transition-all cursor-pointer flex items-center justify-between gap-4 neo-shadow-sm min-w-0"
+                className="w-full text-left p-4 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#2B2929] hover:bg-[#F2C94C]/20 transition-all flex items-center justify-between gap-4 neo-shadow-sm min-w-0"
               >
                 <div className="flex items-center gap-3.5 min-w-0 flex-1">
                   <div className="w-8 h-8 rounded bg-[#000000] text-[#FFFFFF] font-mono font-black text-xs flex items-center justify-center shrink-0 border border-[#000000]">
@@ -211,10 +210,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 truncate font-medium">{topic.summary}</p>
                   </div>
                 </div>
-                <button className="px-3.5 py-1.5 bg-[#F2C94C] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] shrink-0 flex items-center gap-1 min-h-[38px] neo-shadow-sm hover:translate-y-[-1px]">
+                <span className="px-3.5 py-1.5 bg-[#F2C94C] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] shrink-0 flex items-center gap-1 min-h-[38px] neo-shadow-sm">
                   Start <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+                </span>
+              </button>
             ))}
           </div>
         </div>
