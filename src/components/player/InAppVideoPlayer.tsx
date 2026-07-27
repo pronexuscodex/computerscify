@@ -89,21 +89,21 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
         <div className="flex items-center gap-2 min-w-0">
           <Play className="w-5 h-5 text-[#FCCC42] shrink-0 fill-current" />
           <div className="min-w-0">
-            <h3 className="font-semibold text-stone-100 truncate text-sm">{video.title}</h3>
+            <h3 className="font-semibold text-stone-100 truncate text-sm">{activeVideo.title}</h3>
             <div className="flex items-center gap-3 text-xs text-stone-400">
               <span className="flex items-center gap-1">
                 <Building className="w-3 h-3 text-stone-500" />
-                {video.provider}
+                {activeVideo.provider || activeVideo.institution}
               </span>
-              {video.instructor && (
+              {activeVideo.instructor && (
                 <span className="flex items-center gap-1">
                   <User className="w-3 h-3 text-stone-500" />
-                  {video.instructor}
+                  {activeVideo.instructor}
                 </span>
               )}
               <span className="flex items-center gap-1">
                 <Clock className="w-3 h-3 text-stone-500" />
-                {video.durationMinutes} mins
+                {activeVideo.durationMinutes} mins
               </span>
             </div>
           </div>
@@ -142,21 +142,21 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
         <div className="lg:col-span-2 bg-black aspect-video relative flex items-center justify-center overflow-hidden">
           {hasPlaybackError ? (
             <VideoUnavailableState
-              title={video.title}
-              institution={video.provider}
-              sourcePageUrl={video.url}
+              title={activeVideo.title}
+              institution={activeVideo.provider || activeVideo.institution}
+              sourcePageUrl={activeVideo.url || activeVideo.canonicalUrl || activeVideo.sourcePageUrl || ''}
               onRetry={() => setHasPlaybackError(false)}
             />
           ) : isWebPageAttempt ? (
             <EmbeddingBlockedState
-              title={video.title}
-              institution={video.provider}
-              sourcePageUrl={video.url}
+              title={activeVideo.title}
+              institution={activeVideo.provider || activeVideo.institution}
+              sourcePageUrl={activeVideo.url || activeVideo.canonicalUrl || activeVideo.sourcePageUrl || ''}
             />
           ) : verifiedEmbedUrl ? (
             <iframe
               src={verifiedEmbedUrl}
-              title={video.title}
+              title={activeVideo.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
               allowFullScreen
               loading="lazy"
@@ -166,9 +166,9 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
             />
           ) : (
             <VideoUnavailableState
-              title={video.title}
-              institution={video.provider}
-              sourcePageUrl={video.url}
+              title={activeVideo.title}
+              institution={activeVideo.provider || activeVideo.institution}
+              sourcePageUrl={activeVideo.url || activeVideo.canonicalUrl || activeVideo.sourcePageUrl || ''}
               onRetry={() => setHasPlaybackError(false)}
             />
           )}
@@ -183,7 +183,7 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
               className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
                 activeTab === 'overview'
                   ? 'border-[#BE94F5] text-[#BE94F5]'
-                  : 'border-transparent text-stone-400 hover:text-stone-200'
+                  : 'border-transparent text-stone-200 hover:text-white'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -194,7 +194,7 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
               className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
                 activeTab === 'notes'
                   ? 'border-[#BE94F5] text-[#BE94F5]'
-                  : 'border-transparent text-stone-400 hover:text-stone-200'
+                  : 'border-transparent text-stone-200 hover:text-white'
               }`}
             >
               <MessageSquare className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
               className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
                 activeTab === 'transcript'
                   ? 'border-[#BE94F5] text-[#BE94F5]'
-                  : 'border-transparent text-stone-400 hover:text-stone-200'
+                  : 'border-transparent text-stone-200 hover:text-white'
               }`}
             >
               <Bookmark className="w-3.5 h-3.5" />
@@ -216,28 +216,28 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
           {/* Tab Content */}
           <div className="p-4 overflow-y-auto flex-1 text-xs space-y-4">
             {activeTab === 'overview' && (
-              <div className="space-y-4 text-stone-300">
+              <div className="space-y-4 text-stone-200">
                 <div>
-                  <h4 className="font-semibold text-stone-200 mb-1">Lecture Details</h4>
-                  <p className="text-stone-400 leading-relaxed">
-                    Provided by <strong className="text-stone-200">{activeVideo.provider}</strong>. This lecture covers core abstractions, problem-solving techniques, and foundational principles.
+                  <h4 className="font-semibold text-stone-100 mb-1">Lecture Details</h4>
+                  <p className="text-stone-300 leading-relaxed">
+                    Provided by <strong className="text-stone-100">{activeVideo.provider}</strong>. This lecture covers core abstractions, problem-solving techniques, and foundational principles.
                   </p>
                 </div>
 
                 <div className="p-3 bg-stone-900 border border-stone-800 rounded-lg space-y-2">
-                  <div className="flex justify-between items-center text-stone-400">
+                  <div className="flex justify-between items-center text-stone-300">
                     <span>Access Level</span>
                     <span className="text-emerald-400 font-mono capitalize">{activeVideo.accessStatus || 'verified'}</span>
                   </div>
-                  <div className="flex justify-between items-center text-stone-400">
+                  <div className="flex justify-between items-center text-stone-300">
                     <span>Duration</span>
-                    <span className="text-stone-200 font-mono">{activeVideo.durationMinutes} minutes</span>
+                    <span className="text-stone-100 font-mono">{activeVideo.durationMinutes} minutes</span>
                   </div>
                 </div>
 
                 {videoList.length > 1 && (
                   <div className="space-y-2 pt-2 border-t border-stone-800">
-                    <h4 className="font-semibold text-stone-200 text-xs flex items-center gap-1.5">
+                    <h4 className="font-semibold text-stone-100 text-xs flex items-center gap-1.5">
                       <RefreshCw className="w-3.5 h-3.5 text-[#FCCC42]" />
                       <span>Verified Stream Sources ({videoList.length})</span>
                     </h4>
@@ -249,7 +249,7 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
                           className={`w-full text-left p-2 rounded-lg border text-xs transition-colors flex items-center justify-between ${
                             activeVideoIndex === idx
                               ? 'bg-[#BE94F5]/15 border-[#BE94F5] text-white font-medium'
-                              : 'bg-stone-900/60 border-stone-800 text-stone-400 hover:text-stone-200 hover:border-stone-700'
+                              : 'bg-stone-900/60 border-stone-800 text-stone-200 hover:text-white hover:border-stone-700'
                           }`}
                         >
                           <div className="truncate min-w-0 pr-2">
@@ -315,9 +315,9 @@ export const InAppVideoPlayer: React.FC<InAppVideoPlayerProps> = ({
             {activeTab === 'transcript' && (
               <div className="space-y-3">
                 <h4 className="font-semibold text-stone-200 mb-2">Key Video Chapters</h4>
-                {video.chapters && video.chapters.length > 0 ? (
+                {(activeVideo.chapters || video.chapters) && (activeVideo.chapters || video.chapters)!.length > 0 ? (
                   <div className="space-y-2">
-                    {video.chapters.map((ch, idx) => (
+                    {(activeVideo.chapters || video.chapters)!.map((ch, idx) => (
                       <div
                         key={idx}
                         className="p-2.5 bg-stone-900 border border-stone-800 rounded-lg flex items-center justify-between text-stone-300 hover:border-stone-700 cursor-pointer"

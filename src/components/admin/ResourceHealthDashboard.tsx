@@ -230,12 +230,12 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
           {/* Overview Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-5 space-y-2">
-          <div className="flex items-center justify-between text-stone-400 text-xs font-mono">
+          <div className="flex items-center justify-between text-stone-300 text-xs font-mono">
             <span>TOTAL CURRICULUM SOURCES</span>
-            <Database className="w-4 h-4 text-stone-500" />
+            <Database className="w-4 h-4 text-stone-300" />
           </div>
           <div className="text-3xl font-black text-stone-100">{stats.total}</div>
-          <p className="text-[11px] text-stone-400">Indexed in active course modules</p>
+          <p className="text-[11px] text-stone-300">Indexed in active course modules</p>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-5 space-y-2">
@@ -244,7 +244,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
             <CheckCircle className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-3xl font-black text-emerald-400">{stats.verified}</div>
-          <p className="text-[11px] text-stone-400">
+          <p className="text-[11px] text-stone-300">
             {Math.round((stats.verified / (stats.total || 1)) * 100)}% Pass rate
           </p>
         </div>
@@ -255,7 +255,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
             <AlertTriangle className="w-4 h-4 text-amber-400" />
           </div>
           <div className="text-3xl font-black text-amber-400">{stats.blocked}</div>
-          <p className="text-[11px] text-stone-400">Handled via verified fallback states</p>
+          <p className="text-[11px] text-stone-300">Handled via verified fallback states</p>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-5 space-y-2">
@@ -264,25 +264,25 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
             <AlertOctagon className="w-4 h-4 text-[#BE94F5]" />
           </div>
           <div className="text-3xl font-black text-[#BE94F5]">{stats.errors}</div>
-          <p className="text-[11px] text-stone-400">Requires videoId replacement</p>
+          <p className="text-[11px] text-stone-300">Requires videoId replacement</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-[#1e1b1b] border border-stone-800 p-4 rounded-2xl">
         <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-3 py-2 rounded-xl flex-1 max-w-md">
-          <Search className="w-4 h-4 text-stone-500" />
+          <Search className="w-4 h-4 text-stone-300" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by title, module, or topic..."
-            className="bg-transparent text-xs text-stone-200 placeholder-stone-500 focus:outline-none w-full"
+            className="bg-transparent text-xs text-stone-100 placeholder-stone-400 focus:outline-none w-full"
           />
         </div>
 
         <div className="flex items-center gap-3 text-xs flex-wrap">
-          <div className="flex items-center gap-1.5 text-stone-400 font-mono">
+          <div className="flex items-center gap-1.5 text-stone-200 font-mono">
             <Filter className="w-3.5 h-3.5" /> Filter:
           </div>
 
@@ -315,7 +315,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
       <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-stone-900 border-b border-stone-800 text-stone-400 font-mono text-[11px]">
+            <thead className="bg-stone-900 border-b border-stone-800 text-stone-200 font-mono text-[11px]">
               <tr>
                 <th className="p-4">RESOURCE TITLE & TOPIC</th>
                 <th className="p-4">TYPE</th>
@@ -324,18 +324,18 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
                 <th className="p-4">SOURCE LINK</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-800 text-stone-300">
+            <tbody className="divide-y divide-stone-800 text-stone-200">
               {filteredResources.map((res, i) => (
                 <tr key={i} className="hover:bg-stone-900/50 transition-colors">
                   <td className="p-4 space-y-1">
                     <div className="font-bold text-stone-100 max-w-md truncate">{res.title}</div>
-                    <div className="text-[11px] text-stone-400">
-                      {res.module} • <span className="text-stone-300">{res.topic}</span>
+                    <div className="text-[11px] text-stone-300">
+                      {res.module} • <span className="text-stone-200">{res.topic}</span>
                     </div>
                   </td>
 
                   <td className="p-4 font-mono">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-900 border border-stone-800 text-stone-300 capitalize">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-900 border border-stone-800 text-stone-200 capitalize">
                       {res.type === 'video' ? <Play className="w-3 h-3 text-[#FCCC42]" /> : <FileText className="w-3 h-3 text-[#BE94F5]" />}
                       {res.type}
                     </span>
@@ -363,7 +363,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
                     {res.embeddable ? (
                       <span className="text-emerald-400 font-semibold">Yes (Iframe Safe)</span>
                     ) : (
-                      <span className="text-stone-500 italic">No (Fallback Mode)</span>
+                      <span className="text-stone-300 italic font-semibold">No (Fallback Mode)</span>
                     )}
                   </td>
 

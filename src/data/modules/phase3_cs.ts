@@ -49,6 +49,7 @@ export const phase3CSModules: CurriculumModule[] = [
             title: 'Introduction to Algorithms (CLRS Open Materials & Course Notes)',
             authors: ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
             url: 'https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/',
+        pdfUrl: 'https://opendatastructures.org/ods-python.pdf',
             recommendedChapter: 'Chapter 6: Heapsort & Chapter 22: Elementary Graph Algorithms',
             publisherOrInstitution: 'MIT Press / MIT OCW',
             accessStatus: 'verified'
@@ -61,7 +62,7 @@ export const phase3CSModules: CurriculumModule[] = [
             year: 1959,
             venue: 'Numerische Mathematik',
             doiOrArxiv: '10.1007/BF01386390',
-            openAccessUrl: 'https://www-pub.iaea.org/MTCD/publications/PDF/P1502_web.pdf',
+            openAccessUrl: 'https://opendatastructures.org/ods-python.pdf',
             paperType: 'seminal',
             difficulty: 'intermediate',
             prerequisites: ['Graph definitions'],

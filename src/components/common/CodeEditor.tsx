@@ -333,7 +333,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
           <span className="font-bold text-[11px] uppercase tracking-wider text-stone-300">
             {displayName}
           </span>
-          <span className="text-[10px] bg-stone-800 text-stone-400 px-2 py-0.5 rounded-full font-sans font-medium">
+          <span className="text-[10px] bg-stone-800 text-stone-200 px-2 py-0.5 rounded-full font-sans font-medium">
             UTF-8
           </span>
         </div>
@@ -344,7 +344,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
               type="button"
               onClick={handleFormat}
               title="Format Code"
-              className="p-1.5 hover:bg-stone-800 text-stone-400 hover:text-[#BE94F5] rounded-lg transition-colors flex items-center gap-1 text-[11px]"
+              className="p-1.5 hover:bg-stone-800 text-stone-200 hover:text-[#BE94F5] rounded-lg transition-colors flex items-center gap-1 text-[11px]"
             >
               <Wand2 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Format</span>
@@ -356,7 +356,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
               type="button"
               onClick={onReset}
               title="Reset to Starter Code"
-              className="p-1.5 hover:bg-stone-800 text-stone-400 hover:text-amber-400 rounded-lg transition-colors flex items-center gap-1 text-[11px]"
+              className="p-1.5 hover:bg-stone-800 text-stone-200 hover:text-amber-400 rounded-lg transition-colors flex items-center gap-1 text-[11px]"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Reset</span>
@@ -367,7 +367,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
             type="button"
             onClick={handleCopy}
             title="Copy Code"
-            className="p-1.5 hover:bg-stone-800 text-stone-400 hover:text-emerald-400 rounded-lg transition-colors flex items-center gap-1 text-[11px]"
+            className="p-1.5 hover:bg-stone-800 text-stone-200 hover:text-emerald-400 rounded-lg transition-colors flex items-center gap-1 text-[11px]"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
@@ -377,7 +377,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
             title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-            className="p-1.5 hover:bg-stone-800 text-stone-400 hover:text-white rounded-lg transition-colors"
+            className="p-1.5 hover:bg-stone-800 text-stone-200 hover:text-white rounded-lg transition-colors"
           >
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
@@ -397,7 +397,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
         <div
           ref={gutterRef}
           aria-hidden="true"
-          className="select-none py-3 px-2 bg-[#121011] border-r border-stone-800/80 text-stone-600 text-right text-[11px] font-mono leading-relaxed overflow-hidden shrink-0 min-w-[42px]"
+          className="select-none py-3 px-2 bg-[#121011] border-r border-stone-800/80 text-stone-400 text-right text-[11px] font-mono leading-relaxed overflow-hidden shrink-0 min-w-[42px]"
         >
           {lineNumbers.map((num) => (
             <div
@@ -469,7 +469,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
       </div>
 
       {/* Editor Footer Status Bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 bg-[#121011] border-t border-stone-800 text-[10px] text-stone-500 font-mono select-none flex-wrap gap-2">
+      <div className="flex items-center justify-between px-4 py-1.5 bg-[#121011] border-t border-stone-800 text-[10px] text-stone-300 font-mono select-none flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <span>
             Ln {cursorPos.line}, Col {cursorPos.col}

@@ -24,13 +24,14 @@ import {
   Sparkles,
   X,
   Rows,
-  Square
+  Square,
+  Eye
 } from 'lucide-react';
 import { BookResource, ResearchPaper } from '../../types/curriculum';
-import { fixArxivPdfUrl, fixGitHubPdfUrl, getCorsCompatiblePdfUrl, isNormalWebPage, isCorsSafePdfDomain } from '../../utils/embedUtils';
+import { fixArxivPdfUrl, fixGitHubPdfUrl, getCorsCompatiblePdfUrl, isCorsSafePdfDomain } from '../../utils/embedUtils';
 import { PdfUnavailableState } from '../common/ResourceErrorStates';
 
-// Configure matching PDF.js worker using exact pdfjs.version or fallback CDN
+// Configure matching PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version || '3.11.174'}/build/pdf.worker.min.mjs`;
 
 const FALLBACK_VERIFIED_PDF = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
@@ -113,16 +114,18 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
   const paper = isPaper ? (document as ResearchPaper) : null;
   const book = !isPaper ? (document as BookResource) : null;
 
+  const docId = (document as any).id || document.title;
   const initialRawUrl =
     book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || 'https://arxiv.org/pdf/1706.03762.pdf';
 
   const [activeUrl, setActiveUrl] = useState<string>(() => {
-    return getCorsCompatiblePdfUrl(initialRawUrl);
+    return getCorsCompatiblePdfUrl(initialRawUrl) || FALLBACK_VERIFIED_PDF;
   });
 
-  const [triedCorsProxy, setTriedCorsProxy] = useState<boolean>(false);
-  const [useEmbedFrame, setUseEmbedFrame] = useState<boolean>(false);
-  const [embedMode, setEmbedMode] = useState<'native' | 'google'>('native');
+  const [readerMode, setReaderMode] = useState<'canvas' | 'native' | 'google'>(() => {
+    const isCorsSafe = isCorsSafePdfDomain(getCorsCompatiblePdfUrl(initialRawUrl));
+    return isCorsSafe ? 'canvas' : 'native';
+  });
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerAreaRef = useRef<HTMLDivElement | null>(null);
@@ -200,12 +203,18 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
   // Handle URL change if document prop changes
   useEffect(() => {
-    const u = getCorsCompatiblePdfUrl(initialRawUrl);
+    const raw = book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || '';
+    const u = getCorsCompatiblePdfUrl(raw) || FALLBACK_VERIFIED_PDF;
     setActiveUrl(u);
-    setTriedCorsProxy(false);
-    setUseEmbedFrame(!isCorsSafePdfDomain(u));
+    const isCorsSafe = isCorsSafePdfDomain(u);
+    setReaderMode(isCorsSafe ? 'canvas' : 'native');
     setLoadingStage('loading');
-  }, [initialRawUrl]);
+    setCurrentPage(savedPage || 1);
+    setInputPage((savedPage || 1).toString());
+    setErrorDetails(null);
+    setUserNote(initialNote || '');
+    setBookmarks(bookmarkedPages || []);
+  }, [docId, initialRawUrl, savedPage, initialNote]);
 
   // Keyboard shortcuts (Ctrl+B for details panel)
   useEffect(() => {
@@ -229,9 +238,45 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
   };
 
   const onDocumentLoadError = (err: Error) => {
-    setErrorDetails(err?.message || 'Cross-origin or CORS restrictions encountered.');
-    setUseEmbedFrame(true);
-    setLoadingStage('ready');
+    console.warn('InAppPdfReader document load error:', err?.message);
+    setErrorDetails(err?.message || 'Cross-origin fetch restrictions encountered on remote server.');
+    if (readerMode === 'canvas') {
+      setReaderMode('native');
+    } else {
+      setLoadingStage('failed');
+    }
+  };
+
+  const handleOpenGoogleViewer = () => {
+    setReaderMode('google');
+    setErrorDetails(null);
+  };
+
+  const handleOpenNativeViewer = () => {
+    setReaderMode('native');
+    setErrorDetails(null);
+  };
+
+  const handleOpenCanvasViewer = () => {
+    setReaderMode('canvas');
+    setLoadingStage('loading');
+    setErrorDetails(null);
+  };
+
+  const handleUseVerifiedFallback = () => {
+    setActiveUrl(FALLBACK_VERIFIED_PDF);
+    setReaderMode('canvas');
+    setLoadingStage('loading');
+    setErrorDetails(null);
+  };
+
+  const handleRetry = () => {
+    const u = getCorsCompatiblePdfUrl(initialRawUrl) || FALLBACK_VERIFIED_PDF;
+    setActiveUrl(u);
+    const isCorsSafe = isCorsSafePdfDomain(u);
+    setReaderMode(isCorsSafe ? 'canvas' : 'native');
+    setLoadingStage('loading');
+    setErrorDetails(null);
   };
 
   // Handle Page Navigation
@@ -301,12 +346,6 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     setTimeout(() => setCopiedCitation(false), 2000);
   };
 
-  const handleUseVerifiedFallback = () => {
-    setUseEmbedFrame(true);
-    setLoadingStage('ready');
-    setErrorDetails(null);
-  };
-
   const progressPercentage = Math.round((currentPage / (numPages || 1)) * 100);
 
   // Compute page width based on fit mode and container width
@@ -360,7 +399,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           <BookOpen className="w-4 h-4 text-[#BE94F5] shrink-0 ml-1 hidden sm:block" />
           <div className="min-w-0">
             <h3 className="font-semibold text-stone-100 truncate max-w-xs sm:max-w-md">{document.title}</h3>
-            <p className="text-[11px] text-stone-400 truncate hidden sm:block">
+            <p className="text-[11px] text-stone-300 truncate hidden sm:block">
               {isPaper ? paper?.authors.join(', ') : book?.authors.join(', ')}
             </p>
           </div>
@@ -374,7 +413,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               onClick={() => setViewMode('continuous')}
               title="Continuous Vertical Scroll Mode"
               className={`p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition-all ${
-                viewMode === 'continuous' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+                viewMode === 'continuous' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-200 hover:text-white'
               }`}
             >
               <Rows className="w-3.5 h-3.5" />
@@ -384,7 +423,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               onClick={() => setViewMode('single')}
               title="Single Page Mode"
               className={`p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition-all ${
-                viewMode === 'single' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+                viewMode === 'single' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-200 hover:text-white'
               }`}
             >
               <Square className="w-3.5 h-3.5" />
@@ -398,7 +437,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               onClick={() => scrollToPage(currentPage - 1)}
               disabled={currentPage <= 1 || loadingStage !== 'ready'}
               aria-label="Previous Page"
-              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-300 transition-colors"
+              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-200 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -411,16 +450,16 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 onChange={(e) => setInputPage(e.target.value)}
                 onBlur={handleInputPageSubmit}
                 aria-label="Current Page Number"
-                className="w-9 text-center bg-stone-800 border border-stone-700 rounded-md text-xs py-0.5 font-mono text-stone-200 focus:outline-none focus:border-[#BE94F5]"
+                className="w-9 text-center bg-stone-800 border border-stone-700 rounded-md text-xs py-0.5 font-mono text-stone-100 focus:outline-none focus:border-[#BE94F5]"
               />
-              <span className="text-xs text-stone-400 font-mono">/ {numPages}</span>
+              <span className="text-xs text-stone-300 font-mono">/ {numPages}</span>
             </form>
 
             <button
               onClick={() => scrollToPage(currentPage + 1)}
               disabled={currentPage >= numPages || loadingStage !== 'ready'}
               aria-label="Next Page"
-              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-300 transition-colors"
+              className="p-1 rounded hover:bg-stone-800 disabled:opacity-30 text-stone-200 transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -429,13 +468,46 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
         {/* Right Toolbar Actions */}
         <div className="flex items-center gap-1.5">
+          {/* Reader Engine Switcher */}
+          <div className="hidden lg:flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
+            <button
+              onClick={handleOpenCanvasViewer}
+              title="Interactive Canvas Reader"
+              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
+                readerMode === 'canvas' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              <Eye className="w-3 h-3" />
+              <span>Canvas</span>
+            </button>
+            <button
+              onClick={handleOpenNativeViewer}
+              title="Direct Native PDF Frame"
+              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
+                readerMode === 'native' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              <FileText className="w-3 h-3" />
+              <span>Native</span>
+            </button>
+            <button
+              onClick={handleOpenGoogleViewer}
+              title="Google Docs Embedded Viewer"
+              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
+                readerMode === 'google' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              <span>Google</span>
+            </button>
+          </div>
+
           {/* Zoom controls */}
           <div className="hidden sm:flex items-center gap-1 bg-stone-900 border border-stone-800 px-2 py-0.5 rounded-xl">
             <button
               onClick={handleZoomOut}
               aria-label="Zoom Out"
               title="Zoom Out"
-              className="p-1 hover:bg-stone-800 rounded text-stone-300"
+              className="p-1 hover:bg-stone-800 rounded text-stone-200"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
@@ -444,7 +516,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               onClick={() => setFitMode('fit-width')}
               title="Fit to Width"
               className={`px-1.5 py-0.5 text-[10px] font-mono rounded font-bold ${
-                fitMode === 'fit-width' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-400 hover:text-stone-200'
+                fitMode === 'fit-width' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-200 hover:text-white'
               }`}
             >
               Width
@@ -454,7 +526,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               onClick={handleZoomIn}
               aria-label="Zoom In"
               title="Zoom In"
-              className="p-1 hover:bg-stone-800 rounded text-stone-300"
+              className="p-1 hover:bg-stone-800 rounded text-stone-200"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
@@ -462,7 +534,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
             <button
               onClick={handleRotate}
               title="Rotate 90 degrees"
-              className="p-1 hover:bg-stone-800 rounded text-stone-400 hover:text-stone-200"
+              className="p-1 hover:bg-stone-800 rounded text-stone-200 hover:text-white"
             >
               <RotateCw className="w-3.5 h-3.5" />
             </button>
@@ -476,7 +548,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
             className={`p-2 rounded-xl border transition-colors ${
               bookmarks.includes(currentPage)
                 ? 'bg-[#FCCC42]/20 border-[#FCCC42] text-[#FCCC42]'
-                : 'bg-stone-900 border-stone-800 text-stone-400 hover:text-stone-200'
+                : 'bg-stone-900 border-stone-800 text-stone-200 hover:text-white'
             }`}
           >
             <Bookmark className="w-4 h-4" fill={bookmarks.includes(currentPage) ? 'currentColor' : 'none'} />
@@ -535,13 +607,12 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
         </span>
         <div className="flex items-center gap-3 shrink-0">
           <button
-            onClick={() => {
-              setUseEmbedFrame(!useEmbedFrame);
-              setLoadingStage('loading');
-            }}
-            className="text-[11px] bg-stone-900 border border-stone-700 hover:border-stone-500 px-2 py-0.5 rounded text-stone-200 transition-colors"
+            onClick={handleUseVerifiedFallback}
+            className="text-[11px] bg-stone-900 border border-stone-700 hover:border-stone-500 px-2 py-0.5 rounded text-stone-200 transition-colors flex items-center gap-1"
+            title="Load verified sample PDF if remote URL is blocked"
           >
-            {useEmbedFrame ? 'Switch to Canvas Reader' : 'Switch to Embedded Frame'}
+            <Sparkles className="w-3 h-3 text-[#BE94F5]" />
+            <span>Load Sample PDF</span>
           </button>
           <a
             href={document.canonicalUrl || document.sourcePageUrl || initialRawUrl}
@@ -568,7 +639,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
                   activeTab === 'reader'
                     ? 'border-[#BE94F5] text-[#BE94F5]'
-                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                    : 'border-transparent text-stone-200 hover:text-white'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" />
@@ -580,7 +651,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
                   activeTab === 'notes'
                     ? 'border-[#BE94F5] text-[#BE94F5]'
-                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                    : 'border-transparent text-stone-200 hover:text-white'
                 }`}
               >
                 <MessageSquare className="w-3.5 h-3.5" />
@@ -592,7 +663,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 className={`flex-1 py-2.5 px-2 flex items-center justify-center gap-1 border-b-2 transition-colors ${
                   activeTab === 'questions'
                     ? 'border-[#BE94F5] text-[#BE94F5]'
-                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                    : 'border-transparent text-stone-200 hover:text-white'
                 }`}
               >
                 <HelpCircle className="w-3.5 h-3.5" />
@@ -602,40 +673,40 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
             <div className="p-4 overflow-y-auto flex-1 space-y-4 text-xs">
               {activeTab === 'reader' && (
-                <div className="space-y-4 text-stone-300">
+                <div className="space-y-4 text-stone-200">
                   {isPaper && paper && (
                     <>
                       <div>
-                        <h4 className="font-semibold text-stone-200 mb-1">Why It Matters</h4>
-                        <p className="text-stone-400 leading-relaxed">{paper.whyItMatters}</p>
+                        <h4 className="font-semibold text-stone-100 mb-1">Why It Matters</h4>
+                        <p className="text-stone-300 leading-relaxed">{paper.whyItMatters}</p>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-stone-200 mb-1">Sections to Read</h4>
+                        <h4 className="font-semibold text-stone-100 mb-1">Sections to Read</h4>
                         <p className="text-[#BE94F5] font-mono">{paper.sectionsToRead}</p>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-stone-200 mb-1">Paper Summary</h4>
-                        <p className="text-stone-400 leading-relaxed">{paper.summary}</p>
+                        <h4 className="font-semibold text-stone-100 mb-1">Paper Summary</h4>
+                        <p className="text-stone-300 leading-relaxed">{paper.summary}</p>
                       </div>
                     </>
                   )}
 
                   {book && (
                     <div>
-                      <h4 className="font-semibold text-stone-200 mb-1">Recommended Chapter</h4>
-                      <p className="text-stone-300 font-medium">{book.recommendedChapter}</p>
-                      <p className="text-stone-400 mt-2">Publisher: {book.publisherOrInstitution || 'Academic Press'}</p>
+                      <h4 className="font-semibold text-stone-100 mb-1">Recommended Chapter</h4>
+                      <p className="text-stone-200 font-medium">{book.recommendedChapter}</p>
+                      <p className="text-stone-300 mt-2">Publisher: {book.publisherOrInstitution || 'Academic Press'}</p>
                     </div>
                   )}
 
                   {/* Bookmarks Section */}
                   <div className="pt-2 border-t border-stone-800">
-                    <h4 className="font-semibold text-stone-200 mb-2 flex items-center justify-between">
+                    <h4 className="font-semibold text-stone-100 mb-2 flex items-center justify-between">
                       <span>Bookmarked Pages</span>
-                      <span className="text-stone-500 font-mono">{bookmarks.length}</span>
+                      <span className="text-stone-300 font-mono">{bookmarks.length}</span>
                     </h4>
                     {bookmarks.length === 0 ? (
-                      <p className="text-stone-500 italic">No bookmarks saved yet.</p>
+                      <p className="text-stone-300 italic">No bookmarks saved yet.</p>
                     ) : (
                       <div className="flex flex-wrap gap-1.5">
                         {bookmarks.map((p) => (
@@ -697,10 +768,10 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               )}
 
               {activeTab === 'questions' && (
-                <div className="space-y-3 text-stone-300">
-                  <h4 className="font-semibold text-stone-200">Reading Comprehension</h4>
+                <div className="space-y-3 text-stone-200">
+                  <h4 className="font-semibold text-stone-100">Reading Comprehension</h4>
                   {isPaper && paper?.readingQuestions ? (
-                    <ul className="space-y-2 list-disc list-inside text-stone-400">
+                    <ul className="space-y-2 list-disc list-inside text-stone-300">
                       {paper.readingQuestions.map((q, idx) => (
                         <li key={idx} className="leading-relaxed">
                           {q}
@@ -708,7 +779,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-stone-500 italic">No specific questions for this textbook chapter.</p>
+                    <p className="text-stone-300 italic">No specific questions for this textbook chapter.</p>
                   )}
                 </div>
               )}
@@ -726,21 +797,21 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 </h3>
                 <button
                   onClick={() => setIsMobileDrawerOpen(false)}
-                  className="p-1 rounded-lg bg-stone-900 text-stone-400 hover:text-stone-200"
+                  className="p-1 rounded-lg bg-stone-900 text-stone-200 hover:text-white"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               {isPaper && paper && (
-                <div className="space-y-3 text-xs text-stone-300">
+                <div className="space-y-3 text-xs text-stone-200">
                   <div>
                     <h4 className="font-bold text-stone-100">Why It Matters</h4>
-                    <p className="text-stone-400">{paper.whyItMatters}</p>
+                    <p className="text-stone-300">{paper.whyItMatters}</p>
                   </div>
                   <div>
                     <h4 className="font-bold text-stone-100">Paper Summary</h4>
-                    <p className="text-stone-400">{paper.summary}</p>
+                    <p className="text-stone-300">{paper.summary}</p>
                   </div>
                 </div>
               )}
@@ -772,78 +843,90 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           ref={viewerAreaRef}
           className="flex-1 bg-stone-950 flex flex-col items-center overflow-y-auto p-3 sm:p-6 relative min-h-[500px]"
         >
-          {useEmbedFrame ? (
-            <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-stone-950 relative space-y-3">
-              <div className="w-full flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-stone-900/90 border border-stone-800 rounded-xl text-xs text-stone-300">
-                <div className="flex items-center gap-2">
+          {readerMode === 'native' ? (
+            <div className="w-full h-full min-h-[650px] flex flex-col items-center bg-stone-950 relative space-y-2 p-1">
+              <div className="w-full flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 bg-stone-900 border border-stone-800 rounded-xl text-xs text-stone-300">
+                <span className="font-mono text-stone-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="font-medium text-stone-200">
-                    {embedMode === 'native' ? 'Native Browser PDF Reader' : 'Google Docs PDF Viewer'}
-                  </span>
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-bold">Direct Native PDF Engine</span>
+                </span>
+                <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setUseEmbedFrame(false)}
-                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-[11px] font-bold border border-stone-700 transition-all"
+                    onClick={handleOpenCanvasViewer}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
                     Try Canvas Reader
                   </button>
                   <button
-                    onClick={() => setEmbedMode(embedMode === 'native' ? 'google' : 'native')}
-                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-[11px] font-bold border border-stone-700 transition-all"
+                    onClick={handleUseVerifiedFallback}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
-                    Switch to {embedMode === 'native' ? 'Google Docs Viewer' : 'Native Browser Frame'}
+                    Load Sample PDF
                   </button>
                   <a
                     href={initialRawUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-2.5 py-1 bg-[#BE94F5] hover:bg-[#a372e6] text-[#151313] font-extrabold rounded-lg text-[11px] flex items-center gap-1 transition-all"
+                    className="px-2.5 py-1 bg-[#F2C94C] hover:bg-[#e2b93c] text-stone-950 font-extrabold rounded-lg text-[11px] flex items-center gap-1 transition-colors"
                   >
-                    <span>Open Original PDF</span>
+                    <span>Open Direct Source</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
               </div>
-              {embedMode === 'native' ? (
-                <object
-                  data={fixArxivPdfUrl(fixGitHubPdfUrl(initialRawUrl))}
-                  type="application/pdf"
-                  className="w-full flex-1 min-h-[600px] rounded-xl border border-stone-800 bg-white"
-                >
-                  <div className="flex flex-col items-center justify-center p-8 bg-stone-900 border border-stone-800 rounded-xl text-center space-y-4 my-auto">
-                    <FileText className="w-12 h-12 text-[#BE94F5]" />
-                    <h4 className="text-stone-200 font-bold text-base">Direct Frame Preview Restricted</h4>
-                    <p className="text-stone-400 text-xs max-w-md">
-                      The publisher server requires opening the PDF document in a direct browser window or downloading the file.
-                    </p>
-                    <div className="flex items-center gap-3 pt-2">
-                      <a
-                        href={initialRawUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2.5 bg-[#BE94F5] hover:bg-[#a372e6] text-[#151313] font-extrabold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow"
-                      >
-                        <span>Open Direct PDF Source</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                      <button
-                        onClick={() => setEmbedMode('google')}
-                        className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold rounded-xl text-xs border border-stone-700"
-                      >
-                        Try Google Docs Viewer
-                      </button>
-                    </div>
-                  </div>
-                </object>
-              ) : (
-                <iframe
-                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(fixArxivPdfUrl(fixGitHubPdfUrl(initialRawUrl)))}&embedded=true`}
-                  className="w-full flex-1 min-h-[600px] rounded-xl border border-stone-800 bg-white"
-                  title={document.title}
-                />
-              )}
+              <iframe
+                src={activeUrl}
+                className="w-full flex-1 min-h-[650px] rounded-xl border border-stone-800 bg-white shadow-2xl"
+                title={document.title}
+              />
             </div>
+          ) : readerMode === 'google' ? (
+            <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-stone-950 relative space-y-3 p-2">
+              <div className="w-full flex items-center justify-between px-4 py-2 bg-stone-900 border border-stone-800 rounded-xl text-xs text-stone-300">
+                <span className="font-mono text-stone-300 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Google Docs Embedded Viewer</span>
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleOpenNativeViewer}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
+                  >
+                    Native Browser Viewer
+                  </button>
+                  <button
+                    onClick={handleOpenCanvasViewer}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
+                  >
+                    Canvas Reader
+                  </button>
+                  <a
+                    href={initialRawUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2.5 py-1 bg-[#BE94F5] hover:bg-[#a372e6] text-[#151313] font-extrabold rounded-lg text-[11px] flex items-center gap-1 transition-colors"
+                  >
+                    <span>Open Direct Source</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+              <iframe
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(initialRawUrl)}&embedded=true`}
+                className="w-full flex-1 min-h-[600px] rounded-xl border border-stone-800 bg-white"
+                title={document.title}
+              />
+            </div>
+          ) : loadingStage === 'failed' ? (
+            <PdfUnavailableState
+              title={document.title}
+              institution={isPaper ? paper?.authors.join(', ') : book?.publisherOrInstitution || 'Academic Source'}
+              sourcePageUrl={initialRawUrl}
+              technicalDetails={errorDetails || 'Remote server blocked cross-origin PDF frame requests.'}
+              onRetry={handleRetry}
+              onUseFallback={handleUseVerifiedFallback}
+              onOpenGoogleViewer={handleOpenGoogleViewer}
+            />
           ) : (
             <Document
               file={activeUrl}
@@ -852,22 +935,9 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               loading={
                 <div className="flex flex-col items-center justify-center space-y-3 text-stone-400 py-28 my-auto">
                   <Loader2 className="w-8 h-8 animate-spin text-[#BE94F5]" />
-                  <p className="text-sm font-medium font-mono">Loading PDF document via React-PDF...</p>
+                  <p className="text-sm font-medium font-mono">Loading document in Canvas Reader...</p>
+                  <p className="text-xs text-stone-500 font-sans">{document.title}</p>
                 </div>
-              }
-              error={
-                <PdfUnavailableState
-                  title={document.title}
-                  institution={isPaper ? paper?.authors.join(', ') : book?.publisherOrInstitution || 'Academic Source'}
-                  sourcePageUrl={initialRawUrl}
-                  technicalDetails={errorDetails || 'Remote server blocked cross-origin PDF frame requests.'}
-                  onRetry={() => {
-                    setErrorDetails(null);
-                    setUseEmbedFrame(true);
-                    setLoadingStage('ready');
-                  }}
-                  onUseFallback={() => setUseEmbedFrame(true)}
-                />
               }
             >
               {loadingStage === 'ready' && (
@@ -918,3 +988,4 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     </div>
   );
 };
+

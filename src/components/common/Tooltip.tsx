@@ -16,7 +16,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   shortcut,
   subtext,
   position = 'right',
-  delayMs = 300,
+  delayMs = 250,
   disabled = false,
   children,
 }) => {
@@ -93,7 +93,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const triggerElement = React.cloneElement(child, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
-      // Handle existing ref if present
       const childRef = (child as any).ref;
       if (typeof childRef === 'function') childRef(node);
       else if (childRef && typeof childRef === 'object') childRef.current = node;
@@ -116,7 +115,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
     },
   });
 
-  // Calculate transform according to position
   const getTransformClass = () => {
     switch (position) {
       case 'right':
@@ -160,21 +158,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
               left: `${coords.left}px`,
             }}
           >
-            <div className="relative bg-[#151313] text-[#F7F7F5] border border-[#F7F7F5]/20 rounded-lg px-2.5 py-1.5 shadow-xl text-xs font-sans max-w-xs flex flex-col gap-0.5">
-              {/* Little Arrow */}
+            <div className="relative bg-[#171515] dark:bg-[#2B2929] text-[#FEF8F7] dark:text-[#F6EFEF] border border-[#171515] dark:border-stone-700 rounded-lg px-2.5 py-1.5 brand-shadow-sm text-xs font-sans max-w-xs flex flex-col gap-0.5">
               <div
-                className="absolute w-2 h-2 bg-[#151313] border-l border-b border-[#F7F7F5]/20"
+                className="absolute w-2 h-2 bg-[#171515] dark:bg-[#2B2929] border-l border-b border-[#171515] dark:border-stone-700"
                 style={getArrowStyle()}
               />
               <div className="flex items-center gap-2 justify-between min-w-0">
                 <span className="font-semibold text-xs tracking-tight break-words max-w-[16rem]">{content}</span>
                 {shortcut && (
-                  <kbd className="text-[10px] font-mono bg-[#F7F7F5]/10 text-[#BE94F5] px-1.5 py-0.5 rounded border border-[#F7F7F5]/10">
+                  <kbd className="text-[10px] font-mono bg-[#FEF8F7]/10 dark:bg-[#F6EFEF]/10 text-[#F2C94C] dark:text-[#FFE08B] px-1.5 py-0.5 rounded border border-[#FEF8F7]/20">
                     {shortcut}
                   </kbd>
                 )}
               </div>
-              {subtext && <span className="text-[10px] text-[#F7F7F5]/70 leading-tight">{subtext}</span>}
+              {subtext && <span className="text-[10px] text-[#FEF8F7]/70 dark:text-[#F6EFEF]/70 leading-tight">{subtext}</span>}
             </div>
           </div>,
           document.body

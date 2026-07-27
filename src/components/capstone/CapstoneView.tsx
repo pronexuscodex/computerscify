@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, CheckCircle2, FileText, Code, CheckSquare, Sparkles, AlertCircle } from 'lucide-react';
+import { Award, CheckCircle2, CheckSquare, Sparkles, AlertCircle } from 'lucide-react';
 import { ALL_MODULES } from '../../data/curriculumData';
 import { LearnerProgress, CapstoneProjectMilestone } from '../../types/curriculum';
 import { saveLearnerProgress } from '../../services/storage';
@@ -29,17 +29,17 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden text-[#151313]">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden text-[#1D1B1B] dark:text-[#F6EFEF]">
       {/* Page Header */}
-      <div className="border-b border-[#151313] pb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#151313] text-[#F7F7F5] text-xs font-bold font-mono mb-2">
-          <Award className="w-3.5 h-3.5 text-[#FCCC42]" />
+      <div className="border-b-4 border-[#000000] pb-6">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#000000] text-[#FFFFFF] text-xs font-black font-mono uppercase tracking-wider mb-2">
+          <Award className="w-3.5 h-3.5 text-[#F2C94C]" />
           Un-Guided Capstones
         </div>
-        <h1 className="font-display font-extrabold text-3xl md:text-4xl text-[#151313] tracking-tight">
+        <h1 className="font-display font-black text-3xl md:text-4xl text-[#000000] dark:text-[#F6EFEF] uppercase tracking-tight">
           Capstone Workspaces
         </h1>
-        <p className="text-sm text-[#151313]/70 font-medium mt-1">
+        <p className="text-sm text-[#000000]/80 dark:text-[#F6EFEF]/80 font-bold mt-1 max-w-2xl">
           Challenging, un-guided milestone projects designed to synthesize theory into real working code.
         </p>
       </div>
@@ -48,7 +48,7 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Left Sidebar: Capstone List */}
         <div className="lg:col-span-1 space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-[#151313]/60">
+          <label className="text-xs font-black uppercase tracking-wider text-[#000000]/70 dark:text-[#F6EFEF]/70">
             Available Capstones
           </label>
           <div className="space-y-2">
@@ -61,10 +61,10 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
                     setSelectedCapstone(cap);
                     setDraftNotes(progress.capstoneNotes[cap.id] || '');
                   }}
-                  className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${
+                  className={`w-full text-left p-3 rounded border-2 border-[#000000] text-xs font-black uppercase transition-all ${
                     isSelected
-                      ? 'bg-[#BE94F5] text-[#151313] border-[#151313] brand-shadow-sm'
-                      : 'bg-[#F7F7F5] border-[#151313]/20 hover:border-[#151313]'
+                      ? 'bg-[#F2C94C] text-[#000000] neo-shadow-sm'
+                      : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
                   }`}
                 >
                   <div className="line-clamp-1">{cap.title}</div>
@@ -78,14 +78,14 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
         {/* Right Detail Area */}
         <div className="lg:col-span-3 space-y-6 min-w-0">
           {/* Header Card */}
-          <div className="bg-[#BE94F5] brand-border brand-shadow-lg rounded-2xl p-6 space-y-3 min-w-0">
-            <span className="px-3 py-1 rounded-full bg-[#151313] text-[#F7F7F5] text-xs font-bold font-mono">
+          <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6 space-y-3 min-w-0">
+            <span className="px-3 py-1 rounded bg-[#000000] text-[#FFFFFF] text-xs font-black font-mono uppercase">
               UN-GUIDED MILESTONE
             </span>
-            <h2 className="font-display font-extrabold text-2xl text-[#151313] break-words">
+            <h2 className="font-display font-black text-2xl text-[#000000] dark:text-[#F6EFEF] uppercase break-words">
               {selectedCapstone.title}
             </h2>
-            <p className="text-sm text-[#151313]/90 font-medium leading-relaxed">
+            <p className="text-sm text-[#000000]/80 dark:text-[#F6EFEF]/80 font-bold leading-relaxed">
               {selectedCapstone.description}
             </p>
           </div>
@@ -93,14 +93,14 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
           {/* Constraints & Deliverables Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Constraints */}
-            <div className="bg-[#F7F7F5] brand-border brand-shadow-sm rounded-2xl p-5 space-y-3 min-w-0">
-              <h3 className="font-display font-bold text-base text-[#151313] flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-[#BE94F5]" /> Project Constraints
+            <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-3 min-w-0">
+              <h3 className="font-display font-black text-base text-[#000000] dark:text-[#F6EFEF] uppercase flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Project Constraints
               </h3>
-              <ul className="space-y-2 text-xs text-[#151313] font-medium">
+              <ul className="space-y-2 text-xs text-[#000000] dark:text-[#F6EFEF] font-bold">
                 {selectedCapstone.constraints.map((c, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-[#BE94F5] font-bold">•</span>
+                    <span className="text-[#000000] dark:text-[#F2C94C] font-black">•</span>
                     <span>{c}</span>
                   </li>
                 ))}
@@ -108,11 +108,11 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
             </div>
 
             {/* Expected Deliverables */}
-            <div className="bg-[#F7F7F5] brand-border brand-shadow-sm rounded-2xl p-5 space-y-3 min-w-0">
-              <h3 className="font-display font-bold text-base text-[#151313] flex items-center gap-2">
-                <CheckSquare className="w-4 h-4 text-[#82E0AA]" /> Expected Deliverables
+            <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-3 min-w-0">
+              <h3 className="font-display font-black text-base text-[#000000] dark:text-[#F6EFEF] uppercase flex items-center gap-2">
+                <CheckSquare className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Expected Deliverables
               </h3>
-              <ul className="space-y-2 text-xs text-[#151313] font-medium">
+              <ul className="space-y-2 text-xs text-[#000000] dark:text-[#F6EFEF] font-bold">
                 {selectedCapstone.expectedDeliverables.map((d, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#82E0AA] shrink-0 mt-0.5" />
@@ -124,36 +124,36 @@ export const CapstoneView: React.FC<CapstoneViewProps> = ({
           </div>
 
           {/* Evaluation Rubric */}
-          <div className="bg-[#F7F7F5] brand-border brand-shadow-sm rounded-2xl p-5 space-y-3 min-w-0">
-            <h3 className="font-display font-bold text-base text-[#151313] flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#FCCC42]" /> Evaluation Rubric
+          <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-3 min-w-0">
+            <h3 className="font-display font-black text-base text-[#000000] dark:text-[#F6EFEF] uppercase flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Evaluation Rubric
             </h3>
             <div className="space-y-2">
               {selectedCapstone.evaluationRubric.map((r, i) => (
-                <div key={i} className="p-3 rounded-xl bg-[#151313]/5 border border-[#151313]/10 text-xs">
-                  <div className="flex items-center justify-between font-bold text-[#151313] mb-1 gap-2">
+                <div key={i} className="p-3 rounded bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] text-xs">
+                  <div className="flex items-center justify-between font-black text-[#000000] dark:text-[#F6EFEF] uppercase mb-1 gap-2">
                     <span>{r.criterion}</span>
-                    <span className="font-mono text-[#151313] bg-[#BE94F5] px-2 py-0.5 rounded">{r.weight}</span>
+                    <span className="font-mono bg-[#F2C94C] text-[#000000] px-2 py-0.5 rounded border border-[#000000]">{r.weight}</span>
                   </div>
-                  <p className="text-[#151313]/80">{r.description}</p>
+                  <p className="text-[#000000]/80 dark:text-[#F6EFEF]/80 font-medium">{r.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Notes & Submission Editor */}
-          <div className="bg-[#F7F7F5] brand-border brand-shadow-lg rounded-2xl p-6 space-y-3 min-w-0">
-            <h3 className="font-display font-bold text-base text-[#151313]">
+          <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6 space-y-3 min-w-0">
+            <h3 className="font-display font-black text-base text-[#000000] dark:text-[#F6EFEF] uppercase">
               Capstone Submission & Implementation Draft
             </h3>
-            <p className="text-xs text-[#151313]/70 font-medium">
+            <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 font-bold">
               Document your architectural decisions, test case outputs, or paste code snippets here.
             </p>
             <textarea
               value={draftNotes}
               onChange={handleNotesChange}
               placeholder="Paste implementation code, design documentation, and test logs..."
-              className="w-full h-48 p-4 bg-[#F7F7F5] text-[#151313] border border-[#151313] rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#BE94F5] resize-none"
+              className="w-full h-48 p-4 bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] border-2 border-[#000000] rounded font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#F2C94C] resize-none font-bold"
             />
           </div>
         </div>

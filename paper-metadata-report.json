@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-25T21:32:58.041Z",
+  "timestamp": "2026-07-27T07:41:47.854Z",
   "summary": {
-    "totalPapers": 14,
-    "validMetadataCount": 14,
+    "totalPapers": 39,
+    "validMetadataCount": 38,
     "doiValidatedCount": 9,
     "arxivValidatedCount": 1,
-    "metadataMismatches": 0
+    "metadataMismatches": 1
   },
   "papers": [
     {
@@ -286,6 +286,473 @@
       ],
       "year": 2014,
       "venue": "USENIX Annual Technical Conference (ATC)",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs101-t1",
+      "topicTitle": "Bits, Bytes & Digital Logic",
+      "paperId": "paper-shannon-1938",
+      "title": "A Symbolic Analysis of Relay and Switching Circuits",
+      "authors": [
+        "Claude E. Shannon"
+      ],
+      "year": 1938,
+      "venue": "Transactions of the American Institute of Electrical Engineers",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs102-t1",
+      "topicTitle": "OOP Architecture & Polymorphism",
+      "paperId": "paper-kay-1993",
+      "title": "The Early History of Smalltalk",
+      "authors": [
+        "Alan C. Kay"
+      ],
+      "year": 1993,
+      "venue": "History of Programming Languages II",
+      "paperType": "historical",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "math101-t1",
+      "topicTitle": "Derivatives & Chain Rule for Multivariable Optimization",
+      "paperId": "paper-cauchy-1847",
+      "title": "Méthode générale pour la résolution des systèmes d'équations simultanées",
+      "authors": [
+        "Augustin-Louis Cauchy"
+      ],
+      "year": 1847,
+      "venue": "Compte Rendu à l'Académie des Sciences",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": false,
+      "hasVenue": true,
+      "isValid": false
+    },
+    {
+      "topicId": "ds101-t1",
+      "topicTitle": "Tabular Wrangling & Grammars of Graphics",
+      "paperId": "paper-wickham-2014",
+      "title": "Tidy Data",
+      "authors": [
+        "Hadley Wickham"
+      ],
+      "year": 2014,
+      "venue": "Journal of Statistical Software",
+      "paperType": "seminal",
+      "difficulty": "beginner",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs201-t1",
+      "topicTitle": "Hash Tables & Collision Resolution Algorithms",
+      "paperId": "paper-knuth-1963",
+      "title": "Notes on Open Addressing",
+      "authors": [
+        "Donald E. Knuth"
+      ],
+      "year": 1963,
+      "venue": "Unpublished Memorandum / Analysis of Algorithms",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "math201-t1",
+      "topicTitle": "Singular Value Decomposition (SVD) & Dimensionality Reduction",
+      "paperId": "paper-eckart-young-1936",
+      "title": "The Approximation of One Matrix by Another of Lower Rank",
+      "authors": [
+        "Carl Eckart",
+        "Gale Young"
+      ],
+      "year": 1936,
+      "venue": "Psychometrika",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "stat201-t1",
+      "topicTitle": "Maximum Likelihood Estimation (MLE) & Likelihood Ratio Tests",
+      "paperId": "paper-fisher-1922",
+      "title": "On the Mathematical Foundations of Theoretical Statistics",
+      "authors": [
+        "Ronald A. Fisher"
+      ],
+      "year": 1922,
+      "venue": "Philosophical Transactions of the Royal Society A",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs204-t1",
+      "topicTitle": "Instruction Pipelining & Cache Locality Optimization",
+      "paperId": "paper-patterson-1980",
+      "title": "The Case for the Reduced Instruction Set Computer",
+      "authors": [
+        "David A. Patterson",
+        "David R. Ditzel"
+      ],
+      "year": 1980,
+      "venue": "ACM SIGARCH Computer Architecture News",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds202-t1",
+      "topicTitle": "SQL Window Functions & Analytical Query Optimization",
+      "paperId": "paper-codd-1970",
+      "title": "A Relational Model of Data for Large Shared Data Banks",
+      "authors": [
+        "E. F. Codd"
+      ],
+      "year": 1970,
+      "venue": "Communications of the ACM",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs301-t1",
+      "topicTitle": "Thread Synchronization & Deadlock Prevention",
+      "paperId": "paper-dijkstra-1965",
+      "title": "Cooperating Sequential Processes",
+      "authors": [
+        "Edsger W. Dijkstra"
+      ],
+      "year": 1965,
+      "venue": "Technologische Hogeschool Eindhoven",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds302-t1",
+      "topicTitle": "Difference-in-Differences & Propensity Score Matching",
+      "paperId": "paper-card-krueger-1994",
+      "title": "Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania",
+      "authors": [
+        "David Card",
+        "Alan B. Krueger"
+      ],
+      "year": 1994,
+      "venue": "American Economic Review",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs305-t1",
+      "topicTitle": "Backpropagation & Transformer Self-Attention Mechanics",
+      "paperId": "paper-vaswani-2017",
+      "title": "Attention Is All You Need",
+      "authors": [
+        "Ashish Vaswani",
+        "Noam Shazeer",
+        "Niki Parmar",
+        "Jakob Uszkoreit",
+        "Llion Jones",
+        "Aidan N. Gomez",
+        "Łukasz Kaiser",
+        "Illia Polosukhin"
+      ],
+      "year": 2017,
+      "venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs404-t1",
+      "topicTitle": "Differential Privacy & Algorithmic Bias Mitigation",
+      "paperId": "paper-dwork-2006",
+      "title": "Differential Privacy",
+      "authors": [
+        "Cynthia Dwork"
+      ],
+      "year": 2006,
+      "venue": "International Colloquium on Automata, Languages, and Programming (ICALP)",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs401-t1",
+      "topicTitle": "Capstone Proposal & System Specification",
+      "paperId": "paper-shannon-1938",
+      "title": "A Symbolic Analysis of Relay and Switching Circuits",
+      "authors": [
+        "Claude E. Shannon"
+      ],
+      "year": 1938,
+      "venue": "Transactions of the American Institute of Electrical Engineers",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds401-t1",
+      "topicTitle": "Data Product Specification & Baseline Model",
+      "paperId": "paper-wickham-2014",
+      "title": "Tidy Data",
+      "authors": [
+        "Hadley Wickham"
+      ],
+      "year": 2014,
+      "venue": "Journal of Statistical Software",
+      "paperType": "seminal",
+      "difficulty": "beginner",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs302-t1",
+      "topicTitle": "TCP/IP Architecture & Raft Consensus Protocols",
+      "paperId": "paper-raft-1",
+      "title": "In Search of an Understandable Consensus Algorithm",
+      "authors": [
+        "Diego Ongaro",
+        "John Ousterhout"
+      ],
+      "year": 2014,
+      "venue": "USENIX Annual Technical Conference (ATC)",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs303-t1",
+      "topicTitle": "Lexical Analysis, Recursive Descent Parsing & AST Transformations",
+      "paperId": "paper-comp-1",
+      "title": "LLVM: An Infrastructure for Multi-Stage Program Optimization",
+      "authors": [
+        "Chris Lattner",
+        "Vikram Adve"
+      ],
+      "year": 2004,
+      "venue": "CGO",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs304-t1",
+      "topicTitle": "Design Patterns, Microservices & Automated CI/CD Pipelines",
+      "paperId": "paper-se-1",
+      "title": "On the Criteria To Be Used in Decomposing Systems into Modules",
+      "authors": [
+        "David L. Parnas"
+      ],
+      "year": 1972,
+      "venue": "Communications of the ACM",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs402-t1",
+      "topicTitle": "Deterministic Finite Automata, Turing Machines & P vs NP",
+      "paperId": "paper-aut-1",
+      "title": "The Complexity of Theorem-Proving Procedures",
+      "authors": [
+        "Stephen A. Cook"
+      ],
+      "year": 1971,
+      "venue": "STOC",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "cs403-t1",
+      "topicTitle": "AES, RSA Public-Key Cryptography & Memory Safety",
+      "paperId": "paper-sec-1",
+      "title": "New Directions in Cryptography",
+      "authors": [
+        "Whitfield Diffie",
+        "Martin E. Hellman"
+      ],
+      "year": 1976,
+      "venue": "IEEE Transactions on Information Theory",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds303-t1",
+      "topicTitle": "Analytics Engineering, dbt & Modern Data Stack",
+      "paperId": "paper-kimball-1996",
+      "title": "Dimensional Modeling Standards",
+      "authors": [
+        "Ralph Kimball"
+      ],
+      "year": 1996,
+      "venue": "DBMS Magazine",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds304-t1",
+      "topicTitle": "Time Series Analysis, ARIMA & Decomposition",
+      "paperId": "paper-taylor-2018",
+      "title": "Forecasting at Scale (Prophet)",
+      "authors": [
+        "Sean J. Taylor",
+        "Benjamin Letham"
+      ],
+      "year": 2018,
+      "venue": "The American Statistician",
+      "paperType": "seminal",
+      "difficulty": "intermediate",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds402-t1",
+      "topicTitle": "Full Stack MLOps, Model Deployment & Containers",
+      "paperId": "paper-sculley-2015-mlops",
+      "title": "Hidden Technical Debt in Machine Learning Systems",
+      "authors": [
+        "D. Sculley et al."
+      ],
+      "year": 2015,
+      "venue": "NIPS",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds403-t1",
+      "topicTitle": "Stanford CS224N: Natural Language Processing with Deep Learning & Transformers",
+      "paperId": "paper-vaswani-2017-nlp",
+      "title": "Attention Is All You Need",
+      "authors": [
+        "Ashish Vaswani et al."
+      ],
+      "year": 2017,
+      "venue": "NIPS",
+      "paperType": "seminal",
+      "difficulty": "advanced",
+      "hasTitle": true,
+      "hasAuthors": true,
+      "hasYear": true,
+      "hasVenue": true,
+      "isValid": true
+    },
+    {
+      "topicId": "ds405-t1",
+      "topicTitle": "Computer Vision, CNNs & Spatial Analytics",
+      "paperId": "paper-he-2016",
+      "title": "Deep Residual Learning for Image Recognition",
+      "authors": [
+        "Kaiming He",
+        "Xiangyu Zhang",
+        "Shaoqing Ren",
+        "Jian Sun"
+      ],
+      "year": 2016,
+      "venue": "IEEE Conference on Computer Vision and Pattern Recognition (CVPR)",
       "paperType": "seminal",
       "difficulty": "advanced",
       "hasTitle": true,

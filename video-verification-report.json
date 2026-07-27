@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-25T21:49:07.207Z",
-  "totalVideos": 31,
-  "verifiedCount": 31,
+  "generatedAt": "2026-07-27T10:16:25.918Z",
+  "totalVideos": 72,
+  "verifiedCount": 72,
   "failedCount": 0,
   "successPercentage": "100.0%",
   "entries": [
@@ -9,17 +9,17 @@
       "id": "lec-cs50-w0",
       "source": "Module: Digital and Computational Foundations (p0-m1)",
       "topicId": "p0-m1-t1",
-      "title": "Harvard CS50: Lecture 0 - Computational Thinking & Representation",
+      "title": "Harvard CS50: Lecture 0 - Computational Thinking, Binary & Representation",
       "institution": "youtube",
-      "videoId": "8mAITcNt710",
-      "rawUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
-      "embedUrl": "https://www.youtube-nocookie.com/embed/8mAITcNt710",
-      "canonicalUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
+      "videoId": "rl0jkP9kOMw",
+      "rawUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/rl0jkP9kOMw",
+      "canonicalUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
       "status": "verified",
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.222Z"
     },
     {
       "id": "lec-mit-6004",
@@ -35,7 +35,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-math-alg",
@@ -51,7 +51,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-mit-6042j",
@@ -67,7 +67,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-mit-1806",
@@ -83,7 +83,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-cs50p",
@@ -99,7 +99,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-numpy-scipy",
@@ -115,7 +115,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-cmu-15445",
@@ -131,7 +131,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.481Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-mit-6006",
@@ -147,7 +147,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-harvard-stat110",
@@ -163,7 +163,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-stanford-cs229",
@@ -179,7 +179,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-stanford-cs231n",
@@ -195,7 +195,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-mlops-deploy",
@@ -211,7 +211,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "lec-mit-6824",
@@ -227,7 +227,407 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs101-lec-1",
+      "source": "Module: CS 101: Introduction to Computer Science & First Principles (cs-101)",
+      "topicId": "cs101-t1",
+      "title": "Harvard CS50: Binary, Memory, and Hardware Logic",
+      "institution": "youtube",
+      "videoId": "rl0jkP9kOMw",
+      "rawUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/rl0jkP9kOMw",
+      "canonicalUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs102-lec-1",
+      "source": "Module: CS 102: Object-Oriented & Functional Programming (Python) (cs-102)",
+      "topicId": "cs102-t1",
+      "title": "Stanford CS106B: Programming Abstractions",
+      "institution": "youtube",
+      "videoId": "kMzH3tfP6f8",
+      "rawUrl": "https://www.youtube.com/watch?v=kMzH3tfP6f8",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/kMzH3tfP6f8",
+      "canonicalUrl": "https://www.youtube.com/watch?v=kMzH3tfP6f8",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "math101-lec-1",
+      "source": "Module: MATH 101: Calculus I & II for Computer Science (math-101)",
+      "topicId": "math101-t1",
+      "title": "3Blue1Brown: Essence of Calculus",
+      "institution": "youtube",
+      "videoId": "WUvTyaaNkzM",
+      "rawUrl": "https://www.youtube.com/watch?v=WUvTyaaNkzM",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/WUvTyaaNkzM",
+      "canonicalUrl": "https://www.youtube.com/watch?v=WUvTyaaNkzM",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds101-lec-1",
+      "source": "Module: DS 101: Foundations of Data Science & Exploratory Data Analysis (ds-101)",
+      "topicId": "ds101-t1",
+      "title": "UC Berkeley Data 8: Computational & Tabular Structures",
+      "institution": "youtube",
+      "videoId": "zOjov-2OZ0E",
+      "rawUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/zOjov-2OZ0E",
+      "canonicalUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs201-lec-1",
+      "source": "Module: CS 201: Data Structures & Algorithmic Analysis (cs-201)",
+      "topicId": "cs201-t1",
+      "title": "MIT 6.006: Hashing and Hash Tables",
+      "institution": "youtube",
+      "videoId": "ZA-tUyM_y7s",
+      "rawUrl": "https://www.youtube.com/watch?v=ZA-tUyM_y7s",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/ZA-tUyM_y7s",
+      "canonicalUrl": "https://www.youtube.com/watch?v=ZA-tUyM_y7s",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "math201-lec-1",
+      "source": "Module: MATH 201: Linear Algebra & Matrix Decompositions (math-201)",
+      "topicId": "math201-t1",
+      "title": "Singular Value Decomposition (SVD) Mechanics",
+      "institution": "youtube",
+      "videoId": "EokL7E6o1AE",
+      "rawUrl": "https://www.youtube.com/watch?v=EokL7E6o1AE",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/EokL7E6o1AE",
+      "canonicalUrl": "https://www.youtube.com/watch?v=EokL7E6o1AE",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "stat201-lec-1",
+      "source": "Module: STAT 201: Probability Theory & Mathematical Statistics (stat-201)",
+      "topicId": "stat201-t1",
+      "title": "Maximum Likelihood Estimation Mechanics",
+      "institution": "youtube",
+      "videoId": "XepXtl9YKwc",
+      "rawUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/XepXtl9YKwc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs204-lec-1",
+      "source": "Module: CS 204: Computer Architecture & Assembly Language (cs-204)",
+      "topicId": "cs204-t1",
+      "title": "UC Berkeley CS61C: Great Ideas in Computer Architecture (RISC-V)",
+      "institution": "youtube",
+      "videoId": "VJ6tuX5bBf4",
+      "rawUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/VJ6tuX5bBf4",
+      "canonicalUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds202-lec-1",
+      "source": "Module: DS 202: Relational Databases, SQL & Data Warehouse Systems (ds-202)",
+      "topicId": "ds202-t1",
+      "title": "CMU 15-445: Database Systems (Advanced Relational SQL)",
+      "institution": "youtube",
+      "videoId": "7NPIENPr-zk",
+      "rawUrl": "https://www.youtube.com/watch?v=7NPIENPr-zk",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/7NPIENPr-zk",
+      "canonicalUrl": "https://www.youtube.com/watch?v=7NPIENPr-zk",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs301-lec-1",
+      "source": "Module: CS 301: Operating Systems & Systems Kernel Design (cs-301)",
+      "topicId": "cs301-t1",
+      "title": "Operating Systems & Kernel Architecture Mechanics",
+      "institution": "youtube",
+      "videoId": "26QPDBe-NB8",
+      "rawUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
+      "canonicalUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds302-lec-1",
+      "source": "Module: DS 302: Applied Econometrics, Causal Inference & A/B Testing (ds-302)",
+      "topicId": "ds302-t1",
+      "title": "Causal Inference & Statistical Modeling Foundations",
+      "institution": "youtube",
+      "videoId": "KbB0FjPg0mw",
+      "rawUrl": "https://www.youtube.com/watch?v=KbB0FjPg0mw",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/KbB0FjPg0mw",
+      "canonicalUrl": "https://www.youtube.com/watch?v=KbB0FjPg0mw",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs305-lec-1",
+      "source": "Module: CS 305: Machine Learning Foundations & Deep Learning (cs-305)",
+      "topicId": "cs305-t1",
+      "title": "Transformers & Self-Attention Mechanics (Let's Build GPT)",
+      "institution": "youtube",
+      "videoId": "kCc8FmEb1nY",
+      "rawUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/kCc8FmEb1nY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs404-lec-1",
+      "source": "Module: CS 404: Tech Ethics, Data Governance & Societal Impact (cs-404)",
+      "topicId": "cs404-t1",
+      "title": "Differential Privacy & Algorithmic Ethics in Data Systems",
+      "institution": "youtube",
+      "videoId": "XepXtl9YKwc",
+      "rawUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/XepXtl9YKwc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs101-lec-1",
+      "source": "Module: CS 401: Senior Computer Science Capstone Project (cs-401)",
+      "topicId": "cs401-t1",
+      "title": "Harvard CS50: Binary, Memory, and Hardware Logic",
+      "institution": "youtube",
+      "videoId": "rl0jkP9kOMw",
+      "rawUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/rl0jkP9kOMw",
+      "canonicalUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds101-lec-1",
+      "source": "Module: DS 401: Senior Data Science Capstone Project (ds-401)",
+      "topicId": "ds401-t1",
+      "title": "UC Berkeley Data 8: Computational & Tabular Structures",
+      "institution": "youtube",
+      "videoId": "zOjov-2OZ0E",
+      "rawUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/zOjov-2OZ0E",
+      "canonicalUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs302-lec-1",
+      "source": "Module: CS 302: Computer Networks & Distributed Systems (cs-302)",
+      "topicId": "cs302-t1",
+      "title": "MIT OCW 6.824: Distributed Systems & Raft Consensus Mechanics",
+      "institution": "youtube",
+      "videoId": "cQP8WApzIQQ",
+      "rawUrl": "https://www.youtube.com/watch?v=cQP8WApzIQQ",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/cQP8WApzIQQ",
+      "canonicalUrl": "https://www.youtube.com/watch?v=cQP8WApzIQQ",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs303-lec-1",
+      "source": "Module: CS 303: Compiler Construction & Language Runtimes (cs-303)",
+      "topicId": "cs303-t1",
+      "title": "Stanford CS143: Compilers, Lexing & Abstract Syntax Trees",
+      "institution": "youtube",
+      "videoId": "VJ6tuX5bBf4",
+      "rawUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/VJ6tuX5bBf4",
+      "canonicalUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs304-lec-1",
+      "source": "Module: CS 304: Software Engineering & System Architecture (cs-304)",
+      "topicId": "cs304-t1",
+      "title": "Software Engineering & System Architecture Principles",
+      "institution": "youtube",
+      "videoId": "zOjov-2OZ0E",
+      "rawUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/zOjov-2OZ0E",
+      "canonicalUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs402-lec-1",
+      "source": "Module: CS 402: Formal Languages, Automata & Complexity (cs-402)",
+      "topicId": "cs402-t1",
+      "title": "MIT OCW 6.045J: Automata, Formal Languages & Computability",
+      "institution": "youtube",
+      "videoId": "L3LMbpZIKhQ",
+      "rawUrl": "https://www.youtube.com/watch?v=L3LMbpZIKhQ",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/L3LMbpZIKhQ",
+      "canonicalUrl": "https://www.youtube.com/watch?v=L3LMbpZIKhQ",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs403-lec-1",
+      "source": "Module: CS 403: Computer Security & Applied Cryptography (cs-403)",
+      "topicId": "cs403-t1",
+      "title": "Applied Cryptography & Zero-Trust Network Security",
+      "institution": "youtube",
+      "videoId": "26QPDBe-NB8",
+      "rawUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
+      "canonicalUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds303-lec-1",
+      "source": "Module: DS 303: Analytics Engineering & Modern Data Stack (ds-303)",
+      "topicId": "ds303-t1",
+      "title": "Analytics Engineering, dbt & Modern Data Stack Architecture",
+      "institution": "youtube",
+      "videoId": "HXV3zeQKqGY",
+      "rawUrl": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/HXV3zeQKqGY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds304-lec-1",
+      "source": "Module: DS 304: Applied Time Series Analysis & Forecasting (ds-304)",
+      "topicId": "ds304-t1",
+      "title": "Applied Time Series Analysis, ARIMA & Decomposition",
+      "institution": "youtube",
+      "videoId": "XepXtl9YKwc",
+      "rawUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/XepXtl9YKwc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds402-lec-1",
+      "source": "Module: DS 402: MLOps, Model Deployment & Production Infrastructure (ds-402)",
+      "topicId": "ds402-t1",
+      "title": "Full Stack MLOps: Model Deployment, Monitoring & Containerization",
+      "institution": "youtube",
+      "videoId": "06-AZXmwHjo",
+      "rawUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/06-AZXmwHjo",
+      "canonicalUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds403-lec-1",
+      "source": "Module: DS 403: Natural Language Processing & LLMs (ds-403)",
+      "topicId": "ds403-t1",
+      "title": "Stanford CS224N: Natural Language Processing with Deep Learning & Transformers",
+      "institution": "youtube",
+      "videoId": "kCc8FmEb1nY",
+      "rawUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/kCc8FmEb1nY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds405-lec-1",
+      "source": "Module: DS 405: Computer Vision & Spatial Analytics (ds-405)",
+      "topicId": "ds405-t1",
+      "title": "Stanford CS231n: Computer Vision, Convolutional Networks & Spatial Features",
+      "institution": "youtube",
+      "videoId": "vT1JzLTH4G4",
+      "rawUrl": "https://www.youtube.com/watch?v=vT1JzLTH4G4",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/vT1JzLTH4G4",
+      "canonicalUrl": "https://www.youtube.com/watch?v=vT1JzLTH4G4",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs101-lec-1",
@@ -235,15 +635,15 @@
       "topicId": "cs101-t1",
       "title": "Harvard CS50: Binary, Memory, and Hardware Logic",
       "institution": "youtube",
-      "videoId": "8mAITcNt710",
-      "rawUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
-      "embedUrl": "https://www.youtube-nocookie.com/embed/8mAITcNt710",
-      "canonicalUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
+      "videoId": "rl0jkP9kOMw",
+      "rawUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/rl0jkP9kOMw",
+      "canonicalUrl": "https://www.youtube.com/watch?v=rl0jkP9kOMw",
       "status": "verified",
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs101-lec-mit",
@@ -259,7 +659,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs102-lec-1",
@@ -275,7 +675,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "math101-lec-1",
@@ -291,7 +691,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs201-lec-1",
@@ -307,7 +707,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "math201-lec-1",
@@ -323,7 +723,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs204-lec-1",
@@ -339,7 +739,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs301-lec-1",
@@ -355,7 +755,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs305-lec-1",
@@ -371,7 +771,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "cs404-lec-1",
@@ -387,7 +787,167 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "stat201-lec-1",
+      "source": "CS Program: STAT 201 (stat-201)",
+      "topicId": "stat201-t1",
+      "title": "Maximum Likelihood Estimation Mechanics",
+      "institution": "youtube",
+      "videoId": "XepXtl9YKwc",
+      "rawUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/XepXtl9YKwc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds202-lec-1",
+      "source": "CS Program: CS 205 (ds-202)",
+      "topicId": "ds202-t1",
+      "title": "CMU 15-445: Database Systems (Advanced Relational SQL)",
+      "institution": "youtube",
+      "videoId": "7NPIENPr-zk",
+      "rawUrl": "https://www.youtube.com/watch?v=7NPIENPr-zk",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/7NPIENPr-zk",
+      "canonicalUrl": "https://www.youtube.com/watch?v=7NPIENPr-zk",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs302-lec-1",
+      "source": "CS Program: CS 302 (cs-302)",
+      "topicId": "cs302-t1",
+      "title": "MIT OCW 6.824: Distributed Systems & Raft Consensus Mechanics",
+      "institution": "youtube",
+      "videoId": "cQP8WApzIQQ",
+      "rawUrl": "https://www.youtube.com/watch?v=cQP8WApzIQQ",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/cQP8WApzIQQ",
+      "canonicalUrl": "https://www.youtube.com/watch?v=cQP8WApzIQQ",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs303-lec-1",
+      "source": "CS Program: CS 303 (cs-303)",
+      "topicId": "cs303-t1",
+      "title": "Stanford CS143: Compilers, Lexing & Abstract Syntax Trees",
+      "institution": "youtube",
+      "videoId": "VJ6tuX5bBf4",
+      "rawUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/VJ6tuX5bBf4",
+      "canonicalUrl": "https://www.youtube.com/watch?v=VJ6tuX5bBf4",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs304-lec-1",
+      "source": "CS Program: CS 304 (cs-304)",
+      "topicId": "cs304-t1",
+      "title": "Software Engineering & System Architecture Principles",
+      "institution": "youtube",
+      "videoId": "zOjov-2OZ0E",
+      "rawUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/zOjov-2OZ0E",
+      "canonicalUrl": "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs401-lec-1",
+      "source": "CS Program: CS 401 (cs-401)",
+      "topicId": "cs401-t1",
+      "title": "Harvard CS50 Capstone System Architecture & Portfolio Defense",
+      "institution": "youtube",
+      "videoId": "8mAITcNt710",
+      "rawUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/8mAITcNt710",
+      "canonicalUrl": "https://www.youtube.com/watch?v=8mAITcNt710",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs402-lec-1",
+      "source": "CS Program: CS 402 (cs-402)",
+      "topicId": "cs402-t1",
+      "title": "MIT OCW 6.045J: Automata, Formal Languages & Computability",
+      "institution": "youtube",
+      "videoId": "L3LMbpZIKhQ",
+      "rawUrl": "https://www.youtube.com/watch?v=L3LMbpZIKhQ",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/L3LMbpZIKhQ",
+      "canonicalUrl": "https://www.youtube.com/watch?v=L3LMbpZIKhQ",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "cs403-lec-1",
+      "source": "CS Program: CS 403 (cs-403)",
+      "topicId": "cs403-t1",
+      "title": "Applied Cryptography & Zero-Trust Network Security",
+      "institution": "youtube",
+      "videoId": "26QPDBe-NB8",
+      "rawUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
+      "canonicalUrl": "https://www.youtube.com/watch?v=26QPDBe-NB8",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds402-lec-1",
+      "source": "CS Program: CS 405 (ds-402)",
+      "topicId": "ds402-t1",
+      "title": "Full Stack MLOps: Model Deployment, Monitoring & Containerization",
+      "institution": "youtube",
+      "videoId": "06-AZXmwHjo",
+      "rawUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/06-AZXmwHjo",
+      "canonicalUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds403-lec-1",
+      "source": "CS Program: CS 406 (ds-403)",
+      "topicId": "ds403-t1",
+      "title": "Stanford CS224N: Natural Language Processing with Deep Learning & Transformers",
+      "institution": "youtube",
+      "videoId": "kCc8FmEb1nY",
+      "rawUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/kCc8FmEb1nY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds101-lec-1",
@@ -403,7 +963,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds102-lec-1",
@@ -419,7 +979,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "stat201-lec-1",
@@ -435,7 +995,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds202-lec-1",
@@ -451,7 +1011,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds302-lec-1",
@@ -467,7 +1027,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds305-lec-1",
@@ -483,7 +1043,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
     },
     {
       "id": "ds404-lec-1",
@@ -499,7 +1059,103 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-07-25T21:49:06.482Z"
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds303-lec-1",
+      "source": "DS Program: DS 303 (ds-303)",
+      "topicId": "ds303-t1",
+      "title": "Analytics Engineering, dbt & Modern Data Stack Architecture",
+      "institution": "youtube",
+      "videoId": "HXV3zeQKqGY",
+      "rawUrl": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/HXV3zeQKqGY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds304-lec-1",
+      "source": "DS Program: DS 304 (ds-304)",
+      "topicId": "ds304-t1",
+      "title": "Applied Time Series Analysis, ARIMA & Decomposition",
+      "institution": "youtube",
+      "videoId": "XepXtl9YKwc",
+      "rawUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/XepXtl9YKwc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds401-lec-1",
+      "source": "DS Program: DS 401 (ds-401)",
+      "topicId": "ds401-t1",
+      "title": "End-to-End Data Science Capstone & Production Pipelines",
+      "institution": "youtube",
+      "videoId": "06-AZXmwHjo",
+      "rawUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/06-AZXmwHjo",
+      "canonicalUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds402-lec-1",
+      "source": "DS Program: DS 402 (ds-402)",
+      "topicId": "ds402-t1",
+      "title": "Full Stack MLOps: Model Deployment, Monitoring & Containerization",
+      "institution": "youtube",
+      "videoId": "06-AZXmwHjo",
+      "rawUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/06-AZXmwHjo",
+      "canonicalUrl": "https://www.youtube.com/watch?v=06-AZXmwHjo",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds403-lec-1",
+      "source": "DS Program: DS 403 (ds-403)",
+      "topicId": "ds403-t1",
+      "title": "Stanford CS224N: Natural Language Processing with Deep Learning & Transformers",
+      "institution": "youtube",
+      "videoId": "kCc8FmEb1nY",
+      "rawUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/kCc8FmEb1nY",
+      "canonicalUrl": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.223Z"
+    },
+    {
+      "id": "ds405-lec-1",
+      "source": "DS Program: DS 405 (ds-405)",
+      "topicId": "ds405-t1",
+      "title": "Stanford CS231n: Computer Vision, Convolutional Networks & Spatial Features",
+      "institution": "youtube",
+      "videoId": "vT1JzLTH4G4",
+      "rawUrl": "https://www.youtube.com/watch?v=vT1JzLTH4G4",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/vT1JzLTH4G4",
+      "canonicalUrl": "https://www.youtube.com/watch?v=vT1JzLTH4G4",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 2,
+      "lastVerifiedAt": "2026-07-27T10:16:23.224Z"
     }
   ]
 }

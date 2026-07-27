@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavigationRail, NavView } from './NavigationRail';
 import { TopBar } from './TopBar';
+import { Breadcrumbs } from './Breadcrumbs';
+import { MobileBottomNav } from './MobileBottomNav';
 import { DashboardView } from '../dashboard/DashboardView';
 import { RoadmapView } from '../roadmap/RoadmapView';
 import { ModuleOverviewView } from '../module/ModuleOverviewView';
@@ -214,9 +216,12 @@ const AppShellContent: React.FC = () => {
           onOpenSearch={() => setIsSearchOpen(true)}
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
           progress={{ ...progress, selectedProgram: activeProgram }}
+          onUpdateProgress={(updated) => setProgress(updated)}
           onResumeTopic={() => selectTopic(currentTopic.id)}
           onNavigate={(v) => navigateToView(v)}
         />
+
+        <Breadcrumbs />
 
         <main className="flex-1 overflow-y-auto pb-12 w-full min-w-0 overflow-x-hidden relative">
           <AnimatePresence mode="wait">
@@ -349,6 +354,12 @@ const AppShellContent: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Mobile Bottom Navigation Bar */}
+      <MobileBottomNav
+        currentView={currentView}
+        onNavigate={(v) => navigateToView(v)}
+      />
 
       {/* Global Search Modal */}
       <SearchCommandModal

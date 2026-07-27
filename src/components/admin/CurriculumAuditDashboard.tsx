@@ -79,35 +79,35 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
       {/* Metric Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div className="bg-white p-4 rounded-xl brand-border brand-shadow-sm">
-          <span className="text-xs text-stone-500 font-bold uppercase">Canonical Courses</span>
+          <span className="text-xs text-stone-700 font-bold uppercase">Canonical Courses</span>
           <div className="text-2xl font-black font-mono text-[#151313] mt-1">
             {CANONICAL_COURSES.length}
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-xl brand-border brand-shadow-sm">
-          <span className="text-xs text-stone-500 font-bold uppercase">Shared Courses</span>
+          <span className="text-xs text-stone-700 font-bold uppercase">Shared Courses</span>
           <div className="text-2xl font-black font-mono text-[#BE94F5] mt-1">
             {SHARED_COURSES.length}
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-xl brand-border brand-shadow-sm">
-          <span className="text-xs text-stone-500 font-bold uppercase">Specialization Tracks</span>
+          <span className="text-xs text-stone-700 font-bold uppercase">Specialization Tracks</span>
           <div className="text-2xl font-black font-mono text-[#151313] mt-1">
             {SPECIALIZATION_TRACKS.length}
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-xl brand-border brand-shadow-sm">
-          <span className="text-xs text-stone-500 font-bold uppercase">Legacy ID Mappings</span>
+          <span className="text-xs text-stone-700 font-bold uppercase">Legacy ID Mappings</span>
           <div className="text-2xl font-black font-mono text-[#82E0AA] mt-1">
             {Object.keys(LEGACY_TO_CANONICAL_COURSE_MAP).length}
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-xl brand-border brand-shadow-sm">
-          <span className="text-xs text-stone-500 font-bold uppercase">Integrity Errors</span>
+          <span className="text-xs text-stone-700 font-bold uppercase">Integrity Errors</span>
           <div className={`text-2xl font-black font-mono mt-1 ${validationErrors.length === 0 ? 'text-[#82E0AA]' : 'text-[#151313]'}`}>
             {validationErrors.length}
           </div>
@@ -164,7 +164,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
           {/* Filters */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-[#F7F7F5] p-4 rounded-xl brand-border">
             <div className="relative w-full md:w-72">
-              <Search className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
+              <Search className="w-4 h-4 absolute left-3 top-2.5 text-stone-700" />
               <input
                 type="text"
                 value={searchQuery}
@@ -223,7 +223,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
                     <td className="p-3 font-mono font-bold text-[#BE94F5]">{c.id}</td>
                     <td className="p-3">
                       <div className="font-bold text-[#151313]">{c.code}: {c.title}</div>
-                      <div className="text-[10px] text-stone-500 font-mono truncate max-w-xs">{c.description}</div>
+                      <div className="text-[10px] text-stone-700 font-mono truncate max-w-xs">{c.description}</div>
                     </td>
                     <td className="p-3 font-mono">Year {c.academicLevel}</td>
                     <td className="p-3 font-mono">{c.creditHours} CR</td>
@@ -247,7 +247,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
                       {c.prerequisiteCourseIds.length > 0 ? (
                         c.prerequisiteCourseIds.join(', ')
                       ) : (
-                        <span className="text-stone-400">None</span>
+                        <span className="text-stone-600">None</span>
                       )}
                     </td>
                   </tr>
@@ -318,7 +318,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
             <GitFork className="w-5 h-5 text-[#BE94F5]" />
             Shared Cross-Program Course Equivalencies
           </h2>
-          <p className="text-xs text-stone-600">
+          <p className="text-xs text-stone-800">
             Shared courses reside under a single canonical course ID. Completing a shared course in Computer Science automatically satisfies the equivalent requirement in Data Science.
           </p>
 
@@ -360,7 +360,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
             <RefreshCw className="w-5 h-5 text-[#BE94F5]" />
             Progress Migration Diagnostic Utility
           </h2>
-          <p className="text-xs text-stone-600">
+          <p className="text-xs text-stone-800">
             Verify progress migration safety against legacy course IDs.
           </p>
 
@@ -368,7 +368,7 @@ export const CurriculumAuditDashboard: React.FC<CurriculumAuditDashboardProps> =
             <div className="font-bold text-[#82E0AA]">Registered Legacy-to-Canonical Mappings:</div>
             {Object.entries(LEGACY_TO_CANONICAL_COURSE_MAP).map(([legacy, canonical]) => (
               <div key={legacy} className="flex items-center gap-2">
-                <span className="text-stone-400">{legacy}</span>
+                <span className="text-stone-200">{legacy}</span>
                 <ArrowRight className="w-3.5 h-3.5 text-[#BE94F5]" />
                 <span className="text-white font-bold">{canonical}</span>
               </div>

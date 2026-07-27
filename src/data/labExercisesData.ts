@@ -45,21 +45,21 @@ export const ALL_LAB_EXERCISES: InteractiveLabDefinition[] = [
     pathId: 'python-foundations',
     practiceMode: 'guided-lesson',
     estimatedMinutes: 5,
-    instructions: 'Welcome to the Computerfy Interactive Lab! Edit the Python code to print "Hello, Computerfy!" to the console.',
+    instructions: 'Welcome to the ComputerSciFy Interactive Lab! Edit the Python code to print "Hello, ComputerSciFy!" to the console.',
     objective: 'Learn to use print(), execute code in Pyodide, and inspect console stdout output.',
     starterCode: `# Level 0: Print your first message
 print("Hello, World!")
 `,
-    solutionCode: `print("Hello, Computerfy!")`,
-    solutionHint: 'Change "Hello, World!" to "Hello, Computerfy!" inside the print() call.',
+    solutionCode: `print("Hello, ComputerSciFy!")`,
+    solutionHint: 'Change "Hello, World!" to "Hello, ComputerSciFy!" inside the print() call.',
     hints: [
       'Check string casing and spelling exact match.',
-      'Make sure to call print("Hello, Computerfy!")',
+      'Make sure to call print("Hello, ComputerSciFy!")',
     ],
     testCases: [
       {
-        expectedOutput: 'Hello, Computerfy!',
-        description: 'Output contains exact string "Hello, Computerfy!"',
+        expectedOutput: 'Hello, ComputerSciFy!',
+        description: 'Output contains exact string "Hello, ComputerSciFy!"',
       },
     ],
   },

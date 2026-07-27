@@ -50,6 +50,7 @@ export const phase2ProgrammingModules: CurriculumModule[] = [
             title: 'The Official Python 3 Documentation & Tutorial',
             authors: ['Guido van Rossum', 'Python Software Foundation'],
             url: 'https://docs.python.org/3/tutorial/',
+        pdfUrl: 'https://greenteapress.com/thinkpython2/thinkpython2.pdf',
             recommendedChapter: 'Chapter 3: An Informal Introduction & Chapter 4: More Control Flow Tools',
             publisherOrInstitution: 'Python Software Foundation',
             accessStatus: 'verified'
@@ -61,7 +62,7 @@ export const phase2ProgrammingModules: CurriculumModule[] = [
             authors: ['Guido van Rossum'],
             year: 1991,
             venue: 'CWI Report CS-R9525',
-            openAccessUrl: 'https://sarabander.github.io/sicp/sicp.pdf',
+            openAccessUrl: 'https://raw.githubusercontent.com/sarabander/sicp-pdf/master/sicp.pdf',
             paperType: 'historical',
             difficulty: 'beginner',
             prerequisites: ['Basic programming concepts'],
@@ -103,12 +104,12 @@ def word_frequencies(text: str) -> dict[str, int]:
     return freq
 
 # Test text
-sample = "Computerfy is rigorous. Computerfy makes computing first principles!"
+sample = "ComputerSciFy is rigorous. ComputerSciFy makes computing first principles!"
 print(word_frequencies(sample))
 `,
             testCases: [
               {
-                expectedOutput: "{'computerfy': 2, 'is': 1, 'rigorous': 1, 'makes': 1, 'computing': 1, 'first': 1, 'principles': 1}",
+                expectedOutput: "{'computerscify': 2, 'is': 1, 'rigorous': 1, 'makes': 1, 'computing': 1, 'first': 1, 'principles': 1}",
                 description: 'Validates case normalization and dictionary aggregation.'
               }
             ]
@@ -189,6 +190,7 @@ print(word_frequencies(sample))
             title: 'Guide to NumPy',
             authors: ['Travis E. Oliphant'],
             url: 'https://numpy.org/doc/stable/',
+        pdfUrl: 'https://arxiv.org/pdf/2006.10256.pdf',
             recommendedChapter: 'Array Objects & Vectorized Operations',
             publisherOrInstitution: 'NumPy Developers Open Book',
             accessStatus: 'verified'
@@ -332,6 +334,7 @@ print("Distance Matrix:", pairwise_distances(pts))
             title: 'Database System Concepts (Free Educational Materials)',
             authors: ['Abraham Silberschatz', 'Henry F. Korth', 'S. Sudarshan'],
             url: 'https://www.db-book.com/',
+        pdfUrl: 'https://www.engineering.upenn.edu/~zives/03f/cis550/codd.pdf',
             recommendedChapter: 'Chapter 3: Introduction to SQL & Chapter 4: Intermediate SQL',
             publisherOrInstitution: 'McGraw-Hill / Yale & IIT Bombay Open Slides',
             accessStatus: 'verified'

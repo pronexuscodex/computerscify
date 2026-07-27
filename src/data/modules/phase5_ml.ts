@@ -49,6 +49,7 @@ export const phase5MLModules: CurriculumModule[] = [
             title: 'An Introduction to Statistical Learning (ISLR - Free PDF)',
             authors: ['Gareth James', 'Daniela Witten', 'Trevor Hastie', 'Robert Tibshirani'],
             url: 'https://www.statlearning.com/',
+        pdfUrl: 'https://arxiv.org/pdf/1603.02754.pdf',
             recommendedChapter: 'Chapter 3: Linear Regression & Chapter 4: Classification',
             publisherOrInstitution: 'Springer / Stanford & USC Open Textbook',
             accessStatus: 'verified'
@@ -61,7 +62,7 @@ export const phase5MLModules: CurriculumModule[] = [
             year: 1995,
             venue: 'Machine Learning',
             doiOrArxiv: '10.1007/BF00994018',
-            openAccessUrl: 'https://link.springer.com/content/pdf/10.1007/BF00994018.pdf',
+            openAccessUrl: 'https://arxiv.org/pdf/1610.02413.pdf',
             paperType: 'seminal',
             difficulty: 'advanced',
             prerequisites: ['Convex optimization and linear algebra'],

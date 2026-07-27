@@ -6,8 +6,6 @@ import {
   Award,
   Play,
   ArrowLeft,
-  FileText,
-  Video,
   ListChecks,
   ChevronRight,
   GraduationCap
@@ -31,51 +29,51 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
   const percentComplete = Math.round((completedTopics.length / module.topics.length) * 100);
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden text-[#1D1B1B] dark:text-[#F6EFEF]">
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-xs font-bold text-[#151313] hover:text-[#BE94F5] transition-colors"
+        className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#000000] dark:text-[#F6EFEF] hover:text-[#000000] dark:hover:text-[#F2C94C] transition-colors"
       >
         <ArrowLeft className="w-4 h-4" /> Back to Curriculum Roadmap
       </button>
 
       {/* Module Header Card */}
-      <div className="bg-[#BE94F5] brand-border brand-shadow-lg rounded-2xl p-6 md:p-8 space-y-4">
+      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded p-6 md:p-8 space-y-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-[#151313] text-[#F7F7F5] text-xs font-bold font-mono">
+          <span className="px-3 py-1 rounded bg-[#000000] text-[#FFFFFF] text-xs font-black font-mono uppercase tracking-wider">
             Phase {module.phaseId} Module
           </span>
-          <span className="px-3 py-1 rounded-full bg-[#F7F7F5] text-[#151313] text-xs font-bold border border-[#151313]">
+          <span className="px-3 py-1 rounded bg-[#F2C94C] text-[#000000] text-xs font-black uppercase border-2 border-[#000000]">
             {module.category.toUpperCase()}
           </span>
-          <span className="px-3 py-1 rounded-full bg-[#FCCC42] text-[#151313] text-xs font-bold border border-[#151313] flex items-center gap-1">
+          <span className="px-3 py-1 rounded bg-[#DFD9D8] dark:bg-stone-800 text-[#000000] dark:text-[#F6EFEF] text-xs font-black border-2 border-[#000000] flex items-center gap-1">
             <Clock className="w-3.5 h-3.5" /> ~{module.estimatedHours} Hours
           </span>
         </div>
 
-        <h1 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#151313] tracking-tight leading-tight">
+        <h1 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-[#000000] dark:text-[#F6EFEF] uppercase tracking-tight leading-tight">
           {module.title}
         </h1>
 
-        <p className="text-sm md:text-base text-[#151313]/90 font-medium max-w-3xl leading-relaxed">
+        <p className="text-sm md:text-base text-[#000000]/80 dark:text-[#F6EFEF]/80 font-bold max-w-3xl leading-relaxed">
           {module.summary}
         </p>
 
-        {/* Progress Bar */}
-        <div className="pt-4 border-t border-[#151313]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Progress Bar & Actions */}
+        <div className="pt-4 border-t-4 border-[#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-48 bg-[#151313]/10 h-3 rounded-full overflow-hidden border border-[#151313]">
-              <div className="bg-[#151313] h-full rounded-full" style={{ width: `${percentComplete}%` }} />
+            <div className="w-48 bg-[#DFD9D8] dark:bg-stone-800 h-4 rounded overflow-hidden border-2 border-[#000000]">
+              <div className="bg-[#F2C94C] h-full" style={{ width: `${percentComplete}%` }} />
             </div>
-            <span className="text-xs font-mono font-bold text-[#151313]">
+            <span className="text-xs font-mono font-black text-[#000000] dark:text-[#F6EFEF]">
               {completedTopics.length}/{module.topics.length} Topics ({percentComplete}%)
             </span>
           </div>
 
           <button
             onClick={() => onSelectTopic(module.topics[0].id)}
-            className="px-5 py-2.5 bg-[#151313] text-[#F7F7F5] font-bold text-xs rounded-xl flex items-center justify-center gap-2 hover:bg-[#FCCC42] hover:text-[#151313] transition-colors brand-shadow-sm"
+            className="px-6 py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] neo-btn flex items-center justify-center gap-2"
           >
             <Play className="w-4 h-4 fill-current" />
             {percentComplete > 0 ? 'Resume Module' : 'Start Module'}
@@ -85,20 +83,20 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
 
       {/* Module Objectives & Prerequisites Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-[#F7F7F5] brand-border brand-shadow-lg rounded-2xl p-6">
-          <h2 className="font-display font-bold text-lg text-[#151313] mb-3 flex items-center gap-2">
-            <GraduationCap className="w-5 h-5 text-[#BE94F5]" /> Module Objective
+        <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6">
+          <h2 className="font-display font-black text-lg text-[#000000] dark:text-[#F6EFEF] uppercase mb-3 flex items-center gap-2">
+            <GraduationCap className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Module Objective
           </h2>
-          <p className="text-sm text-[#151313]/80 leading-relaxed font-medium">
+          <p className="text-sm text-[#000000]/80 dark:text-[#F6EFEF]/80 leading-relaxed font-bold">
             {module.objective}
           </p>
         </div>
 
-        <div className="bg-[#F7F7F5] brand-border brand-shadow-lg rounded-2xl p-6">
-          <h2 className="font-display font-bold text-lg text-[#151313] mb-3 flex items-center gap-2">
-            <ListChecks className="w-5 h-5 text-[#BE94F5]" /> Prerequisites
+        <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6">
+          <h2 className="font-display font-black text-lg text-[#000000] dark:text-[#F6EFEF] uppercase mb-3 flex items-center gap-2">
+            <ListChecks className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Prerequisites
           </h2>
-          <p className="text-sm text-[#151313]/80 leading-relaxed font-medium">
+          <p className="text-sm text-[#000000]/80 dark:text-[#F6EFEF]/80 leading-relaxed font-bold">
             {module.prerequisiteModuleIds.length > 0
               ? `Requires completion of prerequisite modules: ${module.prerequisiteModuleIds.join(', ')}.`
               : 'None. This is an introductory foundational module.'}
@@ -107,9 +105,9 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
       </div>
 
       {/* Topic Curriculum List */}
-      <div className="bg-[#F7F7F5] brand-border brand-shadow-lg rounded-2xl p-6">
-        <h2 className="font-display font-bold text-xl text-[#151313] mb-4 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-[#82E0AA]" /> Topic Curriculum & Mastery Packs
+      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6">
+        <h2 className="font-display font-black text-xl text-[#000000] dark:text-[#F6EFEF] uppercase mb-4 flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Topic Curriculum & Mastery Packs
         </h2>
 
         <div className="space-y-3">
@@ -120,32 +118,32 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
               <div
                 key={topic.id}
                 onClick={() => onSelectTopic(topic.id)}
-                className={`p-4 rounded-xl border border-[#151313] transition-all cursor-pointer flex items-center justify-between gap-4 brand-shadow-sm ${
-                  isCompleted ? 'bg-[#82E0AA]/20' : 'bg-[#F7F7F5] hover:bg-[#BE94F5]/20'
+                className={`p-4 rounded border-2 border-[#000000] transition-all cursor-pointer flex items-center justify-between gap-4 neo-shadow-sm hover:translate-y-[-2px] ${
+                  isCompleted ? 'bg-[#82E0AA] text-[#000000]' : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
                 }`}
               >
                 <div className="flex items-center gap-3.5">
                   <div
-                    className={`w-8 h-8 rounded-full font-mono font-bold text-xs flex items-center justify-center shrink-0 border border-[#151313] ${
-                      isCompleted ? 'bg-[#82E0AA] text-[#151313]' : 'bg-[#151313] text-[#F7F7F5]'
+                    className={`w-8 h-8 rounded font-mono font-black text-xs flex items-center justify-center shrink-0 border-2 border-[#000000] ${
+                      isCompleted ? 'bg-[#FFFFFF] text-[#000000]' : 'bg-[#000000] text-[#FFFFFF]'
                     }`}
                   >
                     {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                   </div>
 
                   <div>
-                    <h3 className="font-bold text-sm text-[#151313] hover:text-[#BE94F5] transition-colors">
+                    <h3 className="font-black text-sm uppercase leading-snug">
                       {topic.title}
                     </h3>
-                    <p className="text-xs text-[#151313]/70 line-clamp-1">{topic.summary}</p>
+                    <p className="text-xs opacity-80 line-clamp-1 font-bold">{topic.summary}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="hidden sm:inline-block text-[11px] font-mono text-[#151313]/60 bg-[#151313]/5 px-2 py-0.5 rounded">
+                  <span className="hidden sm:inline-block text-[11px] font-mono font-black bg-[#000000] text-[#FFFFFF] px-2 py-0.5 rounded border border-[#000000]">
                     ~{topic.masteryPack.estimatedStudyMinutes} mins
                   </span>
-                  <ChevronRight className="w-5 h-5 text-[#151313]/40" />
+                  <ChevronRight className="w-5 h-5" />
                 </div>
               </div>
             );
@@ -154,21 +152,21 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
       </div>
 
       {/* Module Capstone Preview */}
-      <div className="bg-[#FCCC42] brand-border brand-shadow-lg rounded-2xl p-6">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#151313] mb-2">
+      <div className="bg-[#F2C94C] border-4 border-[#000000] neo-shadow rounded p-6 text-[#000000]">
+        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2">
           <Award className="w-4 h-4" /> Un-Guided Module Capstone Milestone
         </div>
-        <h3 className="font-display font-bold text-xl text-[#151313] mb-2">
+        <h3 className="font-display font-black text-xl uppercase mb-2">
           {module.capstone.title}
         </h3>
-        <p className="text-sm text-[#151313]/80 mb-4 font-medium leading-relaxed">
+        <p className="text-sm font-bold mb-4 leading-relaxed">
           {module.capstone.description}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-bold">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-black">
           {module.capstone.expectedDeliverables.slice(0, 3).map((deliv, i) => (
-            <div key={i} className="p-2.5 rounded-xl bg-[#F7F7F5] border border-[#151313] text-[#151313] flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <div key={i} className="p-2.5 rounded bg-[#FFFFFF] border-2 border-[#000000] flex items-center gap-1.5 neo-shadow-sm">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#000000] shrink-0" />
               <span>{deliv}</span>
             </div>
           ))}

@@ -164,29 +164,38 @@ export function isCorsSafePdfDomain(url: string): boolean {
   if (!url) return false;
   const lower = url.toLowerCase();
   return (
+    lower.startsWith('/') ||
+    lower.includes('/api/pdf-proxy') ||
     lower.includes('raw.githubusercontent.com') ||
-    lower.includes('.github.io') ||
-    lower.includes('arxiv.org') ||
-    lower.includes('cloudfront.net') ||
+    lower.includes('mozilla.github.io') ||
     lower.includes('jsdelivr.net') ||
     lower.includes('cdnjs.cloudflare.com')
   );
 }
 
 /**
- * Ensures a PDF URL is properly formatted for arXiv/GitHub and returns the direct document URL.
+ * Ensures a PDF URL is properly formatted for arXiv/GitHub and routes remote PDFs through our PDF proxy when necessary.
  */
 export function getCorsCompatiblePdfUrl(url: string): string {
-  if (!url) return 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+  if (!url) return '';
 
   let cleaned = fixArxivPdfUrl(url);
   cleaned = fixGitHubPdfUrl(cleaned);
 
-  if (!cleaned.startsWith('http://') && !cleaned.startsWith('https://')) {
-    return url;
+  if (
+    cleaned.startsWith('/') ||
+    cleaned.startsWith('blob:') ||
+    cleaned.startsWith('data:') ||
+    cleaned.includes('/api/pdf-proxy')
+  ) {
+    return cleaned;
   }
 
-  return cleaned;
+  if (cleaned.includes('raw.githubusercontent.com') || cleaned.includes('mozilla.github.io')) {
+    return cleaned;
+  }
+
+  return `/api/pdf-proxy?url=${encodeURIComponent(cleaned)}`;
 }
 
 /**
@@ -268,7 +277,7 @@ export function createVerifiedPdfResource(params: {
   let cleanedPdfUrl = fixArxivPdfUrl(params.rawPdfUrl);
   cleanedPdfUrl = fixGitHubPdfUrl(cleanedPdfUrl);
 
-  const finalPdfUrl = cleanedPdfUrl || 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+  const finalPdfUrl = cleanedPdfUrl || params.rawPdfUrl || 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
 
   return {
     id: params.id,

@@ -49,6 +49,7 @@ export const phase7MLOpsModules: CurriculumModule[] = [
             title: 'Designing Machine Learning Systems (Free Course Materials & Chapters)',
             authors: ['Chip Huyen'],
             url: 'https://huyenchip.com/ml-interviews-book/',
+        pdfUrl: 'https://proceedings.neurips.cc/paper_files/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf',
             recommendedChapter: 'Chapter 7: Model Deployment & Chapter 9: Continual Learning and Monitoring',
             publisherOrInstitution: 'O’Reilly / Chip Huyen Open Courseware',
             accessStatus: 'verified'

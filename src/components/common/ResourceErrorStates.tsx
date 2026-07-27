@@ -11,7 +11,8 @@ import {
   ChevronUp,
   Info,
   Sparkles,
-  LifeBuoy
+  LifeBuoy,
+  Eye
 } from 'lucide-react';
 
 interface ErrorStateProps {
@@ -22,6 +23,7 @@ interface ErrorStateProps {
   technicalDetails?: string;
   onRetry?: () => void;
   onUseFallback?: () => void;
+  onOpenGoogleViewer?: () => void;
   onReportIssue?: () => void;
 }
 
@@ -49,18 +51,18 @@ export const VideoUnavailableState: React.FC<ErrorStateProps> = ({
             <AlertTriangle className="w-3.5 h-3.5" /> Video Stream Unavailable
           </div>
           <h3 className="text-lg font-bold text-stone-100 break-words">{title}</h3>
-          <p className="text-xs text-stone-400">
-            Provider: <strong className="text-stone-200">{institution}</strong>
+          <p className="text-xs text-stone-300">
+            Provider: <strong className="text-stone-100">{institution}</strong>
             {lastVerifiedAt && ` • Last Verified: ${lastVerifiedAt}`}
           </p>
         </div>
       </div>
 
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 text-xs text-stone-300 space-y-2">
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 text-xs text-stone-200 space-y-2">
         <p className="leading-relaxed">
           This lecture video is protected or restricted from direct in-app embedding by the host server, or the video source has changed.
         </p>
-        <p className="text-stone-400">
+        <p className="text-stone-300">
           ComputerSciFy ensures your learning is uninterrupted by providing a direct official link or a verified alternative lecture.
         </p>
       </div>
@@ -103,13 +105,13 @@ export const VideoUnavailableState: React.FC<ErrorStateProps> = ({
         <div className="pt-3 border-t border-stone-800 text-[11px]">
           <button
             onClick={() => setShowDevDetails(!showDevDetails)}
-            className="flex items-center gap-1 text-stone-500 hover:text-stone-400 font-mono"
+            className="flex items-center gap-1 text-stone-300 hover:text-stone-100 font-mono"
           >
             {showDevDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             <span>Developer Diagnostics</span>
           </button>
           {showDevDetails && (
-            <pre className="mt-2 p-3 bg-black/60 rounded-lg text-stone-400 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
+            <pre className="mt-2 p-3 bg-black/60 rounded-lg text-stone-200 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
               {technicalDetails}
             </pre>
           )}
@@ -127,6 +129,7 @@ export const PdfUnavailableState: React.FC<ErrorStateProps> = ({
   technicalDetails,
   onRetry,
   onUseFallback,
+  onOpenGoogleViewer,
   onReportIssue,
 }) => {
   const [showDevDetails, setShowDevDetails] = useState(false);
@@ -143,19 +146,19 @@ export const PdfUnavailableState: React.FC<ErrorStateProps> = ({
             <Info className="w-3.5 h-3.5" /> Document Viewer Status
           </div>
           <h3 className="text-lg font-bold text-stone-100">{title}</h3>
-          <p className="text-xs text-stone-400">
-            Source: <strong className="text-stone-200">{institution}</strong>
+          <p className="text-xs text-stone-300">
+            Source: <strong className="text-stone-100">{institution}</strong>
             {lastVerifiedAt && ` • Last Verified: ${lastVerifiedAt}`}
           </p>
         </div>
       </div>
 
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 text-xs text-stone-300 space-y-2">
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 text-xs text-stone-200 space-y-2">
         <p className="leading-relaxed">
           This document could not be directly loaded into the ComputerSciFy PDF Canvas reader due to CORS security policies on the remote host.
         </p>
-        <p className="text-stone-400">
-          You can open the open-access document directly in a separate browser tab or view the verified summary.
+        <p className="text-stone-300">
+          You can view the document via Embedded Google Viewer, open the source document directly in a browser tab, or load the verified sample PDF.
         </p>
       </div>
 
@@ -170,6 +173,16 @@ export const PdfUnavailableState: React.FC<ErrorStateProps> = ({
             <span>Open Direct PDF Source</span>
             <ExternalLink className="w-4 h-4" />
           </a>
+        )}
+
+        {onOpenGoogleViewer && (
+          <button
+            onClick={onOpenGoogleViewer}
+            className="flex items-center gap-2 px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 font-bold text-xs rounded-xl transition-all min-h-[44px]"
+          >
+            <Eye className="w-4 h-4 text-[#BE94F5]" />
+            <span>Embedded Google Viewer</span>
+          </button>
         )}
 
         {onUseFallback && (
@@ -197,13 +210,13 @@ export const PdfUnavailableState: React.FC<ErrorStateProps> = ({
         <div className="pt-3 border-t border-stone-800 text-[11px]">
           <button
             onClick={() => setShowDevDetails(!showDevDetails)}
-            className="flex items-center gap-1 text-stone-500 hover:text-stone-400 font-mono min-h-[36px]"
+            className="flex items-center gap-1 text-stone-300 hover:text-stone-100 font-mono min-h-[36px]"
           >
             {showDevDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             <span>Technical Diagnostics</span>
           </button>
           {showDevDetails && (
-            <pre className="mt-2 p-3 bg-black/60 rounded-lg text-stone-400 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
+            <pre className="mt-2 p-3 bg-black/60 rounded-lg text-stone-200 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
               {technicalDetails}
             </pre>
           )}
@@ -225,7 +238,7 @@ export const EmbeddingBlockedState: React.FC<ErrorStateProps> = ({
       </div>
       <div className="min-w-0">
         <h4 className="font-display font-extrabold text-base truncate">In-App Framing Restricted</h4>
-        <p className="text-xs text-stone-600 font-mono truncate">{institution}</p>
+        <p className="text-xs text-stone-800 font-mono truncate">{institution}</p>
       </div>
     </div>
 

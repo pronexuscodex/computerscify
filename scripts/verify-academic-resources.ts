@@ -46,7 +46,7 @@ async function runAcademicVerification() {
         replacementRequired = true;
         brokenLinksCount++;
         pdfsReplacedCount++;
-      } else if (!fixedUrl.startsWith('https://')) {
+      } else if (!fixedUrl.startsWith('https://') && !fixedUrl.startsWith('/api/pdf-proxy')) {
         status = 'redirect-broken';
         replacementRequired = true;
         brokenLinksCount++;

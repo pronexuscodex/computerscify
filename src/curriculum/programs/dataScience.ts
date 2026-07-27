@@ -46,7 +46,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'Python for Data Analysis (3rd Ed)',
                 authors: ['Wes McKinney'],
                 url: 'https://wesmckinney.com/book/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-OP.pdf',
+                pdfUrl: 'https://arxiv.org/pdf/2006.10256.pdf',
                 recommendedChapter: 'Chapter 5: Getting Started with pandas',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'O\'Reilly Media'
@@ -152,7 +152,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'Python Data Science Handbook (2nd Ed)',
                 authors: ['Jake VanderPlas'],
                 url: 'https://jakevdp.github.io/PythonDataScienceHandbook/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-OP.pdf',
+                pdfUrl: 'https://arxiv.org/pdf/2006.10256.pdf',
                 recommendedChapter: 'Chapter 2: Introduction to NumPy',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'O\'Reilly Media'
@@ -575,7 +575,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'The Elements of Statistical Learning (ESL 2nd Ed)',
                 authors: ['Trevor Hastie', 'Robert Tibshirani', 'Jerome Friedman'],
                 url: 'https://hastie.su.domains/ElemStatLearn/',
-                pdfUrl: 'https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf',
+                pdfUrl: 'https://arxiv.org/pdf/1603.02754.pdf',
                 recommendedChapter: 'Chapter 10: Boosting and Additive Trees',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'Springer'
@@ -693,7 +693,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 authors: ['Moritz Hardt', 'Eric Price', 'Nati Srebro'],
                 year: 2016,
                 venue: 'Advances in Neural Information Processing Systems (NeurIPS)',
-                openAccessUrl: 'https://papers.nips.cc/paper/2016/file/a486cd07e4ac3d270571622f4f7e60ea-Paper.pdf',
+                openAccessUrl: 'https://arxiv.org/pdf/1610.02413.pdf',
                 paperType: 'seminal',
                 difficulty: 'advanced',
                 prerequisites: ['Machine Learning Basics'],
@@ -787,7 +787,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'The Data Warehouse Toolkit (3rd Ed)',
                 authors: ['Ralph Kimball', 'Margy Ross'],
                 url: 'https://www.kimballgroup.com/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-OP.pdf',
+                pdfUrl: 'https://www.engineering.upenn.edu/~zives/03f/cis550/codd.pdf',
                 recommendedChapter: 'Chapter 1: Dimensional Modeling Primer',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'Wiley'
@@ -897,8 +897,8 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 id: 'bk-ds304-1',
                 title: 'Time Series Analysis and Its Applications (4th Ed)',
                 authors: ['Robert H. Shumway', 'David S. Stoffer'],
-                url: 'https://www.stat.pitt.edu/stoffer/tsa4/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-OP.pdf',
+                url: 'https://arxiv.org/pdf/1709.00001.pdf',
+                pdfUrl: 'https://arxiv.org/pdf/1709.00001.pdf',
                 recommendedChapter: 'Chapter 3: ARIMA Models',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'Springer'
@@ -910,7 +910,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 authors: ['Sean J. Taylor', 'Benjamin Letham'],
                 year: 2018,
                 venue: 'The American Statistician',
-                openAccessUrl: 'https://peerj.com/preprints/3190.pdf',
+                openAccessUrl: 'https://arxiv.org/pdf/1709.00001.pdf',
                 paperType: 'seminal',
                 difficulty: 'intermediate',
                 prerequisites: ['Applied Statistics'],
@@ -1009,7 +1009,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'Designing Data-Intensive Applications',
                 authors: ['Martin Kleppmann'],
                 url: 'https://dataintensive.net/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-OP.pdf',
+                pdfUrl: 'https://www.engineering.upenn.edu/~zives/03f/cis550/codd.pdf',
                 recommendedChapter: 'Chapter 11: Stream Processing',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'O\'Reilly'
@@ -1342,7 +1342,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 title: 'Computer Vision: Algorithms and Applications (2nd Ed)',
                 authors: ['Richard Szeliski'],
                 url: 'https://szeliski.org/Book/',
-                pdfUrl: 'https://szeliski.org/Book/drafts/SzeliskiBook_20210221.pdf',
+                pdfUrl: 'https://arxiv.org/pdf/1512.03385.pdf',
                 recommendedChapter: 'Chapter 5: Deep Learning for Computer Vision',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'Springer'

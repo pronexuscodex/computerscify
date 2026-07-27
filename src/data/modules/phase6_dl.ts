@@ -49,6 +49,7 @@ export const phase6DLModules: CurriculumModule[] = [
             title: 'Deep Learning Textbook (Free Online Book)',
             authors: ['Ian Goodfellow', 'Yoshua Bengio', 'Aaron Courville'],
             url: 'https://www.deeplearningbook.org/',
+        pdfUrl: 'https://www.deeplearningbook.org/front_matter.pdf',
             recommendedChapter: 'Chapter 6: Deep Feedforward Networks & Chapter 10: Sequence Modeling',
             publisherOrInstitution: 'MIT Press Open Book',
             accessStatus: 'verified'

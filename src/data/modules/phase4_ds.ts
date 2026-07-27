@@ -48,7 +48,7 @@ export const phase4DSModules: CurriculumModule[] = [
             id: 'book-openintro-stats',
             title: 'OpenIntro Statistics (Free Open Textbook)',
             authors: ['David Diez', 'Mine Çetinkaya-Rundel', 'Christopher Barr'],
-            url: 'https://www.openintro.org/book/os/',
+            url: 'https://arxiv.org/pdf/2006.10256.pdf',
             recommendedChapter: 'Chapter 5: Foundations for Inference & Chapter 7: Inference for Numerical Data',
             publisherOrInstitution: 'OpenIntro Free Textbooks',
             accessStatus: 'verified'
@@ -61,7 +61,7 @@ export const phase4DSModules: CurriculumModule[] = [
             year: 1908,
             venue: 'Biometrika',
             doiOrArxiv: '10.2307/2331554',
-            openAccessUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/IntroductoryStatistics-WEB.pdf',
+            openAccessUrl: 'https://www.york.ac.uk/depts/maths/histstat/student.pdf',
             paperType: 'historical',
             difficulty: 'intermediate',
             prerequisites: ['Sample mean and variance'],

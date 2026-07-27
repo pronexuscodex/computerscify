@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertCircle, Plus, Bookmark, Trash2, CheckCircle, Tag } from 'lucide-react';
+import { AlertCircle, Plus } from 'lucide-react';
 import { MistakeJournalEntry } from '../../types/practice';
 import { Select } from '../common/Select';
 
@@ -45,14 +45,14 @@ export const MistakeJournalView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 w-full min-w-0 overflow-x-hidden">
+    <div className="space-y-6 w-full min-w-0 overflow-x-hidden text-[#1D1B1B] dark:text-[#F6EFEF]">
       {/* Header */}
-      <div className="bg-[#151313] border border-stone-800 rounded-2xl p-6 text-white brand-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-4 min-w-0">
+      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 min-w-0">
         <div className="flex items-center gap-3 min-w-0">
-          <AlertCircle className="w-6 h-6 text-[#BE94F5] shrink-0" />
+          <AlertCircle className="w-6 h-6 text-[#000000] dark:text-[#F2C94C] shrink-0" />
           <div className="min-w-0">
-            <h1 className="font-display font-extrabold text-2xl text-white break-words">Learner Mistake Journal</h1>
-            <p className="text-stone-400 text-xs leading-relaxed">
+            <h1 className="font-display font-black text-2xl uppercase tracking-tight text-[#000000] dark:text-[#F6EFEF] break-words">Learner Mistake Journal</h1>
+            <p className="text-[#000000]/80 dark:text-[#F6EFEF]/80 text-xs font-bold leading-relaxed">
               Log failed attempts, classify error patterns, record corrected insights, and eliminate recurring programming bugs.
             </p>
           </div>
@@ -60,7 +60,7 @@ export const MistakeJournalView: React.FC = () => {
 
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="px-4 py-2.5 bg-[#BE94F5] hover:bg-[#FCCC42] text-[#151313] rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 brand-shadow min-h-[44px]"
+          className="px-4 py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] border-2 border-[#000000] neo-btn rounded text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 shrink-0 min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           <span>{isAdding ? 'Cancel' : 'Log New Mistake'}</span>
@@ -69,27 +69,26 @@ export const MistakeJournalView: React.FC = () => {
 
       {/* Add New Mistake Form */}
       {isAdding && (
-        <div className="bg-[#151313] border border-stone-800 rounded-2xl p-6 text-white space-y-4 brand-shadow min-w-0">
-          <h3 className="font-display font-bold text-base text-stone-100">Log Problem / Concept Mistake</h3>
+        <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6 space-y-4 min-w-0">
+          <h3 className="font-display font-black text-base uppercase text-[#000000] dark:text-[#F6EFEF]">Log Problem / Concept Mistake</h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs min-w-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs min-w-0 font-bold">
             <div className="space-y-1 min-w-0">
-              <label className="text-stone-300 font-medium">Mistake Title</label>
+              <label className="uppercase tracking-wider">Mistake Title</label>
               <input
                 type="text"
                 placeholder="e.g., Modulo division in negative integers"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl p-2.5 text-stone-200 focus:outline-none focus:border-[#BE94F5]"
+                className="w-full bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded p-2.5 text-[#000000] dark:text-[#F6EFEF] focus:outline-none focus:ring-2 focus:ring-[#F2C94C] font-black"
               />
             </div>
 
             <div className="space-y-1 min-w-0">
-              <label className="text-stone-300 font-medium text-xs block">Error Category</label>
+              <label className="uppercase tracking-wider block">Error Category</label>
               <Select
                 value={category}
                 onChange={(val) => setCategory(val as any)}
-                variant="dark"
                 options={[
                   { value: 'logic', label: 'Logical Bug' },
                   { value: 'syntax', label: 'Syntax Error' },
@@ -103,31 +102,31 @@ export const MistakeJournalView: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-1 text-xs min-w-0">
-            <label className="text-stone-300 font-medium">Failed Approach Notes</label>
+          <div className="space-y-1 text-xs min-w-0 font-bold">
+            <label className="uppercase tracking-wider">Failed Approach Notes</label>
             <textarea
               placeholder="What approach failed or caused the bug?"
               value={failedApproachNotes}
               onChange={(e) => setFailedApproachNotes(e.target.value)}
               rows={3}
-              className="w-full bg-stone-900 border border-stone-800 rounded-xl p-3 text-stone-200 focus:outline-none focus:border-[#BE94F5] resize-none"
+              className="w-full bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded p-3 text-[#000000] dark:text-[#F6EFEF] focus:outline-none focus:ring-2 focus:ring-[#F2C94C] resize-none font-bold"
             />
           </div>
 
-          <div className="space-y-1 text-xs min-w-0">
-            <label className="text-stone-300 font-medium">Corrected Insight & Solution Rule</label>
+          <div className="space-y-1 text-xs min-w-0 font-bold">
+            <label className="uppercase tracking-wider">Corrected Insight & Solution Rule</label>
             <textarea
               placeholder="What is the exact correct rule to remember for future sessions?"
               value={correctedInsight}
               onChange={(e) => setCorrectedInsight(e.target.value)}
               rows={3}
-              className="w-full bg-stone-900 border border-stone-800 rounded-xl p-3 text-stone-200 focus:outline-none focus:border-[#BE94F5] resize-none"
+              className="w-full bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded p-3 text-[#000000] dark:text-[#F6EFEF] focus:outline-none focus:ring-2 focus:ring-[#F2C94C] resize-none font-bold"
             />
           </div>
 
           <button
             onClick={handleAddEntry}
-            className="w-full py-2.5 bg-[#BE94F5] hover:bg-[#FCCC42] text-[#151313] rounded-xl text-xs font-bold transition-all brand-shadow min-h-[44px]"
+            className="w-full py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] border-2 border-[#000000] neo-btn rounded font-black text-xs uppercase tracking-wider transition-all min-h-[44px]"
           >
             Save Mistake Entry
           </button>
@@ -137,27 +136,27 @@ export const MistakeJournalView: React.FC = () => {
       {/* Mistake List */}
       <div className="space-y-4 min-w-0">
         {entries.map((entry) => (
-          <div key={entry.id} className="bg-[#151313] border border-stone-800 rounded-2xl p-5 text-white space-y-3 brand-shadow min-w-0">
+          <div key={entry.id} className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5 space-y-3 min-w-0">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#BE94F5]/20 border border-[#BE94F5]/40 text-[#BE94F5] text-[10px] font-mono uppercase font-bold">
+              <span className="px-2.5 py-0.5 rounded bg-[#000000] text-[#FFFFFF] text-[10px] font-mono uppercase font-black border border-[#000000]">
                 {entry.category}
               </span>
-              <span className="text-stone-500 text-[11px] font-mono">
+              <span className="text-[#000000]/60 dark:text-[#F6EFEF]/60 text-[11px] font-mono font-bold">
                 {new Date(entry.createdAt).toLocaleDateString()}
               </span>
             </div>
 
-            <h3 className="font-display font-bold text-base text-stone-100 break-words">{entry.title}</h3>
+            <h3 className="font-display font-black text-base uppercase text-[#000000] dark:text-[#F6EFEF] break-words">{entry.title}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1 min-w-0">
-              <div className="p-3 bg-stone-900 border border-stone-800 rounded-xl space-y-1 min-w-0">
-                <span className="text-stone-400 font-bold">Failed Approach:</span>
-                <p className="text-stone-300 leading-relaxed break-words">{entry.failedApproachNotes}</p>
+              <div className="p-3 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded space-y-1 min-w-0 font-bold">
+                <span className="uppercase text-[#000000] dark:text-[#F2C94C]">Failed Approach:</span>
+                <p className="leading-relaxed break-words">{entry.failedApproachNotes}</p>
               </div>
 
-              <div className="p-3 bg-stone-900 border border-stone-800 rounded-xl space-y-1 min-w-0">
-                <span className="text-emerald-400 font-bold">Corrected Insight:</span>
-                <p className="text-stone-200 leading-relaxed break-words">{entry.correctedInsight}</p>
+              <div className="p-3 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded space-y-1 min-w-0 font-bold">
+                <span className="uppercase text-[#82E0AA]">Corrected Insight:</span>
+                <p className="leading-relaxed break-words">{entry.correctedInsight}</p>
               </div>
             </div>
           </div>

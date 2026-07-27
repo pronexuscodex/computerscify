@@ -1269,7 +1269,7 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
   }
 ];
 
-export const COMPUTERFY_CONTESTS: ContestDefinition[] = [
+export const COMPUTERSCIFY_CONTESTS: ContestDefinition[] = [
   {
     id: 'contest-beginner-sprint',
     title: 'Beginner Sprint (Round 1)',
@@ -1341,6 +1341,8 @@ export const COMPUTERFY_CONTESTS: ContestDefinition[] = [
     scoringModel: 'partial-points'
   }
 ];
+
+export const COMPUTERFY_CONTESTS = COMPUTERSCIFY_CONTESTS;
 
 export const INITIAL_SPACED_REVIEW_CARDS: SpacedReviewCard[] = [
   {

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, Check } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 export interface SelectOptionItem {
   value: string;
@@ -19,7 +20,7 @@ export interface SelectProps {
   disabled?: boolean;
   className?: string;
   ariaLabel?: string;
-  variant?: 'light' | 'dark';
+  variant?: 'auto' | 'light' | 'dark';
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -31,7 +32,7 @@ export const Select: React.FC<SelectProps> = ({
   disabled = false,
   className = '',
   ariaLabel,
-  variant = 'dark',
+  variant = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -44,6 +45,17 @@ export const Select: React.FC<SelectProps> = ({
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // Safely attempt useTheme if provider exists
+  let themeResolved: 'light' | 'dark' = 'light';
+  try {
+    const themeCtx = useTheme();
+    themeResolved = themeCtx.resolvedTheme;
+  } catch (e) {
+    themeResolved = 'light';
+  }
+
+  const isDark = variant === 'dark' || (variant === 'auto' && themeResolved === 'dark');
 
   const selectedOption = options.find((o) => o.value === value);
 
@@ -149,19 +161,17 @@ export const Select: React.FC<SelectProps> = ({
     }
   };
 
-  const isLight = variant === 'light';
+  const triggerStyles = isDark
+    ? 'bg-[#1E1C1C] border-1.5 border-stone-700 text-[#F6EFEF] brand-shadow-sm hover:border-stone-600'
+    : 'bg-white border-1.5 border-[#171515] text-[#171515] brand-shadow-sm hover:bg-[#F3ECEC]';
 
-  const triggerStyles = isLight
-    ? 'bg-white border-1.5 border-[#151313] text-[#151313] brand-shadow-sm hover:bg-[#F7F7F5]'
-    : 'bg-[#1b1819] border border-stone-800 text-[#F7F7F5] hover:border-stone-700';
+  const labelStyles = isDark
+    ? 'text-[#F6EFEF]/80 font-bold'
+    : 'text-[#171515]/80 font-bold';
 
-  const labelStyles = isLight
-    ? 'text-[#151313]/80 font-bold'
-    : 'text-[#F7F7F5]/70 font-bold';
-
-  const menuStyles = isLight
-    ? 'bg-[#F7F7F5] text-[#151313] border-1.5 border-[#151313] brand-shadow-lg'
-    : 'bg-[#1b1819] text-[#F7F7F5] border border-stone-800 shadow-2xl';
+  const menuStyles = isDark
+    ? 'bg-[#1E1C1C] text-[#F6EFEF] border-1.5 border-stone-700 shadow-2xl'
+    : 'bg-[#FEF8F7] text-[#171515] border-1.5 border-[#171515] brand-shadow-lg';
 
   return (
     <div className={`relative inline-block text-left w-full sm:w-auto ${className}`}>
@@ -190,7 +200,7 @@ export const Select: React.FC<SelectProps> = ({
         </div>
         <ChevronDown
           className={`w-4 h-4 shrink-0 transition-transform duration-150 ${
-            isLight ? 'text-[#151313]/70' : 'text-[#F7F7F5]/70'
+            isDark ? 'text-[#F6EFEF]/70' : 'text-[#171515]/70'
           } ${isOpen ? 'rotate-180 text-[#BE94F5]' : ''}`}
         />
       </button>
@@ -210,7 +220,7 @@ export const Select: React.FC<SelectProps> = ({
             className={`fixed z-[100] rounded-xl py-1.5 overflow-y-auto max-h-[280px] animate-fade-in focus:outline-none ${menuStyles}`}
           >
             {options.length === 0 ? (
-              <div className={`px-3.5 py-2.5 text-xs italic ${isLight ? 'text-stone-500' : 'text-stone-400'}`}>
+              <div className={`px-3.5 py-2.5 text-xs italic ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
                 No options available
               </div>
             ) : (
@@ -220,17 +230,17 @@ export const Select: React.FC<SelectProps> = ({
 
                 let optionBg = '';
                 if (isSelected) {
-                  optionBg = isLight
-                    ? 'bg-[#BE94F5]/30 text-[#151313] font-bold'
-                    : 'bg-[#BE94F5]/20 text-[#BE94F5] font-bold';
+                  optionBg = isDark
+                    ? 'bg-[#BE94F5]/20 text-[#D2B3FF] font-bold'
+                    : 'bg-[#BE94F5]/30 text-[#171515] font-bold';
                 } else if (isFocused) {
-                  optionBg = isLight
-                    ? 'bg-[#151313]/10 text-[#151313]'
-                    : 'bg-[#F7F7F5]/10 text-[#F7F7F5]';
+                  optionBg = isDark
+                    ? 'bg-[#F6EFEF]/10 text-[#F6EFEF]'
+                    : 'bg-[#171515]/10 text-[#171515]';
                 } else {
-                  optionBg = isLight
-                    ? 'text-[#151313] hover:bg-[#151313]/5'
-                    : 'text-[#F7F7F5]/80 hover:text-[#F7F7F5]';
+                  optionBg = isDark
+                    ? 'text-[#F6EFEF]/80 hover:text-[#F6EFEF]'
+                    : 'text-[#171515] hover:bg-[#171515]/5';
                 }
 
                 return (
@@ -250,14 +260,14 @@ export const Select: React.FC<SelectProps> = ({
                         <span className="truncate">{option.label}</span>
                       </div>
                       {option.description && (
-                        <span className={`text-[10px] font-normal truncate mt-0.5 ${isLight ? 'text-[#151313]/60' : 'text-stone-400'}`}>
+                        <span className={`text-[10px] font-normal truncate mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#171515]/60'}`}>
                           {option.description}
                         </span>
                       )}
                     </div>
 
                     {isSelected && (
-                      <Check className={`w-4 h-4 shrink-0 ${isLight ? 'text-[#151313]' : 'text-[#BE94F5]'}`} />
+                      <Check className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#D2B3FF]' : 'text-[#171515]'}`} />
                     )}
                   </div>
                 );

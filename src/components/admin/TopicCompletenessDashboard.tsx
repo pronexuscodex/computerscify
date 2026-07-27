@@ -176,57 +176,57 @@ export const TopicCompletenessDashboard: React.FC<{ onClose?: () => void }> = ({
       {/* Metrics Row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
-          <div className="text-[10px] text-stone-400 font-mono uppercase">TOTAL PUBLISHED TOPICS</div>
+          <div className="text-[10px] text-stone-300 font-mono uppercase">TOTAL PUBLISHED TOPICS</div>
           <div className="text-2xl font-black text-white">{stats.total}</div>
-          <div className="text-[11px] text-stone-500">Curriculum wide</div>
+          <div className="text-[11px] text-stone-300">Curriculum wide</div>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
           <div className="text-[10px] text-emerald-400 font-mono uppercase">MASTERY PACKS (100%)</div>
           <div className="text-2xl font-black text-emerald-400">{stats.complete}</div>
-          <div className="text-[11px] text-emerald-500">{stats.completionPercentage}% Complete</div>
+          <div className="text-[11px] text-emerald-400 font-bold">{stats.completionPercentage}% Complete</div>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
-          <div className="text-[10px] text-stone-400 font-mono uppercase">LECTURES ASSIGNED</div>
+          <div className="text-[10px] text-stone-300 font-mono uppercase">LECTURES ASSIGNED</div>
           <div className="text-2xl font-black text-stone-100">{stats.total - stats.missingLectures}</div>
-          <div className="text-[11px] text-stone-500">{stats.missingLectures} missing</div>
+          <div className="text-[11px] text-stone-300">{stats.missingLectures} missing</div>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
-          <div className="text-[10px] text-stone-400 font-mono uppercase">TEXTBOOKS & CHAPTERS</div>
+          <div className="text-[10px] text-stone-300 font-mono uppercase">TEXTBOOKS & CHAPTERS</div>
           <div className="text-2xl font-black text-stone-100">{stats.total - stats.missingBooks}</div>
-          <div className="text-[11px] text-stone-500">{stats.missingBooks} missing</div>
+          <div className="text-[11px] text-stone-300">{stats.missingBooks} missing</div>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
-          <div className="text-[10px] text-stone-400 font-mono uppercase">RESEARCH PAPERS</div>
+          <div className="text-[10px] text-stone-300 font-mono uppercase">RESEARCH PAPERS</div>
           <div className="text-2xl font-black text-stone-100">{stats.total - stats.missingPapers}</div>
-          <div className="text-[11px] text-stone-500">{stats.missingPapers} missing</div>
+          <div className="text-[11px] text-stone-300">{stats.missingPapers} missing</div>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-4 space-y-1">
-          <div className="text-[10px] text-stone-400 font-mono uppercase">INTERACTIVE LABS</div>
+          <div className="text-[10px] text-stone-300 font-mono uppercase">INTERACTIVE LABS</div>
           <div className="text-2xl font-black text-stone-100">{stats.total - stats.missingLabs}</div>
-          <div className="text-[11px] text-stone-500">{stats.missingLabs} missing</div>
+          <div className="text-[11px] text-stone-300">{stats.missingLabs} missing</div>
         </div>
       </div>
 
       {/* Filters Bar */}
       <div className="bg-[#1e1b1b] border border-stone-800 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-3 py-2 rounded-xl flex-1 max-w-md">
-          <Search className="w-4 h-4 text-stone-500" />
+          <Search className="w-4 h-4 text-stone-300" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search topic title or ID..."
-            className="bg-transparent text-xs text-stone-200 placeholder-stone-500 focus:outline-none w-full"
+            className="bg-transparent text-xs text-stone-100 placeholder-stone-400 focus:outline-none w-full"
           />
         </div>
 
         <div className="flex items-center gap-3 text-xs flex-wrap">
-          <div className="flex items-center gap-1.5 text-stone-400 font-mono">
+          <div className="flex items-center gap-1.5 text-stone-200 font-mono">
             <Filter className="w-3.5 h-3.5" /> Filters:
           </div>
 
@@ -273,7 +273,7 @@ export const TopicCompletenessDashboard: React.FC<{ onClose?: () => void }> = ({
       <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-stone-900 border-b border-stone-800 text-stone-400 font-mono text-[11px]">
+            <thead className="bg-stone-900 border-b border-stone-800 text-stone-200 font-mono text-[11px]">
               <tr>
                 <th className="p-4">TOPIC ID & TITLE</th>
                 <th className="p-4">LECTURE</th>
@@ -283,13 +283,13 @@ export const TopicCompletenessDashboard: React.FC<{ onClose?: () => void }> = ({
                 <th className="p-4">PACK STATUS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-800 text-stone-300">
+            <tbody className="divide-y divide-stone-800 text-stone-200">
               {filteredTopics.map((top) => (
                 <tr key={top.id} className="hover:bg-stone-900/50 transition-colors">
                   <td className="p-4 space-y-1">
                     <div className="font-bold text-stone-100 font-mono text-xs">{top.id}</div>
-                    <div className="text-stone-300 font-medium">{top.title}</div>
-                    <div className="text-[10px] text-stone-500 font-mono">{top.moduleId}</div>
+                    <div className="text-stone-200 font-medium">{top.title}</div>
+                    <div className="text-[10px] text-stone-300 font-mono">{top.moduleId}</div>
                   </td>
 
                   <td className="p-4">

@@ -49,6 +49,7 @@ export const phase8SpecializationModules: CurriculumModule[] = [
             title: 'Designing Data-Intensive Applications (Open Course Materials & Notes)',
             authors: ['Martin Kleppmann'],
             url: 'https://dataintensive.net/',
+        pdfUrl: 'https://raft.github.io/raft.pdf',
             recommendedChapter: 'Chapter 8: The Trouble with Distributed Systems & Chapter 9: Consistency and Consensus',
             publisherOrInstitution: 'O’Reilly / Cambridge University Materials',
             accessStatus: 'verified'

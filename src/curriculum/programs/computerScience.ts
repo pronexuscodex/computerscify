@@ -46,7 +46,7 @@ export const COMPUTER_SCIENCE_COURSES: Course[] = [
                 title: 'Computer Systems: A Programmer\'s Perspective (CS:APP3e)',
                 authors: ['Randal E. Bryant', 'David R. O\'Hallaron'],
                 url: 'https://csapp.cs.cmu.edu/',
-                pdfUrl: 'https://www.cs.cmu.edu/~213/lectures/02-data.pdf',
+                pdfUrl: 'https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf',
                 recommendedChapter: 'Chapter 2: Representing and Manipulating Information',
                 accessStatus: 'verified',
                 publisherOrInstitution: 'Carnegie Mellon University'
@@ -108,7 +108,7 @@ export const COMPUTER_SCIENCE_COURSES: Course[] = [
         title: 'Structure and Interpretation of Computer Programs (SICP)',
         authors: ['Harold Abelson', 'Gerald Jay Sussman'],
         url: 'https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html',
-        pdfUrl: 'https://sarabander.github.io/sicp/sicp.pdf',
+        pdfUrl: 'https://raw.githubusercontent.com/sarabander/sicp-pdf/master/sicp.pdf',
         recommendedChapter: 'Chapter 1: Building Abstractions with Procedures',
         accessStatus: 'verified',
         publisherOrInstitution: 'MIT Press'
@@ -331,7 +331,7 @@ export const COMPUTER_SCIENCE_COURSES: Course[] = [
                 title: 'Calculus',
                 authors: ['James Stewart'],
                 url: 'https://www.cengage.com/',
-                pdfUrl: 'https://d3bxy9euw4e147.cloudfront.net/oscms-prodcms/media/documents/CollegeAlgebra-OP.pdf',
+                pdfUrl: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_textbook.pdf',
                 recommendedChapter: 'Chapter 3: Differentiation Rules',
                 accessStatus: 'verified'
               },
@@ -1069,7 +1069,7 @@ export const COMPUTER_SCIENCE_COURSES: Course[] = [
                 id: 'book-stat-1',
                 title: 'Introduction to Probability',
                 authors: ['Joseph K. Blitzstein', 'Jessica Hwang'],
-                url: 'https://lhcb-doc.web.cern.ch/lhcb-doc/statistics/notes/Blitzstein_Probability.pdf',
+                url: 'https://arxiv.org/pdf/2006.10256.pdf',
                 pdfUrl: 'https://arxiv.org/pdf/2006.10256.pdf',
                 recommendedChapter: 'Chapter 7: Joint Distributions & Limit Theorems',
                 accessStatus: 'verified',
