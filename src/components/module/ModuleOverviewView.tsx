@@ -153,7 +153,7 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
       </div>
 
       {/* Module Capstone Preview */}
-      <div className="bg-[#F2C94C] border-4 border-[#000000] neo-shadow rounded p-6 text-[#000000]">
+      <div className="bg-[var(--color-primary-container)] border-4 border-[#000000] neo-shadow rounded p-6 text-[var(--color-on-primary-container)]">
         <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2">
           <Award className="w-4 h-4" /> Independent Module Capstone
         </div>
@@ -166,8 +166,8 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-black">
           {module.capstone.expectedDeliverables.slice(0, 3).map((deliv, i) => (
-            <div key={i} className="p-2.5 rounded bg-[#FFFFFF] border-2 border-[#000000] flex items-center gap-1.5 neo-shadow-sm">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#000000] shrink-0" />
+            <div key={i} className="p-2.5 rounded bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] border-2 border-[#000000] flex items-center gap-1.5 neo-shadow-sm">
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
               <span>{deliv}</span>
             </div>
           ))}

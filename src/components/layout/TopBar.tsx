@@ -245,7 +245,8 @@ export const TopBar: React.FC<TopBarProps> = ({
             <div
               role="menu"
               aria-orientation="vertical"
-              className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#FEF8F7] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded-lg p-4 z-50 animate-fade-in space-y-4 text-xs text-[#000000] dark:text-[#F6EFEF]"
+              aria-label="Learner settings"
+              className="fixed inset-x-2 top-[4.5rem] bottom-[5.5rem] z-50 w-auto overflow-y-auto overscroll-contain rounded-lg border-4 border-[#000000] bg-[#FEF8F7] p-3 text-xs text-[#000000] neo-shadow-lg animate-fade-in space-y-3 dark:bg-[#1E1C1C] dark:text-[#F6EFEF] sm:absolute sm:inset-x-auto sm:top-auto sm:bottom-auto sm:right-0 sm:mt-2 sm:max-h-[calc(100dvh-5.5rem)] sm:w-96 sm:p-4 sm:space-y-4"
             >
               {/* Learner Identity & Streak Banner */}
               <div className="p-3.5 bg-[#FFFFFF] dark:bg-[#242222] border-2 border-[#000000] neo-shadow-sm rounded-md space-y-3">
@@ -335,7 +336,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onClick={() => {
                       setActiveProgram('computer-science');
                     }}
-                    className={`p-2 rounded border-2 border-[#000000] text-left transition-all flex items-center gap-2 ${
+                    aria-pressed={activeProgram === 'computer-science'}
+                    className={`min-h-14 p-2 rounded border-2 border-[#000000] text-left transition-all flex items-center gap-2 ${
                       activeProgram === 'computer-science'
                         ? 'bg-[#F2C94C] text-[#000000] font-black neo-shadow-sm'
                         : 'bg-[#FFFFFF] dark:bg-[#242222] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
@@ -353,7 +355,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onClick={() => {
                       setActiveProgram('data-science');
                     }}
-                    className={`p-2 rounded border-2 border-[#000000] text-left transition-all flex items-center gap-2 ${
+                    aria-pressed={activeProgram === 'data-science'}
+                    className={`min-h-14 p-2 rounded border-2 border-[#000000] text-left transition-all flex items-center gap-2 ${
                       activeProgram === 'data-science'
                         ? 'bg-[#F2C94C] text-[#000000] font-black neo-shadow-sm'
                         : 'bg-[#FFFFFF] dark:bg-[#242222] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20'
@@ -370,13 +373,14 @@ export const TopBar: React.FC<TopBarProps> = ({
 
               {/* Theme & Reading Preferences */}
               <div className="p-3 bg-[#FFFFFF] dark:bg-[#242222] border-2 border-[#000000] rounded-md space-y-2.5">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <span className="font-black uppercase text-[11px]">Visual Mode</span>
                   <div className="flex items-center gap-1 bg-[#FEF8F7] dark:bg-[#1E1C1C] p-1 rounded border border-[#000000]">
                     <button
                       type="button"
                       onClick={() => setTheme('light')}
-                      className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                      aria-pressed={theme === 'light'}
+                      className={`min-h-9 px-2.5 py-1 rounded text-[10px] font-black uppercase ${
                         theme === 'light' ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]' : 'text-[#000000]/70 dark:text-[#F6EFEF]/70'
                       }`}
                     >
@@ -385,7 +389,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <button
                       type="button"
                       onClick={() => setTheme('dark')}
-                      className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                      aria-pressed={theme === 'dark'}
+                      className={`min-h-9 px-2.5 py-1 rounded text-[10px] font-black uppercase ${
                         theme === 'dark' ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]' : 'text-[#000000]/70 dark:text-[#F6EFEF]/70'
                       }`}
                     >
@@ -394,7 +399,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <button
                       type="button"
                       onClick={() => setTheme('system')}
-                      className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                      aria-pressed={theme === 'system'}
+                      className={`min-h-9 px-2.5 py-1 rounded text-[10px] font-black uppercase ${
                         theme === 'system' ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]' : 'text-[#000000]/70 dark:text-[#F6EFEF]/70'
                       }`}
                     >
@@ -403,7 +409,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-[#000000]/10 pt-2">
+                <div className="flex items-center justify-between gap-3 border-t border-[#000000]/10 pt-2">
                   <span className="font-black uppercase text-[11px] flex items-center gap-1">
                     <Type className="w-3.5 h-3.5" />
                     Font Size
@@ -412,7 +418,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <button
                       type="button"
                       onClick={() => handleToggleFontSize('normal')}
-                      className={`px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
+                      aria-pressed={progress.fontSize === 'normal'}
+                      className={`min-h-9 px-3 py-1 rounded text-[10px] font-black uppercase ${
                         progress.fontSize === 'normal' ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]' : 'text-[#000000]/70 dark:text-[#F6EFEF]/70'
                       }`}
                     >
@@ -421,7 +428,8 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <button
                       type="button"
                       onClick={() => handleToggleFontSize('large')}
-                      className={`px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
+                      aria-pressed={progress.fontSize === 'large'}
+                      className={`min-h-9 px-3 py-1 rounded text-[10px] font-black uppercase ${
                         progress.fontSize === 'large' ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]' : 'text-[#000000]/70 dark:text-[#F6EFEF]/70'
                       }`}
                     >
@@ -439,7 +447,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onNavigate?.('roadmap');
                     setIsMenuOpen(false);
                   }}
-                  className="p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                  className="min-h-11 p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
                 >
                   <Map className="w-3.5 h-3.5 text-[#000000] dark:text-[#F2C94C]" />
                   <span>Roadmap</span>
@@ -451,7 +459,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onNavigate?.('spaced-review');
                     setIsMenuOpen(false);
                   }}
-                  className="p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                  className="min-h-11 p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
                 >
                   <Flame className="w-3.5 h-3.5 text-[#000000] dark:text-[#F2C94C]" />
                   <span>Spaced Review</span>
@@ -463,7 +471,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onNavigate?.('mistake-journal');
                     setIsMenuOpen(false);
                   }}
-                  className="p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                  className="min-h-11 p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-[#000000] dark:text-[#F2C94C]" />
                   <span>Mistakes</span>
@@ -475,7 +483,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     onNavigate?.('portfolio');
                     setIsMenuOpen(false);
                   }}
-                  className="p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                  className="min-h-11 p-2 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-[11px] uppercase flex items-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
                 >
                   <Award className="w-3.5 h-3.5 text-[#000000] dark:text-[#F2C94C]" />
                   <span>Portfolio</span>
@@ -489,7 +497,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                   onNavigate?.('settings');
                   setIsMenuOpen(false);
                 }}
-                className="w-full p-2.5 rounded bg-[#DFD9D8] dark:bg-[#2B2929] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-xs uppercase flex items-center justify-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                className="min-h-11 w-full p-2.5 rounded bg-[#DFD9D8] dark:bg-[#2B2929] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-xs uppercase flex items-center justify-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
               >
                 <Settings className="w-4 h-4 text-[#000000] dark:text-[#F6EFEF]" />
                 <span>All Preferences & Data Backup</span>

@@ -10,6 +10,7 @@
     "clean": "node scripts/clean.mjs",
     "lint": "tsc --noEmit",
     "test": "tsx scripts/test-runner.ts",
+    "test:ide": "tsx scripts/ide-runner-smoke.ts",
     "resources:verify": "tsx scripts/verify-academic-resources.ts",
     "resources:verify:pdf": "tsx scripts/verify-pdf-rendering.ts",
     "resources:verify:papers": "tsx scripts/verify-paper-metadata.ts",

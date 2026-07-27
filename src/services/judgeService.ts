@@ -1,5 +1,9 @@
 import { PracticeProblem, JudgeResult, SingleTestCaseResult, JudgeOutcomeStatus } from '../types/practice';
-import { analyzeCodeSyntax, loadPyodideEngine } from './codeRunner';
+import {
+  analyzeCodeSyntax,
+  loadPyodideEngine,
+  transpileTypeScriptForSandbox,
+} from './codeRunner';
 import { runJavaScriptInSandbox } from './javascriptSandbox';
 
 /**
@@ -136,10 +140,7 @@ async function runPythonCodeInSandbox(code: string, inputData: string): Promise<
 }
 
 async function runJavaScriptCodeInSandbox(code: string, inputData: string): Promise<string> {
-  const executableCode = code.replace(
-    /:\s*(string|number|boolean|any|void|unknown)(\[\])?/g,
-    ''
-  );
+  const executableCode = transpileTypeScriptForSandbox(code);
   const result = await runJavaScriptInSandbox(executableCode, inputData);
   if (result.error) {
     throw new Error(`Syntax / Runtime Error: ${result.error}`);

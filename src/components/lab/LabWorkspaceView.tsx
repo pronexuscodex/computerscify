@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Play,
   RotateCcw,
@@ -17,7 +17,11 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { InteractiveLabDefinition } from '../../types/curriculum';
-import { runCodeByLanguage, ExecutionResult } from '../../services/codeRunner';
+import {
+  analyzeCodeSyntax,
+  runCodeByLanguage,
+  ExecutionResult,
+} from '../../services/codeRunner';
 import { saveLabDraft, getLabDraft } from '../../services/storage';
 import { ALL_LAB_EXERCISES } from '../../data/labExercisesData';
 import { Tooltip } from '../common/Tooltip';
@@ -58,6 +62,8 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
   // AI Explanation generation
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const runSequenceRef = useRef(0);
+  const isRunActiveRef = useRef(false);
 
   // Update when initialLab prop changes
   useEffect(() => {
@@ -67,9 +73,12 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
   // Load saved draft from IndexedDB when lab ID changes
   useEffect(() => {
     let isMounted = true;
+    runSequenceRef.current += 1;
+    isRunActiveRef.current = false;
+    setIsRunning(false);
     getLabDraft(selectedLab.id).then((saved) => {
       if (!isMounted) return;
-      if (saved) setCode(saved);
+      if (saved !== null) setCode(saved);
       else setCode(selectedLab.starterCode);
     });
     setResult(null);
@@ -97,57 +106,99 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
   };
 
   // Run Code logic
-  const handleRun = async () => {
+  const handleRun = useCallback(async () => {
+    if (isRunActiveRef.current) return;
+
+    isRunActiveRef.current = true;
+    const runSequence = ++runSequenceRef.current;
+    const runningLabId = selectedLab.id;
     setIsRunning(true);
     setActiveTab('console');
-    const lang = selectedLab.language || 'python';
-    const execRes = await runCodeByLanguage(lang, code, selectedLab.testCases);
-    setResult(execRes);
-    setIsRunning(false);
+    try {
+      const lang = selectedLab.language || 'python';
+      const execRes = await runCodeByLanguage(lang, code, selectedLab.testCases);
 
-    if (execRes.testCaseResults?.length) {
-      setActiveTab('tests');
-    }
+      if (runSequence !== runSequenceRef.current || runningLabId !== selectedLab.id) {
+        return;
+      }
 
-    if (execRes.testCaseResults?.every((tc) => tc.passed) && onCompleteLab) {
-      onCompleteLab();
+      setResult(execRes);
+      if (!execRes.stderr && execRes.testCaseResults?.length) {
+        setActiveTab('tests');
+      }
+
+      if (
+        execRes.testCaseResults?.length &&
+        execRes.testCaseResults.every((tc) => tc.passed) &&
+        onCompleteLab
+      ) {
+        onCompleteLab();
+      }
+    } catch (error) {
+      if (runSequence === runSequenceRef.current) {
+        setResult({
+          stdout: '',
+          stderr: error instanceof Error ? error.message : 'The code runner stopped unexpectedly.',
+          executionTimeMs: 0,
+        });
+        setActiveTab('console');
+      }
+    } finally {
+      if (runSequence === runSequenceRef.current) {
+        isRunActiveRef.current = false;
+        setIsRunning(false);
+      }
     }
-  };
+  }, [code, onCompleteLab, selectedLab]);
 
   // Reset starter code
   const handleReset = () => {
+    runSequenceRef.current += 1;
+    isRunActiveRef.current = false;
+    setIsRunning(false);
     setCode(selectedLab.starterCode);
     saveLabDraft(selectedLab.id, selectedLab.starterCode);
     setResult(null);
     setAiAnalysis(null);
+    setActiveTab('console');
   };
 
-  // AI Code Logic Diagnostic
+  // Local code review based only on syntax and actual runner results.
   const handleGenerateAiInsights = () => {
     setIsAnalyzing(true);
     setActiveTab('ai');
     setTimeout(() => {
+      const language = selectedLab.language || 'python';
+      const syntax = analyzeCodeSyntax(code, language);
       const lineCount = code.split('\n').length;
-      const lang = (selectedLab.language || 'python').toUpperCase();
-      let analysisText = `### Academic Code Logic Diagnostic (${lang})
+      const nonEmptyLineCount = code.split('\n').filter((line) => line.trim()).length;
+      let analysisText = `LOCAL CODE REVIEW (${language.toUpperCase()})
 
-**Time Complexity Estimate:** $O(N \\log N)$ (Optimal Divide & Conquer / Sorting Pattern)
-**Space Complexity:** $O(N)$ auxiliary stack space.
+Structure
+- ${lineCount} total lines; ${nonEmptyLineCount} contain code or comments.
+- Syntax preflight: ${syntax.hasError ? `Issue found — ${syntax.message}` : 'No basic syntax issue detected.'}
 
-#### Code Analysis & Recommendations:
-1. **Structure:** Your code is ${lineCount} lines long and follows standard structural conventions for ${selectedLab.title}.
-2. **Correctness Check:** Variables and function definitions align well with problem instructions.
-3. **Optimization Tip:** Ensure base edge cases (e.g. empty lists, single elements, null pointers) return early to prevent unnecessary recursions.
+Execution evidence
 `;
       if (result?.stderr) {
-        analysisText += `\n**Runtime Error Context:**\nThe interpreter flagged: \`${result.stderr.split('\n')[0]}\`. Check indexing boundary conditions!`;
-      } else if (result?.testCaseResults) {
+        analysisText += `- Latest run failed: ${result.stderr.split('\n')[0]}\n`;
+      } else if (result?.testCaseResults?.length) {
         const passedCount = result.testCaseResults.filter((t) => t.passed).length;
-        analysisText += `\n**Test Case Coverage:** ${passedCount}/${result.testCaseResults.length} automated test assertions passed.`;
+        analysisText += `- ${passedCount}/${result.testCaseResults.length} automated checks passed.\n`;
+      } else if (result) {
+        analysisText += '- Latest run completed without a reported runtime error.\n';
+      } else {
+        analysisText += '- Run the code to add runtime and test evidence to this review.\n';
       }
+      analysisText += `
+Complexity
+- Not inferred automatically. Confirm time and space complexity from the algorithm and its input size; syntax alone is not enough evidence.
+
+Next step
+- ${syntax.hasError ? syntax.suggestion || 'Fix the syntax issue, then run again.' : result?.stderr ? 'Open Output Console, fix the first reported error, then rerun.' : 'Run all tests and inspect any expected/actual output differences.'}`;
       setAiAnalysis(analysisText);
       setIsAnalyzing(false);
-    }, 800);
+    }, 250);
   };
 
   // Keyboard Shortcuts (Ctrl+Enter to Run)
@@ -160,7 +211,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [code, selectedLab]);
+  }, [handleRun]);
 
   // Filter exercises
   const filteredExercises = ALL_LAB_EXERCISES.filter((ex) => {
@@ -249,6 +300,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
           <div className="hidden sm:flex items-center bg-[#000000] border-2 border-[#000000] px-2 py-1 rounded text-xs font-mono min-h-[38px] text-[#FFFFFF]">
             <button
               onClick={() => setFontSize((s) => Math.max(11, s - 1))}
+              aria-label="Decrease editor font size"
               className="px-1.5 text-stone-300 hover:text-white font-bold"
               title="Decrease Font Size"
             >
@@ -257,6 +309,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
             <span className="text-[11px] text-[#F2C94C] font-black px-1">{fontSize}px</span>
             <button
               onClick={() => setFontSize((s) => Math.min(18, s + 1))}
+              aria-label="Increase editor font size"
               className="px-1.5 text-stone-300 hover:text-white font-bold"
               title="Increase Font Size"
             >
@@ -268,6 +321,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
           <Tooltip content="Reset starter code" position="bottom">
             <button
               onClick={handleReset}
+              aria-label="Reset to starter code"
               className="px-3 py-1.5 rounded bg-[#2B2929] hover:bg-[#000000] text-[#FFFFFF] border-2 border-[#000000] text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all neo-shadow-sm min-h-[38px]"
             >
               <RotateCcw className="w-3.5 h-3.5 text-[#F2C94C]" />
@@ -280,6 +334,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
             <button
               onClick={handleRun}
               disabled={isRunning}
+              aria-label={isRunning ? 'Code is running' : 'Run code'}
               className="px-4 py-1.5 rounded bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider border-2 border-[#000000] neo-btn flex items-center gap-2 transition-all disabled:opacity-50 min-h-[38px]"
             >
               <Play className="w-4 h-4 fill-current shrink-0" />
@@ -291,6 +346,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
           <Tooltip content={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'} position="bottom">
             <button
               onClick={() => setIsFullscreen((f) => !f)}
+              aria-label={isFullscreen ? 'Exit lab fullscreen' : 'Enter lab fullscreen'}
               className="p-2 rounded bg-[#000000] border-2 border-[#000000] text-[#FFFFFF] hover:text-[#F2C94C] transition-all min-h-[38px] min-w-[38px] flex items-center justify-center neo-shadow-sm"
             >
               {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -412,6 +468,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
               }
               minHeight="380px"
               maxHeight="580px"
+              fontSize={fontSize}
               ariaLabel={`Code editor for ${selectedLab.title}`}
             />
           </div>
@@ -466,7 +523,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
                   : 'bg-[#1E1C1C] text-[#F2C94C]'
               }`}
             >
-              <Brain className="w-3.5 h-3.5" /> AI Diagnostic
+              <Brain className="w-3.5 h-3.5" /> Code Review
             </button>
 
             {result && (
@@ -584,13 +641,13 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
             </div>
           )}
 
-          {/* AI Diagnostic Insights Tab Content */}
+          {/* Evidence-based local code review */}
           {activeTab === 'ai' && (
             <div className="flex-1 overflow-y-auto p-4 bg-[#000000] rounded border-2 border-[#000000] space-y-3 min-h-[300px] min-w-0">
               {isAnalyzing ? (
                 <div className="text-[#F2C94C] font-black uppercase animate-pulse py-16 text-center space-y-2">
                   <Brain className="w-8 h-8 mx-auto animate-bounce text-[#F2C94C]" />
-                  <p>Analyzing code logic and time complexity...</p>
+                  <p>Reviewing syntax and latest test evidence...</p>
                 </div>
               ) : aiAnalysis ? (
                 <div className="space-y-3 text-[#FFFFFF] text-xs font-sans leading-relaxed min-w-0">
@@ -603,7 +660,7 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
               ) : (
                 <div className="text-stone-300 font-bold py-16 text-center space-y-2 uppercase">
                   <Brain className="w-8 h-8 mx-auto text-[#F2C94C] mb-2" />
-                  <p>Click "AI Diagnostic" above to get instant code analysis and complexity hints.</p>
+                  <p>Click "Code Review" above for syntax and test-based guidance.</p>
                 </div>
               )}
             </div>

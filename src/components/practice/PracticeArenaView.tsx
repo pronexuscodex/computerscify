@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Code2,
   Trophy,
@@ -34,13 +34,62 @@ interface PracticeArenaViewProps {
   onOpenMistakeJournal?: () => void;
 }
 
+type PracticeLanguage = 'python' | 'javascript' | 'typescript' | 'sql';
+
+const FALLBACK_STARTERS: Record<PracticeLanguage, string> = {
+  python: `import sys
+
+def solve(raw_input):
+    # Write your solution here.
+    return raw_input
+
+if __name__ == "__main__":
+    print(solve(sys.stdin.read().strip()))
+`,
+  javascript: `const fs = require('fs');
+const input = fs.readFileSync(0, 'utf-8').trim();
+
+function solve(rawInput) {
+  // Write your solution here.
+  return rawInput;
+}
+
+console.log(solve(input));
+`,
+  typescript: `const fs = require('fs');
+const input: string = fs.readFileSync(0, 'utf-8').trim();
+
+function solve(rawInput: string): string {
+  // Write your solution here.
+  return rawInput;
+}
+
+console.log(solve(input));
+`,
+  sql: `-- Write a query that produces the expected result.
+SELECT 'replace me' AS result;
+`,
+};
+
+function getStarterCode(problem: PracticeProblem, language: PracticeLanguage): string {
+  const exactStarter = problem.starterCodeByLanguage[language];
+  if (exactStarter?.trim()) return exactStarter;
+
+  if (language === 'typescript') {
+    const javascriptStarter = problem.starterCodeByLanguage.javascript;
+    if (javascriptStarter?.trim()) return javascriptStarter;
+  }
+
+  return FALLBACK_STARTERS[language];
+}
+
 export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
   progress,
   onUpdateProgress
 }) => {
   const [activeTab, setActiveTab] = useState<'problems' | 'study-plans' | 'contests'>('problems');
   const [selectedProblem, setSelectedProblem] = useState<PracticeProblem>(PRACTICE_PROBLEMS[0]);
-  const [selectedLanguage, setSelectedLanguage] = useState<'python' | 'javascript' | 'typescript' | 'sql'>('python');
+  const [selectedLanguage, setSelectedLanguage] = useState<PracticeLanguage>('python');
   const [code, setCode] = useState<string>(
     PRACTICE_PROBLEMS[0].starterCodeByLanguage.python || ''
   );
@@ -53,14 +102,28 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
   const [activeContest, setActiveContest] = useState<ContestDefinition | null>(null);
   const [contestTimerSeconds, setContestTimerSeconds] = useState<number>(0);
   const [isContestRunning, setIsContestRunning] = useState(false);
+  const [editorFontSize, setEditorFontSize] = useState(13);
+  const codeDraftsRef = useRef<Record<string, string>>({});
+  const judgeSequenceRef = useRef(0);
+  const isJudgeActiveRef = useRef(false);
+
+  const getDraftKey = useCallback(
+    (problemId = selectedProblem.id, language = selectedLanguage) =>
+      `${problemId}:${language}`,
+    [selectedLanguage, selectedProblem.id]
+  );
 
   // Update starter code when problem or language changes
   useEffect(() => {
-    const starter = selectedProblem.starterCodeByLanguage[selectedLanguage] || selectedProblem.starterCodeByLanguage.python || '';
-    setCode(starter);
+    judgeSequenceRef.current += 1;
+    isJudgeActiveRef.current = false;
+    setIsJudging(false);
+    const starter = getStarterCode(selectedProblem, selectedLanguage);
+    setCode(codeDraftsRef.current[getDraftKey()] ?? starter);
     setJudgeResult(null);
+    setSelectedTestTab(0);
     setActiveTabInsideProblem('statement');
-  }, [selectedProblem, selectedLanguage]);
+  }, [getDraftKey, selectedProblem, selectedLanguage]);
 
   // Contest Timer effect
   useEffect(() => {
@@ -79,10 +142,16 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
     return () => clearInterval(interval);
   }, [isContestRunning, contestTimerSeconds]);
 
-  const handleRunJudge = async () => {
+  const handleRunJudge = useCallback(async () => {
+    if (isJudgeActiveRef.current) return;
+
+    isJudgeActiveRef.current = true;
+    const judgeSequence = ++judgeSequenceRef.current;
     setIsJudging(true);
+    setSelectedTestTab(0);
     try {
       const res = await executeJudge(selectedProblem, code, selectedLanguage);
+      if (judgeSequence !== judgeSequenceRef.current) return;
       setJudgeResult(res);
 
       if (res.status === 'Accepted' && onUpdateProgress) {
@@ -99,9 +168,23 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
     } catch (e) {
       console.error(e);
     } finally {
-      setIsJudging(false);
+      if (judgeSequence === judgeSequenceRef.current) {
+        isJudgeActiveRef.current = false;
+        setIsJudging(false);
+      }
     }
-  };
+  }, [code, onUpdateProgress, progress, selectedLanguage, selectedProblem]);
+
+  useEffect(() => {
+    const handleJudgeShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+        event.preventDefault();
+        void handleRunJudge();
+      }
+    };
+    window.addEventListener('keydown', handleJudgeShortcut);
+    return () => window.removeEventListener('keydown', handleJudgeShortcut);
+  }, [handleRunJudge]);
 
   const filteredProblems = PRACTICE_PROBLEMS.filter((p) => {
     const matchesSearch =
@@ -419,30 +502,72 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                   </div>
 
                   {/* Language Picker */}
-                  <Select
-                    value={selectedLanguage}
-                    onChange={(val) => setSelectedLanguage(val as any)}
-                    options={[
-                      { value: 'python', label: 'Python 3' },
-                      { value: 'javascript', label: 'JavaScript (Node)' },
-                      { value: 'typescript', label: 'TypeScript' },
-                      { value: 'sql', label: 'SQL' },
-                    ]}
-                    ariaLabel="Select programming language"
-                  />
+                  <div className="flex items-center gap-2">
+                    <div className="hidden sm:flex items-center rounded border-2 border-[#000000] bg-[#000000] px-1 py-1 text-[#FFFFFF]">
+                      <button
+                        type="button"
+                        onClick={() => setEditorFontSize((size) => Math.max(11, size - 1))}
+                        aria-label="Decrease editor font size"
+                        className="min-h-8 min-w-8 font-mono text-xs font-black hover:text-[#F2C94C]"
+                      >
+                        A-
+                      </button>
+                      <span className="px-1 font-mono text-[10px] font-black text-[#F2C94C]">
+                        {editorFontSize}px
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setEditorFontSize((size) => Math.min(18, size + 1))}
+                        aria-label="Increase editor font size"
+                        className="min-h-8 min-w-8 font-mono text-xs font-black hover:text-[#F2C94C]"
+                      >
+                        A+
+                      </button>
+                    </div>
+                    <Select
+                      value={selectedLanguage}
+                      onChange={(val) => setSelectedLanguage(val as PracticeLanguage)}
+                      options={[
+                        { value: 'python', label: 'Python 3' },
+                        { value: 'javascript', label: 'JavaScript (Node)' },
+                        { value: 'typescript', label: 'TypeScript' },
+                        { value: 'sql', label: 'SQL' },
+                      ]}
+                      ariaLabel="Select programming language"
+                    />
+                  </div>
                 </div>
 
                 {/* Code Editor Component */}
                 <CodeEditor
                   value={code}
-                  onChange={(val) => setCode(val)}
+                  onChange={(val) => {
+                    setCode(val);
+                    codeDraftsRef.current[getDraftKey()] = val;
+                  }}
                   language={selectedLanguage}
                   onReset={() => {
-                    setCode(selectedProblem.starterCodeByLanguage[selectedLanguage] || '');
+                    const starter = getStarterCode(selectedProblem, selectedLanguage);
+                    setCode(starter);
+                    codeDraftsRef.current[getDraftKey()] = starter;
                     setJudgeResult(null);
                   }}
                   minHeight="320px"
                   maxHeight="550px"
+                  fontSize={editorFontSize}
+                  testResults={
+                    isJudging
+                      ? { isRunning: true, passed: false }
+                      : judgeResult
+                        ? {
+                            passed: judgeResult.status === 'Accepted',
+                            totalTests: judgeResult.totalTests,
+                            passedTests: judgeResult.passCount,
+                            executionTimeMs: judgeResult.totalExecutionTimeMs,
+                          }
+                        : null
+                  }
+                  placeholder={`Start typing your ${selectedLanguage} solution here…`}
                   ariaLabel={`Code editor for ${selectedProblem.title}`}
                 />
 
@@ -451,9 +576,12 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => {
-                        setCode(selectedProblem.starterCodeByLanguage[selectedLanguage] || '');
+                        const starter = getStarterCode(selectedProblem, selectedLanguage);
+                        setCode(starter);
+                        codeDraftsRef.current[getDraftKey()] = starter;
                         setJudgeResult(null);
                       }}
+                      aria-label="Reset to starter code"
                       className="px-3 py-2 bg-[#FEF8F7] dark:bg-[#2B2929] hover:bg-[#000000] text-[#000000] dark:text-[#F6EFEF] hover:text-[#FFFFFF] border-2 border-[#000000] rounded text-xs font-black uppercase transition-colors flex items-center gap-1.5 min-h-[44px]"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
@@ -465,6 +593,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                     <button
                       onClick={handleRunJudge}
                       disabled={isJudging}
+                      aria-label={isJudging ? 'Code is being evaluated' : 'Submit code to judge'}
                       className="px-5 py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black uppercase tracking-wider rounded border-2 border-[#000000] neo-btn text-xs flex items-center gap-2 disabled:opacity-50 min-h-[44px]"
                     >
                       <Play className="w-4 h-4 fill-current" />

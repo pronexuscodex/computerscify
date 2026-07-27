@@ -246,7 +246,7 @@ const AppShellContent: React.FC = () => {
 
   return (
     <div
-      className={`h-screen max-h-screen overflow-hidden flex w-full min-w-0 overflow-x-hidden bg-[#B8D0DA] text-[#151313] ${
+      className={`h-screen max-h-screen overflow-hidden flex w-full min-w-0 overflow-x-hidden bg-[var(--color-background)] text-[var(--color-on-background)] transition-colors duration-200 ${
         progress.fontSize === 'large' ? 'text-base' : 'text-sm'
       } ${progress.reducedMotion ? 'reduce-motion' : ''}`}
     >
@@ -287,7 +287,7 @@ const AppShellContent: React.FC = () => {
       )}
 
       {/* Main App Container */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden w-full">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden w-full pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
         <TopBar
           onOpenSearch={() => setIsSearchOpen(true)}
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
@@ -425,7 +425,7 @@ const AppShellContent: React.FC = () => {
 
       {/* Session Resumed Toast Notification */}
       {showResumedToast && (
-        <div className="fixed bottom-5 right-5 z-50 bg-[#151313] text-white px-4 py-3 rounded-2xl border-1.5 border-[#BE94F5] brand-shadow-lg text-xs font-bold flex items-center gap-2.5 animate-fade-in select-none">
+        <div className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-3 left-3 sm:left-auto sm:right-5 md:bottom-5 z-50 bg-[#151313] text-white px-4 py-3 rounded-2xl border-1.5 border-[#BE94F5] brand-shadow-lg text-xs font-bold flex items-center gap-2.5 animate-fade-in select-none">
           <span className="w-2.5 h-2.5 rounded-full bg-[#82E0AA] animate-pulse shrink-0" />
           <span>Resumed where you left off</span>
           <button

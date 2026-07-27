@@ -319,41 +319,41 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5">
-              <h3 className="font-display font-black text-sm uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Before You Start
+            <div className="bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-sm uppercase mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[var(--color-primary)]" /> Before You Start
               </h3>
               {mp.prerequisites.length > 0 ? (
                 <ul className="space-y-2">
                   {mp.prerequisites.map((prerequisite) => (
-                    <li key={prerequisite} className="flex items-start gap-2 text-xs font-bold text-[#000000]/80 dark:text-[#F6EFEF]/80">
+                    <li key={prerequisite} className="flex items-start gap-2 text-xs font-bold opacity-80">
                       <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                       <span>{prerequisite}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/70">
+                <p className="text-xs font-bold opacity-70">
                   No prior topic is required. You can begin here.
                 </p>
               )}
             </div>
 
-            <div className="bg-[#D0BCFF] dark:bg-[#352E45] border-4 border-[#000000] neo-shadow rounded p-5">
-              <h3 className="font-display font-black text-sm uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
+            <div className="bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-sm uppercase mb-3 flex items-center gap-2">
                 <ChevronRight className="w-4 h-4" /> Where This Leads
               </h3>
               {mp.connectionsToLaterModules.length > 0 ? (
                 <ul className="space-y-2">
                   {mp.connectionsToLaterModules.map((connection) => (
-                    <li key={connection} className="flex items-start gap-2 text-xs font-bold text-[#000000] dark:text-[#F6EFEF]">
+                    <li key={connection} className="flex items-start gap-2 text-xs font-bold">
                       <ChevronRight className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                       <span>{connection}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/70">
+                <p className="text-xs font-bold opacity-70">
                   This topic strengthens the foundation for the rest of the course.
                 </p>
               )}

@@ -122,6 +122,34 @@
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
+
+  button:not(:disabled),
+  a[href],
+  select,
+  summary,
+  [role='button']:not([aria-disabled='true']),
+  [role='option'] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  input:not([type='button']):not([type='submit']):not([type='reset']),
+  textarea,
+  [contenteditable='true'] {
+    cursor: text;
+  }
+
+  [draggable='true'] {
+    cursor: grab;
+  }
+
+  [draggable='true']:active {
+    cursor: grabbing;
+  }
 }
 
 /* Custom Academic Neo-Brutalist Helpers */

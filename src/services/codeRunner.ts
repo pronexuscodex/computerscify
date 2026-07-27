@@ -28,6 +28,45 @@ export interface CodeErrorAnalysis {
   suggestion?: string;
 }
 
+export function transpileTypeScriptForSandbox(code: string): string {
+  return code
+    .replace(/interface\s+[A-Za-z_$][\w$]*(?:\s+extends\s+[^{]+)?\s*\{[^}]*\}\s*/g, '')
+    .replace(/type\s+[A-Za-z_$][\w$]*\s*=\s*[^;]+;/g, '')
+    .replace(
+      /:\s*(string|number|boolean|any|unknown|void|never|UserRecord|Product)(\[\])?/g,
+      ''
+    )
+    .replace(/\s+as\s+(const|string|number|boolean|any|unknown)\b/g, '');
+}
+
+function stripInlineComment(line: string, language: string): string {
+  let inSingleQuote = false;
+  let inDoubleQuote = false;
+  let inBacktick = false;
+
+  for (let index = 0; index < line.length; index++) {
+    const char = line[index];
+    const previous = index > 0 ? line[index - 1] : '';
+
+    if (char === "'" && previous !== '\\' && !inDoubleQuote && !inBacktick) {
+      inSingleQuote = !inSingleQuote;
+    } else if (char === '"' && previous !== '\\' && !inSingleQuote && !inBacktick) {
+      inDoubleQuote = !inDoubleQuote;
+    } else if (char === '`' && previous !== '\\' && !inSingleQuote && !inDoubleQuote) {
+      inBacktick = !inBacktick;
+    }
+
+    if (!inSingleQuote && !inDoubleQuote && !inBacktick) {
+      if (language === 'python' && char === '#') return line.slice(0, index);
+      if (language !== 'python' && char === '/' && line[index + 1] === '/') {
+        return line.slice(0, index);
+      }
+    }
+  }
+
+  return line;
+}
+
 export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnalysis {
   if (!code || !code.trim()) {
     return {
@@ -54,6 +93,11 @@ export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnal
     for (let cIdx = 0; cIdx < line.length; cIdx++) {
       const char = line[cIdx];
       const prevChar = cIdx > 0 ? line[cIdx - 1] : '';
+
+      if (!inSingleQuote && !inDoubleQuote && !inBacktick) {
+        if (language === 'python' && char === '#') break;
+        if (language !== 'python' && char === '/' && line[cIdx + 1] === '/') break;
+      }
 
       if (char === "'" && prevChar !== '\\' && !inDoubleQuote && !inBacktick) {
         inSingleQuote = !inSingleQuote;
@@ -105,7 +149,7 @@ export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnal
   // Language specific checks
   if (language === 'python') {
     for (let lIdx = 0; lIdx < lines.length; lIdx++) {
-      const line = lines[lIdx].trim();
+      const line = stripInlineComment(lines[lIdx], language).trim();
       if (
         (line.startsWith('def ') ||
           line.startsWith('if ') ||
@@ -116,8 +160,7 @@ export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnal
           line.startsWith('class ') ||
           line.startsWith('try') ||
           line.startsWith('except')) &&
-        !line.endsWith(':') &&
-        !line.includes('#')
+        !line.endsWith(':')
       ) {
         return {
           hasError: true,
@@ -249,8 +292,9 @@ export async function runJavaScriptCode(
   let stderr = '';
 
   try {
-    // Strip TypeScript type annotations if present
-    const jsCode = code.replace(/:\s*(string|number|boolean|any|void|UserRecord|boolean)(\[\])?/g, '');
+    // The lab subset uses erasable TypeScript syntax. Remove declarations before
+    // executing it in the isolated JavaScript frame.
+    const jsCode = transpileTypeScriptForSandbox(code);
     const sandboxResult = await runJavaScriptInSandbox(jsCode);
     if (sandboxResult.error) {
       throw new Error(sandboxResult.error);
@@ -358,13 +402,41 @@ export async function runCCode(
   let stderr = '';
 
   try {
-    const printfMatches = Array.from(code.matchAll(/printf\s*\(\s*"([^"\\]*(?:\\.[^"\\]*)*)"/g));
+    const integerValues = new Map<string, string>();
+    for (const match of code.matchAll(/\bint\s+([A-Za-z_]\w*)\s*=\s*(-?\d+)\s*;/g)) {
+      integerValues.set(match[1], match[2]);
+    }
+
+    const pointerTargets = new Map<string, string>();
+    for (const match of code.matchAll(/\bint\s*\*\s*([A-Za-z_]\w*)\s*=\s*&\s*([A-Za-z_]\w*)\s*;/g)) {
+      pointerTargets.set(match[1], match[2]);
+    }
+
+    const printfMatches = Array.from(
+      code.matchAll(/printf\s*\(\s*"([^"\\]*(?:\\.[^"\\]*)*)"\s*(?:,\s*([^)]*))?\)/g)
+    );
     if (printfMatches.length > 0) {
-      stdout = printfMatches.map((m) => m[1].replace(/\\n/g, '\n').replace(/\\t/g, '\t')).join('');
+      stdout = printfMatches
+        .map((match) => {
+          const args = (match[2] || '').split(',').map((arg) => arg.trim()).filter(Boolean);
+          let argIndex = 0;
+          const rendered = match[1].replace(/%%|%[diufsc]/g, (specifier) => {
+            if (specifier === '%%') return '%';
+            const argument = args[argIndex++] || '';
+            if (argument.startsWith('*')) {
+              const target = pointerTargets.get(argument.slice(1));
+              return target ? integerValues.get(target) || argument : argument;
+            }
+            if (integerValues.has(argument)) return integerValues.get(argument) || argument;
+            return argument.replace(/^["']|["']$/g, '');
+          });
+          return rendered.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+        })
+        .join('');
     } else if (code.includes('main')) {
-      stdout = 'C program compiled & executed successfully (Exit Code: 0)';
+      stdout = 'C syntax preview completed (Exit Code: 0)';
     } else {
-      stdout = 'C program compiled successfully.';
+      stdout = 'C syntax preview completed.';
     }
 
     const executionTimeMs = Math.round(performance.now() - startTime);
@@ -402,6 +474,30 @@ export async function runCodeByLanguage(
   testCases?: { expectedOutput: string; description: string }[]
 ): Promise<ExecutionResult> {
   const normalizedLang = (language || '').toLowerCase();
+  const syntaxLanguage =
+    normalizedLang === 'py'
+      ? 'python'
+      : normalizedLang === 'js' || normalizedLang === 'ts'
+        ? 'javascript'
+        : normalizedLang;
+  const syntaxAnalysis = analyzeCodeSyntax(code, syntaxLanguage);
+  if (syntaxAnalysis.hasError) {
+    const location = syntaxAnalysis.line ? ` (line ${syntaxAnalysis.line})` : '';
+    const suggestion = syntaxAnalysis.suggestion ? `\nSuggestion: ${syntaxAnalysis.suggestion}` : '';
+    const stderr = `${syntaxAnalysis.errorType || 'SyntaxError'}${location}: ${syntaxAnalysis.message}${suggestion}`;
+    return {
+      stdout: '',
+      stderr,
+      executionTimeMs: 0,
+      testCaseResults: testCases?.map((testCase) => ({
+        description: testCase.description,
+        passed: false,
+        expected: testCase.expectedOutput,
+        actual: stderr,
+      })),
+    };
+  }
+
   if (normalizedLang === 'python' || normalizedLang === 'py') {
     return runPythonCode(code, testCases);
   } else if (normalizedLang === 'c' || normalizedLang === 'cpp' || normalizedLang === 'c++') {
@@ -416,6 +512,17 @@ export async function runCodeByLanguage(
   } else if (normalizedLang === 'sql') {
     return runSqlCode(code, testCases);
   } else {
-    return runJavaScriptCode(code, testCases);
+    const stderr = `Unsupported language "${language}". Choose Python, JavaScript, TypeScript, SQL, C, or C++.`;
+    return {
+      stdout: '',
+      stderr,
+      executionTimeMs: 0,
+      testCaseResults: testCases?.map((testCase) => ({
+        description: testCase.description,
+        passed: false,
+        expected: testCase.expectedOutput,
+        actual: stderr,
+      })),
+    };
   }
 }

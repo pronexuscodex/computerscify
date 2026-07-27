@@ -61,11 +61,11 @@ export const VERIFIED_VIDEOS = {
   // Phase 0
   'p0-m1-t1': makeVerifiedVideo({
     id: 'lec-cs50-w0',
-    title: 'Harvard CS50: Lecture 0 - Computational Thinking, Binary & Representation',
-    institution: 'Harvard CS50 / David J. Malan',
+    title: 'How do computers work? (from scratch, no prior knowledge needed)',
+    institution: 'Milen Patel',
     videoId: 'rl0jkP9kOMw',
-    durationMinutes: 115,
-    instructor: 'David J. Malan',
+    durationMinutes: 715,
+    instructor: 'Milen Patel',
     fallbacks: [
       { videoId: '8mAITcNt710', title: 'CS50 Lecture 0 - Computational Thinking', institution: 'Harvard CS50', instructor: 'David J. Malan' },
       { videoId: 'zOjov-2OZ0E', title: 'Introduction to Programming and Computer Science', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' }
@@ -247,11 +247,11 @@ export const VERIFIED_VIDEOS = {
   // CS Program Courses
   'cs101-t1': makeVerifiedVideo({
     id: 'cs101-lec-1',
-    title: 'Harvard CS50: Binary, Memory, and Hardware Logic',
-    institution: 'Harvard CS50 / freeCodeCamp',
+    title: 'How do computers work? (from scratch, no prior knowledge needed)',
+    institution: 'Milen Patel',
     videoId: 'rl0jkP9kOMw',
-    durationMinutes: 115,
-    instructor: 'David J. Malan',
+    durationMinutes: 715,
+    instructor: 'Milen Patel',
     fallbacks: [
       { videoId: '8mAITcNt710', title: 'CS50 Lecture 0 - Computational Thinking', institution: 'Harvard CS50', instructor: 'David J. Malan' },
       { videoId: 'k6U-i4gXkLM', title: 'MIT 6.00 Intro to CS', institution: 'MIT OpenCourseWare', instructor: 'Eric Grimson' }

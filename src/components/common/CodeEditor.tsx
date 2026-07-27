@@ -29,6 +29,7 @@ export interface CodeEditorProps {
   readOnly?: boolean;
   minHeight?: string;
   maxHeight?: string;
+  fontSize?: number;
   placeholder?: string;
   className?: string;
   ariaLabel?: string;
@@ -54,6 +55,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
   readOnly = false,
   minHeight = '300px',
   maxHeight = '600px',
+  fontSize = 13,
   placeholder = '// Write your code solution here...',
   className = '',
   ariaLabel = 'Code Editor',
@@ -62,6 +64,8 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
+  const resolvedFontSize = Math.min(20, Math.max(10, fontSize));
+  const editorLineHeight = `${Math.round(resolvedFontSize * 2)}px`;
 
   const [copied, setCopied] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -168,6 +172,47 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
     if (e.key === 'Tab') {
       e.preventDefault();
       const indent = '  '; // 2 spaces
+      const selectionLineStart = currentVal.lastIndexOf('\n', selectionStart - 1) + 1;
+      const selectionLineEndRaw = currentVal.indexOf('\n', selectionEnd);
+      const selectionLineEnd = selectionLineEndRaw === -1 ? currentVal.length : selectionLineEndRaw;
+      const spansMultipleLines =
+        currentVal.slice(selectionLineStart, selectionEnd).includes('\n');
+
+      if (spansMultipleLines) {
+        const selectedBlock = currentVal.slice(selectionLineStart, selectionLineEnd);
+        const selectedLines = selectedBlock.split('\n');
+        const updatedLines = e.shiftKey
+          ? selectedLines.map((line) =>
+              line.startsWith(indent)
+                ? line.slice(indent.length)
+                : line.startsWith(' ')
+                  ? line.slice(1)
+                  : line
+            )
+          : selectedLines.map((line) => indent + line);
+        const updatedBlock = updatedLines.join('\n');
+        const removedFromFirstLine = e.shiftKey
+          ? selectedLines[0].length - updatedLines[0].length
+          : 0;
+        const totalDelta = updatedBlock.length - selectedBlock.length;
+        const newVal =
+          currentVal.slice(0, selectionLineStart) +
+          updatedBlock +
+          currentVal.slice(selectionLineEnd);
+
+        onChange(newVal);
+        setTimeout(() => {
+          textarea.selectionStart = e.shiftKey
+            ? Math.max(selectionLineStart, selectionStart - removedFromFirstLine)
+            : selectionStart + indent.length;
+          textarea.selectionEnd = Math.max(
+            textarea.selectionStart,
+            selectionEnd + totalDelta
+          );
+          updateCursorPosition();
+        }, 0);
+        return;
+      }
 
       if (e.shiftKey) {
         // Unindent
@@ -398,6 +443,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
           ref={gutterRef}
           aria-hidden="true"
           className="select-none py-3 px-2 bg-[#121011] border-r border-stone-800/80 text-stone-400 text-right text-[11px] font-mono leading-relaxed overflow-hidden shrink-0 min-w-[42px]"
+          style={{ lineHeight: editorLineHeight }}
         >
           {lineNumbers.map((num) => (
             <div
@@ -420,11 +466,11 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
           <pre
             ref={preRef}
             aria-hidden="true"
-            className="absolute inset-0 m-0 p-3 pointer-events-none font-mono text-xs leading-relaxed whitespace-pre overflow-hidden bg-transparent select-none z-0"
+            className="code-editor-highlight absolute inset-0 m-0 p-3 pointer-events-none font-mono text-xs leading-relaxed whitespace-pre overflow-hidden bg-transparent select-none z-0"
             style={{
               fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-              fontSize: '13px',
-              lineHeight: '1.625rem',
+              fontSize: `${resolvedFontSize}px`,
+              lineHeight: editorLineHeight,
               tabSize: 2,
               MozTabSize: 2,
             }}
@@ -456,11 +502,11 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
             autoComplete="off"
             autoCorrect="off"
             rows={Math.max(10, linesCount)}
-            className="code-editor-textarea absolute inset-0 w-full h-full m-0 p-3 font-mono text-xs leading-relaxed bg-transparent resize-none focus:outline-none whitespace-pre overflow-auto z-10"
+            className="code-editor-textarea absolute inset-0 w-full h-full m-0 p-3 font-mono text-xs leading-relaxed bg-transparent resize-none cursor-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#F2C94C]/70 whitespace-pre overflow-auto z-10 select-text touch-manipulation"
             style={{
               fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-              fontSize: '13px',
-              lineHeight: '1.625rem',
+              fontSize: `${resolvedFontSize}px`,
+              lineHeight: editorLineHeight,
               tabSize: 2,
               MozTabSize: 2,
             }}
@@ -510,7 +556,8 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
         .code-editor-textarea {
           color: transparent !important;
           -webkit-text-fill-color: transparent !important;
-          caret-color: #BE94F5 !important;
+          caret-color: #F2C94C !important;
+          caret-shape: block;
         }
 
         .code-editor-textarea::selection {
@@ -531,6 +578,30 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
           opacity: 1 !important;
         }
 
+        /*
+         * Mobile Safari and some Android WebViews do not reliably repaint the
+         * Prism layer beneath a transparent textarea. Use native visible text
+         * on touch-first devices so typing can never appear blank.
+         */
+        @media (hover: none), (pointer: coarse) {
+          .code-editor-highlight {
+            opacity: 0;
+          }
+
+          .code-editor-textarea {
+            color: #f8f8f2 !important;
+            -webkit-text-fill-color: #f8f8f2 !important;
+            caret-color: #F2C94C !important;
+          }
+
+          .code-editor-textarea::selection,
+          .code-editor-textarea::-moz-selection {
+            background-color: rgba(190, 148, 245, 0.45) !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+          }
+        }
+
         /* Syntax highlighting tokens */
         .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #82E0AA; font-style: italic; }
         .token.punctuation { color: #CBD5E1; }
@@ -549,4 +620,3 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
 });
 
 CodeEditor.displayName = 'CodeEditor';
-

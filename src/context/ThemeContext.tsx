@@ -13,28 +13,36 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'computerfy_theme_mode';
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'light';
-    const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === 'dark' || saved === 'light' || saved === 'system') return saved;
-    return 'light';
-  });
+const getInitialTheme = (): Theme => {
+  if (typeof window === 'undefined') return 'system';
+  const saved = localStorage.getItem(THEME_STORAGE_KEY);
+  return saved === 'dark' || saved === 'light' || saved === 'system'
+    ? saved
+    : 'system';
+};
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+const resolveThemePreference = (selectedTheme: Theme): 'light' | 'dark' => {
+  if (selectedTheme !== 'system') return selectedTheme;
+  return typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+};
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() =>
+    resolveThemePreference(getInitialTheme())
+  );
 
   const updateResolvedTheme = useCallback((selectedTheme: Theme) => {
-    let effective: 'light' | 'dark' = 'light';
-    if (selectedTheme === 'system') {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      effective = prefersDark ? 'dark' : 'light';
-    } else {
-      effective = selectedTheme;
-    }
+    const effective = resolveThemePreference(selectedTheme);
 
     setResolvedTheme(effective);
 
     const root = document.documentElement;
+    root.style.colorScheme = effective;
+    root.setAttribute('data-theme-preference', selectedTheme);
     if (effective === 'dark') {
       root.classList.add('dark');
       root.setAttribute('data-theme', 'dark');

@@ -5,6 +5,25 @@ import {
   SpacedReviewCard
 } from '../types/practice';
 
+const createPracticeProblem = (
+  problem: Omit<
+    PracticeProblem,
+    'timeLimitMs' | 'relatedLessons' | 'nextProblems' | 'authoringSource'
+  > &
+    Partial<
+      Pick<
+        PracticeProblem,
+        'timeLimitMs' | 'relatedLessons' | 'nextProblems' | 'authoringSource'
+      >
+    >
+): PracticeProblem => ({
+  timeLimitMs: 1000,
+  relatedLessons: [],
+  nextProblems: [],
+  authoringSource: 'ComputerSciFy Expanded Practice Bank',
+  ...problem,
+});
+
 export const PRACTICE_PROBLEMS: PracticeProblem[] = [
   // --- FOUNDATION & IMPLEMENTATION ---
   {
@@ -1119,20 +1138,408 @@ console.log(matmul(A, B));
     relatedLessons: ['p1-m1-t1', 'p5-m1-t1'],
     nextProblems: [],
     authoringSource: 'ComputerSciFy First Principles Linear Algebra'
+  },
+  createPracticeProblem({
+    id: 'prob-f12-normalized-palindrome',
+    slug: 'normalized-palindrome-two-pointers',
+    title: 'Normalized Palindrome (Two Pointers)',
+    track: 'cs',
+    topics: ['Strings', 'Two Pointers', 'Normalization'],
+    difficulty: 'easy',
+    estimatedMinutes: 12,
+    prerequisites: ['String Iteration'],
+    statement: 'Determine whether a line is a palindrome after removing non-alphanumeric characters and ignoring letter case.',
+    inputFormat: 'One line of text.',
+    outputFormat: 'Print true or false.',
+    constraints: ['0 <= text.length <= 10^5', 'Input may contain spaces and punctuation.'],
+    examples: [
+      {
+        input: 'A man, a plan, a canal: Panama',
+        output: 'true',
+        explanation: 'Normalization produces amanaplanacanalpanama.',
+      },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+
+text = sys.stdin.read().strip()
+cleaned = "".join(ch.lower() for ch in text if ch.isalnum())
+print(str(cleaned == cleaned[::-1]).lower())
+`,
+      javascript: `const fs = require('fs');
+const text = fs.readFileSync(0, 'utf-8').trim();
+const cleaned = text.toLowerCase().replace(/[^a-z0-9]/g, '');
+console.log(String(cleaned === [...cleaned].reverse().join('')));
+`,
+    },
+    visibleTests: [
+      {
+        input: 'A man, a plan, a canal: Panama',
+        expectedOutput: 'true',
+        description: 'Ignores punctuation, spaces, and case.',
+      },
+      {
+        input: 'race a car',
+        expectedOutput: 'false',
+        description: 'Rejects a non-palindrome.',
+      },
+    ],
+    hiddenTests: [
+      {
+        input: '',
+        expectedOutput: 'true',
+        description: 'Treats the empty normalized string as a palindrome.',
+        isHidden: true,
+      },
+    ],
+    hints: [
+      'Normalize the input before comparing characters.',
+      'A two-pointer solution can avoid allocating a reversed copy.',
+    ],
+    editorial: {
+      coreInsight: 'Only normalized alphanumeric characters affect the answer.',
+      bruteForceApproach: 'Build a normalized string and compare it with its reverse.',
+      optimalApproach: 'Move two pointers inward while skipping non-alphanumeric characters.',
+      timeComplexity: 'O(N)',
+      spaceComplexity: 'O(1) with two pointers',
+      commonMistakes: ['Comparing punctuation or forgetting case normalization.'],
+      referenceCodeByLanguage: {
+        python: 'cleaned == cleaned[::-1]',
+        javascript: "cleaned === [...cleaned].reverse().join('')",
+      },
+    },
+  }),
+  createPracticeProblem({
+    id: 'prob-f13-valid-anagram',
+    slug: 'valid-anagram-frequency-map',
+    title: 'Valid Anagram (Frequency Map)',
+    track: 'cs',
+    topics: ['Strings', 'Hashing', 'Counting'],
+    difficulty: 'easy',
+    estimatedMinutes: 12,
+    prerequisites: ['Hash Maps'],
+    statement: 'Given two lowercase strings, determine whether the second is an anagram of the first.',
+    inputFormat: 'Two lines, one string per line.',
+    outputFormat: 'Print true or false.',
+    constraints: ['0 <= string length <= 10^5', 'Strings contain lowercase English letters.'],
+    examples: [
+      { input: 'listen\nsilent', output: 'true', explanation: 'Both strings contain identical letter counts.' },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+from collections import Counter
+
+lines = sys.stdin.read().splitlines()
+first = lines[0] if lines else ""
+second = lines[1] if len(lines) > 1 else ""
+print(str(Counter(first) == Counter(second)).lower())
+`,
+      javascript: `const fs = require('fs');
+const [first = '', second = ''] = fs.readFileSync(0, 'utf-8').split('\\n');
+const count = value => {
+  const frequencies = Array(26).fill(0);
+  for (const char of value) frequencies[char.charCodeAt(0) - 97]++;
+  return frequencies;
+};
+const firstCounts = count(first);
+const secondCounts = count(second);
+console.log(firstCounts.every((value, index) => value === secondCounts[index]));
+`,
+    },
+    visibleTests: [
+      { input: 'listen\nsilent', expectedOutput: 'true', description: 'Recognizes a valid anagram.' },
+      { input: 'rat\ncar', expectedOutput: 'false', description: 'Rejects unequal character counts.' },
+    ],
+    hiddenTests: [
+      { input: 'aacc\nccac', expectedOutput: 'false', description: 'Checks repeated letters.', isHidden: true },
+    ],
+    hints: ['Equal lengths are necessary but not sufficient.', 'Count every character in both strings.'],
+    editorial: {
+      coreInsight: 'Anagrams have identical frequency distributions.',
+      bruteForceApproach: 'Sort both strings and compare them.',
+      optimalApproach: 'Increment and decrement a fixed-size frequency table.',
+      timeComplexity: 'O(N)',
+      spaceComplexity: 'O(1) for a fixed alphabet',
+      commonMistakes: ['Checking only whether each distinct letter exists.'],
+      referenceCodeByLanguage: { python: 'Counter(first) == Counter(second)' },
+    },
+  }),
+  createPracticeProblem({
+    id: 'prob-f14-maximum-subarray',
+    slug: 'maximum-subarray-kadane',
+    title: 'Maximum Subarray Sum (Kadane Algorithm)',
+    track: 'cs',
+    topics: ['Arrays', 'Dynamic Programming', 'Greedy'],
+    difficulty: 'intermediate',
+    estimatedMinutes: 18,
+    prerequisites: ['Array Traversal', 'Running State'],
+    statement: 'Find the largest sum of any non-empty contiguous subarray.',
+    inputFormat: 'One line of space-separated integers.',
+    outputFormat: 'Print the maximum subarray sum.',
+    constraints: ['1 <= nums.length <= 10^5', '-10^9 <= nums[i] <= 10^9'],
+    examples: [
+      { input: '-2 1 -3 4 -1 2 1 -5 4', output: '6', explanation: 'The best subarray is [4, -1, 2, 1].' },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+
+nums = list(map(int, sys.stdin.read().split()))
+best = current = nums[0]
+for value in nums[1:]:
+    current = max(value, current + value)
+    best = max(best, current)
+print(best)
+`,
+      javascript: `const fs = require('fs');
+const nums = fs.readFileSync(0, 'utf-8').trim().split(/\\s+/).map(Number);
+let best = nums[0], current = nums[0];
+for (const value of nums.slice(1)) {
+  current = Math.max(value, current + value);
+  best = Math.max(best, current);
+}
+console.log(best);
+`,
+    },
+    visibleTests: [
+      { input: '-2 1 -3 4 -1 2 1 -5 4', expectedOutput: '6', description: 'Finds the standard mixed-sign optimum.' },
+      { input: '5 4 -1 7 8', expectedOutput: '23', description: 'Uses the entire profitable range.' },
+    ],
+    hiddenTests: [
+      { input: '-8 -3 -6 -2 -5 -4', expectedOutput: '-2', description: 'Handles an all-negative array.', isHidden: true },
+    ],
+    hints: ['Track the best sum ending at the current position.', 'Never replace an all-negative answer with zero.'],
+    editorial: {
+      coreInsight: 'At each index, either extend the previous range or start a new one.',
+      bruteForceApproach: 'Enumerate every subarray and sum it.',
+      optimalApproach: 'Kadane dynamic programming with two running values.',
+      timeComplexity: 'O(N)',
+      spaceComplexity: 'O(1)',
+      commonMistakes: ['Initializing the best value to zero for all-negative inputs.'],
+      referenceCodeByLanguage: { python: 'current = max(value, current + value)' },
+    },
+  }),
+  createPracticeProblem({
+    id: 'prob-f15-merge-intervals',
+    slug: 'merge-overlapping-intervals',
+    title: 'Merge Overlapping Intervals',
+    track: 'cs',
+    topics: ['Arrays', 'Sorting', 'Intervals'],
+    difficulty: 'intermediate',
+    estimatedMinutes: 20,
+    prerequisites: ['Custom Sorting'],
+    statement: 'Merge every overlapping pair of closed intervals and return the minimal disjoint set.',
+    inputFormat: 'One line of semicolon-separated start,end pairs.',
+    outputFormat: 'Merged intervals as start,end pairs separated by semicolons.',
+    constraints: ['1 <= interval count <= 10^5', 'start <= end'],
+    examples: [
+      { input: '1,3;2,6;8,10;15,18', output: '1,6;8,10;15,18', explanation: '[1,3] and [2,6] overlap.' },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+
+raw = sys.stdin.read().strip()
+intervals = sorted([list(map(int, part.split(","))) for part in raw.split(";")])
+merged = []
+for start, end in intervals:
+    if not merged or start > merged[-1][1]:
+        merged.append([start, end])
+    else:
+        merged[-1][1] = max(merged[-1][1], end)
+print(";".join(f"{start},{end}" for start, end in merged))
+`,
+      javascript: `const fs = require('fs');
+const intervals = fs.readFileSync(0, 'utf-8').trim().split(';')
+  .map(part => part.split(',').map(Number))
+  .sort((a, b) => a[0] - b[0]);
+const merged = [];
+for (const [start, end] of intervals) {
+  if (!merged.length || start > merged[merged.length - 1][1]) merged.push([start, end]);
+  else merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], end);
+}
+console.log(merged.map(pair => pair.join(',')).join(';'));
+`,
+    },
+    visibleTests: [
+      { input: '1,3;2,6;8,10;15,18', expectedOutput: '1,6;8,10;15,18', description: 'Merges one overlapping group.' },
+      { input: '1,4;4,5', expectedOutput: '1,5', description: 'Merges touching closed intervals.' },
+    ],
+    hiddenTests: [
+      { input: '1,10;2,3;4,8', expectedOutput: '1,10', description: 'Handles fully contained intervals.', isHidden: true },
+    ],
+    hints: ['Sort by start time first.', 'Compare each start with the end of the latest merged interval.'],
+    editorial: {
+      coreInsight: 'After sorting, an interval can overlap only the latest merged range.',
+      bruteForceApproach: 'Repeatedly compare and combine arbitrary interval pairs.',
+      optimalApproach: 'Sort once and scan from left to right.',
+      timeComplexity: 'O(N log N)',
+      spaceComplexity: 'O(N)',
+      commonMistakes: ['Forgetting that touching closed intervals overlap.'],
+      referenceCodeByLanguage: { python: 'merged[-1][1] = max(merged[-1][1], end)' },
+    },
+  }),
+  createPracticeProblem({
+    id: 'prob-f16-shortest-path-bfs',
+    slug: 'unweighted-shortest-path-bfs',
+    title: 'Shortest Path in an Unweighted Graph (BFS)',
+    track: 'cs',
+    topics: ['Graphs', 'Breadth-First Search', 'Queues'],
+    difficulty: 'intermediate',
+    estimatedMinutes: 24,
+    prerequisites: ['Adjacency Lists', 'Queues'],
+    statement: 'Compute the fewest edges from a source vertex to a target vertex in an undirected graph, or -1 if unreachable.',
+    inputFormat: 'First line: n m. Next m lines: u v. Final line: source target.',
+    outputFormat: 'Print the shortest edge distance.',
+    constraints: ['1 <= n <= 10^5', '0 <= m <= 2*10^5'],
+    examples: [
+      { input: '5 5\n0 1\n1 2\n0 3\n3 4\n4 2\n0 2', output: '2', explanation: 'A shortest route is 0 -> 1 -> 2.' },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+from collections import deque
+
+lines = sys.stdin.read().splitlines()
+n, m = map(int, lines[0].split())
+graph = [[] for _ in range(n)]
+for line in lines[1:m + 1]:
+    left, right = map(int, line.split())
+    graph[left].append(right)
+    graph[right].append(left)
+source, target = map(int, lines[m + 1].split())
+distance = [-1] * n
+distance[source] = 0
+queue = deque([source])
+while queue:
+    node = queue.popleft()
+    for neighbor in graph[node]:
+        if distance[neighbor] == -1:
+            distance[neighbor] = distance[node] + 1
+            queue.append(neighbor)
+print(distance[target])
+`,
+      javascript: `const fs = require('fs');
+const lines = fs.readFileSync(0, 'utf-8').trim().split('\\n');
+const [n, m] = lines[0].split(/\\s+/).map(Number);
+const graph = Array.from({ length: n }, () => []);
+for (let i = 1; i <= m; i++) {
+  const [u, v] = lines[i].split(/\\s+/).map(Number);
+  graph[u].push(v); graph[v].push(u);
+}
+const [source, target] = lines[m + 1].split(/\\s+/).map(Number);
+const distance = Array(n).fill(-1), queue = [source];
+distance[source] = 0;
+for (let head = 0; head < queue.length; head++) {
+  const node = queue[head];
+  for (const neighbor of graph[node]) {
+    if (distance[neighbor] === -1) {
+      distance[neighbor] = distance[node] + 1;
+      queue.push(neighbor);
+    }
   }
+}
+console.log(distance[target]);
+`,
+    },
+    visibleTests: [
+      { input: '5 5\n0 1\n1 2\n0 3\n3 4\n4 2\n0 2', expectedOutput: '2', description: 'Finds a two-edge route.' },
+      { input: '4 2\n0 1\n2 3\n0 3', expectedOutput: '-1', description: 'Reports an unreachable target.' },
+    ],
+    hiddenTests: [
+      { input: '1 0\n0 0', expectedOutput: '0', description: 'Source equals target.', isHidden: true },
+    ],
+    hints: ['BFS discovers vertices in nondecreasing distance order.', 'Mark a vertex visited when it enters the queue.'],
+    editorial: {
+      coreInsight: 'Every BFS layer adds exactly one edge to the path length.',
+      bruteForceApproach: 'Enumerate simple paths with backtracking.',
+      optimalApproach: 'Use an adjacency list and a FIFO queue.',
+      timeComplexity: 'O(V + E)',
+      spaceComplexity: 'O(V + E)',
+      commonMistakes: ['Marking visited only after dequeueing, which creates duplicates.'],
+      referenceCodeByLanguage: { python: 'distance[neighbor] = distance[node] + 1' },
+    },
+  }),
+  createPracticeProblem({
+    id: 'prob-f17-coin-change',
+    slug: 'coin-change-minimum-dp',
+    title: 'Minimum Coin Change (Bottom-Up DP)',
+    track: 'cs',
+    topics: ['Dynamic Programming', 'Arrays', 'Optimization'],
+    difficulty: 'advanced',
+    estimatedMinutes: 25,
+    prerequisites: ['Dynamic Programming State Design'],
+    statement: 'Given coin denominations and a target amount, return the minimum number of coins required, or -1 if the amount is impossible.',
+    inputFormat: 'First line: space-separated coin values. Second line: target amount.',
+    outputFormat: 'Print the minimum coin count.',
+    constraints: ['1 <= coin count <= 50', '1 <= amount <= 10^4'],
+    examples: [
+      { input: '1 2 5\n11', output: '3', explanation: '5 + 5 + 1 uses three coins.' },
+    ],
+    starterCodeByLanguage: {
+      python: `import sys
+
+lines = sys.stdin.read().splitlines()
+coins = list(map(int, lines[0].split()))
+amount = int(lines[1])
+dp = [amount + 1] * (amount + 1)
+dp[0] = 0
+for value in range(1, amount + 1):
+    for coin in coins:
+        if coin <= value:
+            dp[value] = min(dp[value], dp[value - coin] + 1)
+print(dp[amount] if dp[amount] <= amount else -1)
+`,
+      javascript: `const fs = require('fs');
+const lines = fs.readFileSync(0, 'utf-8').trim().split('\\n');
+const coins = lines[0].split(/\\s+/).map(Number);
+const amount = Number(lines[1]);
+const dp = Array(amount + 1).fill(amount + 1);
+dp[0] = 0;
+for (let value = 1; value <= amount; value++) {
+  for (const coin of coins) {
+    if (coin <= value) dp[value] = Math.min(dp[value], dp[value - coin] + 1);
+  }
+}
+console.log(dp[amount] <= amount ? dp[amount] : -1);
+`,
+    },
+    visibleTests: [
+      { input: '1 2 5\n11', expectedOutput: '3', description: 'Combines denominations optimally.' },
+      { input: '2\n3', expectedOutput: '-1', description: 'Reports an impossible amount.' },
+    ],
+    hiddenTests: [
+      { input: '2 5 10 1\n27', expectedOutput: '4', description: 'Finds 10 + 10 + 5 + 2.', isHidden: true },
+    ],
+    hints: ['Let dp[x] be the minimum coins needed for amount x.', 'Initialize unreachable states to a value larger than the target.'],
+    editorial: {
+      coreInsight: 'Each state reuses the best answer for a smaller reachable amount.',
+      bruteForceApproach: 'Try every coin sequence recursively.',
+      optimalApproach: 'Fill a one-dimensional table from 0 through the target.',
+      timeComplexity: 'O(amount * coin count)',
+      spaceComplexity: 'O(amount)',
+      commonMistakes: ['Using a greedy strategy for arbitrary denomination systems.'],
+      referenceCodeByLanguage: { python: 'dp[value] = min(dp[value], dp[value - coin] + 1)' },
+    },
+  })
 ];
 
 export const CURATED_STUDY_PLANS: StudyPlan[] = [
   {
     id: 'plan-1-first-30-problems',
-    title: 'First 30 Programming Problems',
-    description: 'Foundational problem solving covering control flow, arrays, strings, basic math, and hash maps.',
+    title: 'Core Programming Foundations',
+    description: 'A focused progression through strings, hash maps, arrays, binary search, and interval processing.',
     category: 'foundations',
-    problemIds: ['prob-f1-two-sum-linear', 'prob-f2-binary-search-bounds'],
+    problemIds: [
+      'prob-f12-normalized-palindrome',
+      'prob-f13-valid-anagram',
+      'prob-f1-two-sum-linear',
+      'prob-f14-maximum-subarray',
+      'prob-f2-binary-search-bounds',
+      'prob-f15-merge-intervals',
+    ],
     prerequisites: ['Python syntax basics'],
     milestoneMarkers: [
       { problemCount: 1, milestoneTitle: 'First O(N) Algorithm Passed' },
-      { problemCount: 2, milestoneTitle: 'Binary Search Mastery' }
+      { problemCount: 3, milestoneTitle: 'Linear-Time Pattern Builder' },
+      { problemCount: 6, milestoneTitle: 'Foundation Track Complete' }
     ]
   },
   {
@@ -1140,10 +1547,18 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Python Problem Solving',
     description: 'Master list comprehensions, generator expressions, string parsing, and standard library data structures.',
     category: 'foundations',
-    problemIds: ['prob-f1-two-sum-linear', 'prob-f3-longest-increasing-subsequence'],
+    problemIds: [
+      'prob-f12-normalized-palindrome',
+      'prob-f13-valid-anagram',
+      'prob-f1-two-sum-linear',
+      'prob-f14-maximum-subarray',
+      'prob-f3-longest-increasing-subsequence',
+      'prob-f17-coin-change',
+    ],
     prerequisites: ['Python basics'],
     milestoneMarkers: [
-      { problemCount: 2, milestoneTitle: 'Python Data Structures Expert' }
+      { problemCount: 3, milestoneTitle: 'Python Data Structures Builder' },
+      { problemCount: 6, milestoneTitle: 'Python Problem Solver' }
     ]
   },
   {
@@ -1151,7 +1566,12 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Data Structures Foundations',
     description: 'Arrays, Linked Lists, Hash Tables, Stacks, Queues, and Binary Trees implemented from first principles.',
     category: 'foundations',
-    problemIds: ['prob-f1-two-sum-linear'],
+    problemIds: [
+      'prob-f1-two-sum-linear',
+      'prob-f6-valid-parentheses-stack',
+      'prob-f7-binary-tree-inorder',
+      'prob-f10-lru-cache-doubly-linked',
+    ],
     prerequisites: ['Pointers and References'],
     milestoneMarkers: [
       { problemCount: 1, milestoneTitle: 'Data Structure Core Mastery' }
@@ -1162,7 +1582,14 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Algorithms Core',
     description: 'Sorting, Divide and Conquer, Binary Search, Dynamic Programming, and Greedy strategies.',
     category: 'algorithms',
-    problemIds: ['prob-f2-binary-search-bounds', 'prob-f3-longest-increasing-subsequence'],
+    problemIds: [
+      'prob-f2-binary-search-bounds',
+      'prob-f14-maximum-subarray',
+      'prob-f15-merge-intervals',
+      'prob-f3-longest-increasing-subsequence',
+      'prob-f16-shortest-path-bfs',
+      'prob-f17-coin-change',
+    ],
     prerequisites: ['Big-O Analysis'],
     milestoneMarkers: [
       { problemCount: 2, milestoneTitle: 'Algorithmic Complexity Specialist' }
@@ -1173,7 +1600,7 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Graphs & Networks',
     description: 'BFS, DFS, Topological Sort, Dijkstra, Bellman-Ford, Prim, Kruskal, and Union-Find.',
     category: 'algorithms',
-    problemIds: ['prob-f2-binary-search-bounds'],
+    problemIds: ['prob-f16-shortest-path-bfs', 'prob-f7-binary-tree-inorder'],
     prerequisites: ['Graph Representations'],
     milestoneMarkers: [
       { problemCount: 1, milestoneTitle: 'Network Traversal Specialist' }
@@ -1184,7 +1611,11 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Dynamic Programming Mastery',
     description: 'Top-down memoization, bottom-up tabular DP, knapsack variants, state compression, and sequence DP.',
     category: 'algorithms',
-    problemIds: ['prob-f3-longest-increasing-subsequence'],
+    problemIds: [
+      'prob-f14-maximum-subarray',
+      'prob-f3-longest-increasing-subsequence',
+      'prob-f17-coin-change',
+    ],
     prerequisites: ['Recursion and Subproblem Trees'],
     milestoneMarkers: [
       { problemCount: 1, milestoneTitle: 'DP Paradigm Master' }
@@ -1206,7 +1637,14 @@ export const CURATED_STUDY_PLANS: StudyPlan[] = [
     title: 'Interview Foundations',
     description: 'High-frequency coding interview patterns (Two Pointers, Sliding Window, Monotonic Stack, Top K elements).',
     category: 'foundations',
-    problemIds: ['prob-f1-two-sum-linear', 'prob-f2-binary-search-bounds'],
+    problemIds: [
+      'prob-f12-normalized-palindrome',
+      'prob-f13-valid-anagram',
+      'prob-f1-two-sum-linear',
+      'prob-f14-maximum-subarray',
+      'prob-f2-binary-search-bounds',
+      'prob-f15-merge-intervals',
+    ],
     prerequisites: ['Core Algorithms'],
     milestoneMarkers: [
       { problemCount: 2, milestoneTitle: 'Interview Readiness Verified' }
