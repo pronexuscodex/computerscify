@@ -1,0 +1,1463 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-27T10:35:37.413548+00:00",
+  "project": "ComputerSciFy",
+  "sourceReport": "academic-resource-report.json",
+  "auditConclusion": {
+    "originalReportCanBeTrustedAsAResourceVerificationReport": false,
+    "reason": [
+      "Multiple unrelated titles point to the same PDF.",
+      "Several arXiv identifiers resolve to papers unrelated to the displayed metadata.",
+      "The original proxy checks appear to validate that a PDF was returned, not that it is the correct book or paper.",
+      "Copyrighted books were sometimes labelled as free PDFs while the linked file was a different open paper or chapter."
+    ],
+    "requiredAction": "Replace the existing registry with this curated manifest, then run live metadata, license, CORS, and in-app rendering checks before marking any item production-verified."
+  },
+  "statusDefinitions": {
+    "web-pdf-confirmed": "A live web result identified the URL as a PDF matching the displayed title.",
+    "web-confirmed": "A live web result identified the official or authoritative source page.",
+    "web-confirmed-large-pdf": "The source is confirmed, but the PDF was too large for the web fetcher to parse fully.",
+    "runtime-link-check-required": "Strong authoritative candidate; Google AI Studio must perform a current live request and in-app test."
+  },
+  "integrationRules": [
+    "Do not use an arbitrary /api/pdf-proxy?url= endpoint.",
+    "Use a server-side registry keyed by resourceId with a strict host allowlist.",
+    "Verify final URL, content type, PDF signature, title, authors, license, first page, middle page, and final page.",
+    "Keep official web books as external or embedded web resources when no redistributable PDF is available.",
+    "Never label a bibliographic-only copyrighted book as a free in-app PDF.",
+    "Preserve multiple resources per topic and never render only the first item."
+  ],
+  "topics": [
+    {
+      "topicId": "p0-m1-t1",
+      "topicTitle": "Information Representation: Bits, Bytes, and Encodings",
+      "resources": [
+        {
+          "kind": "open-course",
+          "role": "primary",
+          "title": "From Nand to Tetris — Official Course Materials",
+          "authors": [
+            "Noam Nisan",
+            "Shimon Schocken"
+          ],
+          "url": "https://www.nand2tetris.org/course",
+          "deliveryMode": "official-web-resource",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "A Mathematical Theory of Communication",
+          "authors": [
+            "Claude E. Shannon"
+          ],
+          "year": 1948,
+          "venue": "Bell System Technical Journal",
+          "url": "https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p0-m1-t2",
+      "topicTitle": "Operating Systems, Memory, and File Abstractions",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Operating Systems: Three Easy Pieces",
+          "authors": [
+            "Remzi H. Arpaci-Dusseau",
+            "Andrea C. Arpaci-Dusseau"
+          ],
+          "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "The UNIX Time-Sharing System",
+          "authors": [
+            "Dennis M. Ritchie",
+            "Ken Thompson"
+          ],
+          "year": 1974,
+          "venue": "Communications of the ACM",
+          "url": "https://dsf.berkeley.edu/cs262/unix.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p1-m2-t1",
+      "topicTitle": "Functions, Logarithms, and Asymptotic Growth",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Mathematics for Computer Science",
+          "authors": [
+            "Eric Lehman",
+            "F. Thomson Leighton",
+            "Albert R. Meyer"
+          ],
+          "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_textbook.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Big Omicron and Big Omega and Big Theta",
+          "authors": [
+            "Donald E. Knuth"
+          ],
+          "year": 1976,
+          "venue": "SIGACT News",
+          "url": "https://danluu.com/knuth-big-o.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p1-m3-t1",
+      "topicTitle": "Propositional Logic, Sets, and Mathematical Proofs",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Mathematics for Computer Science",
+          "authors": [
+            "Eric Lehman",
+            "F. Thomson Leighton",
+            "Albert R. Meyer"
+          ],
+          "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_textbook.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "academic-notes",
+          "role": "secondary",
+          "title": "Discrete Mathematics for Computer Science, Some Notes",
+          "authors": [
+            "Jean Gallier"
+          ],
+          "year": 2008,
+          "url": "https://arxiv.org/pdf/0805.0585",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p1-m4-t1",
+      "topicTitle": "Vectors, Matrices, and Linear Transformations",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Linear Algebra",
+          "authors": [
+            "Jim Hefferon"
+          ],
+          "url": "https://www.cs.ox.ac.uk/files/12921/book.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "The PageRank Citation Ranking: Bringing Order to the Web",
+          "authors": [
+            "Larry Page",
+            "Sergey Brin",
+            "Rajeev Motwani",
+            "Terry Winograd"
+          ],
+          "year": 1999,
+          "venue": "Stanford InfoLab Technical Report",
+          "url": "https://homepages.dcc.ufmg.br/~nivio/cursos/ri11/sources/pagerank.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p2-m8-t1",
+      "topicTitle": "Python Syntax, Data Structures, and Control Flow",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Think Python, 2nd Edition",
+          "authors": [
+            "Allen B. Downey"
+          ],
+          "url": "https://greenteapress.com/thinkpython2/thinkpython2.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "technical-manual",
+          "role": "foundational",
+          "title": "Python Reference Manual",
+          "authors": [
+            "Guido van Rossum"
+          ],
+          "year": 1995,
+          "venue": "CWI Report CS-R9525",
+          "url": "https://web.mit.edu/18.417/doc/pydocs/ref.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p2-m10-t1",
+      "topicTitle": "NumPy Array Vectorization & Broadcasting",
+      "resources": [
+        {
+          "kind": "official-guide",
+          "role": "primary",
+          "title": "NumPy User Guide",
+          "authors": [
+            "NumPy Community"
+          ],
+          "url": "https://numpy.org/doc/2.2/numpy-user.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Array Programming with NumPy",
+          "authors": [
+            "Charles R. Harris",
+            "K. Jarrod Millman",
+            "Stéfan J. van der Walt",
+            "NumPy Contributors"
+          ],
+          "year": 2020,
+          "venue": "Nature",
+          "url": "https://arxiv.org/pdf/2006.10256",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p2-m11-t1",
+      "topicTitle": "Relational Data Model, SQL Queries, and Window Functions",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Database Design, 2nd Edition",
+          "authors": [
+            "Adrienne Watt"
+          ],
+          "url": "https://resources.saylor.org/wwwresources/archived/site/wp-content/uploads/2014/12/CS403-1.10-Database-Design-2nd-Edition-CCBY.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "A Relational Model of Data for Large Shared Data Banks",
+          "authors": [
+            "E. F. Codd"
+          ],
+          "year": 1970,
+          "venue": "Communications of the ACM",
+          "url": "https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p3-m13-t1",
+      "topicTitle": "Asymptotic Analysis, Trees, Heaps, and Graph Algorithms",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Open Data Structures",
+          "authors": [
+            "Pat Morin"
+          ],
+          "url": "https://opendatastructures.org/ods-python.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "A Note on Two Problems in Connexion with Graphs",
+          "authors": [
+            "Edsger W. Dijkstra"
+          ],
+          "year": 1959,
+          "venue": "Numerische Mathematik",
+          "url": "https://ir.cwi.nl/pub/9256/9256D.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p4-m15-t1",
+      "topicTitle": "Statistical Hypothesis Testing & A/B Experimentation",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "OpenIntro Statistics",
+          "authors": [
+            "David Diez",
+            "Mine Çetinkaya-Rundel",
+            "Christopher Barr"
+          ],
+          "url": "https://www.biostat.jhsph.edu/~iruczins/teaching/books/2019.openintro.statistics.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "Online Controlled Experiments at Large Scale",
+          "authors": [
+            "Ron Kohavi",
+            "Alex Deng",
+            "Brian Frasca",
+            "Roger Longbotham",
+            "Toby Walker",
+            "Ya Xu",
+            "Nils Pohlmann"
+          ],
+          "year": 2013,
+          "venue": "KDD",
+          "url": "https://www.exp-platform.com/Documents/2013%20controlledExperimentsAtScale.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p5-m16-t1",
+      "topicTitle": "Linear & Logistic Regression from Scratch via Gradient Descent",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "An Introduction to Statistical Learning, 2nd Edition",
+          "authors": [
+            "Gareth James",
+            "Daniela Witten",
+            "Trevor Hastie",
+            "Robert Tibshirani"
+          ],
+          "url": "https://www.statlearning.com/",
+          "deliveryMode": "official-web-book-with-pdf-download",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "survey",
+          "title": "Optimization Methods for Large-Scale Machine Learning",
+          "authors": [
+            "Léon Bottou",
+            "Frank E. Curtis",
+            "Jorge Nocedal"
+          ],
+          "year": 2018,
+          "venue": "SIAM Review",
+          "url": "https://arxiv.org/pdf/1606.04838",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p6-m17-t1",
+      "topicTitle": "Backpropagation and Transformer Self-Attention",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Dive into Deep Learning",
+          "authors": [
+            "Aston Zhang",
+            "Zachary C. Lipton",
+            "Mu Li",
+            "Alexander J. Smola"
+          ],
+          "url": "https://d2l.ai/d2l-en.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed-large-pdf"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Attention Is All You Need",
+          "authors": [
+            "Ashish Vaswani",
+            "Noam Shazeer",
+            "Niki Parmar",
+            "Jakob Uszkoreit",
+            "Llion Jones",
+            "Aidan N. Gomez",
+            "Łukasz Kaiser",
+            "Illia Polosukhin"
+          ],
+          "year": 2017,
+          "venue": "NeurIPS",
+          "url": "https://arxiv.org/pdf/1706.03762",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p7-m18-t1",
+      "topicTitle": "REST APIs, Docker Containers, and Model Drift Monitoring",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Machine Learning Systems",
+          "authors": [
+            "Open ML Systems Community"
+          ],
+          "url": "https://mlsysbook.ai/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Hidden Technical Debt in Machine Learning Systems",
+          "authors": [
+            "D. Sculley",
+            "Gary Holt",
+            "Daniel Golovin",
+            "Eugene Davydov",
+            "Todd Phillips",
+            "Dietmar Ebner",
+            "Vinay Chaudhary",
+            "Michael Young",
+            "Jean-François Crespo",
+            "Dan Webb"
+          ],
+          "year": 2015,
+          "venue": "NeurIPS",
+          "url": "https://papers.neurips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction",
+          "authors": [
+            "Eric Breck",
+            "Shanqing Cai",
+            "Eric Nielsen",
+            "Michael Salib",
+            "D. Sculley"
+          ],
+          "year": 2017,
+          "venue": "IEEE Big Data",
+          "url": "https://research.google.com/pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "p8-m19-t1",
+      "topicTitle": "Distributed Consensus, CAP Theorem, and Raft Protocol",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Distributed Systems, 4th Edition",
+          "authors": [
+            "Maarten van Steen",
+            "Andrew S. Tanenbaum"
+          ],
+          "url": "https://www.distributed-systems.net/index.php/books/ds4/",
+          "deliveryMode": "official-web-book-with-free-personal-copy",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "In Search of an Understandable Consensus Algorithm",
+          "authors": [
+            "Diego Ongaro",
+            "John Ousterhout"
+          ],
+          "year": 2014,
+          "venue": "USENIX ATC",
+          "url": "https://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs101-t1",
+      "topicTitle": "Bits, Bytes & Digital Logic",
+      "resources": [
+        {
+          "kind": "open-course",
+          "role": "primary",
+          "title": "From Nand to Tetris — Boolean Logic and Boolean Arithmetic",
+          "authors": [
+            "Noam Nisan",
+            "Shimon Schocken"
+          ],
+          "url": "https://www.nand2tetris.org/course",
+          "deliveryMode": "official-web-resource",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "A Symbolic Analysis of Relay and Switching Circuits",
+          "authors": [
+            "Claude E. Shannon"
+          ],
+          "year": 1938,
+          "venue": "Transactions of the AIEE",
+          "url": "https://www.cs.virginia.edu/~evans/greatworks/shannon38.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs102-t1",
+      "topicTitle": "OOP Architecture & Polymorphism",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Think Python, 2nd Edition — Classes and Inheritance",
+          "authors": [
+            "Allen B. Downey"
+          ],
+          "url": "https://greenteapress.com/thinkpython2/thinkpython2.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "A Behavioral Notion of Subtyping",
+          "authors": [
+            "Barbara Liskov",
+            "Jeannette M. Wing"
+          ],
+          "year": 1994,
+          "venue": "ACM TOPLAS",
+          "url": "https://www.cs.cmu.edu/~wing/publications/LiskovWing94.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "math101-t1",
+      "topicTitle": "Derivatives & Chain Rule for Multivariable Optimization",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Mathematics for Machine Learning",
+          "authors": [
+            "Marc Peter Deisenroth",
+            "A. Aldo Faisal",
+            "Cheng Soon Ong"
+          ],
+          "url": "https://mml-book.github.io/book/mml-book.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed-large-pdf"
+        },
+        {
+          "kind": "research-paper",
+          "role": "survey",
+          "title": "Optimization Methods for Large-Scale Machine Learning",
+          "authors": [
+            "Léon Bottou",
+            "Frank E. Curtis",
+            "Jorge Nocedal"
+          ],
+          "year": 2018,
+          "venue": "SIAM Review",
+          "url": "https://arxiv.org/pdf/1606.04838",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds101-t1",
+      "topicTitle": "Tabular Wrangling & Grammars of Graphics",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Python Data Science Handbook",
+          "authors": [
+            "Jake VanderPlas"
+          ],
+          "url": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Tidy Data",
+          "authors": [
+            "Hadley Wickham"
+          ],
+          "year": 2014,
+          "venue": "Journal of Statistical Software",
+          "url": "https://www.jstatsoft.org/article/view/v059i10/v59i10.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs201-t1",
+      "topicTitle": "Hash Tables & Collision Resolution Algorithms",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Open Data Structures",
+          "authors": [
+            "Pat Morin"
+          ],
+          "url": "https://opendatastructures.org/ods-python.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Cuckoo Hashing",
+          "authors": [
+            "Rasmus Pagh",
+            "Flemming Friche Rodler"
+          ],
+          "year": 2001,
+          "venue": "ESA / Journal of Algorithms",
+          "url": "https://www.rasmuspagh.net/papers/cuckoo.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "math201-t1",
+      "topicTitle": "Singular Value Decomposition (SVD) & Dimensionality Reduction",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Linear Algebra",
+          "authors": [
+            "Jim Hefferon"
+          ],
+          "url": "https://www.cs.ox.ac.uk/files/12921/book.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "tutorial",
+          "title": "A Tutorial on Principal Component Analysis",
+          "authors": [
+            "Jonathon Shlens"
+          ],
+          "year": 2014,
+          "url": "https://www.cs.cmu.edu/~elaw/papers/pca.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "stat201-t1",
+      "topicTitle": "Maximum Likelihood Estimation (MLE) & Likelihood Ratio Tests",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "OpenIntro Statistics",
+          "authors": [
+            "David Diez",
+            "Mine Çetinkaya-Rundel",
+            "Christopher Barr"
+          ],
+          "url": "https://www.biostat.jhsph.edu/~iruczins/teaching/books/2019.openintro.statistics.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "On the Mathematical Foundations of Theoretical Statistics",
+          "authors": [
+            "Ronald A. Fisher"
+          ],
+          "year": 1922,
+          "venue": "Philosophical Transactions of the Royal Society A",
+          "url": "https://jhanley.biostat.mcgill.ca/bios601/Likelihood/Fisher1922.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs204-t1",
+      "topicTitle": "Instruction Pipelining & Cache Locality Optimization",
+      "resources": [
+        {
+          "kind": "open-course",
+          "role": "primary",
+          "title": "MIT Computation Structures — Architecture Materials",
+          "authors": [
+            "MIT OpenCourseWare"
+          ],
+          "url": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/",
+          "deliveryMode": "official-web-course",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "The Case for the Reduced Instruction Set Computer",
+          "authors": [
+            "David A. Patterson",
+            "David R. Ditzel"
+          ],
+          "year": 1980,
+          "venue": "ACM SIGARCH Computer Architecture News",
+          "url": "https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F00/handouts/papers/patterson80.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds202-t1",
+      "topicTitle": "SQL Window Functions & Analytical Query Optimization",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Database Design, 2nd Edition",
+          "authors": [
+            "Adrienne Watt"
+          ],
+          "url": "https://resources.saylor.org/wwwresources/archived/site/wp-content/uploads/2014/12/CS403-1.10-Database-Design-2nd-Edition-CCBY.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Access Path Selection in a Relational Database Management System",
+          "authors": [
+            "Patricia G. Selinger",
+            "Morton M. Astrahan",
+            "Donald D. Chamberlin",
+            "Raymond A. Lorie",
+            "Thomas G. Price"
+          ],
+          "year": 1979,
+          "venue": "SIGMOD",
+          "url": "https://courses.cs.duke.edu/compsci516/cps216/spring03/papers/selinger-etal-1979.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs301-t1",
+      "topicTitle": "Thread Synchronization & Deadlock Prevention",
+      "resources": [
+        {
+          "kind": "open-book-chapter",
+          "role": "primary",
+          "title": "OSTEP — Locks",
+          "authors": [
+            "Remzi H. Arpaci-Dusseau",
+            "Andrea C. Arpaci-Dusseau"
+          ],
+          "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Cooperating Sequential Processes",
+          "authors": [
+            "Edsger W. Dijkstra"
+          ],
+          "year": 1965,
+          "url": "https://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds302-t1",
+      "topicTitle": "Difference-in-Differences & Propensity Score Matching",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Causal Inference: The Mixtape",
+          "authors": [
+            "Scott Cunningham"
+          ],
+          "url": "https://mixtape.scunning.com/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "The Central Role of the Propensity Score in Observational Studies for Causal Effects",
+          "authors": [
+            "Paul R. Rosenbaum",
+            "Donald B. Rubin"
+          ],
+          "year": 1983,
+          "venue": "Biometrika",
+          "url": "https://www.stat.cmu.edu/~ryantibs/journalclub/rosenbaum_1983.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania",
+          "authors": [
+            "David Card",
+            "Alan B. Krueger"
+          ],
+          "year": 1994,
+          "venue": "American Economic Review",
+          "url": "https://davidcard.berkeley.edu/papers/njmin-aer.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs305-t1",
+      "topicTitle": "Backpropagation & Transformer Self-Attention Mechanics",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Dive into Deep Learning",
+          "authors": [
+            "Aston Zhang",
+            "Zachary C. Lipton",
+            "Mu Li",
+            "Alexander J. Smola"
+          ],
+          "url": "https://d2l.ai/d2l-en.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed-large-pdf"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Attention Is All You Need",
+          "authors": [
+            "Ashish Vaswani",
+            "Noam Shazeer",
+            "Niki Parmar",
+            "Jakob Uszkoreit",
+            "Llion Jones",
+            "Aidan N. Gomez",
+            "Łukasz Kaiser",
+            "Illia Polosukhin"
+          ],
+          "year": 2017,
+          "venue": "NeurIPS",
+          "url": "https://arxiv.org/pdf/1706.03762",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs404-t1",
+      "topicTitle": "Differential Privacy & Algorithmic Bias Mitigation",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "The Algorithmic Foundations of Differential Privacy",
+          "authors": [
+            "Cynthia Dwork",
+            "Aaron Roth"
+          ],
+          "url": "https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Differential Privacy",
+          "authors": [
+            "Cynthia Dwork"
+          ],
+          "year": 2006,
+          "venue": "ICALP",
+          "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/dwork.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "Equality of Opportunity in Supervised Learning",
+          "authors": [
+            "Moritz Hardt",
+            "Eric Price",
+            "Nathan Srebro"
+          ],
+          "year": 2016,
+          "url": "https://arxiv.org/pdf/1610.02413",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs401-t1",
+      "topicTitle": "Capstone Proposal & System Specification",
+      "resources": [
+        {
+          "kind": "official-handbook",
+          "role": "primary",
+          "title": "NASA Systems Engineering Handbook",
+          "authors": [
+            "NASA"
+          ],
+          "url": "https://www.nasa.gov/wp-content/uploads/2018/09/nasa_systems_engineering_handbook_0.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "On the Criteria To Be Used in Decomposing Systems into Modules",
+          "authors": [
+            "David L. Parnas"
+          ],
+          "year": 1972,
+          "venue": "Communications of the ACM",
+          "url": "https://wstomv.win.tue.nl/edu/2ip30/references/criteria_for_modularization.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds401-t1",
+      "topicTitle": "Data Product Specification & Baseline Model",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Machine Learning Yearning",
+          "authors": [
+            "Andrew Ng"
+          ],
+          "url": "https://info.deeplearning.ai/machine-learning-yearning-book",
+          "deliveryMode": "official-web-download",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction",
+          "authors": [
+            "Eric Breck",
+            "Shanqing Cai",
+            "Eric Nielsen",
+            "Michael Salib",
+            "D. Sculley"
+          ],
+          "year": 2017,
+          "venue": "IEEE Big Data",
+          "url": "https://research.google.com/pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs302-t1",
+      "topicTitle": "TCP/IP Architecture & Raft Consensus Protocols",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Computer Networking: Principles, Protocols and Practice",
+          "authors": [
+            "Olivier Bonaventure"
+          ],
+          "url": "https://textbookequity.org/Textbooks/Computer-Networking-Principles-Bonaventure_f.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "In Search of an Understandable Consensus Algorithm",
+          "authors": [
+            "Diego Ongaro",
+            "John Ousterhout"
+          ],
+          "year": 2014,
+          "venue": "USENIX ATC",
+          "url": "https://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs303-t1",
+      "topicTitle": "Lexical Analysis, Recursive Descent Parsing & AST Transformations",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Essentials of Compilation",
+          "authors": [
+            "Jeremy G. Siek"
+          ],
+          "url": "https://jeapostrophe.github.io/courses/2021/spring/406/notes/book.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation",
+          "authors": [
+            "Chris Lattner",
+            "Vikram Adve"
+          ],
+          "year": 2004,
+          "venue": "CGO",
+          "url": "https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        }
+      ]
+    },
+    {
+      "topicId": "cs304-t1",
+      "topicTitle": "Design Patterns, Microservices & Automated CI/CD Pipelines",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Software Engineering at Google",
+          "authors": [
+            "Titus Winters",
+            "Tom Manshreck",
+            "Hyrum Wright"
+          ],
+          "url": "https://abseil.io/resources/swe-book/html/toc.html",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "On the Criteria To Be Used in Decomposing Systems into Modules",
+          "authors": [
+            "David L. Parnas"
+          ],
+          "year": 1972,
+          "venue": "Communications of the ACM",
+          "url": "https://wstomv.win.tue.nl/edu/2ip30/references/criteria_for_modularization.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs402-t1",
+      "topicTitle": "Deterministic Finite Automata, Turing Machines & P vs NP",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Introduction to Theoretical Computer Science",
+          "authors": [
+            "Boaz Barak"
+          ],
+          "url": "https://files.boazbarak.org/introtcs/lnotes_book.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "The Complexity of Theorem-Proving Procedures",
+          "authors": [
+            "Stephen A. Cook"
+          ],
+          "year": 1971,
+          "venue": "STOC",
+          "url": "https://www.cs.toronto.edu/~sacook/homepage/1971.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "cs403-t1",
+      "topicTitle": "AES, RSA Public-Key Cryptography & Memory Safety",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "A Graduate Course in Applied Cryptography",
+          "authors": [
+            "Dan Boneh",
+            "Victor Shoup"
+          ],
+          "url": "https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "New Directions in Cryptography",
+          "authors": [
+            "Whitfield Diffie",
+            "Martin E. Hellman"
+          ],
+          "year": 1976,
+          "venue": "IEEE Transactions on Information Theory",
+          "url": "https://ee.stanford.edu/~hellman/publications/24.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds303-t1",
+      "topicTitle": "Analytics Engineering, dbt & Modern Data Stack",
+      "resources": [
+        {
+          "kind": "official-guide",
+          "role": "primary",
+          "title": "dbt Developer Hub — Analytics Engineering",
+          "authors": [
+            "dbt Labs"
+          ],
+          "url": "https://docs.getdbt.com/",
+          "deliveryMode": "official-web-resource",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "systems",
+          "title": "C-Store: A Column-oriented DBMS",
+          "authors": [
+            "Mike Stonebraker",
+            "Daniel Abadi",
+            "Adam Batkin",
+            "Xuedong Chen",
+            "Mitch Cherniack",
+            "Miguel Ferreira",
+            "Edmond Lau",
+            "Amerson Lin",
+            "Sam Madden",
+            "Elizabeth O'Neil",
+            "Pat O'Neil",
+            "Alex Rasin",
+            "Nga Tran",
+            "Stan Zdonik"
+          ],
+          "year": 2005,
+          "venue": "VLDB",
+          "url": "http://www.vldb.org/archives/website/2005/program/paper/thu/p553-stonebraker.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        }
+      ]
+    },
+    {
+      "topicId": "ds304-t1",
+      "topicTitle": "Time Series Analysis, ARIMA & Decomposition",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Forecasting: Principles and Practice, 3rd Edition",
+          "authors": [
+            "Rob J. Hyndman",
+            "George Athanasopoulos"
+          ],
+          "url": "https://otexts.com/fpp3/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "Forecasting at Scale",
+          "authors": [
+            "Sean J. Taylor",
+            "Benjamin Letham"
+          ],
+          "year": 2018,
+          "venue": "The American Statistician",
+          "url": "https://peerj.com/preprints/3190.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        }
+      ]
+    },
+    {
+      "topicId": "ds402-t1",
+      "topicTitle": "Full Stack MLOps, Model Deployment & Containers",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Machine Learning Systems",
+          "authors": [
+            "Open ML Systems Community"
+          ],
+          "url": "https://mlsysbook.ai/",
+          "deliveryMode": "official-web-book",
+          "openAccess": true,
+          "verificationStatus": "runtime-link-check-required"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Hidden Technical Debt in Machine Learning Systems",
+          "authors": [
+            "D. Sculley",
+            "Gary Holt",
+            "Daniel Golovin",
+            "Eugene Davydov",
+            "Todd Phillips",
+            "Dietmar Ebner",
+            "Vinay Chaudhary",
+            "Michael Young",
+            "Jean-François Crespo",
+            "Dan Webb"
+          ],
+          "year": 2015,
+          "venue": "NeurIPS",
+          "url": "https://papers.neurips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "applied",
+          "title": "The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction",
+          "authors": [
+            "Eric Breck",
+            "Shanqing Cai",
+            "Eric Nielsen",
+            "Michael Salib",
+            "D. Sculley"
+          ],
+          "year": 2017,
+          "venue": "IEEE Big Data",
+          "url": "https://research.google.com/pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds403-t1",
+      "topicTitle": "Stanford CS224N: Natural Language Processing with Deep Learning & Transformers",
+      "resources": [
+        {
+          "kind": "open-book",
+          "role": "primary",
+          "title": "Speech and Language Processing, 3rd Edition",
+          "authors": [
+            "Daniel Jurafsky",
+            "James H. Martin"
+          ],
+          "year": 2026,
+          "url": "https://web.stanford.edu/~jurafsky/slp3/ed3book_jan26.pdf",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Attention Is All You Need",
+          "authors": [
+            "Ashish Vaswani",
+            "Noam Shazeer",
+            "Niki Parmar",
+            "Jakob Uszkoreit",
+            "Llion Jones",
+            "Aidan N. Gomez",
+            "Łukasz Kaiser",
+            "Illia Polosukhin"
+          ],
+          "year": 2017,
+          "venue": "NeurIPS",
+          "url": "https://arxiv.org/pdf/1706.03762",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    },
+    {
+      "topicId": "ds405-t1",
+      "topicTitle": "Computer Vision, CNNs & Spatial Analytics",
+      "resources": [
+        {
+          "kind": "book",
+          "role": "primary",
+          "title": "Computer Vision: Algorithms and Applications, 2nd Edition",
+          "authors": [
+            "Richard Szeliski"
+          ],
+          "url": "https://szeliski.org/Book/",
+          "deliveryMode": "official-download-page-personal-use",
+          "openAccess": true,
+          "verificationStatus": "web-confirmed"
+        },
+        {
+          "kind": "research-paper",
+          "role": "foundational",
+          "title": "Deep Residual Learning for Image Recognition",
+          "authors": [
+            "Kaiming He",
+            "Xiangyu Zhang",
+            "Shaoqing Ren",
+            "Jian Sun"
+          ],
+          "year": 2016,
+          "venue": "CVPR",
+          "url": "https://arxiv.org/pdf/1512.03385",
+          "deliveryMode": "in-app-pdf-candidate",
+          "openAccess": true,
+          "verificationStatus": "web-pdf-confirmed"
+        }
+      ]
+    }
+  ]
+}

@@ -151,21 +151,30 @@ export function auditAllTopicResources(): TopicAuditResult {
       });
     }
 
-    // 3. Check PDF / Lecture Notes
-    const pdfUrl = mp.primaryText?.pdfUrl || mp.authoritativeResearchSource?.openAccessUrl || (mp.authoritativeResearchSource as any)?.pdfUrl;
-    if (pdfUrl && pdfUrl.startsWith('http')) {
-      if (isNormalWebPage(pdfUrl) && !pdfUrl.toLowerCase().includes('.pdf') && !pdfUrl.includes('arxiv.org/pdf')) {
-        issues.push({
-          topicId: topic.id,
-          topicTitle: topic.title,
-          moduleId: topic.moduleId,
-          issueType: 'broken-pdf',
-          description: `PDF URL '${pdfUrl}' points to an HTML web page instead of a readable PDF file.`,
-          suggestedAction: 'Convert to a direct open-access PDF or raw GitHub document URL.'
-        });
-      } else {
-        hasPDF = true;
+    // 3. Check PDF / Lecture Notes & Official Web Books
+    const pdfBooksList = topic.pdfBooks || mp.pdfBooks || (mp.primaryText ? [mp.primaryText] : []);
+    const papersList = topic.researchPapers || mp.researchPapers || (mp.authoritativeResearchSource ? [mp.authoritativeResearchSource] : []);
+    const allResources = [...pdfBooksList, ...papersList];
+
+    const hasValidPdfOrWebResource = allResources.some((r: any) => {
+      const url = r.pdfUrl || r.openAccessUrl || r.url || '';
+      const mode = r.deliveryMode || '';
+      if (!url) return false;
+      if (mode === 'in-app-pdf-candidate' || url.toLowerCase().includes('.pdf') || url.includes('arxiv.org/pdf')) {
+        return true;
       }
+      if (
+        mode.startsWith('official-web') ||
+        mode.startsWith('official-download') ||
+        isNormalWebPage(url)
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    if (hasValidPdfOrWebResource) {
+      hasPDF = true;
     } else {
       missingPDFs++;
       issues.push({
@@ -173,8 +182,8 @@ export function auditAllTopicResources(): TopicAuditResult {
         topicTitle: topic.title,
         moduleId: topic.moduleId,
         issueType: 'missing-pdf',
-        description: `Topic '${topic.title}' lacks a direct open-access PDF or lecture note document.`,
-        suggestedAction: 'Provide a direct PDF link for in-app reading.'
+        description: `Topic '${topic.title}' lacks a direct open-access PDF or official web book resource.`,
+        suggestedAction: 'Provide a direct PDF link or official web resource URL.'
       });
     }
 

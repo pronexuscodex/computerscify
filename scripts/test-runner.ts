@@ -143,10 +143,31 @@ function runTests() {
     'Curated study plans include all 13 required learning tracks'
   );
 
-  const contestCount = 6;
+  // 11. Mismatched Metadata Rejection Test
+  function validateResourceMetadata(expectedTitle: string, expectedAuthor: string, resource: { title?: string; authors?: string[]; pdfUrl?: string }): boolean {
+    if (!resource.title || !Array.isArray(resource.authors) || resource.authors.length === 0) {
+      return false;
+    }
+    const titleMatch = resource.title.toLowerCase().includes(expectedTitle.toLowerCase());
+    const authorMatch = resource.authors.some(a => a.toLowerCase().includes(expectedAuthor.toLowerCase()));
+    return titleMatch && authorMatch;
+  }
+
+  const validPdfUrlWithMismatchedMetadata = {
+    title: 'Turing Machines and Computability',
+    authors: ['Alan Turing'],
+    pdfUrl: 'https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf'
+  };
+
+  const isMetadataMatched = validateResourceMetadata(
+    'A Mathematical Theory of Communication',
+    'Claude E. Shannon',
+    validPdfUrlWithMismatchedMetadata
+  );
+
   assert(
-    contestCount === 6,
-    'Contest mode includes all 6 required competition tracks'
+    isMetadataMatched === false,
+    'Metadata verification correctly rejects mismatched title/authors even when PDF URL is valid binary'
   );
 
   console.log(`\nTest Summary: ${passed} Passed, ${failed} Failed\n`);

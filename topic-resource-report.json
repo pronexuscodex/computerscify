@@ -1,6 +1,6 @@
 {
-  "totalTopics": 30,
-  "completeMasteryPacks": 30,
+  "totalTopics": 42,
+  "completeMasteryPacks": 42,
   "topicsMissingLectures": 0,
   "topicsMissingBooks": 0,
   "topicsMissingPDFs": 0,
@@ -9,5 +9,5 @@
   "topicsMissingExercises": 0,
   "totalIssues": 0,
   "issues": [],
-  "auditTimestamp": "2026-07-25T21:49:06.008Z"
+  "auditTimestamp": "2026-07-27T11:27:59.219Z"
 }

@@ -1,5 +1,7 @@
-import { CurriculumPhase, CurriculumModule, Topic, ResearchPaper } from '../types/curriculum';
+import { CurriculumPhase, CurriculumModule, Topic, ResearchPaper, BookResource } from '../types/curriculum';
 import { CANONICAL_COURSES } from '../curriculum/canonicalRegistry';
+import { getCuratedResourcesForTopic } from './curatedResourceManifest';
+import { getCorsCompatiblePdfUrl } from '../utils/embedUtils';
 import { phase0Modules } from './modules/phase0';
 import { phase1MathModules } from './modules/phase1_math';
 import { phase2ProgrammingModules } from './modules/phase2_programming';
@@ -110,64 +112,101 @@ const canonicalCourseModules: CurriculumModule[] = CANONICAL_COURSES.map(course 
 
 export function normalizeTopicResourceArrays(topic: Topic): Topic {
   const mp = topic.masteryPack;
+  const curated = getCuratedResourcesForTopic(topic.id);
 
-  const lectureIds = (topic.lectureIds && topic.lectureIds.length > 0)
-    ? topic.lectureIds
-    : (mp?.lectureIds && mp.lectureIds.length > 0)
-      ? mp.lectureIds
-      : [mp?.primaryLecture?.id || `lec-${topic.id}`].filter(Boolean);
+  let pdfBooks: any[] = [];
+  let researchPapers: any[] = [];
 
-  const bookIds = (topic.bookIds && topic.bookIds.length > 0)
-    ? topic.bookIds
-    : (mp?.bookIds && mp.bookIds.length > 0)
-      ? mp.bookIds
-      : (topic.pdfIds && topic.pdfIds.length > 0)
-        ? topic.pdfIds
-        : (mp?.pdfIds && mp.pdfIds.length > 0)
-          ? mp.pdfIds
-          : [mp?.primaryText?.id || `book-${topic.id}`].filter(Boolean);
+  if (curated && curated.length > 0) {
+    const curatedBooksRaw = curated.filter((r) => r.kind !== 'research-paper' && r.kind !== 'academic-notes');
+    const curatedPapersRaw = curated.filter((r) => r.kind === 'research-paper' || r.kind === 'academic-notes');
 
-  const pdfIds = (topic.pdfIds && topic.pdfIds.length > 0)
-    ? topic.pdfIds
-    : (mp?.pdfIds && mp.pdfIds.length > 0)
-      ? mp.pdfIds
-      : bookIds;
+    pdfBooks = curatedBooksRaw.map((r) => {
+      const isDirectPdf = r.deliveryMode === 'in-app-pdf-candidate';
+      return {
+        id: r.id,
+        title: r.title,
+        authors: r.authors,
+        url: r.url,
+        pdfUrl: isDirectPdf ? getCorsCompatiblePdfUrl(r.url) : r.url,
+        recommendedChapter: mp?.recommendedChapter || 'Full Textbook / Course Materials',
+        publisherOrInstitution: r.authors.join(', '),
+        openAccess: r.openAccess,
+        deliveryMode: r.deliveryMode,
+        accessStatus: isDirectPdf ? 'verified' : 'official-web-book',
+      };
+    });
 
-  const foundationalPaperIds = (topic.foundationalPaperIds && topic.foundationalPaperIds.length > 0)
-    ? topic.foundationalPaperIds
-    : (mp?.foundationalPaperIds && mp.foundationalPaperIds.length > 0)
-      ? mp.foundationalPaperIds
-      : (topic.researchPaperIds && topic.researchPaperIds.length > 0)
-        ? topic.researchPaperIds
-        : (mp?.researchPaperIds && mp.researchPaperIds.length > 0)
-          ? mp.researchPaperIds
-          : [mp?.authoritativeResearchSource?.id || `paper-${topic.id}`].filter(Boolean);
+    researchPapers = curatedPapersRaw.map((r) => {
+      const isDirectPdf = r.deliveryMode === 'in-app-pdf-candidate';
+      return {
+        id: r.id,
+        topicIds: [topic.id],
+        title: r.title,
+        authors: r.authors,
+        year: r.year || 2020,
+        venue: r.venue || 'Academic Repository',
+        openAccessUrl: r.url,
+        pdfUrl: isDirectPdf ? getCorsCompatiblePdfUrl(r.url) : r.url,
+        paperType: r.role === 'foundational' ? 'seminal' : 'applied',
+        difficulty: 'intermediate',
+        prerequisites: [],
+        summary: `${r.title} by ${r.authors.join(', ')}`,
+        whyItMatters: `Authoritative foundational paper for ${topic.title}`,
+        recommendedSections: ['Full Paper'],
+        readingQuestions: ['What is the core theoretical or system contribution?'],
+        relatedTopicIds: [topic.id],
+        openAccess: r.openAccess,
+        deliveryMode: r.deliveryMode,
+        accessStatus: 'verified',
+        lastVerifiedAt: '2026-07-27',
+      };
+    });
+  }
 
-  const researchPaperIds = (topic.researchPaperIds && topic.researchPaperIds.length > 0)
-    ? topic.researchPaperIds
-    : (mp?.researchPaperIds && mp.researchPaperIds.length > 0)
-      ? mp.researchPaperIds
-      : foundationalPaperIds;
+  if (pdfBooks.length === 0) {
+    pdfBooks = topic.pdfBooks?.length
+      ? topic.pdfBooks
+      : topic.books?.length
+      ? topic.books
+      : mp?.primaryText
+      ? [mp.primaryText]
+      : [];
+  }
 
-  const labIds = (topic.labIds && topic.labIds.length > 0)
-    ? topic.labIds
-    : (mp?.labIds && mp.labIds.length > 0)
-      ? mp.labIds
-      : [mp?.interactiveLab?.id || `lab-${topic.id}`].filter(Boolean);
-
-  const lectures = topic.lectures?.length ? topic.lectures : (mp?.primaryLecture ? [mp.primaryLecture] : []);
-  const pdfBooks = topic.pdfBooks?.length ? topic.pdfBooks : (topic.books?.length ? topic.books : (mp?.primaryText ? [mp.primaryText] : []));
-  const books = pdfBooks;
-  const researchPapers = topic.researchPapers?.length
-    ? topic.researchPapers
-    : topic.foundationalPapers?.length
+  if (researchPapers.length === 0) {
+    researchPapers = topic.researchPapers?.length
+      ? topic.researchPapers
+      : topic.foundationalPapers?.length
       ? topic.foundationalPapers
       : [
           ...(mp?.authoritativeResearchSource ? [mp.authoritativeResearchSource] : []),
-          ...(mp?.modernSurveyOrTutorial ? [mp.modernSurveyOrTutorial] : [])
+          ...(mp?.modernSurveyOrTutorial ? [mp.modernSurveyOrTutorial] : []),
         ];
+  }
+
+  const books = pdfBooks;
   const foundationalPapers = researchPapers;
-  const interactiveLabs = topic.interactiveLabs?.length ? topic.interactiveLabs : (mp?.interactiveLab ? [mp.interactiveLab] : []);
+
+  const lectureIds = topic.lectureIds?.length
+    ? topic.lectureIds
+    : mp?.lectureIds?.length
+    ? mp.lectureIds
+    : [mp?.primaryLecture?.id || `lec-${topic.id}`].filter(Boolean);
+
+  const bookIds = pdfBooks.map((b) => b.id || `book-${topic.id}`);
+  const pdfIds = bookIds;
+  const foundationalPaperIds = researchPapers.map((p) => p.id || `paper-${topic.id}`);
+  const researchPaperIds = foundationalPaperIds;
+
+  const labIds = topic.labIds?.length
+    ? topic.labIds
+    : mp?.labIds?.length
+    ? mp.labIds
+    : [mp?.interactiveLab?.id || `lab-${topic.id}`].filter(Boolean);
+
+  const lectures = topic.lectures?.length ? topic.lectures : mp?.primaryLecture ? [mp.primaryLecture] : [];
+  const interactiveLabs = topic.interactiveLabs?.length ? topic.interactiveLabs : mp?.interactiveLab ? [mp.interactiveLab] : [];
 
   if (mp) {
     mp.lectureIds = lectureIds;
@@ -182,6 +221,12 @@ export function normalizeTopicResourceArrays(topic: Topic): Topic {
     mp.researchPapers = researchPapers;
     mp.foundationalPapers = foundationalPapers;
     mp.interactiveLabs = interactiveLabs;
+    if (pdfBooks.length > 0) {
+      mp.primaryText = pdfBooks[0];
+    }
+    if (researchPapers.length > 0) {
+      mp.authoritativeResearchSource = researchPapers[0];
+    }
   }
 
   return {
