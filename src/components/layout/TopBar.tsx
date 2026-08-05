@@ -101,7 +101,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   };
 
   return (
-    <header className="h-16 bg-[#FEF8F7] dark:bg-[#1E1C1C] border-b-4 border-[#000000] px-3 sm:px-6 flex items-center justify-between sticky top-0 z-40 shrink-0 select-none w-full min-w-0 overflow-visible">
+    <header className="sticky top-0 z-40 flex h-16 w-full min-w-0 shrink-0 items-center justify-between overflow-visible border-b border-[var(--ds-border)] bg-[var(--ds-surface)] px-3 select-none sm:px-6">
       {/* Left Brand Wordmark & Mobile Drawer Trigger */}
       <div className="flex items-center gap-2 sm:gap-4 min-w-0 shrink-0">
         {/* Mobile drawer menu button */}
@@ -109,10 +109,10 @@ export const TopBar: React.FC<TopBarProps> = ({
           <button
             type="button"
             onClick={onToggleMobileMenu}
-            className="md:hidden h-10 w-10 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#1E1C1C] neo-shadow-sm text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C] flex items-center justify-center shrink-0 transition-all focus:outline-none"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text)] transition-colors hover:bg-[var(--ds-surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] md:hidden"
             aria-label="Open Navigation Menu"
           >
-            <Menu className="w-5 h-5 text-[#000000] dark:text-[#F6EFEF]" />
+            <Menu className="h-5 w-5" />
           </button>
         </Tooltip>
 
@@ -120,28 +120,28 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           type="button"
           onClick={() => onNavigate?.('dashboard')}
-          className="flex md:hidden items-center gap-2 font-display font-black text-[#000000] dark:text-[#F6EFEF] hover:opacity-90 transition-opacity focus:outline-none rounded p-0.5 min-w-0 shrink-0"
+          className="flex min-w-0 shrink-0 items-center gap-2 rounded p-0.5 font-display font-bold text-[var(--ds-text)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] md:hidden"
           title="ComputerSciFy Platform Home"
           aria-label="ComputerSciFy Home Dashboard"
         >
-          <div className="w-9 h-9 rounded bg-[#F2C94C] border-2 border-[#000000] flex items-center justify-center font-mono font-black text-sm text-[#000000] neo-shadow-sm shrink-0">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--ds-radius-sm)] bg-[var(--ds-learning-soft)] font-mono text-sm font-black text-[var(--ds-learning)] shadow-[var(--ds-shadow-sm)] ring-1 ring-[var(--ds-border)]">
             &gt;_
           </div>
-          <span className="hidden sm:inline-block tracking-tight text-lg font-black text-[#000000] dark:text-[#F6EFEF] truncate uppercase">
-            Computer<span className="text-[#626200] dark:text-[#F2C94C]">Sci</span><span className="text-[#F2C94C]">Fy</span>
+          <span className="hidden truncate text-lg font-bold tracking-tight text-[var(--ds-text)] sm:inline-block">
+            Computer<span className="text-[var(--ds-primary)]">Sci</span><span className="text-[var(--ds-learning)]">Fy</span>
           </span>
         </button>
 
         {/* Top Bar Program Track Mode Switcher (Desktop / Tablet >= 768px) */}
-        <div className="hidden lg:flex items-center gap-1 bg-[#DFD9D8] dark:bg-[#111010] p-1 rounded border-2 border-[#000000] neo-shadow-sm ml-2">
+        <div className="ml-2 hidden items-center gap-1 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-1 lg:flex">
           <Tooltip content="Switch to Computer Science B.S. Degree Track" position="bottom">
             <button
               type="button"
               onClick={() => setActiveProgram('computer-science')}
               className={`px-2.5 py-1 rounded text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all focus:outline-none ${
                 activeProgram === 'computer-science'
-                  ? 'bg-[#F2C94C] text-[#000000] border border-[#000000] font-black neo-shadow-sm'
-                  : 'text-[#000000]/70 dark:text-[#F6EFEF]/70 hover:text-[#000000] dark:hover:text-[#F6EFEF]'
+                  ? 'border border-[var(--ds-primary)] bg-[var(--ds-primary)] text-[var(--ds-on-primary)] shadow-[var(--ds-shadow-sm)]'
+                  : 'text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface)] hover:text-[var(--ds-text)]'
               }`}
             >
               <GraduationCap className="w-3.5 h-3.5 shrink-0" />
@@ -154,8 +154,8 @@ export const TopBar: React.FC<TopBarProps> = ({
               onClick={() => setActiveProgram('data-science')}
               className={`px-2.5 py-1 rounded text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all focus:outline-none ${
                 activeProgram === 'data-science'
-                  ? 'bg-[#F2C94C] text-[#000000] border border-[#000000] font-black neo-shadow-sm'
-                  : 'text-[#000000]/70 dark:text-[#F6EFEF]/70 hover:text-[#000000] dark:hover:text-[#F6EFEF]'
+                  ? 'border border-[var(--ds-primary)] bg-[var(--ds-primary)] text-[var(--ds-on-primary)] shadow-[var(--ds-shadow-sm)]'
+                  : 'text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface)] hover:text-[var(--ds-text)]'
               }`}
             >
               <Database className="w-3.5 h-3.5 shrink-0" />
@@ -172,13 +172,13 @@ export const TopBar: React.FC<TopBarProps> = ({
             type="button"
             onClick={onOpenSearch}
             aria-label="Search courses, topics, papers..."
-            className="w-full flex items-center justify-between gap-2 h-10 px-3.5 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#1E1C1C] text-[#000000]/80 dark:text-[#F6EFEF]/80 hover:bg-[#F2C94C]/20 transition-all neo-shadow-sm text-xs font-black uppercase tracking-wider focus:outline-none"
+            className="flex h-10 w-full items-center justify-between gap-2 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] px-3.5 text-xs font-medium text-[var(--ds-text-muted)] shadow-[var(--ds-shadow-sm)] transition-colors hover:border-[var(--ds-primary)] hover:text-[var(--ds-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]"
           >
             <div className="flex items-center gap-2 min-w-0 truncate">
-              <Search className="w-4 h-4 text-[#000000] dark:text-[#F2C94C] shrink-0" aria-hidden="true" />
+              <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span className="truncate">Search curriculum...</span>
             </div>
-            <kbd className="hidden xl:inline-block px-2 py-0.5 text-[10px] font-mono bg-[#DFD9D8] dark:bg-stone-800 border border-[#000000] rounded text-[#000000] dark:text-[#F6EFEF] shrink-0 font-bold">
+            <kbd className="hidden shrink-0 rounded border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] px-2 py-0.5 font-mono text-[10px] font-semibold text-[var(--ds-text-muted)] xl:inline-block">
               ⌘K
             </kbd>
           </button>
@@ -194,9 +194,9 @@ export const TopBar: React.FC<TopBarProps> = ({
               type="button"
               onClick={onOpenSearch}
               aria-label="Search ComputerSciFy"
-              className="h-10 w-10 rounded border-2 border-[#000000] bg-[#FEF8F7] dark:bg-[#1E1C1C] neo-shadow-sm text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C] flex items-center justify-center shrink-0 transition-all focus:outline-none"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text)] transition-colors hover:bg-[var(--ds-surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]"
             >
-              <Search className="w-5 h-5 text-[#000000] dark:text-[#F6EFEF]" aria-hidden="true" />
+              <Search className="h-5 w-5" aria-hidden="true" />
             </button>
           </Tooltip>
         </div>
@@ -210,9 +210,9 @@ export const TopBar: React.FC<TopBarProps> = ({
             type="button"
             onClick={() => onResumeTopic(lastTopic ? lastTopic.id : 'p0-m1-t1')}
             aria-label={lastTopic ? `Resume learning: ${lastTopic.title}` : 'Start learning ComputerSciFy Curriculum'}
-            className="h-10 px-3.5 rounded bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider neo-btn flex items-center gap-1.5 whitespace-nowrap shrink-0 focus:outline-none"
+            className="flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[var(--ds-radius-md)] border border-transparent bg-[var(--ds-primary)] px-3.5 text-xs font-semibold text-[var(--ds-on-primary)] shadow-[var(--ds-shadow-sm)] transition-colors hover:bg-[var(--ds-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] focus-visible:ring-offset-2"
           >
-            <Play className="w-4 h-4 fill-[#000000] text-[#000000] shrink-0" />
+            <Play className="h-4 w-4 shrink-0 fill-current" />
             <span className="hidden sm:inline">Resume</span>
           </button>
         </Tooltip>
@@ -226,7 +226,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               aria-expanded={isMenuOpen}
               aria-haspopup="menu"
               aria-label="Learner menu and progress summary"
-              className="h-10 px-3 rounded bg-[#DFD9D8] dark:bg-[#2B2929] border-2 border-[#000000] text-[#000000] dark:text-[#F6EFEF] text-xs font-black uppercase flex items-center gap-2 shrink-0 neo-shadow-sm hover:bg-[#F2C94C] hover:text-[#000000] transition-all focus:outline-none"
+              className="flex h-10 shrink-0 items-center gap-2 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] px-3 text-xs font-semibold text-[var(--ds-text)] transition-colors hover:border-[var(--ds-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]"
             >
               <div className="w-6 h-6 rounded-full bg-[#F2C94C] border border-[#000000] text-[#000000] flex items-center justify-center font-black text-[11px] shrink-0">
                 {progress.displayName ? progress.displayName.charAt(0).toUpperCase() : 'L'}
@@ -246,7 +246,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               role="menu"
               aria-orientation="vertical"
               aria-label="Learner settings"
-              className="fixed inset-x-2 top-[4.5rem] bottom-[5.5rem] z-50 w-auto overflow-y-auto overscroll-contain rounded-lg border-4 border-[#000000] bg-[#FEF8F7] p-3 text-xs text-[#000000] neo-shadow-lg animate-fade-in space-y-3 dark:bg-[#1E1C1C] dark:text-[#F6EFEF] sm:absolute sm:inset-x-auto sm:top-auto sm:bottom-auto sm:right-0 sm:mt-2 sm:max-h-[calc(100dvh-5.5rem)] sm:w-96 sm:p-4 sm:space-y-4"
+              className="fixed inset-x-2 top-[4.5rem] bottom-[5.5rem] z-50 w-auto space-y-3 overflow-y-auto overscroll-contain rounded-[var(--ds-radius-lg)] border border-[var(--ds-border)] bg-[var(--ds-surface-elevated)] p-3 text-xs text-[var(--ds-text)] shadow-[var(--ds-shadow-md)] sm:absolute sm:inset-x-auto sm:top-auto sm:right-0 sm:bottom-auto sm:mt-2 sm:max-h-[calc(100dvh-5.5rem)] sm:w-96 sm:space-y-4 sm:p-4"
             >
               {/* Learner Identity & Streak Banner */}
               <div className="p-3.5 bg-[#FFFFFF] dark:bg-[#242222] border-2 border-[#000000] neo-shadow-sm rounded-md space-y-3">

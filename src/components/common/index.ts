@@ -8,3 +8,4 @@ export * from './Drawer';
 export * from './Tabs';
 export * from './CodeEditor';
 export * from './ResourceErrorStates';
+export * from './Layout';

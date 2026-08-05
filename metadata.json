@@ -1,6 +1,5 @@
 {
   "name": "ComputerSciFy",
   "description": "Master computing from first principles. A browser-based university-level learning platform for CS, Data Science, Math, Software Engineering, ML, and MLOps.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "requestFramePermissions": []
 }

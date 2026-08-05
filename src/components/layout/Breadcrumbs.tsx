@@ -13,6 +13,7 @@ import {
   Brain,
   FileWarning,
   FolderGit2,
+  Layers3,
 } from 'lucide-react';
 import { useNavigation } from '../../context/NavigationContext';
 import { ProgramType } from '../../types/curriculum';
@@ -63,6 +64,14 @@ export const Breadcrumbs: React.FC = () => {
       items.push({
         label: programLabel,
         badge: programBadge,
+        isCurrent: true,
+      });
+      break;
+
+    case 'academies':
+      items.push({
+        label: 'Academies',
+        icon: <Layers3 className="h-3.5 w-3.5" />,
         isCurrent: true,
       });
       break;
@@ -210,23 +219,27 @@ export const Breadcrumbs: React.FC = () => {
 
   return (
     <nav
-      aria-label="Breadcrumb Navigation"
-      className="bg-[#FFFFFF] dark:bg-[#151313] border-b-2 border-[#000000] px-3 sm:px-6 py-2 w-full min-w-0 shadow-sm text-xs font-black uppercase font-mono text-[#000000] dark:text-[#F6EFEF] flex items-center justify-between gap-3 shrink-0 select-none overflow-hidden"
+      aria-label="Breadcrumb"
+      className="flex w-full min-w-0 shrink-0 items-center gap-3 overflow-hidden border-b border-[var(--ds-border)] bg-[var(--ds-surface)] px-3 py-2 text-sm text-[var(--ds-text)] select-none sm:px-6"
     >
-      <div className="flex items-center gap-1.5 flex-nowrap min-w-0 whitespace-nowrap overflow-x-auto no-scrollbar py-0.5">
+      <ol className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden whitespace-nowrap py-0.5">
         {items.map((item, idx) => {
           return (
-            <React.Fragment key={idx}>
+            <li key={`${item.label}-${idx}`} className={`flex min-w-0 items-center gap-1 ${item.isCurrent ? 'flex-1' : ''}`}>
               {idx > 0 && (
-                <ChevronRight className="w-3.5 h-3.5 text-[#000000] dark:text-[#F2C94C] shrink-0 mx-0.5" />
+                <ChevronRight aria-hidden="true" className="mx-1 h-3.5 w-3.5 shrink-0 text-[var(--ds-text-muted)]" />
               )}
 
               {item.isCurrent ? (
-                <div className="flex items-center gap-1.5 bg-[#000000] text-[#FFFFFF] dark:bg-[#F2C94C] dark:text-[#000000] px-2.5 py-1 rounded border border-[#000000] neo-shadow-sm shrink-0 min-w-0 max-w-full">
+                <div
+                  aria-current="page"
+                  title={item.label}
+                  className="flex min-w-0 flex-1 items-center gap-1.5 px-1 py-1 font-semibold text-[var(--ds-text)]"
+                >
                   {item.icon}
-                  <span className="truncate max-w-[120px] sm:max-w-[200px] md:max-w-[280px]">{item.label}</span>
+                  <span className="min-w-0 truncate">{item.label}</span>
                   {item.badge && (
-                    <span className="px-1 py-0.2 bg-[#F2C94C] text-[#000000] dark:bg-[#000000] dark:text-[#FFFFFF] text-[10px] rounded font-mono font-black ml-1 border border-[#000000] shrink-0">
+                    <span className="ml-1 shrink-0 rounded border border-[#000000]/30 bg-[#F2C94C] px-1.5 py-0.5 font-mono text-[10px] font-black text-[#000000]">
                       {item.badge}
                     </span>
                   )}
@@ -235,32 +248,33 @@ export const Breadcrumbs: React.FC = () => {
                 <button
                   type="button"
                   onClick={item.onClick}
-                  className="flex items-center gap-1.5 px-2 py-1 rounded text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C] hover:text-[#000000] dark:hover:text-[#000000] transition-colors border border-transparent hover:border-[#000000] shrink-0 focus:outline-none focus:ring-2 focus:ring-[#F2C94C] min-w-0"
+                  title={item.label}
+                  className="flex min-w-0 shrink items-center gap-1.5 rounded px-1.5 py-1 font-medium text-[var(--ds-text-muted)] transition-colors hover:bg-[var(--ds-surface-muted)] hover:text-[var(--ds-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]"
                 >
                   {item.icon}
-                  <span className="truncate max-w-[90px] sm:max-w-[150px] md:max-w-[220px]">{item.label}</span>
+                  <span className="min-w-0 truncate">{item.label}</span>
                   {item.badge && (
-                    <span className="px-1 py-0.2 bg-[#DFD9D8] text-[#000000] text-[10px] rounded font-mono font-black ml-0.5 border border-[#000000] shrink-0">
+                    <span className="ml-0.5 shrink-0 rounded border border-[#000000]/25 bg-[#DFD9D8] px-1.5 py-0.5 font-mono text-[10px] font-black text-[#000000]">
                       {item.badge}
                     </span>
                   )}
                 </button>
               )}
-            </React.Fragment>
+            </li>
           );
         })}
-      </div>
+      </ol>
 
       {/* Program Fast Switcher Tag */}
-      <div className="hidden sm:flex items-center gap-1 shrink-0 pl-3 border-l-2 border-[#000000] bg-[#FFFFFF] dark:bg-[#151313] z-10">
-        <span className="text-[10px] text-[#000000]/70 dark:text-[#F6EFEF]/70 font-mono font-bold mr-1">TRACK:</span>
+      <div className="z-10 hidden shrink-0 items-center gap-1 border-l border-[var(--ds-border)] bg-[var(--ds-surface)] pl-3 sm:flex">
+        <span className="mr-1 font-mono text-[10px] font-semibold text-[var(--ds-text-muted)]">TRACK:</span>
         <button
           type="button"
           onClick={() => setActiveProgram('computer-science')}
           className={`px-2 py-0.5 rounded text-[10px] font-mono font-black border transition-colors ${
             activeProgram === 'computer-science'
-              ? 'bg-[#F2C94C] text-[#000000] border-[#000000] neo-shadow-sm'
-              : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] border-stone-400 hover:border-[#000000]'
+              ? 'border-[var(--ds-primary)] bg-[var(--ds-primary)] text-[var(--ds-on-primary)] shadow-[var(--ds-shadow-sm)]'
+              : 'border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text-muted)] hover:border-[var(--ds-primary)]'
           }`}
         >
           CS
@@ -270,8 +284,8 @@ export const Breadcrumbs: React.FC = () => {
           onClick={() => setActiveProgram('data-science')}
           className={`px-2 py-0.5 rounded text-[10px] font-mono font-black border transition-colors ${
             activeProgram === 'data-science'
-              ? 'bg-[#F2C94C] text-[#000000] border-[#000000] neo-shadow-sm'
-              : 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF] border-stone-400 hover:border-[#000000]'
+              ? 'border-[var(--ds-primary)] bg-[var(--ds-primary)] text-[var(--ds-on-primary)] shadow-[var(--ds-shadow-sm)]'
+              : 'border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text-muted)] hover:border-[var(--ds-primary)]'
           }`}
         >
           DS

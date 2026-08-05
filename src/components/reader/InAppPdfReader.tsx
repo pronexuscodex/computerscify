@@ -34,7 +34,6 @@ import { PdfUnavailableState } from '../common/ResourceErrorStates';
 // Configure matching PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version || '3.11.174'}/build/pdf.worker.min.mjs`;
 
-const FALLBACK_VERIFIED_PDF = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
 const EMPTY_BOOKMARKED_PAGES: number[] = [];
 const MAX_CONTINUOUS_PAGES = 50;
 
@@ -121,7 +120,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || 'https://arxiv.org/pdf/1706.03762.pdf';
 
   const [activeUrl, setActiveUrl] = useState<string>(() => {
-    return getCorsCompatiblePdfUrl(initialRawUrl) || FALLBACK_VERIFIED_PDF;
+    return getCorsCompatiblePdfUrl(initialRawUrl);
   });
 
   const [readerMode, setReaderMode] = useState<'canvas' | 'native' | 'google'>(() => {
@@ -207,7 +206,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
   // and note updates must not restart PDF loading or move the user's viewport.
   useEffect(() => {
     const raw = book?.pdfUrl || paper?.openAccessUrl || book?.url || paper?.url || '';
-    const u = getCorsCompatiblePdfUrl(raw) || FALLBACK_VERIFIED_PDF;
+    const u = getCorsCompatiblePdfUrl(raw);
     setActiveUrl(u);
     const isCorsSafe = isCorsSafePdfDomain(u);
     setReaderMode(isCorsSafe ? 'canvas' : 'native');
@@ -283,15 +282,8 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     setErrorDetails(null);
   };
 
-  const handleUseVerifiedFallback = () => {
-    setActiveUrl(FALLBACK_VERIFIED_PDF);
-    setReaderMode('canvas');
-    setLoadingStage('loading');
-    setErrorDetails(null);
-  };
-
   const handleRetry = () => {
-    const u = getCorsCompatiblePdfUrl(initialRawUrl) || FALLBACK_VERIFIED_PDF;
+    const u = getCorsCompatiblePdfUrl(initialRawUrl);
     setActiveUrl(u);
     const isCorsSafe = isCorsSafePdfDomain(u);
     setReaderMode(isCorsSafe ? 'canvas' : 'native');
@@ -633,14 +625,6 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           <span>Viewing Document: <strong>{document.title}</strong></span>
         </span>
         <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={handleUseVerifiedFallback}
-            className="text-[11px] bg-stone-900 border border-stone-700 hover:border-stone-500 px-2 py-0.5 rounded text-stone-200 transition-colors flex items-center gap-1"
-            title="Load verified sample PDF if remote URL is blocked"
-          >
-            <Sparkles className="w-3 h-3 text-[#BE94F5]" />
-            <span>Load Sample PDF</span>
-          </button>
           <a
             href={document.canonicalUrl || document.sourcePageUrl || initialRawUrl}
             target="_blank"
@@ -884,12 +868,6 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                   >
                     Try Canvas Reader
                   </button>
-                  <button
-                    onClick={handleUseVerifiedFallback}
-                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
-                  >
-                    Load Sample PDF
-                  </button>
                   <a
                     href={initialRawUrl}
                     target="_blank"
@@ -951,7 +929,6 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               sourcePageUrl={initialRawUrl}
               technicalDetails={errorDetails || 'Remote server blocked cross-origin PDF frame requests.'}
               onRetry={handleRetry}
-              onUseFallback={handleUseVerifiedFallback}
               onOpenGoogleViewer={handleOpenGoogleViewer}
             />
           ) : (

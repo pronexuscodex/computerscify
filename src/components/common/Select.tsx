@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, Check } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 
 export interface SelectOptionItem {
   value: string;
@@ -46,16 +45,7 @@ export const Select: React.FC<SelectProps> = ({
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  // Safely attempt useTheme if provider exists
-  let themeResolved: 'light' | 'dark' = 'light';
-  try {
-    const themeCtx = useTheme();
-    themeResolved = themeCtx.resolvedTheme;
-  } catch (e) {
-    themeResolved = 'light';
-  }
-
-  const isDark = variant === 'dark' || (variant === 'auto' && themeResolved === 'dark');
+  const themeClass = variant === 'light' ? 'theme-light' : variant === 'dark' ? 'theme-dark' : '';
 
   const selectedOption = options.find((o) => o.value === value);
 
@@ -161,20 +151,14 @@ export const Select: React.FC<SelectProps> = ({
     }
   };
 
-  const triggerStyles = isDark
-    ? 'bg-[#1E1C1C] border-1.5 border-stone-700 text-[#F6EFEF] brand-shadow-sm hover:border-stone-600'
-    : 'bg-white border-1.5 border-[#171515] text-[#171515] brand-shadow-sm hover:bg-[#F3ECEC]';
-
-  const labelStyles = isDark
-    ? 'text-[#F6EFEF]/80 font-bold'
-    : 'text-[#171515]/80 font-bold';
-
-  const menuStyles = isDark
-    ? 'bg-[#1E1C1C] text-[#F6EFEF] border-1.5 border-stone-700 shadow-2xl'
-    : 'bg-[#FEF8F7] text-[#171515] border-1.5 border-[#171515] brand-shadow-lg';
+  const triggerStyles =
+    'border border-[var(--ds-border-strong)] bg-[var(--ds-surface)] text-[var(--ds-text)] shadow-[var(--ds-shadow-sm)] hover:border-[var(--ds-primary)]';
+  const labelStyles = 'font-semibold text-[var(--ds-text)]';
+  const menuStyles =
+    'border border-[var(--ds-border)] bg-[var(--ds-surface-elevated)] text-[var(--ds-text)] shadow-[var(--ds-shadow-md)]';
 
   return (
-    <div className={`relative inline-block text-left w-full sm:w-auto ${className}`}>
+    <div className={`relative inline-block w-full text-left sm:w-auto ${themeClass} ${className}`}>
       {label && (
         <label className={`block text-[11px] uppercase tracking-wider mb-1 ${labelStyles}`}>
           {label}
@@ -190,7 +174,7 @@ export const Select: React.FC<SelectProps> = ({
         aria-expanded={isOpen}
         aria-label={ariaLabel || label || placeholder}
         disabled={disabled}
-        className={`w-full min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-between gap-2.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#BE94F5] ${triggerStyles} ${
+        className={`flex min-h-11 w-full items-center justify-between gap-2.5 rounded-[var(--ds-radius-md)] px-3.5 py-2 text-sm font-medium transition-[background-color,border-color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] focus-visible:ring-offset-2 ${triggerStyles} ${
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
         }`}
       >
@@ -199,9 +183,9 @@ export const Select: React.FC<SelectProps> = ({
           <span className="truncate">{selectedOption ? selectedOption.label : placeholder}</span>
         </div>
         <ChevronDown
-          className={`w-4 h-4 shrink-0 transition-transform duration-150 ${
-            isDark ? 'text-[#F6EFEF]/70' : 'text-[#171515]/70'
-          } ${isOpen ? 'rotate-180 text-[#BE94F5]' : ''}`}
+          className={`h-4 w-4 shrink-0 text-[var(--ds-text-muted)] transition-transform duration-150 ${
+            isOpen ? 'rotate-180 text-[var(--ds-primary)]' : ''
+          }`}
         />
       </button>
 
@@ -217,10 +201,10 @@ export const Select: React.FC<SelectProps> = ({
               left: `${coords.left}px`,
               width: `${coords.width}px`,
             }}
-            className={`fixed z-[100] rounded-xl py-1.5 overflow-y-auto max-h-[280px] animate-fade-in focus:outline-none ${menuStyles}`}
+            className={`fixed z-[100] max-h-[280px] overflow-y-auto rounded-[var(--ds-radius-md)] py-1.5 focus:outline-none ${themeClass} ${menuStyles}`}
           >
             {options.length === 0 ? (
-              <div className={`px-3.5 py-2.5 text-xs italic ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
+              <div className="px-3.5 py-2.5 text-xs italic text-[var(--ds-text-muted)]">
                 No options available
               </div>
             ) : (
@@ -230,17 +214,11 @@ export const Select: React.FC<SelectProps> = ({
 
                 let optionBg = '';
                 if (isSelected) {
-                  optionBg = isDark
-                    ? 'bg-[#BE94F5]/20 text-[#D2B3FF] font-bold'
-                    : 'bg-[#BE94F5]/30 text-[#171515] font-bold';
+                  optionBg = 'bg-[var(--ds-primary)] text-[var(--ds-on-primary)] font-semibold';
                 } else if (isFocused) {
-                  optionBg = isDark
-                    ? 'bg-[#F6EFEF]/10 text-[#F6EFEF]'
-                    : 'bg-[#171515]/10 text-[#171515]';
+                  optionBg = 'bg-[var(--ds-surface-muted)] text-[var(--ds-text)]';
                 } else {
-                  optionBg = isDark
-                    ? 'text-[#F6EFEF]/80 hover:text-[#F6EFEF]'
-                    : 'text-[#171515] hover:bg-[#171515]/5';
+                  optionBg = 'text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface-muted)] hover:text-[var(--ds-text)]';
                 }
 
                 return (
@@ -260,14 +238,14 @@ export const Select: React.FC<SelectProps> = ({
                         <span className="truncate">{option.label}</span>
                       </div>
                       {option.description && (
-                        <span className={`text-[10px] font-normal truncate mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#171515]/60'}`}>
+                        <span className="mt-0.5 truncate text-[10px] font-normal opacity-80">
                           {option.description}
                         </span>
                       )}
                     </div>
 
                     {isSelected && (
-                      <Check className={`w-4 h-4 shrink-0 ${isDark ? 'text-[#D2B3FF]' : 'text-[#171515]'}`} />
+                      <Check className="h-4 w-4 shrink-0" />
                     )}
                   </div>
                 );

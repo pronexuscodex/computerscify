@@ -213,8 +213,15 @@ Next step
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleRun]);
 
-  // Filter exercises
-  const filteredExercises = ALL_LAB_EXERCISES.filter((ex) => {
+  // Classified cyber labs stay locked to their approved target and safety context.
+  // Other course-specific labs are included alongside the general exercise catalog.
+  const selectableExercises = selectedLab.safety
+    ? [selectedLab]
+    : ALL_LAB_EXERCISES.some((exercise) => exercise.id === selectedLab.id)
+      ? ALL_LAB_EXERCISES
+      : [selectedLab, ...ALL_LAB_EXERCISES];
+
+  const filteredExercises = selectableExercises.filter((ex) => {
     if (filterLevel !== 'all' && ex.level !== filterLevel) return false;
     if (filterLang !== 'all' && ex.language !== filterLang) return false;
     return true;
@@ -259,6 +266,22 @@ Next step
         </div>
       </div>
 
+      {selectedLab.safety && (
+        <section className="border-b-4 border-[#000000] bg-[var(--ds-security-soft)] px-4 py-3 text-[var(--ds-text)]" aria-label="Cyber lab safety restrictions">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs font-bold uppercase tracking-wide">Defensive lab boundary</p>
+            <span className="rounded-full border border-[var(--ds-security)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-[var(--ds-security)]">{selectedLab.safety.classification.replace('-', ' ')}</span>
+          </div>
+          <p className="mt-2 text-xs font-semibold leading-relaxed">{selectedLab.safety.legalUseNotice}</p>
+          <div className="mt-2 grid gap-2 text-[11px] sm:grid-cols-2">
+            <p><strong>Allowed targets:</strong> {selectedLab.safety.allowedTargets.join(', ')}</p>
+            <p><strong>Allowed tools:</strong> {selectedLab.safety.allowedTools.join(', ')}</p>
+            <p><strong>Isolation:</strong> {selectedLab.safety.isolationRequirements.join(', ')}</p>
+            <p><strong>Reset:</strong> {selectedLab.safety.resetProcedure}</p>
+          </div>
+        </section>
+      )}
+
       {/* Main Control & Selection Bar */}
       <div className="bg-[#1E1C1C] border-b-4 border-[#000000] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3">
         {/* Left Title & Exercise Selector */}
@@ -272,7 +295,7 @@ Next step
               <Select
                 value={selectedLab.id}
                 onChange={(val) => {
-                  const found = ALL_LAB_EXERCISES.find((ex) => ex.id === val);
+                  const found = selectableExercises.find((ex) => ex.id === val);
                   if (found) setSelectedLab(found);
                 }}
                 options={filteredExercises.map((ex) => ({

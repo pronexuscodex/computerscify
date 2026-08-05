@@ -33,15 +33,15 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    // Accent border/background styling using neo-brutalist token palette
+    // Accent variants use soft semantic surfaces rather than high-contrast decoration.
     const variantStyles = {
-      default: 'bg-[#FFFFFF] dark:bg-[#1E1C1C] text-[#000000] dark:text-[#F6EFEF]',
-      gold: 'bg-[#F2C94C] text-[#000000] dark:bg-[#F2C94C] dark:text-[#000000]',
-      lavender: 'bg-[#D2B3FF] text-[#000000] dark:bg-[#54397B] dark:text-[#F6EFEF]',
-      mint: 'bg-[#82E0AA] text-[#000000] dark:bg-[#205537] dark:text-[#F6EFEF]',
-      coral: 'bg-[#BE94F5] text-[#000000] dark:bg-[#5A3587] dark:text-[#F6EFEF]',
-      outline: 'bg-transparent text-[#000000] dark:text-[#F6EFEF]',
-      flat: 'bg-[#FEF8F7] dark:bg-[#2B2929] text-[#000000] dark:text-[#F6EFEF]',
+      default: 'bg-[var(--ds-surface)] text-[var(--ds-text)]',
+      gold: 'bg-[var(--ds-learning-soft)] text-[var(--ds-text)]',
+      lavender: 'bg-[var(--ds-research-soft)] text-[var(--ds-text)]',
+      mint: 'bg-[var(--ds-success-soft)] text-[var(--ds-text)]',
+      coral: 'bg-[var(--ds-ai-soft)] text-[var(--ds-text)]',
+      outline: 'bg-transparent text-[var(--ds-text)]',
+      flat: 'bg-[var(--ds-surface-muted)] text-[var(--ds-text)]',
     }[variant];
 
     const paddingStyles = {
@@ -53,11 +53,11 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
     const isClickable = Boolean(onClick);
     const hoverStyles = hoverable || isClickable
-      ? 'hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 cursor-pointer'
+      ? 'hover:-translate-y-px hover:shadow-[var(--ds-shadow-md)] active:translate-y-0 cursor-pointer'
       : '';
 
     const baseCardStyles =
-      'border-4 border-[#000000] neo-shadow rounded overflow-hidden transition-all duration-200 min-w-0';
+      'min-w-0 overflow-hidden rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] shadow-[var(--ds-shadow-sm)] transition-[border-color,box-shadow,transform] duration-200';
 
     return (
       <div
@@ -68,18 +68,18 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       >
         {/* Card Header Section if title, header, or action provided */}
         {(title || header || action) && (
-          <div className="flex items-start justify-between gap-3 mb-3 border-b-2 border-[#000000] pb-3 min-w-0">
+          <div className="mb-3 flex min-w-0 items-start justify-between gap-3 border-b border-[var(--ds-border)] pb-3">
             {header ? (
               header
             ) : (
               <div className="flex flex-col min-w-0">
                 {title && (
-                  <h3 className="font-display font-black text-base sm:text-lg uppercase tracking-tight break-words">
+                  <h3 className="font-display text-base font-bold leading-snug tracking-tight break-words sm:text-lg">
                     {title}
                   </h3>
                 )}
                 {subtitle && (
-                  <p className="text-xs font-bold opacity-80 mt-0.5 leading-snug break-words">
+                  <p className="mt-1 text-xs leading-relaxed text-[var(--ds-text-muted)] break-words">
                     {subtitle}
                   </p>
                 )}
@@ -94,7 +94,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
         {/* Card Footer Section */}
         {footer && (
-          <div className="mt-4 pt-3 border-t-2 border-[#000000] text-xs font-bold flex items-center justify-between gap-2 min-w-0">
+          <div className="mt-4 flex min-w-0 items-center justify-between gap-2 border-t border-[var(--ds-border)] pt-3 text-xs font-semibold">
             {footer}
           </div>
         )}

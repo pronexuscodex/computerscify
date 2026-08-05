@@ -59,9 +59,9 @@ export const Tabs: React.FC<TabsProps> = ({
 
   // Base list layout
   const listContainerClass = {
-    pills: 'flex items-center gap-1.5 p-1 bg-[#F3ECEC] dark:bg-[#242222] border-1.5 border-[#171515] dark:border-stone-700 rounded-xl overflow-x-auto no-scrollbar',
-    segmented: 'grid auto-cols-fr grid-flow-col gap-1 p-1 bg-[#F3ECEC] dark:bg-[#242222] border-1.5 border-[#171515] dark:border-stone-700 rounded-xl',
-    underline: 'flex items-center gap-4 sm:gap-6 border-b-1.5 border-[#171515]/20 dark:border-stone-700 overflow-x-auto no-scrollbar',
+    pills: 'flex items-center gap-1.5 overflow-x-auto rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-1 no-scrollbar',
+    segmented: 'grid auto-cols-fr grid-flow-col gap-1 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-1',
+    underline: 'flex items-center gap-4 overflow-x-auto border-b border-[var(--ds-border)] no-scrollbar sm:gap-6',
     cards: 'flex items-center gap-2 overflow-x-auto no-scrollbar py-1',
   }[variant];
 
@@ -79,16 +79,16 @@ export const Tabs: React.FC<TabsProps> = ({
           let buttonStyles = '';
           if (variant === 'pills' || variant === 'segmented') {
             buttonStyles = isActive
-              ? 'bg-[#F2C94C] dark:bg-[#584400] text-[#171515] dark:text-[#FFE08B] border-1.5 border-[#171515] dark:border-[#FFE08B] brand-shadow-sm font-bold'
-              : 'bg-transparent text-[#171515]/70 dark:text-[#F6EFEF]/70 hover:text-[#171515] dark:hover:text-[#F6EFEF] border-1.5 border-transparent font-medium';
+              ? 'border border-[var(--ds-primary)] bg-[var(--ds-surface)] text-[var(--ds-primary)] shadow-[var(--ds-shadow-sm)] font-semibold'
+              : 'border border-transparent bg-transparent text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface)] hover:text-[var(--ds-text)] font-medium';
           } else if (variant === 'underline') {
             buttonStyles = isActive
-              ? 'border-b-2 border-[#171515] dark:border-[#F2C94C] text-[#171515] dark:text-[#F2C94C] font-bold pb-2.5 -mb-[1.5px]'
-              : 'border-b-2 border-transparent text-[#171515]/60 dark:text-[#F6EFEF]/60 hover:text-[#171515] dark:hover:text-[#F6EFEF] font-medium pb-2.5 -mb-[1.5px]';
+              ? 'border-b-2 border-[var(--ds-primary)] text-[var(--ds-primary)] font-semibold pb-2.5 -mb-px'
+              : 'border-b-2 border-transparent text-[var(--ds-text-muted)] hover:text-[var(--ds-text)] font-medium pb-2.5 -mb-px';
           } else if (variant === 'cards') {
             buttonStyles = isActive
-              ? 'bg-[#D2B3FF] dark:bg-[#54397B] text-[#171515] dark:text-[#EDDCFF] border-1.5 border-[#171515] dark:border-[#EDDCFF] brand-shadow-sm font-bold'
-              : 'bg-white dark:bg-[#1E1C1C] text-[#171515]/70 dark:text-[#F6EFEF]/70 border-1.5 border-[#171515]/20 dark:border-stone-700 hover:border-[#171515] font-medium';
+              ? 'border border-[var(--ds-research)] bg-[var(--ds-research-soft)] text-[var(--ds-research)] shadow-[var(--ds-shadow-sm)] font-semibold'
+              : 'border border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text-muted)] hover:border-[var(--ds-border-strong)] hover:text-[var(--ds-text)] font-medium';
           }
 
           return (
@@ -106,15 +106,15 @@ export const Tabs: React.FC<TabsProps> = ({
               disabled={tab.disabled}
               onClick={() => !tab.disabled && onChange(tab.id)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`min-h-[36px] px-3 py-1.5 text-xs rounded-lg flex items-center justify-center gap-2 transition-all whitespace-nowrap shrink-0 focus:outline-none focus:ring-2 focus:ring-[#BE94F5] ${
+              className={`flex min-h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs transition-[background-color,border-color,color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] focus-visible:ring-offset-2 ${
                 tab.disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'
               } ${buttonStyles}`}
             >
               {tab.icon && <span className="shrink-0">{tab.icon}</span>}
               <span>{tab.label}</span>
               {tab.badge !== undefined && (
-                <span className={`px-1.5 py-0.2 text-[10px] font-mono rounded-full border border-[#171515]/20 ${
-                  isActive ? 'bg-[#171515] text-white' : 'bg-[#171515]/10 text-[#171515] dark:text-[#F6EFEF]'
+                <span className={`rounded-full border border-[var(--ds-border)] px-1.5 py-0.5 font-mono text-[10px] ${
+                  isActive ? 'bg-[var(--ds-primary)] text-[var(--ds-on-primary)]' : 'bg-[var(--ds-surface-muted)] text-[var(--ds-text)]'
                 }`}>
                   {tab.badge}
                 </span>

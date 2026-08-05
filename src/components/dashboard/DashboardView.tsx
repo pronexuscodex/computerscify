@@ -15,6 +15,7 @@ import { LearnerProgress, CurriculumModule, Topic } from '../../types/curriculum
 import { ALL_MODULES, ALL_TOPICS, getAllResearchPapers } from '../../data/curriculumData';
 import { useNavigation } from '../../context/NavigationContext';
 import { NavView } from '../layout/NavigationRail';
+import { PageContainer } from '../common';
 
 interface DashboardViewProps {
   progress: LearnerProgress;
@@ -73,7 +74,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const recommendedPaper = papers[paperIndex] || papers[0];
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden text-[#1D1B1B] dark:text-[#F6EFEF]">
+    <PageContainer className="animate-fade-in space-y-8 overflow-x-hidden">
       {/* Welcome Banner - Academic Neo-Brutalist Header */}
       <div className="bg-[#DFD9D8] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="max-w-2xl z-10 space-y-2">
@@ -88,7 +89,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 type="button"
                 onClick={() => setActiveProgram('computer-science')}
-                className={`px-2.5 py-0.5 rounded text-[11px] font-black uppercase flex items-center gap-1 transition-all ${
+                className={`flex min-h-10 items-center gap-1 rounded px-2.5 py-1 text-[11px] font-black uppercase transition-all ${
                   activeProgram === 'computer-science'
                     ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]'
                     : 'text-[#000000]/70 dark:text-[#F6EFEF]/70 hover:text-[#000000] dark:hover:text-[#F6EFEF]'
@@ -100,7 +101,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 type="button"
                 onClick={() => setActiveProgram('data-science')}
-                className={`px-2.5 py-0.5 rounded text-[11px] font-black uppercase flex items-center gap-1 transition-all ${
+                className={`flex min-h-10 items-center gap-1 rounded px-2.5 py-1 text-[11px] font-black uppercase transition-all ${
                   activeProgram === 'data-science'
                     ? 'bg-[#F2C94C] text-[#000000] border border-[#000000]'
                     : 'text-[#000000]/70 dark:text-[#F6EFEF]/70 hover:text-[#000000] dark:hover:text-[#F6EFEF]'
@@ -137,7 +138,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </h2>
           <button
             onClick={() => onNavigate('roadmap')}
-            className="text-xs font-black text-[#000000] dark:text-[#F2C94C] hover:underline flex items-center gap-1 uppercase tracking-wider"
+            className="flex min-h-11 items-center gap-1 rounded px-2 text-xs font-black uppercase tracking-wider text-[#000000] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] dark:text-[#F2C94C]"
           >
             Full Roadmap <ArrowRight className="w-4 h-4" />
           </button>
@@ -161,7 +162,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     </span>
                     <span className="text-xs font-mono font-black text-[#000000]/70 dark:text-[#F6EFEF]/70">{pct}% Complete</span>
                   </div>
-                  <h3 className="font-display font-black text-lg leading-snug mb-2 truncate uppercase text-[#000000] dark:text-[#F6EFEF]">{mod.title}</h3>
+                  <h3 className="mb-2 line-clamp-2 min-h-[2.75rem] font-display text-lg font-bold leading-snug text-[#000000] dark:text-[#F6EFEF]">{mod.title}</h3>
                   <p className="text-xs text-[#000000]/80 dark:text-[#F6EFEF]/80 line-clamp-2 mb-4 font-medium">{mod.summary}</p>
                 </div>
 
@@ -204,10 +205,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     {idx + 1}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-black text-sm text-[#000000] dark:text-[#F6EFEF] truncate uppercase">
+                    <h3 className="line-clamp-2 text-sm font-bold leading-snug text-[#000000] dark:text-[#F6EFEF]">
                       {topic.title}
                     </h3>
-                    <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 truncate font-medium">{topic.summary}</p>
+                    <p className="mt-1 line-clamp-2 text-xs font-medium leading-relaxed text-[#000000]/70 dark:text-[#F6EFEF]/70">{topic.summary}</p>
                   </div>
                 </div>
                 <span className="px-3.5 py-1.5 bg-[#F2C94C] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] shrink-0 flex items-center gap-1 min-h-[38px] neo-shadow-sm">
@@ -225,16 +226,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="bg-[#D0BCFF] text-[#000000] border-4 border-[#000000] neo-shadow p-6 rounded flex flex-col justify-between min-w-0">
               <div className="min-w-0">
                 <div className="flex items-center justify-between gap-2 text-xs font-black uppercase tracking-wider text-[#000000] mb-2 min-w-0">
-                  <span className="flex items-center gap-1.5 min-w-0 truncate">
+                  <span className="flex min-w-0 items-center gap-1.5 leading-tight">
                     <FileText className="w-4 h-4 shrink-0" />
-                    <span className="truncate">Research Spotlight</span>
+                    <span>Research Spotlight</span>
                   </span>
                   {papers.length > 1 && (
                     <div className="flex items-center gap-1 font-mono shrink-0">
                       <button
                         type="button"
                         onClick={() => setPaperIndex(prev => (prev > 0 ? prev - 1 : papers.length - 1))}
-                        className="p-1 bg-[#FFFFFF] rounded border-2 border-[#000000] flex items-center justify-center min-h-[28px] min-w-[28px] neo-shadow-sm"
+                        className="flex h-11 w-11 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)]"
                         aria-label="Previous paper"
                       >
                         <ChevronLeft className="w-3.5 h-3.5 text-[#000000]" />
@@ -243,7 +244,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setPaperIndex(prev => (prev < papers.length - 1 ? prev + 1 : 0))}
-                        className="p-1 bg-[#FFFFFF] rounded border-2 border-[#000000] flex items-center justify-center min-h-[28px] min-w-[28px] neo-shadow-sm"
+                        className="flex h-11 w-11 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)]"
                         aria-label="Next paper"
                       >
                         <ChevronRight className="w-3.5 h-3.5 text-[#000000]" />
@@ -254,7 +255,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <h3 className="font-display font-black text-lg text-[#000000] mb-2 leading-tight uppercase break-words">
                   {recommendedPaper.title}
                 </h3>
-                <p className="text-xs text-[#000000]/80 font-mono font-bold mb-3 truncate">
+                <p className="mb-3 break-words font-mono text-xs font-bold text-[#000000]/80">
                   {recommendedPaper.authors.slice(0, 2).join(', ')} • {recommendedPaper.year}
                 </p>
                 <p className="text-xs text-[#000000] line-clamp-3 mb-4 font-semibold leading-relaxed">
@@ -290,6 +291,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };

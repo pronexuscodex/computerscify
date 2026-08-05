@@ -255,7 +255,7 @@ export const ResourceHealthDashboard: React.FC<{ onClose?: () => void }> = ({ on
             <AlertTriangle className="w-4 h-4 text-amber-400" />
           </div>
           <div className="text-3xl font-black text-amber-400">{stats.blocked}</div>
-          <p className="text-[11px] text-stone-300">Handled via verified fallback states</p>
+          <p className="text-[11px] text-stone-300">Handled with transparent source and retry states</p>
         </div>
 
         <div className="bg-[#1e1b1b] border border-stone-800 rounded-2xl p-5 space-y-2">

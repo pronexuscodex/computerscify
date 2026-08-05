@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
 
 export interface DialogProps {
@@ -28,6 +28,9 @@ export const Dialog: React.FC<DialogProps> = ({
   className = '',
   ariaLabel,
 }) => {
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+
   // Listen for Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,6 +47,16 @@ export const Dialog: React.FC<DialogProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const frame = window.requestAnimationFrame(() => dialogRef.current?.focus());
+    return () => {
+      window.cancelAnimationFrame(frame);
+      previouslyFocused?.focus();
+    };
+  }, [isOpen]);
 
   if (typeof window === 'undefined') return null;
 
@@ -66,32 +79,34 @@ export const Dialog: React.FC<DialogProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#171515]/60 dark:bg-black/70 backdrop-blur-md z-0"
+            className="fixed inset-0 z-0 bg-[var(--ds-overlay)] backdrop-blur-sm"
             aria-hidden="true"
           />
 
           {/* Modal Content Panel */}
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={ariaLabel || (typeof title === 'string' ? title : 'Dialog')}
-            initial={{ opacity: 0, scale: 0.96, y: 8 }}
+            tabIndex={-1}
+            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 8 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-            className={`relative z-10 w-full ${sizeWidths} bg-[#FEF8F7] dark:bg-[#1E1C1C] text-[#171515] dark:text-[#F6EFEF] border-2 border-[#171515] dark:border-stone-700 brand-shadow-lg rounded-2xl flex flex-col overflow-hidden max-h-[90vh] my-auto focus:outline-none ${className}`}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: 6 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.16, ease: 'easeOut' }}
+            className={`relative z-10 my-auto flex max-h-[calc(100dvh-2rem)] w-full ${sizeWidths} flex-col overflow-hidden rounded-[var(--ds-radius-lg)] border border-[var(--ds-border)] bg-[var(--ds-surface-elevated)] text-[var(--ds-text)] shadow-[var(--ds-shadow-md)] focus:outline-none ${className}`}
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="flex items-center justify-between gap-3 px-5 py-4 border-b-1.5 border-[#171515] dark:border-stone-700 bg-white dark:bg-[#242222] shrink-0">
+              <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--ds-border)] bg-[var(--ds-surface)] px-5 py-4">
                 <div className="flex flex-col min-w-0 pr-2">
                   {title && (
-                    <h2 className="font-display font-bold text-base sm:text-lg text-[#171515] dark:text-[#F6EFEF] truncate">
+                    <h2 className="ds-text-safe font-display text-base font-bold text-[var(--ds-text)] sm:text-lg">
                       {title}
                     </h2>
                   )}
                   {description && (
-                    <p className="text-xs text-[#171515]/70 dark:text-[#F6EFEF]/70 mt-0.5">
+                    <p className="ds-text-safe mt-1 text-xs leading-relaxed text-[var(--ds-text-muted)]">
                       {description}
                     </p>
                   )}
@@ -102,7 +117,7 @@ export const Dialog: React.FC<DialogProps> = ({
                     type="button"
                     onClick={onClose}
                     aria-label="Close dialog"
-                    className="h-8 w-8 rounded-xl border-1.5 border-[#171515] dark:border-stone-700 bg-[#FEF8F7] dark:bg-[#1E1C1C] text-[#171515] dark:text-[#F6EFEF] hover:bg-[#D2B3FF]/30 flex items-center justify-center shrink-0 brand-shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#BE94F5]"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] text-[var(--ds-text-muted)] transition-colors hover:bg-[var(--ds-surface-muted)] hover:text-[var(--ds-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -117,7 +132,7 @@ export const Dialog: React.FC<DialogProps> = ({
 
             {/* Sticky Footer */}
             {footer && (
-              <div className="flex items-center justify-end gap-2.5 px-5 py-3.5 border-t-1.5 border-[#171515] dark:border-stone-700 bg-white dark:bg-[#242222] shrink-0">
+              <div className="flex shrink-0 items-center justify-end gap-2.5 border-t border-[var(--ds-border)] bg-[var(--ds-surface)] px-5 py-3.5">
                 {footer}
               </div>
             )}

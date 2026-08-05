@@ -35,28 +35,31 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     // Size styling
     const sizeStyles = {
-      sm: 'min-h-[36px] px-3 py-1.5 text-xs font-black tracking-wide rounded border-2 border-[#000000] gap-1.5',
-      md: 'min-h-[44px] px-4 py-2 text-xs sm:text-sm font-black uppercase tracking-wider rounded border-2 border-[#000000] gap-2',
-      lg: 'min-h-[50px] px-6 py-3 text-sm font-black uppercase tracking-wider rounded border-4 border-[#000000] gap-2.5',
+      sm: 'min-h-9 px-3 py-1.5 text-xs gap-1.5',
+      md: 'min-h-11 px-4 py-2 text-sm gap-2',
+      lg: 'min-h-12 px-5 py-2.5 text-base gap-2.5',
     }[size];
 
-    // Variant styling using defined neo-brutalist token system & colors
+    // Variants use semantic tokens so theme changes preserve contrast.
     const variantStyles = {
       primary:
-        'bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] dark:bg-[#F2C94C] dark:hover:bg-[#ffe08b] dark:text-[#000000]',
+        'border-transparent bg-[var(--ds-primary)] text-[var(--ds-on-primary)] hover:bg-[var(--ds-primary-hover)]',
       secondary:
-        'bg-[#D2B3FF] hover:bg-[#e2cdff] text-[#000000] dark:bg-[#54397B] dark:hover:bg-[#684998] dark:text-[#F6EFEF]',
+        'border-[var(--ds-research)]/30 bg-[var(--ds-research-soft)] text-[var(--ds-research)] hover:border-[var(--ds-research)]',
       tertiary:
-        'bg-[#C1D0D6] hover:bg-[#d3e0e5] text-[#000000] dark:bg-[#3B494E] dark:hover:bg-[#4d5e64] dark:text-[#F6EFEF]',
+        'border-[var(--ds-border)] bg-[var(--ds-surface-muted)] text-[var(--ds-text)] hover:border-[var(--ds-border-strong)]',
       outline:
-        'bg-[#FFFFFF] dark:bg-[#1E1C1C] text-[#000000] dark:text-[#F6EFEF] hover:bg-[#F2C94C]/20',
+        'border-[var(--ds-border-strong)] bg-[var(--ds-surface)] text-[var(--ds-text)] hover:bg-[var(--ds-surface-muted)]',
       ghost:
-        'bg-transparent text-[#000000] dark:text-[#F6EFEF] border-transparent hover:bg-[#000000]/10 dark:hover:bg-[#FFFFFF]/10',
+        'border-transparent bg-transparent text-[var(--ds-text)] hover:bg-[var(--ds-surface-muted)]',
       danger:
-        'bg-[#FFDAD6] hover:bg-[#ffc2bc] text-[#000000] dark:bg-[#93000A] dark:hover:bg-[#b3000c] dark:text-[#FFDAD6]',
+        'border-[var(--ds-danger)]/40 bg-[var(--ds-danger-soft)] text-[var(--ds-danger)] hover:border-[var(--ds-danger)]',
     }[variant];
 
-    const shadowStyles = shadow && variant !== 'ghost' ? 'neo-shadow-sm hover:translate-x-[-1px] hover:translate-y-[-1px] active:translate-x-[1px] active:translate-y-[1px]' : '';
+    const shadowStyles =
+      shadow && variant !== 'ghost'
+        ? 'shadow-[var(--ds-shadow-sm)] hover:-translate-y-px hover:shadow-[var(--ds-shadow-md)] active:translate-y-0 active:shadow-[var(--ds-shadow-sm)]'
+        : '';
     const disabledStyles = disabled || isLoading ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer';
     const widthStyles = fullWidth ? 'w-full' : '';
 
@@ -65,7 +68,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         disabled={disabled || isLoading}
-        className={`inline-flex items-center justify-center font-display font-black transition-all focus:outline-none focus:ring-2 focus:ring-[#F2C94C] select-none ${sizeStyles} ${variantStyles} ${shadowStyles} ${disabledStyles} ${widthStyles} ${className}`}
+        className={`inline-flex min-w-0 items-center justify-center rounded-[var(--ds-radius-md)] border font-display font-semibold tracking-tight transition-[background-color,border-color,color,box-shadow,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ds-background)] select-none ${sizeStyles} ${variantStyles} ${shadowStyles} ${disabledStyles} ${widthStyles} ${className}`}
         {...props}
       >
         {isLoading ? (

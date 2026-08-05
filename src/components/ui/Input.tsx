@@ -40,14 +40,14 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
     const inputId = id || generatedId;
 
     const baseInputStyles =
-      'w-full min-h-[44px] px-3.5 py-2.5 text-xs sm:text-sm font-black text-[#000000] dark:text-[#F6EFEF] bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#F2C94C] placeholder-[#000000]/50 dark:placeholder-[#F6EFEF]/50';
+      'w-full min-h-11 rounded-[var(--ds-radius-md)] border border-[var(--ds-border-strong)] bg-[var(--ds-surface)] px-3.5 py-2.5 text-sm font-medium text-[var(--ds-text)] shadow-[var(--ds-shadow-sm)] transition-[border-color,box-shadow] placeholder:text-[var(--ds-text-muted)] focus-visible:border-[var(--ds-focus)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ds-focus)]/25';
 
     const errorStyles = error
-      ? 'border-[#BA1A1A] dark:border-[#FFB4AB] focus:ring-[#BA1A1A] bg-[#FFDAD6]/30'
+      ? 'border-[var(--ds-danger)] bg-[var(--ds-danger-soft)] focus-visible:ring-[var(--ds-danger)]/25'
       : '';
 
     const disabledStyles = disabled
-      ? 'opacity-50 cursor-not-allowed bg-[#DFD9D8] dark:bg-[#111010]'
+      ? 'cursor-not-allowed bg-[var(--ds-surface-muted)] opacity-60'
       : '';
 
     const paddingLeft = leftIcon ? 'pl-9' : '';
@@ -58,7 +58,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-xs font-black uppercase tracking-wider text-[#000000] dark:text-[#F6EFEF]"
+            className="block text-sm font-semibold text-[var(--ds-text)]"
           >
             {label}
           </label>
@@ -66,7 +66,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
 
         <div className="relative flex items-center w-full min-w-0">
           {leftIcon && (
-            <div className="absolute left-3 pointer-events-none text-[#000000] dark:text-[#F6EFEF] shrink-0 z-10">
+            <div className="pointer-events-none absolute left-3 z-10 shrink-0 text-[var(--ds-text-muted)]">
               {leftIcon}
             </div>
           )}
@@ -90,18 +90,18 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
           )}
 
           {rightIcon && (
-            <div className="absolute right-3 text-[#000000] dark:text-[#F6EFEF] shrink-0 z-10">
+            <div className="absolute right-3 z-10 shrink-0 text-[var(--ds-text-muted)]">
               {rightIcon}
             </div>
           )}
         </div>
 
         {error ? (
-          <p className="text-[11px] font-black text-[#BA1A1A] dark:text-[#FFB4AB] mt-1 uppercase">
+          <p className="mt-1 text-xs font-medium text-[var(--ds-danger)]">
             {error}
           </p>
         ) : helperText ? (
-          <p className="text-[11px] font-bold text-[#000000]/70 dark:text-[#F6EFEF]/70 mt-1">
+          <p className="mt-1 text-xs text-[var(--ds-text-muted)]">
             {helperText}
           </p>
         ) : null}

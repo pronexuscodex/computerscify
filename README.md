@@ -1,20 +1,45 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# ComputerSciFy
 
-# Run and deploy your AI Studio app
+ComputerSciFy is a browser-based learning platform for studying computer science and data science from first principles. Its curriculum, exercises, recommendations, and progress rules are human-authored and deterministic.
 
-This contains everything you need to run your app locally.
+## Requirements
 
-View your app in AI Studio: https://ai.studio/apps/62d3ad1c-5f4b-4a23-831d-2753f99057b1
+- Node.js 20 or newer
+- npm 11 (the repository uses `package-lock.json` as its only lockfile)
 
-## Run Locally
+## Local development
 
-**Prerequisites:**  Node.js
+```bash
+npm ci
+npm run dev
+```
 
+No model API key or other environment variable is required for local development.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Validation
+
+Run the complete local validation pipeline with:
+
+```bash
+npm run validate
+```
+
+Individual checks are also available:
+
+```bash
+npm run typecheck
+npm test
+npm run curriculum:validate
+npm run resources:verify
+npm run build
+```
+
+`npm run resources:verify` performs a deterministic manifest-integrity audit. It does not claim that a resource is externally verified without provenance and runtime evidence. Use `npm run resources:report` to refresh the JSON audit report.
+
+## Maintenance
+
+```bash
+npm run clean
+```
+
+The clean command uses Node filesystem APIs and works on Windows, macOS, and Linux.

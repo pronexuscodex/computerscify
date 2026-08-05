@@ -23,13 +23,11 @@ import { Course, ProgramType, LearnerProgress } from '../../types/curriculum';
 interface RoadmapViewProps {
   progress: LearnerProgress;
   onSelectCourse: (courseId: string) => void;
-  onSelectProgram: (program: ProgramType) => void;
 }
 
 export const RoadmapView: React.FC<RoadmapViewProps> = ({
   progress,
   onSelectCourse,
-  onSelectProgram,
 }) => {
   const currentProgramId: ProgramType = progress.selectedProgram || 'computer-science';
   const program = PROGRAMS[currentProgramId] || PROGRAMS['computer-science'];
@@ -92,76 +90,52 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
   });
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in text-[#1D1B1B] dark:text-[#F6EFEF] w-full min-w-0 overflow-x-hidden">
-      {/* Program Selector & Stats Header */}
-      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded p-6 space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#000000] text-[#FFFFFF] text-xs font-black font-mono uppercase tracking-wider">
-              <GraduationCap className="w-4 h-4 text-[#F2C94C]" />
-              University Degree Pathway
-            </div>
-            <h1 className="font-display font-black text-2xl md:text-3xl tracking-tight text-[#000000] dark:text-[#F6EFEF] uppercase">
+    <div className="mx-auto w-full min-w-0 max-w-7xl space-y-6 overflow-x-hidden p-4 text-[var(--ds-text)] animate-fade-in md:p-6 lg:p-8">
+      {/* The global program control already switches degrees; this header only provides roadmap context. */}
+      <section className="space-y-5 rounded-[var(--ds-radius-lg)] border-2 border-[var(--ds-border-strong)] bg-[var(--ds-surface)] p-4 shadow-[var(--ds-shadow-md)] sm:p-5" aria-labelledby="roadmap-title">
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--ds-radius-md)] border-2 border-[var(--ds-border-strong)] bg-[var(--ds-primary)] text-[var(--ds-on-primary)]">
+            <GraduationCap className="h-5 w-5" />
+          </div>
+          <div className="min-w-0 space-y-1">
+            <p className="text-xs font-black uppercase tracking-[0.14em] text-[var(--ds-text-muted)]">Degree roadmap</p>
+            <h1 id="roadmap-title" className="text-xl font-black leading-tight tracking-tight text-[var(--ds-text)] sm:text-2xl">
               {program.name}
             </h1>
-            <p className="text-sm text-[#000000]/80 dark:text-[#F6EFEF]/80 max-w-2xl font-bold">
+            <p className="max-w-3xl text-sm font-medium leading-relaxed text-[var(--ds-text-muted)]">
               {program.description}
             </p>
-          </div>
-
-          {/* Program Switcher Buttons */}
-          <div className="flex items-center gap-2 bg-[#000000] p-1.5 rounded neo-border shrink-0">
-            <button
-              onClick={() => onSelectProgram('computer-science')}
-              className={`px-4 py-2 rounded text-xs font-black uppercase tracking-wider transition-all ${
-                currentProgramId === 'computer-science'
-                  ? 'bg-[#F2C94C] text-[#000000] neo-border neo-shadow-sm'
-                  : 'text-[#FFFFFF] hover:text-[#F2C94C]'
-              }`}
-            >
-              Computer Science
-            </button>
-            <button
-              onClick={() => onSelectProgram('data-science')}
-              className={`px-4 py-2 rounded text-xs font-black uppercase tracking-wider transition-all ${
-                currentProgramId === 'data-science'
-                  ? 'bg-[#F2C94C] text-[#000000] neo-border neo-shadow-sm'
-                  : 'text-[#FFFFFF] hover:text-[#F2C94C]'
-              }`}
-            >
-              Data Science
-            </button>
           </div>
         </div>
 
         {/* Progress Bar & Credit Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t-4 border-[#000000] text-xs font-black">
-          <div className="bg-[#DFD9D8] dark:bg-[#111010] p-3.5 rounded border-2 border-[#000000] neo-shadow-sm">
-            <span className="text-[#000000]/70 dark:text-[#F6EFEF]/70 uppercase">Degree Completion</span>
+        <div className="grid grid-cols-2 gap-3 border-t border-[var(--ds-border)] pt-4 text-xs font-black lg:grid-cols-4">
+          <div className="rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-3">
+            <span className="uppercase text-[var(--ds-text-muted)]">Degree Completion</span>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-mono font-black text-[#000000] dark:text-[#F2C94C]">{progStats.percentage}%</span>
-              <span className="text-[#000000]/60 dark:text-[#F6EFEF]/60">({progStats.completedCount}/{progStats.totalCoursesCount} courses)</span>
+              <span className="font-mono text-xl font-black text-[var(--ds-text)]">{progStats.percentage}%</span>
+              <span className="text-[var(--ds-text-muted)]">({progStats.completedCount}/{progStats.totalCoursesCount} courses)</span>
             </div>
           </div>
 
-          <div className="bg-[#DFD9D8] dark:bg-[#111010] p-3.5 rounded border-2 border-[#000000] neo-shadow-sm">
-            <span className="text-[#000000]/70 dark:text-[#F6EFEF]/70 uppercase">Credits Earned</span>
+          <div className="rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-3">
+            <span className="uppercase text-[var(--ds-text-muted)]">Credits Earned</span>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-mono font-black text-[#000000] dark:text-[#F2C94C]">{progStats.earnedCredits}</span>
-              <span className="text-[#000000]/60 dark:text-[#F6EFEF]/60">/ {progStats.totalCredits} Credits</span>
+              <span className="font-mono text-xl font-black text-[var(--ds-text)]">{progStats.earnedCredits}</span>
+              <span className="text-[var(--ds-text-muted)]">/ {progStats.totalCredits} Credits</span>
             </div>
           </div>
 
-          <div className="bg-[#DFD9D8] dark:bg-[#111010] p-3.5 rounded border-2 border-[#000000] neo-shadow-sm">
-            <span className="text-[#000000]/70 dark:text-[#F6EFEF]/70 uppercase">Cross-Program Credit</span>
-            <div className="mt-1 font-black text-[#000000] dark:text-[#F6EFEF]">
+          <div className="rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-3">
+            <span className="uppercase text-[var(--ds-text-muted)]">Cross-Program Credit</span>
+            <div className="mt-1 font-black text-[var(--ds-text)]">
               Shared with {currentProgramId === 'computer-science' ? 'Data Science' : 'Computer Science'}
             </div>
           </div>
 
-          <div className="bg-[#DFD9D8] dark:bg-[#111010] p-3.5 rounded border-2 border-[#000000] neo-shadow-sm">
-            <span className="text-[#000000]/70 dark:text-[#F6EFEF]/70 uppercase">Degree Level</span>
-            <div className="mt-1 font-black text-[#000000] dark:text-[#F6EFEF]">4-Year Academic Honors</div>
+          <div className="rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface-muted)] p-3">
+            <span className="uppercase text-[var(--ds-text-muted)]">Degree Level</span>
+            <div className="mt-1 font-black text-[var(--ds-text)]">4-Year Academic Honors</div>
           </div>
         </div>
 
@@ -230,7 +204,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* SEMESTERS VIEW */}
       {activeTab === 'semesters' && (

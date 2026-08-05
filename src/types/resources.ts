@@ -1,5 +1,10 @@
 export type AcademicResourceStatus =
   | 'verified'
+  | 'needs-review'
+  | 'invalid'
+  | 'deprecated'
+  | 'replaced'
+  | 'archived'
   | 'unverified'
   | 'temporarily-unavailable'
   | 'not-found'
@@ -25,9 +30,11 @@ export type ResourceAccessStatus =
 export interface AcademicResourceVerification {
   resourceId: string;
   verifiedAt: string;
+  status: AcademicResourceStatus;
+  verificationMethod: string;
   finalUrl: string;
-  statusCode: number;
-  contentType: string;
+  statusCode?: number;
+  contentType?: string;
   fileSizeBytes?: number;
   checksum?: string;
   pdfSignatureValid?: boolean;
@@ -39,6 +46,11 @@ export interface AcademicResourceVerification {
   metadataVerified?: boolean;
   licenseVerified?: boolean;
   replacementRequired: boolean;
+  issues?: Array<{
+    code: string;
+    severity: 'error' | 'review';
+    message: string;
+  }>;
   notes?: string;
 }
 

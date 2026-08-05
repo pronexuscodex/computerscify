@@ -195,10 +195,6 @@ export function getCorsCompatiblePdfUrl(url: string): string {
     return cleaned;
   }
 
-  if (cleaned.includes('some-restricted-domain.org') || cleaned.includes('paywalled')) {
-    return 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
-  }
-
   return `/api/pdf-proxy?url=${encodeURIComponent(cleaned)}`;
 }
 
@@ -230,7 +226,8 @@ export function classifyResourceUrl(url: string): 'youtube-video' | 'pdf-documen
 }
 
 /**
- * Creates a verified VideoResource object from a raw URL or video ID.
+ * Normalizes a VideoResource object from stored metadata.
+ * External availability and embedding still require separate verification.
  */
 export function createVerifiedVideoResource(params: {
   id: string;
@@ -259,15 +256,16 @@ export function createVerifiedVideoResource(params: {
     sourcePageUrl: params.canonicalUrl,
     durationMinutes: params.durationMinutes || 45,
     embeddingAllowed: true,
-    accessStatus: 'verified',
+    accessStatus: 'unverified',
     instructor: params.instructor,
     lastVerifiedAt: new Date().toISOString().split('T')[0],
-    verificationMethod: 'youtube-nocookie-id-verified',
+    verificationMethod: 'metadata-normalization-only',
   };
 }
 
 /**
- * Creates a verified PdfResource object.
+ * Normalizes a PdfResource object from stored metadata.
+ * File signatures, licensing, and reader compatibility require separate verification.
  */
 export function createVerifiedPdfResource(params: {
   id: string;
@@ -281,7 +279,7 @@ export function createVerifiedPdfResource(params: {
   let cleanedPdfUrl = fixArxivPdfUrl(params.rawPdfUrl);
   cleanedPdfUrl = fixGitHubPdfUrl(cleanedPdfUrl);
 
-  const finalPdfUrl = cleanedPdfUrl || params.rawPdfUrl || 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+  const finalPdfUrl = cleanedPdfUrl || params.rawPdfUrl;
 
   return {
     id: params.id,
@@ -293,12 +291,12 @@ export function createVerifiedPdfResource(params: {
     canonicalUrl: params.canonicalUrl || params.rawPdfUrl,
     sourcePageUrl: params.canonicalUrl || params.rawPdfUrl,
     contentType: 'application/pdf',
-    openAccess: true,
-    corsCompatible: true,
-    pdfJsCompatible: true,
+    openAccess: false,
+    corsCompatible: false,
+    pdfJsCompatible: false,
     recommendedChapter: params.recommendedChapter,
-    accessStatus: 'verified',
+    accessStatus: 'unverified',
     lastVerifiedAt: new Date().toISOString().split('T')[0],
-    verificationMethod: 'direct-pdf-signature-check',
+    verificationMethod: 'metadata-normalization-only',
   };
 }

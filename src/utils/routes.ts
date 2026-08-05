@@ -104,6 +104,7 @@ export function parseRoutePath(pathStr: string, defaultProgram: ProgramType = 'c
   const knownViews: NavView[] = [
     'dashboard',
     'roadmap',
+    'academies',
     'research',
     'lab',
     'spaced-review',
@@ -201,4 +202,3 @@ export function updateBrowserURL(url: string, title?: string) {
     }
   }
 }
-

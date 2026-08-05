@@ -158,7 +158,7 @@ export const PdfUnavailableState: React.FC<ErrorStateProps> = ({
           This document could not be directly loaded into the ComputerSciFy PDF Canvas reader due to CORS security policies on the remote host.
         </p>
         <p className="text-stone-300">
-          You can view the document via Embedded Google Viewer, open the source document directly in a browser tab, or load the verified sample PDF.
+          You can view the document via Embedded Google Viewer or open the original source directly in a browser tab.
         </p>
       </div>
 

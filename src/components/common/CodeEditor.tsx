@@ -433,7 +433,11 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
       <div
         className="relative flex w-full overflow-hidden"
         style={{
-          height: isFullscreen ? 'calc(100% - 70px)' : 'auto',
+          // The input and highlight layers below are absolutely positioned, so
+          // an auto-height containing block has no in-flow content from which to
+          // calculate its height. Give normal mode a concrete editing surface;
+          // fullscreen already gets one from the viewport.
+          height: isFullscreen ? 'calc(100% - 70px)' : minHeight,
           minHeight,
           maxHeight: isFullscreen ? 'none' : maxHeight,
         }}
@@ -459,7 +463,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
 
         {/* Code Content Container */}
         <div
-          className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0d0c0c] cursor-text"
+          className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0d0c0c] cursor-text isolate"
           onClick={() => textareaRef.current?.focus()}
         >
           {/* Syntax Highlighted Code Background Overlay */}
@@ -490,6 +494,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
               updateCursorPosition();
             }}
             onKeyUp={updateCursorPosition}
+            onFocus={updateCursorPosition}
             onClick={updateCursorPosition}
             onSelect={updateCursorPosition}
             onScroll={handleScroll}
@@ -502,7 +507,7 @@ export const CodeEditor = forwardRef<CodeEditorRef, CodeEditorProps>(({
             autoComplete="off"
             autoCorrect="off"
             rows={Math.max(10, linesCount)}
-            className="code-editor-textarea absolute inset-0 w-full h-full m-0 p-3 font-mono text-xs leading-relaxed bg-transparent resize-none cursor-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#F2C94C]/70 whitespace-pre overflow-auto z-10 select-text touch-manipulation"
+            className="code-editor-textarea pointer-events-auto absolute inset-0 block w-full h-full m-0 p-3 font-mono text-xs leading-relaxed bg-transparent resize-none cursor-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#F2C94C]/70 whitespace-pre overflow-auto z-10 select-text touch-manipulation"
             style={{
               fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
               fontSize: `${resolvedFontSize}px`,

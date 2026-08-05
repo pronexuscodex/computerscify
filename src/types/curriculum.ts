@@ -1,3 +1,6 @@
+import type { CyberLabSafetyMetadata, CyberLessonSafetyMetadata } from './cyberSafety';
+import type { PaperProjectForm, PaperReadingWorksheet, ResearchCollection } from './researchLibrary';
+
 export type ProgramType = 'computer-science' | 'data-science';
 
 export type AcademicYear = 1 | 2 | 3 | 4;
@@ -113,6 +116,7 @@ export interface InteractiveLabDefinition {
     expectedOutput: string;
     description: string;
   }[];
+  safety?: CyberLabSafetyMetadata;
 }
 
 export interface WorkedExample {
@@ -224,6 +228,7 @@ export interface Topic {
   order: number;
   masteryPack: MasteryPack;
   concepts?: CurriculumConcept[];
+  cyberSafety?: CyberLessonSafetyMetadata;
 
   // Resource array identifiers
   lectureIds?: string[];
@@ -397,6 +402,9 @@ export interface LearnerProgress {
   bookmarkedResourceIds: string[];
   readPaperIds: string[];
   notes: Record<string, string>; // key: topicId or paperId or courseId, value: note
+  researchWorksheets: Record<string, PaperReadingWorksheet>;
+  researchCollections: ResearchCollection[];
+  researchProjectForms: PaperProjectForm[];
   labCodes: Record<string, string>; // key: labId, value: code string
   capstoneNotes: Record<string, string>; // key: capstoneId, value: notes/submission
   masteryChecklistStatus: Record<string, boolean>; // key: `${topicId}_${criterionIndex}`

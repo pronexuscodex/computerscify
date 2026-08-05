@@ -24,7 +24,8 @@ import {
   AlertTriangle,
   PlayCircle,
   Code2,
-  XCircle
+  XCircle,
+  ShieldAlert
 } from 'lucide-react';
 import { Topic, LearnerProgress } from '../../types/curriculum';
 import { getModuleById } from '../../data/curriculumData';
@@ -259,6 +260,29 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
           );
         })}
       </div>
+
+      {topic.cyberSafety && (
+        <section
+          aria-labelledby="cyber-safety-heading"
+          className="rounded-[var(--ds-radius-md)] border border-[var(--ds-security)]/40 bg-[var(--ds-security-soft)] p-4 text-[var(--ds-text)] shadow-[var(--ds-shadow-sm)] sm:p-5"
+        >
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h2 id="cyber-safety-heading" className="flex items-center gap-2 font-display text-sm font-bold uppercase tracking-wide">
+              <ShieldAlert className="h-4 w-4 text-[var(--ds-security)]" /> Defensive cyber safety boundary
+            </h2>
+            <span className="rounded-full border border-[var(--ds-security)]/40 bg-[var(--ds-surface)] px-2.5 py-1 font-mono text-[10px] font-bold uppercase text-[var(--ds-security)]">
+              {topic.cyberSafety.classification.replace('-', ' ')}
+            </span>
+          </div>
+          <p className="mb-3 text-xs font-semibold leading-relaxed text-[var(--ds-text)]">{topic.cyberSafety.legalUseNotice}</p>
+          <dl className="grid min-w-0 gap-3 text-xs sm:grid-cols-2">
+            <div><dt className="font-bold text-[var(--ds-security)]">Ethical objective</dt><dd className="mt-1 leading-relaxed text-[var(--ds-text-muted)]">{topic.cyberSafety.ethicalObjective}</dd></div>
+            <div><dt className="font-bold text-[var(--ds-security)]">Defensive purpose</dt><dd className="mt-1 leading-relaxed text-[var(--ds-text-muted)]">{topic.cyberSafety.defensivePurpose}</dd></div>
+            <div><dt className="font-bold text-[var(--ds-security)]">Required environment</dt><dd className="mt-1 leading-relaxed text-[var(--ds-text-muted)]">{topic.cyberSafety.requiredEnvironment}</dd></div>
+            <div><dt className="font-bold text-[var(--ds-security)]">Responsible disclosure</dt><dd className="mt-1 leading-relaxed text-[var(--ds-text-muted)]">{topic.cyberSafety.responsibleDisclosureGuidance}</dd></div>
+          </dl>
+        </section>
+      )}
 
       {/* TAB CONTENT: OVERVIEW */}
       {activeTab === 'overview' && (

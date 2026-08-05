@@ -1,20 +1,25 @@
 {
-  "name": "react-example",
+  "name": "computerscify",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A browser-based, first-principles computer science and data science learning platform.",
   "type": "module",
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "node scripts/clean.mjs",
-    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck",
     "test": "tsx scripts/test-runner.ts",
     "test:ide": "tsx scripts/ide-runner-smoke.ts",
     "resources:verify": "tsx scripts/verify-academic-resources.ts",
     "resources:verify:pdf": "tsx scripts/verify-pdf-rendering.ts",
     "resources:verify:papers": "tsx scripts/verify-paper-metadata.ts",
-    "resources:verify:changed": "tsx scripts/verify-academic-resources.ts --changed",
     "resources:report": "tsx scripts/verify-academic-resources.ts --report",
     "topics:verify-resources": "tsx scripts/verify-topic-resources.ts",
     "topics:verify-resources:changed": "tsx scripts/verify-topic-resources.ts --changed",
@@ -25,10 +30,10 @@
     "concepts:validate": "tsx scripts/validate-concepts.ts",
     "videos:verify": "tsx scripts/verify-video-resources.ts",
     "videos:verify:changed": "tsx scripts/verify-video-resources.ts --changed",
-    "videos:report": "tsx scripts/verify-video-resources.ts --report"
+    "videos:report": "tsx scripts/verify-video-resources.ts --report",
+    "validate": "npm run typecheck && npm run test && npm run curriculum:validate && npm run resources:verify && npm run build"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "dotenv": "^17.2.3",

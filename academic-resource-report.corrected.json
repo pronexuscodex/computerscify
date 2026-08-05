@@ -731,6 +731,7 @@
             "Jonathon Shlens"
           ],
           "year": 2014,
+          "venue": "arXiv preprint arXiv:1404.1100",
           "url": "https://www.cs.cmu.edu/~elaw/papers/pca.pdf",
           "deliveryMode": "in-app-pdf-candidate",
           "openAccess": true,
@@ -866,6 +867,7 @@
             "Edsger W. Dijkstra"
           ],
           "year": 1965,
+          "venue": "Technologische Hogeschool Eindhoven",
           "url": "https://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF",
           "deliveryMode": "in-app-pdf-candidate",
           "openAccess": true,
@@ -1004,6 +1006,7 @@
             "Nathan Srebro"
           ],
           "year": 2016,
+          "venue": "Advances in Neural Information Processing Systems (NeurIPS)",
           "url": "https://arxiv.org/pdf/1610.02413",
           "deliveryMode": "in-app-pdf-candidate",
           "openAccess": true,

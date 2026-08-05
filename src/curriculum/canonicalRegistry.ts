@@ -1,6 +1,8 @@
 import { CanonicalCourse, ProgramId, SpecializationTrack, Course } from '../types/curriculum';
 import { COMPUTER_SCIENCE_COURSES } from './programs/computerScience';
 import { DATA_SCIENCE_COURSES } from './programs/dataScience';
+import { AI_ENGINEERING_COURSES } from './aiEngineeringCourses';
+import { CYBERSECURITY_COURSES } from './cybersecurityCourses';
 
 /**
  * SPECIALIZATION TRACKS
@@ -107,6 +109,8 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
   // Map of course id -> Course object
   const csMap = new Map(COMPUTER_SCIENCE_COURSES.map(c => [c.id, c]));
   const dsMap = new Map(DATA_SCIENCE_COURSES.map(c => [c.id, c]));
+  const aiMap = new Map(AI_ENGINEERING_COURSES.map(c => [c.id, c]));
+  const cyberMap = new Map(CYBERSECURITY_COURSES.map(c => [c.id, c]));
 
   // Helper to extract topics, assessments, projects IDs
   const extractAuxiliaryIds = (course: Course) => {
@@ -514,6 +518,40 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
       ],
       ...extractAuxiliaryIds(dsMap.get('ds-405')!),
     },
+
+    ...AI_ENGINEERING_COURSES.map((course) => ({
+      ...aiMap.get(course.id)!,
+      academicLevel: 4 as const,
+      sharedProgressKey: `canonical-${course.id}`,
+      programAssignments: [
+        {
+          programId: 'data-science' as const,
+          role: 'specialization' as const,
+          year: 4 as const,
+          semester: 8 as const,
+          displayCode: course.code,
+          specializationId: 'ds-ml',
+        },
+      ],
+      ...extractAuxiliaryIds(course),
+    })),
+
+    ...CYBERSECURITY_COURSES.map((course) => ({
+      ...cyberMap.get(course.id)!,
+      academicLevel: 4 as const,
+      sharedProgressKey: `canonical-${course.id}`,
+      programAssignments: [
+        {
+          programId: 'computer-science' as const,
+          role: 'specialization' as const,
+          year: 4 as const,
+          semester: 8 as const,
+          displayCode: course.code,
+          specializationId: 'cs-security',
+        },
+      ],
+      ...extractAuxiliaryIds(course),
+    })),
   ];
 
   return registry;

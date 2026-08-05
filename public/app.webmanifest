@@ -1,0 +1,21 @@
+{
+  "name": "ComputerSciFy",
+  "short_name": "ComputerSciFy",
+  "description": "Master computing from first principles.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101827",
+  "theme_color": "#101827",
+  "icons": [
+    {
+      "src": "/computerscify-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/computerscify-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
