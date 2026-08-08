@@ -61,6 +61,19 @@ const ALLOWED_HOSTS = new Set([
   'nand2tetris.org',
   'distributed-systems.net',
   'nasa.gov',
+  'nvlpubs.nist.gov',
+  'csrc.nist.gov',
+  'hai.stanford.edu',
+  'ic3.gov',
+  'www.ic3.gov',
+  'cisecurity.org',
+  'www.cisecurity.org',
+  'owasp.org',
+  'genai.owasp.org',
+  'kimballgroup.com',
+  'www.kimballgroup.com',
+  'docs.cloudera.com',
+  'elib.dlr.de',
 ]);
 
 function pdfProxyPlugin(): Plugin {
@@ -157,9 +170,40 @@ function pdfProxyPlugin(): Plugin {
   };
 }
 
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  // Pyodide's wasm module requires this; no script executes from anywhere but our own origin.
+  "script-src 'self' 'wasm-unsafe-eval'",
+  // motion/tailwind set inline style attributes at runtime; this does not permit inline <script>.
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self' https://export.arxiv.org https://raw.githubusercontent.com https://mozilla.github.io https://cdn.jsdelivr.net https://cdnjs.cloudflare.com",
+  "frame-src https://www.youtube-nocookie.com https://docs.google.com",
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');
+
+// Only applied to the production build's index.html: the dev server injects its own inline
+// React-Refresh preamble script, which a same-strictness CSP would block and break HMR.
+function cspPlugin(): Plugin {
+  return {
+    name: 'csp-meta-plugin',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace(
+        '<meta name="theme-color" content="#101827" />',
+        `<meta name="theme-color" content="#101827" />\n    <meta http-equiv="Content-Security-Policy" content="${CONTENT_SECURITY_POLICY}" />`
+      );
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), pdfProxyPlugin()],
+    plugins: [react(), tailwindcss(), pdfProxyPlugin(), cspPlugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

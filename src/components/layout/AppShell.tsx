@@ -29,9 +29,15 @@ import {
   saveUiPreferences
 } from '../../services/uiPreferences';
 import { NavigationProvider, useNavigation } from '../../context/NavigationContext';
+import { ErrorBoundary } from '../common/ErrorBoundary';
 
 const RoadmapView = lazy(() =>
   import('../roadmap/RoadmapView').then((module) => ({ default: module.RoadmapView }))
+);
+const AcademyExplorerView = lazy(() =>
+  import('../academies/AcademyExplorerView').then((module) => ({
+    default: module.AcademyExplorerView,
+  }))
 );
 const ModuleOverviewView = lazy(() =>
   import('../module/ModuleOverviewView').then((module) => ({ default: module.ModuleOverviewView }))
@@ -94,7 +100,6 @@ const AppShellContent: React.FC = () => {
     selectedTopicId,
     currentCourse,
     currentTopic,
-    setActiveProgram,
     navigateToView,
     selectTopic,
     selectModule,
@@ -252,7 +257,7 @@ const AppShellContent: React.FC = () => {
     >
       {/* Persistent Left Navigation Rail (Desktop) */}
       {!isFullWidth && (
-        <div className="hidden md:flex flex-col shrink-0 h-full bg-[#151313] border-r border-[#151313] z-40">
+        <div className="hidden md:flex flex-col shrink-0 h-full z-40">
           <NavigationRail
             currentView={currentView}
             onNavigate={(view) => navigateToView(view)}
@@ -270,7 +275,7 @@ const AppShellContent: React.FC = () => {
           onClick={() => setIsMobileMenuOpen(false)}
         >
           <div
-            className="w-64 bg-[#151313] h-full shadow-2xl"
+            className="w-64 h-full shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <NavigationRail
@@ -315,6 +320,7 @@ const AppShellContent: React.FC = () => {
               }}
               className="w-full h-full min-w-0"
             >
+              <ErrorBoundary resetKey={`${activeProgram}-${currentView}`}>
               <Suspense fallback={<ViewLoadingFallback />}>
               {currentView === 'dashboard' && (
                 <DashboardView
@@ -330,7 +336,14 @@ const AppShellContent: React.FC = () => {
                 <RoadmapView
                   progress={{ ...progress, selectedProgram: activeProgram }}
                   onSelectCourse={(c) => selectModule(c)}
-                  onSelectProgram={(p) => setActiveProgram(p)}
+                />
+              )}
+
+              {currentView === 'academies' && (
+                <AcademyExplorerView
+                  progress={{ ...progress, selectedProgram: activeProgram }}
+                  activeProgram={activeProgram}
+                  onSelectCourse={(courseId, programId) => selectModule(courseId, programId)}
                 />
               )}
 
@@ -418,6 +431,7 @@ const AppShellContent: React.FC = () => {
                 <CurriculumAuditDashboard onClose={() => navigateToView('dashboard')} />
               )}
               </Suspense>
+              </ErrorBoundary>
             </motion.div>
           </AnimatePresence>
         </main>

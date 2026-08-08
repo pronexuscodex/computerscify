@@ -179,6 +179,10 @@ export function analyzeCodeSyntax(code: string, language: string): CodeErrorAnal
 let pyodideInstance: PyodideApi | null = null;
 let pyodideLoadPromise: Promise<PyodideApi> | null = null;
 
+// Served from public/pyodide/ (vendored via `npm run pyodide:copy`, see scripts/copy-pyodide-assets.mjs)
+// so the runtime executing user code is first-party and covered by the app's CSP instead of a CDN.
+const PYODIDE_INDEX_URL = '/pyodide/';
+
 export async function loadPyodideEngine(): Promise<PyodideApi> {
   if (pyodideInstance) return pyodideInstance;
   if (pyodideLoadPromise) return pyodideLoadPromise;
@@ -186,7 +190,7 @@ export async function loadPyodideEngine(): Promise<PyodideApi> {
   pyodideLoadPromise = new Promise((resolve, reject) => {
     if (window.loadPyodide) {
       window.loadPyodide({
-        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/',
+        indexURL: PYODIDE_INDEX_URL,
       })
         .then((py) => {
           pyodideInstance = py;
@@ -197,11 +201,11 @@ export async function loadPyodideEngine(): Promise<PyodideApi> {
     }
 
     const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js';
+    script.src = `${PYODIDE_INDEX_URL}pyodide.js`;
     script.onload = () => {
       if (window.loadPyodide) {
         window.loadPyodide({
-          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/',
+          indexURL: PYODIDE_INDEX_URL,
         })
           .then((py) => {
             pyodideInstance = py;
@@ -212,7 +216,7 @@ export async function loadPyodideEngine(): Promise<PyodideApi> {
         reject(new Error('Pyodide script failed to load.'));
       }
     };
-    script.onerror = () => reject(new Error('Network error loading Pyodide CDN script.'));
+    script.onerror = () => reject(new Error('Failed to load local Pyodide runtime script.'));
     document.head.appendChild(script);
   });
 

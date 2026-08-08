@@ -9,9 +9,13 @@
     "node": ">=20"
   },
   "scripts": {
+    "predev": "npm run pyodide:copy",
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "prebuild": "npm run pyodide:copy",
     "build": "vite build",
     "preview": "vite preview",
+    "postinstall": "npm run pyodide:copy",
+    "pyodide:copy": "node scripts/copy-pyodide-assets.mjs",
     "clean": "node scripts/clean.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck",
@@ -43,6 +47,7 @@
     "motion": "^12.23.24",
     "pdfjs-dist": "^6.1.200",
     "prismjs": "^1.30.0",
+    "pyodide": "^0.25.1",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-pdf": "^10.4.1",

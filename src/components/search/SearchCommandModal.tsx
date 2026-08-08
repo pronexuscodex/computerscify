@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, X, BookOpen, FileText, Code, CheckSquare, Sparkles, ChevronRight } from 'lucide-react';
 import { ALL_MODULES, ALL_TOPICS, getAllResearchPapers } from '../../data/curriculumData';
 import { GLOSSARY_ITEMS } from '../../data/glossaryData';
@@ -19,6 +19,16 @@ export const SearchCommandModal: React.FC<SearchCommandModalProps> = ({
   onSelectPaper,
 }) => {
   const [query, setQuery] = useState('');
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const wasOpenRef = useRef(false);
+
+  // Capture the trigger element during render, before the search input's autoFocus
+  // (which runs during commit, ahead of any useEffect) can steal document.activeElement.
+  if (isOpen && !wasOpenRef.current) {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+  }
+  wasOpenRef.current = isOpen;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -39,6 +49,14 @@ export const SearchCommandModal: React.FC<SearchCommandModalProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);
+
+  // Restore focus to whatever triggered the search modal once it closes.
+  useEffect(() => {
+    if (!isOpen) return;
+    return () => {
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -81,7 +99,11 @@ export const SearchCommandModal: React.FC<SearchCommandModalProps> = ({
       className="fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-16 px-3 sm:px-4 bg-[#000000]/80 backdrop-blur-sm animate-fade-in"
     >
       <div
+        ref={panelRef}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search ComputerSciFy platform"
         className="w-full max-w-2xl bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow-lg rounded overflow-hidden min-w-0 flex flex-col max-h-[85vh] sm:max-h-[80vh] relative text-[#000000] dark:text-[#F6EFEF]"
       >
         {/* Search Input Bar */}

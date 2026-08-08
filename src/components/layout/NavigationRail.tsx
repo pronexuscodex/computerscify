@@ -2,6 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard,
   Map,
+  Compass,
   BookOpenCheck,
   Terminal,
   Award,
@@ -20,6 +21,7 @@ import { Tooltip } from '../common/Tooltip';
 export type NavView =
   | 'dashboard'
   | 'roadmap'
+  | 'academies'
   | 'research'
   | 'lab'
   | 'spaced-review'
@@ -57,6 +59,7 @@ export const NavigationRail: React.FC<NavigationRailProps> = ({
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'roadmap', label: 'Curriculum Roadmap', icon: Map },
+    { id: 'academies', label: 'Academies', icon: Compass },
     { id: 'research', label: 'Research Library', icon: BookOpenCheck },
     { id: 'lab', label: 'Practice Arena', icon: Terminal },
     { id: 'spaced-review', label: 'Spaced Review', icon: Flame },

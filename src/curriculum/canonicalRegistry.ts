@@ -3,6 +3,7 @@ import { COMPUTER_SCIENCE_COURSES } from './programs/computerScience';
 import { DATA_SCIENCE_COURSES } from './programs/dataScience';
 import { AI_ENGINEERING_COURSES } from './aiEngineeringCourses';
 import { CYBERSECURITY_COURSES } from './cybersecurityCourses';
+import { DATA_ENGINEERING_COURSES } from './dataEngineeringCourses';
 
 /**
  * SPECIALIZATION TRACKS
@@ -111,6 +112,7 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
   const dsMap = new Map(DATA_SCIENCE_COURSES.map(c => [c.id, c]));
   const aiMap = new Map(AI_ENGINEERING_COURSES.map(c => [c.id, c]));
   const cyberMap = new Map(CYBERSECURITY_COURSES.map(c => [c.id, c]));
+  const deMap = new Map(DATA_ENGINEERING_COURSES.map(c => [c.id, c]));
 
   // Helper to extract topics, assessments, projects IDs
   const extractAuxiliaryIds = (course: Course) => {
@@ -548,6 +550,23 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
           semester: 8 as const,
           displayCode: course.code,
           specializationId: 'cs-security',
+        },
+      ],
+      ...extractAuxiliaryIds(course),
+    })),
+
+    ...DATA_ENGINEERING_COURSES.map((course) => ({
+      ...deMap.get(course.id)!,
+      academicLevel: 4 as const,
+      sharedProgressKey: `canonical-${course.id}`,
+      programAssignments: [
+        {
+          programId: 'data-science' as const,
+          role: 'specialization' as const,
+          year: 4 as const,
+          semester: 7 as const,
+          displayCode: course.code,
+          specializationId: 'ds-data-eng',
         },
       ],
       ...extractAuxiliaryIds(course),

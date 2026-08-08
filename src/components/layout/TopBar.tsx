@@ -497,7 +497,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                   onNavigate?.('settings');
                   setIsMenuOpen(false);
                 }}
-                className="min-h-11 w-full p-2.5 rounded bg-[#DFD9D8] dark:bg-[#2B2929] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-xs uppercase flex items-center justify-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
+                className="min-h-11 w-full p-2.5 rounded bg-[#FEF8F7] dark:bg-[#1E1C1C] border-2 border-[#000000] hover:bg-[#F2C94C] hover:text-[#000000] font-black text-xs uppercase flex items-center justify-center gap-2 transition-colors text-[#000000] dark:text-[#F6EFEF]"
               >
                 <Settings className="w-4 h-4 text-[#000000] dark:text-[#F6EFEF]" />
                 <span>All Preferences & Data Backup</span>

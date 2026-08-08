@@ -31,8 +31,13 @@ import { BookResource, ResearchPaper } from '../../types/curriculum';
 import { fixArxivPdfUrl, fixGitHubPdfUrl, getCorsCompatiblePdfUrl, isCorsSafePdfDomain } from '../../utils/embedUtils';
 import { PdfUnavailableState } from '../common/ResourceErrorStates';
 
-// Configure matching PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version || '3.11.174'}/build/pdf.worker.min.mjs`;
+// Configure matching PDF.js worker, bundled locally so the version always matches pdfjs-dist and no CDN trust is required.
+// Deliberately resolved from react-pdf's own nested pdfjs-dist dependency (not the top-level package, which can be a
+// different version) since `pdfjs` above is react-pdf's re-exported API object — the worker must match that exact build.
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString();
 
 const EMPTY_BOOKMARKED_PAGES: number[] = [];
 const MAX_CONTINUOUS_PAGES = 50;

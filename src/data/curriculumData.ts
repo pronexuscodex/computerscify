@@ -1,4 +1,4 @@
-import { CurriculumPhase, CurriculumModule, Topic, ResearchPaper, BookResource } from '../types/curriculum';
+import { CurriculumPhase, CurriculumModule, Topic, ResearchPaper, BookResource, MasteryPack } from '../types/curriculum';
 import { CANONICAL_COURSES } from '../curriculum/canonicalRegistry';
 import { getCuratedResourcesForTopic } from './curatedResourceManifest';
 import { getCorsCompatiblePdfUrl } from '../utils/embedUtils';
@@ -229,29 +229,30 @@ export function normalizeTopicResourceArrays(topic: Topic): Topic {
   const lectures = topic.lectures?.length ? topic.lectures : mp?.primaryLecture ? [mp.primaryLecture] : [];
   const interactiveLabs = topic.interactiveLabs?.length ? topic.interactiveLabs : mp?.interactiveLab ? [mp.interactiveLab] : [];
 
-  if (mp) {
-    mp.lectureIds = lectureIds;
-    mp.bookIds = bookIds;
-    mp.pdfIds = pdfIds;
-    mp.foundationalPaperIds = foundationalPaperIds;
-    mp.researchPaperIds = researchPaperIds;
-    mp.labIds = labIds;
-    mp.lectures = lectures;
-    mp.pdfBooks = pdfBooks;
-    mp.books = books;
-    mp.researchPapers = researchPapers;
-    mp.foundationalPapers = foundationalPapers;
-    mp.interactiveLabs = interactiveLabs;
-    if (pdfBooks.length > 0) {
-      mp.primaryText = pdfBooks[0];
-    }
-    if (researchPapers.length > 0) {
-      mp.authoritativeResearchSource = researchPapers[0];
-    }
-  }
+  const normalizedMasteryPack: MasteryPack | undefined = mp
+    ? {
+        ...mp,
+        lectureIds,
+        bookIds,
+        pdfIds,
+        foundationalPaperIds,
+        researchPaperIds,
+        labIds,
+        lectures,
+        pdfBooks,
+        books,
+        researchPapers,
+        foundationalPapers,
+        interactiveLabs,
+        primaryText: pdfBooks.length > 0 ? pdfBooks[0] : mp.primaryText,
+        authoritativeResearchSource:
+          researchPapers.length > 0 ? researchPapers[0] : mp.authoritativeResearchSource,
+      }
+    : mp;
 
   return {
     ...topic,
+    ...(normalizedMasteryPack ? { masteryPack: normalizedMasteryPack } : {}),
     lectureIds,
     bookIds,
     pdfIds,

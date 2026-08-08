@@ -43,6 +43,23 @@ interface LessonPlayerViewProps {
   onBack: () => void;
 }
 
+const NoResourceAvailable: React.FC<{ icon: React.ComponentType<{ className?: string }>; label: string }> = ({
+  icon: Icon,
+  label,
+}) => (
+  <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-8 flex flex-col items-center text-center gap-3">
+    <div className="p-3 bg-[#F2C94C] border-2 border-[#000000] rounded text-[#000000]">
+      <Icon className="w-6 h-6" />
+    </div>
+    <h3 className="font-display font-black text-base text-[#000000] dark:text-[#F6EFEF] uppercase">
+      No {label} for This Topic
+    </h3>
+    <p className="text-xs text-[#000000]/70 dark:text-[#F6EFEF]/70 font-bold max-w-sm">
+      This topic doesn't have a {label.toLowerCase()} assigned yet. Check the Overview tab for other ways to learn this material.
+    </p>
+  </div>
+);
+
 export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
   topic,
   progress,
@@ -170,6 +187,12 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
       : mp?.interactiveLab
         ? [mp.interactiveLab]
         : [];
+
+  // Resources actually selected for the active tab. Each can be genuinely absent for a given
+  // topic (e.g. a topic with no assigned video), so callers below must not assume a value here.
+  const activeVideoResource = lecturesList[selectedLectureIdx] || mp?.primaryLecture;
+  const activePdfResource = pdfsList[selectedPdfIdx] || mp?.primaryText;
+  const activeResearchResource = researchList[selectedResearchIdx] || mp?.authoritativeResearchSource;
 
   const isCompleted = progress.completedTopicIds.includes(topic.id);
   const isBookmarked = progress.bookmarkedResourceIds.includes(topic.id);
@@ -571,16 +594,20 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               ))}
             </div>
           )}
-          <InAppVideoPlayer
-            video={lecturesList[selectedLectureIdx] || mp.primaryLecture}
-            onMarkCompleted={toggleCompletion}
-            isCompleted={isCompleted}
-            onNextLesson={nextTopic ? () => onSelectTopic(nextTopic.id) : undefined}
-            onPrevLesson={prevTopic ? () => onSelectTopic(prevTopic.id) : undefined}
-            onFocusModeToggle={() => setIsFocusMode(true)}
-            initialNotes={noteText}
-            onSaveNote={(_, text) => handleNoteChange(text)}
-          />
+          {activeVideoResource ? (
+            <InAppVideoPlayer
+              video={activeVideoResource}
+              onMarkCompleted={toggleCompletion}
+              isCompleted={isCompleted}
+              onNextLesson={nextTopic ? () => onSelectTopic(nextTopic.id) : undefined}
+              onPrevLesson={prevTopic ? () => onSelectTopic(prevTopic.id) : undefined}
+              onFocusModeToggle={() => setIsFocusMode(true)}
+              initialNotes={noteText}
+              onSaveNote={(_, text) => handleNoteChange(text)}
+            />
+          ) : (
+            <NoResourceAvailable icon={Video} label="Video Lecture" />
+          )}
         </div>
       )}
 
@@ -607,13 +634,17 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               ))}
             </div>
           )}
-          <InAppPdfReader
-            document={pdfsList[selectedPdfIdx] || mp.primaryText}
-            onMarkCompleted={toggleCompletion}
-            isCompleted={isCompleted}
-            initialNote={noteText}
-            onSaveNote={(note) => handleNoteChange(note)}
-          />
+          {activePdfResource ? (
+            <InAppPdfReader
+              document={activePdfResource}
+              onMarkCompleted={toggleCompletion}
+              isCompleted={isCompleted}
+              initialNote={noteText}
+              onSaveNote={(note) => handleNoteChange(note)}
+            />
+          ) : (
+            <NoResourceAvailable icon={BookOpen} label="Textbook" />
+          )}
         </div>
       )}
 
@@ -640,13 +671,17 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               ))}
             </div>
           )}
-          <InAppPdfReader
-            document={researchList[selectedResearchIdx] || mp.authoritativeResearchSource}
-            onMarkCompleted={toggleCompletion}
-            isCompleted={isCompleted}
-            initialNote={noteText}
-            onSaveNote={(note) => handleNoteChange(note)}
-          />
+          {activeResearchResource ? (
+            <InAppPdfReader
+              document={activeResearchResource}
+              onMarkCompleted={toggleCompletion}
+              isCompleted={isCompleted}
+              initialNote={noteText}
+              onSaveNote={(note) => handleNoteChange(note)}
+            />
+          ) : (
+            <NoResourceAvailable icon={FileText} label="Research Paper" />
+          )}
         </div>
       )}
 

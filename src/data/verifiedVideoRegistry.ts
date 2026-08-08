@@ -594,5 +594,283 @@ export const VERIFIED_VIDEOS = {
       { videoId: 'kCc8FmEb1nY', title: 'Deep Neural Network Architectures', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' },
       { videoId: 'aircAruvnKk', title: 'Neural Networks & Convolutions', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
     ]
+  }),
+
+  // AI Engineering (ai-100 through ai-450) — oEmbed-verified title/channel before adding
+  'ai100-t1': makeVerifiedVideo({
+    id: 'ai100-lec-1',
+    title: 'AI, Machine Learning, Deep Learning and Generative AI Explained',
+    institution: 'IBM Technology',
+    videoId: 'qYNweeDHiyU',
+    durationMinutes: 9,
+    instructor: 'IBM Technology',
+    fallbacks: [
+      { videoId: 'DEF0bNViFWk', title: 'AI/ML Introduction: Episode #12: What is Machine Learning Life Cycle?', institution: 'Aruna Pattam' }
+    ]
+  }),
+  'ai100-t2': makeVerifiedVideo({
+    id: 'ai100-lec-2',
+    title: 'Ethics of AI Bias (full video)',
+    institution: 'MIT OpenCourseWare',
+    videoId: 'NgaW_p7gsRc',
+    durationMinutes: 60,
+    instructor: 'Bernhardt Trout, Svetozar Minkov',
+    fallbacks: [
+      { videoId: 'N-UfNqGg6f8', title: "AI Hallucinations Explained: Why It's Not a Bug but a Feature", institution: 'endjin' },
+      { videoId: 'gV0_raKR2UQ', title: 'Algorithmic Bias and Fairness: Crash Course AI #18', institution: 'CrashCourse' }
+    ]
+  }),
+  'ai410-t1': makeVerifiedVideo({
+    id: 'ai410-lec-1',
+    title: 'Gradient descent, how neural networks learn | Deep Learning Chapter 2',
+    institution: '3Blue1Brown',
+    videoId: 'IHZwWFHWa-w',
+    durationMinutes: 21,
+    instructor: 'Grant Sanderson',
+    fallbacks: [
+      { videoId: 'Ilg3gGewQ5U', title: 'Backpropagation, intuitively | Deep Learning Chapter 3', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
+      { videoId: 'aircAruvnKk', title: 'But what is a neural network? | Deep learning chapter 1', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+    ]
+  }),
+  'ai410-t2': makeVerifiedVideo({
+    id: 'ai410-lec-2',
+    title: 'Attention in transformers, step-by-step | Deep Learning Chapter 6',
+    institution: '3Blue1Brown',
+    videoId: 'eMlx5fFNoYc',
+    durationMinutes: 26,
+    instructor: 'Grant Sanderson',
+    fallbacks: [
+      { videoId: 'HGwBXDKFk9I', title: 'Neural Networks Part 8: Image Classification with Convolutional Neural Networks (CNNs)', institution: 'StatQuest with Josh Starmer' },
+      { videoId: 'PSs6nxngL6k', title: 'Attention for Neural Networks, Clearly Explained!!!', institution: 'StatQuest with Josh Starmer' }
+    ]
+  }),
+  'ai420-t1': makeVerifiedVideo({
+    id: 'ai420-lec-1',
+    title: 'Tokenization in Large Language Models (LLMs)',
+    institution: 'Outcome School',
+    videoId: 'sK2s9I84EVI',
+    durationMinutes: 12,
+    fallbacks: [
+      { videoId: 'Cm_qmhSEFgs', title: 'LLM Basics 1: How AI Reads Text: Tokenization Explained Simply (with Real Code!)', institution: 'Asim Munawar' },
+      { videoId: 'O4SourCAu54', title: 'What is a Context Window in AI and Why Does It Matter?', institution: 'koombea' }
+    ]
+  }),
+  'ai420-t2': makeVerifiedVideo({
+    id: 'ai420-lec-2',
+    title: 'What is Retrieval-Augmented Generation (RAG)?',
+    institution: 'IBM Technology',
+    videoId: 'T-D1OfcDW1M',
+    durationMinutes: 9,
+    instructor: 'Marina Danilevsky',
+    fallbacks: [
+      { videoId: 'xPMQ2cVbUTI', title: 'What Is RAG? Retrieval-Augmented Generation Explained Simply', institution: 'Redis' },
+      { videoId: 'gweRh5Xtkq0', title: 'Retrieval-Augmented Generation (RAG) in 10 minutes (beginner-friendly)', institution: 'Prof. Ryan Ahmed' }
+    ]
+  }),
+  'ai430-t1': makeVerifiedVideo({
+    id: 'ai430-lec-1',
+    title: 'ReAct AI Agents, clearly explained!',
+    institution: 'Akshay Pachaar',
+    videoId: 'vFdIrZyKEwQ',
+    durationMinutes: 10,
+    fallbacks: [
+      { videoId: 'sWH0T4Zez6I', title: 'Multi Agent Systems Explained: How AI Agents & LLMs Work Together', institution: 'IBM Technology' }
+    ]
+  }),
+  'ai430-t2': makeVerifiedVideo({
+    id: 'ai430-t2-lec-1',
+    title: 'Top 10 Security Risks in AI Agents Explained',
+    institution: 'IBM Technology',
+    videoId: 'soFWS8NBcSU',
+    durationMinutes: 9
+  }),
+  'ai440-t1': makeVerifiedVideo({
+    id: 'ai440-lec-1',
+    title: 'What are Large Language Model (LLM) Benchmarks?',
+    institution: 'IBM Technology',
+    videoId: 'kDY4TodQwbg',
+    durationMinutes: 8
+  }),
+  'ai440-t2': makeVerifiedVideo({
+    id: 'ai440-lec-2',
+    title: 'LLM as a Judge: Scaling AI Evaluation Strategies',
+    institution: 'IBM Technology',
+    videoId: 'trfUBIDeI1Y',
+    durationMinutes: 9
+  }),
+  'ai450-t1': makeVerifiedVideo({
+    id: 'ai450-lec-1',
+    title: 'What Is a Prompt Injection Attack?',
+    institution: 'IBM Technology',
+    videoId: 'jrHRe9lSqqA',
+    durationMinutes: 7,
+    fallbacks: [
+      { videoId: 's_Ztu6c-IGQ', title: 'Episode 4: Indirect Prompt Injection Explained | AI Red Teaming 101', institution: 'Microsoft Developer' }
+    ]
+  }),
+  'ai450-t2': makeVerifiedVideo({
+    id: 'ai450-lec-2',
+    title: 'AI Supply Chain Attacks & Model Poisoning Explained',
+    institution: 'ConvoCourses',
+    videoId: 'L8iH9foFdOs',
+    durationMinutes: 15
+  }),
+
+  // Cybersecurity (cyber-100 through cyber-420) — oEmbed-verified title/channel before adding
+  'cyber100-t1': makeVerifiedVideo({
+    id: 'cyber100-lec-1',
+    title: 'What is Threat Modeling? (Threat Modeling Explained)',
+    institution: 'Go Cloud Architects',
+    videoId: 'KOq56Iyw8WY',
+    durationMinutes: 12,
+    fallbacks: [
+      { videoId: 'SBcDGb9l6yo', title: 'The CIA Triad - CompTIA Security+ SY0-701 - 1.2', institution: 'Professor Messer' },
+      { videoId: 'zC_Pndpg8-c', title: 'Zero Trust - CompTIA Security+ SY0-701 - 1.2', institution: 'Professor Messer' }
+    ]
+  }),
+  'cyber100-t2': makeVerifiedVideo({
+    id: 'cyber100-lec-2',
+    title: 'Linux for Hackers // EP 1 (FREE Linux course for beginners)',
+    institution: 'NetworkChuck',
+    videoId: 'VbEx7B_PTOE',
+    durationMinutes: 45,
+    fallbacks: [
+      { videoId: 'jwnvKOjmtEA', title: 'sudo = POWER!! (managing users in Linux) // Linux for Hackers // EP4', institution: 'NetworkChuck' },
+      { videoId: 'LfC6pv8VISk', title: 'KILL Linux processes!! (also manage them) // Linux for Hackers // EP 7', institution: 'NetworkChuck' }
+    ]
+  }),
+  'cyber210-t1': makeVerifiedVideo({
+    id: 'cyber210-lec-1',
+    title: 'Network Segmentation - SY0-601 CompTIA Security+ : 3.3',
+    institution: 'Professor Messer',
+    videoId: 'MiIzrykpaBk',
+    durationMinutes: 6,
+    fallbacks: [
+      { videoId: 'VgNyh4HEqSU', title: 'Firewalls - CompTIA Security+ SY0-701 - 4.5', institution: 'Professor Messer' },
+      { videoId: 'uOfonONtIuk', title: 'How DNS Works - Computerphile', institution: 'Computerphile' }
+    ]
+  }),
+  'cyber210-t2': makeVerifiedVideo({
+    id: 'cyber210-lec-2',
+    title: 'Cross-Site Scripting: A 25-Year Threat That Is Still Going Strong',
+    institution: 'IBM Technology',
+    videoId: 'z4LhLJnmoZ0',
+    durationMinutes: 8,
+    fallbacks: [
+      { videoId: 'wUaeKEl1RCw', title: 'OWASP Top 10 Web Application Security Risks', institution: 'Telusko' },
+      { videoId: 'pdC3H8SX-F4', title: '1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)', institution: 'Hussein Nasser' }
+    ]
+  }),
+  'cyber310-t1': makeVerifiedVideo({
+    id: 'cyber310-lec-1',
+    title: 'Secure Coding Practices',
+    institution: 'Tom Olzak',
+    videoId: 'lrTPeCmpNCw',
+    durationMinutes: 20,
+    fallbacks: [
+      { videoId: 'rEnJYNkUde0', title: 'STRIDE Threat Modeling for Beginners - In 20 Minutes', institution: 'Netsec Explained' },
+      { videoId: 'wqErjqFgEa0', title: 'The Ultimate SAST Guide: What is Static Application Security Testing?', institution: 'Aikido Security' }
+    ]
+  }),
+  'cyber310-t2': makeVerifiedVideo({
+    id: 'cyber310-lec-2',
+    title: 'What is DevSecOps?',
+    institution: 'IBM Technology',
+    videoId: 'J73MELGF6u0',
+    durationMinutes: 6,
+    fallbacks: [
+      { videoId: 'K_G10zywoTs', title: 'What Is SLSA? Understanding Supply Chain Levels for Software Artifacts', institution: 'Harness' },
+      { videoId: 'b_euX_M82uI', title: 'Container Security Explained', institution: 'IBM Technology' }
+    ]
+  }),
+  'cyber320-t1': makeVerifiedVideo({
+    id: 'cyber320-lec-1',
+    title: 'Security Operations Center (SOC) Explained',
+    institution: 'IBM Technology',
+    videoId: 'OHkWXFheSKM',
+    durationMinutes: 8,
+    fallbacks: [
+      { videoId: 'JEcETdy5WxU', title: 'Security Information and Event Management - SY0-601 CompTIA Security+ : 1.7', institution: 'Professor Messer' },
+      { videoId: 'h9b-ZJJn4kI', title: 'Threat Intelligence for SOC Analysts | ANY.RUN New TI Lookup and Feed', institution: 'BlackPerl' }
+    ]
+  }),
+  'cyber320-t2': makeVerifiedVideo({
+    id: 'cyber320-lec-2',
+    title: 'Digital Forensics & Incident Response Fundamentals',
+    institution: 'Cado Security',
+    videoId: 'BIVfEAtUgxg',
+    durationMinutes: 15,
+    fallbacks: [
+      { videoId: 'UtDWApdO8Zk', title: 'Digital Forensics - CompTIA Security+ SY0-701 - 4.8', institution: 'Professor Messer' },
+      { videoId: '-qn8TxC72Mk', title: 'Incident Response: Eradication and Recovery', institution: 'Tom Olzak' }
+    ]
+  }),
+  'cyber410-t1': makeVerifiedVideo({
+    id: 'cyber410-lec-1',
+    title: 'Identity & Access Management (IAM)',
+    institution: 'IBM Technology',
+    videoId: 'aNj36g7fSsU',
+    durationMinutes: 9,
+    fallbacks: [
+      { videoId: 'o13js0hIO_o', title: 'Simplify the AWS Shared Responsibility Model', institution: 'Amazon Web Services' },
+      { videoId: 'iETENR5MEB8', title: 'What is Secrets Management?', institution: 'IBM Technology' }
+    ]
+  }),
+  'cyber410-t2': makeVerifiedVideo({
+    id: 'cyber410-lec-2',
+    title: 'Reduce the Risk of Cloud Misconfiguration | Cloud Security',
+    institution: 'Fortinet',
+    videoId: 'DwPBhTi0O34',
+    durationMinutes: 6,
+    fallbacks: [
+      { videoId: 'jI8IKpjiCSM', title: 'What is Cloud Security?', institution: 'IBM Technology' },
+      { videoId: 'ASLZhpvmT2k', title: 'Securing Cloud Networks - SY0-601 CompTIA Security+ : 3.6', institution: 'Professor Messer' }
+    ]
+  }),
+  'cyber420-t1': makeVerifiedVideo({
+    id: 'cyber420-lec-1',
+    title: 'Running a Buffer Overflow Attack - Computerphile',
+    institution: 'Computerphile',
+    videoId: '1S0aBV-Waeo',
+    durationMinutes: 17,
+    instructor: 'Dr Mike Pound',
+    fallbacks: [
+      { videoId: 'kaD54VXxGrI', title: 'Fuzzing Programs to Find Bugs - Computerphile', institution: 'Computerphile' }
+    ]
+  }),
+  'cyber420-t2': makeVerifiedVideo({
+    id: 'cyber420-lec-2',
+    title: "What is Malware? Let's Hear the Hacker's Viewpoint",
+    institution: 'IBM Technology',
+    videoId: 'mqzP7gJDM2s',
+    durationMinutes: 8,
+    fallbacks: [
+      { videoId: '-eZs8wjjGGE', title: 'An Overview of Malware - CompTIA Security+ SY0-701 - 2.4', institution: 'Professor Messer' },
+      { videoId: 'x72hG9GvkaQ', title: 'Indicators of Compromise - CompTIA Security+ SY0-701 - 2.4', institution: 'Professor Messer' }
+    ]
+  }),
+
+  // Data Engineering (de-100) — oEmbed-verified title/channel before adding
+  'de100-t1': makeVerifiedVideo({
+    id: 'de100-lec-1',
+    title: 'Data warehouse schema design - dimensional modeling and star schema',
+    institution: 'Snir David',
+    videoId: 'fpquGrdgbLg',
+    durationMinutes: 15,
+    fallbacks: [
+      { videoId: '4dEKvxEy9Oo', title: 'Data Modeling Explained: Star vs. Snowflake Schema', institution: 'The Data and AI Guy' },
+      { videoId: '1JswR_4XUdU', title: 'Slowly Changing Dimensions (SCD) | Types 0, 1, 2, 3, 4 Explained with Real Examples', institution: 'SleekData' }
+    ]
+  }),
+  'de100-t2': makeVerifiedVideo({
+    id: 'de100-lec-2',
+    title: 'What is ETL (Extract, Transform, Load)?',
+    institution: 'IBM Technology',
+    videoId: 'OW5OgsLpDCQ',
+    durationMinutes: 6,
+    fallbacks: [
+      { videoId: 'bv7tlrh32U4', title: 'ETL vs ELT Explained SIMPLE Example!', institution: 'Andreas Kretz' },
+      { videoId: 'pKZ5n-y3ug4', title: 'The Importance of Idempotency in Designing Data Pipelines', institution: 'PracticalGCP' }
+    ]
   })
 };
