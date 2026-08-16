@@ -34,6 +34,8 @@ import { LabWorkspaceView } from '../lab/LabWorkspaceView';
 import { InAppPdfReader } from '../reader/InAppPdfReader';
 import { InAppVideoPlayer } from '../player/InAppVideoPlayer';
 import { FocusModeShell } from '../layout/FocusModeShell';
+import { OfflineSaveButton } from '../common/OfflineSaveButton';
+import { toOfflineableResource } from '../../services/offlineResourceCache';
 
 interface LessonPlayerViewProps {
   topic: Topic;
@@ -430,14 +432,22 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {pdfsList.map((pdf, idx) => (
-                  <button
-                    type="button"
+                  <div
+                    role="button"
+                    tabIndex={0}
                     key={pdf.id || idx}
                     onClick={() => {
                       setSelectedPdfIdx(idx);
                       setActiveTab('pdf');
                     }}
-                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedPdfIdx(idx);
+                        setActiveTab('pdf');
+                      }
+                    }}
+                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3 cursor-pointer"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
@@ -459,13 +469,16 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                         By {Array.isArray(pdf.authors) ? pdf.authors.join(', ') : pdf.authors || 'Academic Faculty'}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between pt-2 border-t-2 border-[#000000]">
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t-2 border-[#000000]">
                       <span className="text-xs font-black text-[#000000] dark:text-[#F2C94C] uppercase flex items-center gap-1">
                         {pdf.deliveryMode === 'in-app-pdf-candidate' ? 'Read in Study Reader' : 'Open Course Resource'} <ChevronRight className="w-3 h-3" />
                       </span>
-                      <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
+                      <div className="flex items-center gap-1.5">
+                        <OfflineSaveButton resource={toOfflineableResource(pdf)} variant="neo" />
+                        <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF] shrink-0" />
+                      </div>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -477,14 +490,22 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {researchList.map((paper, idx) => (
-                  <button
-                    type="button"
+                  <div
+                    role="button"
+                    tabIndex={0}
                     key={paper.id || idx}
                     onClick={() => {
                       setSelectedResearchIdx(idx);
                       setActiveTab('research');
                     }}
-                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedResearchIdx(idx);
+                        setActiveTab('research');
+                      }
+                    }}
+                    className="w-full text-left p-4 bg-[#FEF8F7] dark:bg-[#2B2929] border-2 border-[#000000] rounded neo-shadow-sm hover:translate-y-[-2px] transition-all group flex flex-col justify-between space-y-3 cursor-pointer"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
@@ -502,13 +523,16 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
                         Authors: {Array.isArray(paper.authors) ? paper.authors.join(', ') : paper.authors || 'Research Scientists'}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between pt-2 border-t-2 border-[#000000]">
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t-2 border-[#000000]">
                       <span className="text-xs font-black text-[#000000] dark:text-[#F2C94C] uppercase flex items-center gap-1">
                         Read Research Source <ChevronRight className="w-3.5 h-3.5" />
                       </span>
-                      <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF]" />
+                      <div className="flex items-center gap-1.5">
+                        <OfflineSaveButton resource={toOfflineableResource(paper)} variant="neo" />
+                        <ExternalLink className="w-3.5 h-3.5 text-[#000000] dark:text-[#F6EFEF] shrink-0" />
+                      </div>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>

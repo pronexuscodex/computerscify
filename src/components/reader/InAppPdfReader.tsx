@@ -30,6 +30,8 @@ import {
 import { BookResource, ResearchPaper } from '../../types/curriculum';
 import { fixArxivPdfUrl, fixGitHubPdfUrl, getCorsCompatiblePdfUrl, isCorsSafePdfDomain } from '../../utils/embedUtils';
 import { PdfUnavailableState } from '../common/ResourceErrorStates';
+import { getOfflineBlob, toOfflineableResource } from '../../services/offlineResourceCache';
+import { OfflineSaveButton } from '../common/OfflineSaveButton';
 
 // Configure matching PDF.js worker, bundled locally so the version always matches pdfjs-dist and no CDN trust is required.
 // Deliberately resolved from react-pdf's own nested pdfjs-dist dependency (not the top-level package, which can be a
@@ -156,6 +158,18 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
   const [loadingStage, setLoadingStage] = useState<'loading' | 'ready' | 'failed'>('loading');
   const [errorDetails, setErrorDetails] = useState<string | null>(null);
+  // True only when the reader silently switched away from Rich View after a load failure, so we
+  // can tell the learner why the view changed instead of leaving it unexplained.
+  const [modeAutoSwitched, setModeAutoSwitched] = useState<boolean>(false);
+
+  // When this document has been saved for offline reading, its bytes are read from IndexedDB
+  // instead of the network so the reader works with no internet connection. The IndexedDB check
+  // is async, so `offlineCheckComplete` gates rendering <Document> until it resolves — swapping
+  // the `file` prop *after* react-pdf has already started loading aborts the in-progress render
+  // (visible as a flicker to a blank page), so `file` must only ever be set once, with its final value.
+  const [offlineObjectUrl, setOfflineObjectUrl] = useState<string | null>(null);
+  const [offlineCheckComplete, setOfflineCheckComplete] = useState(false);
+  const offlineObjectUrlRef = useRef<string | null>(null);
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
@@ -217,11 +231,46 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     setReaderMode(isCorsSafe ? 'canvas' : 'native');
     setLoadingStage('loading');
     setErrorDetails(null);
+    setModeAutoSwitched(false);
+
+    if (offlineObjectUrlRef.current) {
+      URL.revokeObjectURL(offlineObjectUrlRef.current);
+      offlineObjectUrlRef.current = null;
+    }
+    setOfflineObjectUrl(null);
+    setOfflineCheckComplete(false);
+
+    let cancelled = false;
+    getOfflineBlob(raw).then((blob) => {
+      if (cancelled) return;
+      if (blob) {
+        const objectUrl = URL.createObjectURL(blob);
+        offlineObjectUrlRef.current = objectUrl;
+        setOfflineObjectUrl(objectUrl);
+        // A cached blob renders fine in Rich View regardless of the original URL's CORS support —
+        // safe to set here (unlike after mount) because nothing has started loading yet.
+        setReaderMode('canvas');
+      }
+      setOfflineCheckComplete(true);
+    });
 
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    return () => {
+      cancelled = true;
+    };
   }, [docId, initialRawUrl]);
+
+  // Revoke the last offline object URL on unmount to avoid leaking memory.
+  useEffect(() => {
+    return () => {
+      if (offlineObjectUrlRef.current) {
+        URL.revokeObjectURL(offlineObjectUrlRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const nextPage = savedPage || 1;
@@ -266,6 +315,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
     setErrorDetails(err?.message || 'Cross-origin fetch restrictions encountered on remote server.');
     if (readerMode === 'canvas') {
       setReaderMode('native');
+      setModeAutoSwitched(true);
     } else {
       setLoadingStage('failed');
     }
@@ -274,17 +324,20 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
   const handleOpenGoogleViewer = () => {
     setReaderMode('google');
     setErrorDetails(null);
+    setModeAutoSwitched(false);
   };
 
   const handleOpenNativeViewer = () => {
     setReaderMode('native');
     setErrorDetails(null);
+    setModeAutoSwitched(false);
   };
 
   const handleOpenCanvasViewer = () => {
     setReaderMode('canvas');
     setLoadingStage('loading');
     setErrorDetails(null);
+    setModeAutoSwitched(false);
   };
 
   const handleRetry = () => {
@@ -415,9 +468,27 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
           <BookOpen className="w-4 h-4 text-[#BE94F5] shrink-0 ml-1 hidden sm:block" />
           <div className="min-w-0">
-            <h3 className="font-semibold text-stone-100 truncate max-w-xs sm:max-w-md">{document.title}</h3>
-            <p className="text-[11px] text-stone-300 truncate hidden sm:block">
-              {isPaper ? paper?.authors.join(', ') : book?.authors.join(', ')}
+            <div className="flex items-center gap-1.5 min-w-0">
+              <h3 className="font-semibold text-stone-100 truncate max-w-[10rem] sm:max-w-md">{document.title}</h3>
+              {offlineObjectUrl && (
+                <span
+                  title="Reading from your offline copy — no internet connection needed"
+                  className="shrink-0 px-1.5 py-0.5 rounded-full bg-[#82E0AA]/20 border border-[#82E0AA]/50 text-[#82E0AA] text-[10px] font-bold uppercase tracking-wide hidden sm:inline-block"
+                >
+                  Offline
+                </span>
+              )}
+            </div>
+            <p className="text-[11px] text-stone-300 truncate hidden sm:flex items-center gap-2">
+              <span className="truncate">{isPaper ? paper?.authors.join(', ') : book?.authors.join(', ')}</span>
+              <a
+                href={document.canonicalUrl || document.sourcePageUrl || initialRawUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 text-stone-400 hover:text-white underline decoration-dotted flex items-center gap-0.5"
+              >
+                Source <ExternalLink className="w-2.5 h-2.5" />
+              </a>
             </p>
           </div>
         </div>
@@ -492,38 +563,39 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
 
         {/* Right Toolbar Actions */}
         <div className="flex items-center gap-1.5">
-          {/* Reader Engine Switcher */}
-          <div className="hidden lg:flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
-            <button
-              onClick={handleOpenCanvasViewer}
-              title="Interactive Canvas Reader"
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
-                readerMode === 'canvas' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
-              }`}
-            >
-              <Eye className="w-3 h-3" />
-              <span>Canvas</span>
-            </button>
-            <button
-              onClick={handleOpenNativeViewer}
-              title="Direct Native PDF Frame"
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
-                readerMode === 'native' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
-              }`}
-            >
-              <FileText className="w-3 h-3" />
-              <span>Native</span>
-            </button>
-            <button
-              onClick={handleOpenGoogleViewer}
-              title="Google Docs Embedded Viewer"
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
-                readerMode === 'google' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
-              }`}
-            >
-              <span>Google</span>
-            </button>
-          </div>
+          {/* Viewer mode: only surfaced when the current mode isn't the default Rich View, so
+              troubleshooting controls don't compete for attention during normal reading. */}
+          {readerMode !== 'canvas' && (
+            <div className="hidden lg:flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
+              <button
+                onClick={handleOpenCanvasViewer}
+                title="Rich View — searchable text, zoom, and page thumbnails"
+                className="px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 text-stone-300 hover:text-white"
+              >
+                <Eye className="w-3 h-3" />
+                <span>Try Rich View</span>
+              </button>
+              <button
+                onClick={handleOpenNativeViewer}
+                title="Simple View — your browser's own PDF viewer"
+                className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
+                  readerMode === 'native' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
+                }`}
+              >
+                <FileText className="w-3 h-3" />
+                <span>Simple</span>
+              </button>
+              <button
+                onClick={handleOpenGoogleViewer}
+                title="Compatibility View — for files the other two viewers can't open"
+                className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
+                  readerMode === 'google' ? 'bg-[#BE94F5] text-[#151313]' : 'text-stone-300 hover:text-white'
+                }`}
+              >
+                <span>Compatibility</span>
+              </button>
+            </div>
+          )}
 
           {/* Zoom controls */}
           <div className="hidden sm:flex items-center gap-1 bg-stone-900 border border-stone-800 px-2 py-0.5 rounded-xl">
@@ -578,6 +650,9 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
             <Bookmark className="w-4 h-4" fill={bookmarks.includes(currentPage) ? 'currentColor' : 'none'} />
           </button>
 
+          {/* Save Offline */}
+          <OfflineSaveButton resource={toOfflineableResource(document)} variant="toolbar" iconOnly />
+
           {/* Mark Complete */}
           {onMarkCompleted && (
             <button
@@ -623,23 +698,22 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
         />
       </div>
 
-      {/* Active Document Status Bar */}
-      <div className="bg-[#82E0AA]/20 border-b border-[#82E0AA]/40 px-4 py-1.5 text-xs text-emerald-300 flex items-center justify-between font-mono">
-        <span className="flex items-center gap-1.5 truncate max-w-lg">
-          <Sparkles className="w-3.5 h-3.5 text-[#BE94F5] shrink-0" />
-          <span>Viewing Document: <strong>{document.title}</strong></span>
-        </span>
-        <div className="flex items-center gap-3 shrink-0">
-          <a
-            href={document.canonicalUrl || document.sourcePageUrl || initialRawUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-white flex items-center gap-1 text-[11px]"
+      {/* Auto-switch Notice: only shown when the reader silently changed viewers after a load failure */}
+      {modeAutoSwitched && readerMode !== 'canvas' && (
+        <div className="bg-[#F2C94C]/15 border-b border-[#F2C94C]/40 px-4 py-1.5 text-xs text-[#F2C94C] flex items-center justify-between gap-3">
+          <span className="flex items-center gap-1.5 truncate">
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
+            Rich View couldn't load this file, so we switched to a simpler viewer automatically.
+          </span>
+          <button
+            onClick={() => setModeAutoSwitched(false)}
+            aria-label="Dismiss notice"
+            className="shrink-0 p-0.5 rounded hover:bg-[#F2C94C]/20"
           >
-            Open Source <ExternalLink className="w-3 h-3" />
-          </a>
+            <X className="w-3.5 h-3.5" />
+          </button>
         </div>
-      </div>
+      )}
 
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden min-h-[580px] relative">
@@ -859,19 +933,24 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           ref={viewerAreaRef}
           className="flex-1 bg-stone-950 flex flex-col items-center overflow-y-auto p-3 sm:p-6 relative min-h-[500px]"
         >
-          {readerMode === 'native' ? (
+          {!offlineCheckComplete ? (
+            <div className="flex flex-col items-center justify-center space-y-3 text-stone-400 py-28 my-auto">
+              <Loader2 className="w-8 h-8 animate-spin text-[#BE94F5]" />
+              <p className="text-sm font-medium font-mono">Preparing document…</p>
+            </div>
+          ) : readerMode === 'native' ? (
             <div className="w-full h-full min-h-[650px] flex flex-col items-center bg-stone-950 relative space-y-2 p-1">
               <div className="w-full flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 bg-stone-900 border border-stone-800 rounded-xl text-xs text-stone-300">
                 <span className="font-mono text-stone-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="font-bold">Direct Native PDF Engine</span>
+                  <span className="font-bold">Simple View</span>
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleOpenCanvasViewer}
                     className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
-                    Try Canvas Reader
+                    Try Rich View
                   </button>
                   <a
                     href={initialRawUrl}
@@ -885,7 +964,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                 </div>
               </div>
               <iframe
-                src={activeUrl}
+                src={offlineObjectUrl || activeUrl}
                 className="w-full flex-1 min-h-[650px] rounded-xl border border-stone-800 bg-white shadow-2xl"
                 title={document.title}
               />
@@ -895,20 +974,20 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               <div className="w-full flex items-center justify-between px-4 py-2 bg-stone-900 border border-stone-800 rounded-xl text-xs text-stone-300">
                 <span className="font-mono text-stone-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Google Docs Embedded Viewer</span>
+                  <span>Compatibility View</span>
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleOpenNativeViewer}
                     className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
-                    Native Browser Viewer
+                    Simple View
                   </button>
                   <button
                     onClick={handleOpenCanvasViewer}
                     className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
-                    Canvas Reader
+                    Rich View
                   </button>
                   <a
                     href={initialRawUrl}
@@ -938,13 +1017,13 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
             />
           ) : (
             <Document
-              file={activeUrl}
+              file={offlineObjectUrl || activeUrl}
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={onDocumentLoadError}
               loading={
                 <div className="flex flex-col items-center justify-center space-y-3 text-stone-400 py-28 my-auto">
                   <Loader2 className="w-8 h-8 animate-spin text-[#BE94F5]" />
-                  <p className="text-sm font-medium font-mono">Loading document in Canvas Reader...</p>
+                  <p className="text-sm font-medium font-mono">Loading document…</p>
                   <p className="text-xs text-stone-500 font-sans">{document.title}</p>
                 </div>
               }

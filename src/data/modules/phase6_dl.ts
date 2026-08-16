@@ -37,11 +37,13 @@ export const phase6DLModules: CurriculumModule[] = [
           learningObjective: 'Derive backpropagation gradients for multi-layer perceptrons and compute Query-Key-Value scaled dot-product attention matrices.',
           prerequisites: ['Multivariable Calculus partial derivatives', 'Matrix multiplication', 'Machine Learning foundations'],
           coreConcepts: [
-            'Multi-Layer Perceptrons (MLP) and Non-Linear Activation Functions (ReLU, GELU, Sigmoid)',
-            'The Backpropagation Algorithm: Multivariate Chain Rule on Computational Graphs',
-            'Cross-Entropy Loss Gradient with Softmax Output Layers',
-            'Vanishing and Exploding Gradient Problem & Layer Normalization',
-            'Scaled Dot-Product Self-Attention: Attention(Q, K, V) = softmax((Q K^T) / sqrt(d_k)) V'
+            'Multi-Layer Perceptrons (MLP) and Non-Linear Activation Functions (ReLU, GELU, Sigmoid): An MLP stacks alternating linear (weight matrix + bias) layers with non-linear activation functions to approximate arbitrarily complex functions — without the non-linearity, stacking linear layers would collapse into a single linear transform, so these activations are what give deep networks their expressive power to separate non-linearly-separable data.',
+            'The Backpropagation Algorithm: Multivariate Chain Rule on Computational Graphs: Backpropagation turns a forward pass through a network into a reusable graph of local derivatives, then walks that graph backward applying the multivariate chain rule to compute the gradient of the loss with respect to every weight in a single, efficient pass — it is the computational engine that makes training networks with millions of parameters practically feasible.',
+            'Cross-Entropy Loss Gradient with Softmax Output Layers: Pairing softmax activation with cross-entropy loss is the standard choice for classification because their combined gradient collapses to the elegant expression (predicted_probabilities - true_labels), avoiding numerically unstable derivative chains and giving a gradient signal that scales naturally with how wrong a prediction is.',
+            'Vanishing and Exploding Gradient Problem & Layer Normalization: As gradients are multiplied backward through many layers via the chain rule, repeated multiplication by small or large values can shrink them toward zero or blow them up toward infinity, stalling or destabilizing training — careful weight initialization, residual connections, and layer normalization rescale activations at each layer to keep gradients well-behaved through very deep or very long networks.',
+            'Scaled Dot-Product Self-Attention: Attention(Q, K, V) = softmax((Q K^T) / sqrt(d_k)) V: Self-attention lets every position in a sequence compute a weighted combination of every other position\'s value vector, where the weights come from how well each position\'s query matches every other position\'s key — the 1/sqrt(d_k) scaling keeps the dot products (and the softmax gradient) from saturating as key dimension grows, which is what makes Transformers trainable at scale while replacing sequential recurrence with parallel computation.',
+            'Multi-Head Attention and Positional Encoding: Multi-head attention runs several scaled dot-product attention operations in parallel with different learned projections, letting the model attend to different types of relationships (e.g., syntactic vs. semantic) simultaneously; because attention itself has no notion of order, positional encodings are added to input embeddings so the model can still distinguish the first token from the last.',
+            'Residual (Skip) Connections and Layer Normalization in Transformer Blocks: Each Transformer sub-layer wraps its output in a residual connection (output = x + Sublayer(x)) followed by layer normalization, giving gradients an unimpeded path directly back to earlier layers and stabilizing the distribution of activations — together these are what make it possible to stack dozens of Transformer blocks without the network becoming untrainable.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p6-m17-t1'] as any,
           primaryText: {
@@ -88,6 +90,44 @@ export const phase6DLModules: CurriculumModule[] = [
               ],
               correctAnswer: 0,
               explanation: 'Q = X W_q, K = X W_k, V = X W_v where X is the sequence embedding matrix.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p6-2',
+              question: 'Given softmax output p = softmax(z) and one-hot true label vector y, derive the gradient of the cross-entropy loss L = -Σ y_i log(p_i) with respect to the pre-softmax logits z. Show your steps.',
+              explanation: 'dL/dz_i = p_i - y_i. Derivation: L = -Σ_j y_j log(p_j), and the softmax Jacobian gives dp_j/dz_i = p_j(δ_ij - p_i). Applying the chain rule, dL/dz_i = -Σ_j y_j(δ_ij - p_i) = -y_i + p_i Σ_j y_j = p_i - y_i, using Σ_j y_j = 1 since y is one-hot. This is why softmax + cross-entropy gradients reduce to the simple form "predicted minus actual."',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p6-3',
+              question: 'Which of the following is the primary mathematical reason deep sigmoid networks suffer from vanishing gradients?',
+              options: [
+                'Sigmoid derivatives are bounded by 0.25, so multiplying many such derivatives together during backpropagation shrinks the gradient toward zero exponentially with depth',
+                'Sigmoid functions are not differentiable',
+                'The chain rule does not apply to sigmoid activations',
+                'Cross-entropy loss cannot be combined with sigmoid activations'
+              ],
+              correctAnswer: 0,
+              explanation: 'The sigmoid derivative σ\'(x) = σ(x)(1-σ(x)) has a maximum value of 0.25 at x=0. Backpropagation multiplies these derivatives layer by layer via the chain rule, so through L layers the gradient can shrink by a factor as small as 0.25^L, vanishing rapidly as depth increases. This motivated ReLU-family activations and normalization/residual techniques.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p6-4',
+              question: 'You are processing a sequence of length N=10,000 tokens with standard scaled dot-product self-attention. How does the compute and memory cost of the attention matrix scale as N grows, and what design implication does this have for long-document Transformers?',
+              explanation: 'Computing Q K^T produces an N x N score matrix, so both compute and memory scale as O(N^2 * d_k). At N=10,000 this quadratic term dominates the cost, which is why long-context Transformer variants use techniques like sparse attention, sliding-window attention, or linear-attention approximations to avoid the full N^2 blowup in compute and memory.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p6-5',
+              question: 'Why do Transformers use multiple attention heads instead of a single attention operation with a larger d_k?',
+              options: [
+                'Each head learns its own Q/K/V projections, allowing the model to attend to different types of relationships (e.g., syntax vs. long-range dependency) in different representation subspaces simultaneously',
+                'Multiple heads are required because a single head cannot compute a softmax',
+                'Multiple heads reduce the total number of parameters compared to one large head',
+                'Multiple heads eliminate the need for positional encoding'
+              ],
+              correctAnswer: 0,
+              explanation: 'Multi-head attention projects Q, K, V into several lower-dimensional subspaces in parallel, letting each head specialize in different relational patterns; the outputs are concatenated and linearly projected back. This generally improves representational power versus a single attention operation of the same total dimensionality.',
               type: 'multiple-choice'
             }
           ],
@@ -144,7 +184,11 @@ print("Output Context Vector:", [round(c, 2) for c in context])
           },
           readingQuestions: [
             'Why does multi-head attention allow the network to attend to information from different representation subspaces simultaneously?',
-            'What is the computational complexity of self-attention with respect to sequence length N?'
+            'What is the computational complexity of self-attention with respect to sequence length N?',
+            'How does the chain rule let backpropagation compute gradients for a network with millions of parameters in roughly the same time as a single forward pass?',
+            'Why does combining softmax activation with cross-entropy loss simplify the backward pass compared to using softmax with mean-squared-error loss?',
+            'What role do residual connections play in allowing Transformers to be stacked to dozens of layers without vanishing gradients?',
+            'How would you empirically verify that an implemented backpropagation gradient is correct using numerical (finite-difference) gradient checking?'
           ],
           masteryChecklist: [
             'Derive backpropagation gradients for a 2-layer neural network with ReLU activations.',
@@ -155,11 +199,23 @@ print("Output Context Vector:", [round(c, 2) for c in context])
           estimatedStudyMinutes: 240,
           difficulty: 'advanced',
           glossary: [
-            { term: 'Backpropagation', definition: 'The efficient algorithm for calculating gradients of a scalar loss function with respect to all neural network weights using the chain rule.' },
-            { term: 'Self-Attention', definition: 'An attention mechanism relating different positions of a single sequence to compute a representation of the sequence.' }
+            { term: 'Backpropagation', definition: 'The efficient algorithm for calculating gradients of a scalar loss function with respect to all neural network weights by propagating error signals backward through the computational graph using the chain rule.' },
+            { term: 'Self-Attention', definition: 'An attention mechanism that relates different positions within a single sequence to each other, producing for each position a weighted combination of all other positions\' representations.' },
+            { term: 'Chain Rule', definition: 'The calculus rule stating that the derivative of a composite function equals the product of the derivatives of its parts; it is the mathematical foundation that lets backpropagation decompose an end-to-end gradient into a product of simple, local per-layer derivatives.' },
+            { term: 'Computational Graph', definition: 'A directed acyclic graph representation of a sequence of mathematical operations, where nodes are operations or variables and edges show data dependencies; frameworks build one during the forward pass so gradients can be computed by traversing it in reverse (automatic differentiation).' },
+            { term: 'Vanishing / Exploding Gradient Problem', definition: 'The phenomenon where gradients shrink toward zero or grow toward infinity as they are backpropagated through many layers or time steps, because the chain rule multiplies many partial derivatives together; it prevents early layers of very deep or recurrent networks from learning effectively.' },
+            { term: 'Layer Normalization', definition: 'A normalization technique that rescales the activations of each individual training example across its feature dimension to have zero mean and unit variance, independent of batch size; used pervasively in Transformers to stabilize and speed up training.' },
+            { term: 'Multi-Head Attention', definition: 'An extension of self-attention that runs several attention operations ("heads") in parallel, each with its own learned Q/K/V projection matrices, so the model can jointly attend to information from different representation subspaces at different positions.' },
+            { term: 'Positional Encoding', definition: 'A fixed or learned vector added to each input embedding to inject information about a token\'s position in the sequence, compensating for the fact that self-attention itself is permutation-invariant and has no inherent sense of order.' },
+            { term: 'Residual (Skip) Connection', definition: 'A shortcut connection that adds a layer\'s input directly to its output (output = x + F(x)), giving gradients an unobstructed path back to earlier layers and mitigating vanishing gradients in very deep networks.' },
+            { term: 'Softmax Function', definition: 'A function that converts a vector of real-valued scores into a probability distribution by exponentiating each value and dividing by the sum of all exponentials, ensuring outputs are non-negative and sum to one.' }
           ],
           commonMisconceptions: [
-            'Misconception: Transformers require recurrent loops like RNNs to process text sequences. Reality: Transformers process all tokens in parallel using positional encodings.'
+            'Misconception: Transformers require recurrent loops like RNNs to process text sequences. Reality: Transformers process all tokens in parallel using self-attention plus positional encodings to represent order, which is exactly what makes them far more parallelizable and faster to train than RNNs.',
+            'Misconception: Adding more layers to a neural network always improves accuracy. Reality: Beyond a certain depth, plain networks without normalization or residual connections suffer from vanishing/exploding gradients and can degrade in both training and test accuracy; depth only helps when paired with techniques (residual connections, normalization, careful initialization) that keep gradients well-behaved.',
+            'Misconception: Backpropagation computes each weight\'s gradient independently of the others. Reality: Backpropagation reuses shared intermediate derivatives (via the chain rule) across many weights in a single backward pass — that reuse is precisely what makes it efficient (roughly linear in the number of graph edges) compared to computing each gradient from scratch with finite differences.',
+            'Misconception: Self-attention scales the same way with sequence length as recurrent processing does. Reality: Self-attention computes a full N x N score matrix, so its time and memory cost grow quadratically with sequence length N, whereas a plain RNN\'s cost grows linearly — this quadratic cost is a major reason long-context Transformers need specialized attention variants.',
+            'Misconception: The softmax and cross-entropy gradients must be derived and applied as two separate, chained steps during backpropagation. Reality: When softmax feeds directly into cross-entropy loss, the two gradients combine algebraically into the simple expression (predicted probabilities - true one-hot labels), which is both what is actually implemented in practice and numerically more stable than chaining the two derivatives separately.'
           ],
           connectionsToLaterModules: [
             'Essential for Fine-Tuning and Model Serving in MLOps Phase 7',

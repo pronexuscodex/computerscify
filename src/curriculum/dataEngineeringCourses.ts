@@ -26,6 +26,8 @@ interface DeTopicDefinition {
   glossary: Array<{ term: string; definition: string }>;
   primaryText?: BookResource;
   researchPapers?: ResearchPaper[];
+  additionalExercises: PracticeExercise[];
+  readingQuestions: string[];
 }
 
 interface DeCourseDefinition {
@@ -50,14 +52,11 @@ const makeMasteryPack = (
   prerequisites: topic.prerequisites,
   coreConcepts: topic.concepts,
   recommendedChapter: `Course unit ${topicIndex + 1}: ${topic.title}`,
-  practicalExercises: [topic.exercise],
+  practicalExercises: [topic.exercise, ...topic.additionalExercises],
   interactiveLab: topic.lab,
   primaryLecture: (VERIFIED_VIDEOS as Record<string, MasteryPack['primaryLecture']>)[topic.id],
   primaryText: topic.primaryText,
-  readingQuestions: [
-    `What evidence would demonstrate that ${topic.title.toLowerCase()} works as intended?`,
-    'Which assumptions or failure modes should be documented before deployment?',
-  ],
+  readingQuestions: topic.readingQuestions,
   masteryChecklist: topic.checklist,
   capstoneMilestone: course.project.title,
   estimatedStudyMinutes: Math.round((course.estimatedHours * 60) / course.topics.length),
@@ -160,14 +159,14 @@ const definitions: DeCourseDefinition[] = [
         objective:
           'Design a dimensional schema for an analytical workload and justify its grain, keys, and slowly-changing-dimension strategy.',
         concepts: [
-          'Star schema',
-          'Snowflake schema',
-          'Fact tables',
-          'Dimension tables',
-          'Grain',
-          'Slowly changing dimensions',
-          'Surrogate keys',
-          'Normalization vs denormalization',
+          'A star schema organizes a warehouse around a central fact table connected directly to denormalized dimension tables, trading some data redundancy for simpler, faster analytical queries.',
+          'A snowflake schema normalizes dimension tables into multiple related tables, reducing redundancy at the cost of more joins per query, which matters when a dimension is very large or shares data across many facts.',
+          'Fact tables store the measurable events or transactions of a business process (an order, a page view) along with foreign keys to the dimensions that describe the context of each event.',
+          'Dimension tables store the descriptive context for facts — who, what, where, when — and are what analysts filter, group, and slice by when building reports.',
+          'Grain is the precise definition of what a single row in a fact table represents, and getting it wrong (mixing rows at different levels of detail) silently breaks every aggregation built on top of the table.',
+          'Slowly changing dimensions (SCDs) are techniques for handling the fact that dimension attributes (like a customer\'s address) change over time, and the chosen technique determines whether historical facts still reflect the value that was true when the event happened.',
+          'Surrogate keys are warehouse-generated, meaningless identifiers (usually integers) assigned to dimension rows, used instead of natural business keys so that keys remain stable even as source-system identifiers change or get reused.',
+          'Normalization vs. denormalization is a fundamental trade-off between minimizing data redundancy (normalization, common in transactional systems) and optimizing for read performance and query simplicity (denormalization, common in analytical warehouses).',
         ],
         prerequisites: ['Relational databases', 'SQL fundamentals'],
         exercise: {
@@ -206,8 +205,10 @@ const definitions: DeCourseDefinition[] = [
           'Use surrogate keys in dimensions instead of relying solely on natural keys',
         ],
         misconceptions: [
-          'A star schema is always fully denormalized with no exceptions',
-          'Type 2 slowly changing dimensions are only needed for customer data',
+          'Misconception: A star schema is always fully denormalized with no exceptions. Reality: real-world star schemas often include a few normalized "outrigger" or snowflaked dimensions (for example, a large, slowly changing product-category hierarchy) when full denormalization would create excessive redundancy.',
+          'Misconception: Type 2 slowly changing dimensions are only needed for customer data. Reality: any dimension attribute whose historical value matters for correctly interpreting past facts — product price tier, sales territory, employee department — is a candidate for Type 2 tracking, not just customer attributes.',
+          'Misconception: Surrogate keys are just an arbitrary extra step and natural keys would work fine. Reality: natural keys from source systems can be reused, changed, or be composite and slow to join on; surrogate keys give the warehouse a stable, simple, and performant join key independent of source-system quirks.',
+          'Misconception: A fact table should store every possible measure someone might eventually want, regardless of grain. Reality: adding a measure that does not exist at the fact table\'s grain (for example, a monthly total mixed into a daily-grain table) breaks aggregation correctness — measures must be added at their table\'s stated grain or in a separate, appropriately grained table.',
         ],
         glossary: [
           {
@@ -215,6 +216,76 @@ const definitions: DeCourseDefinition[] = [
             definition:
               'The precise meaning of a single row in a fact table (for example, one row per order line item), which determines what can and cannot be correctly aggregated.',
           },
+          {
+            term: 'Fact table',
+            definition: 'A table that stores quantitative, measurable events of a business process along with foreign keys linking each row to its descriptive dimensions.',
+          },
+          {
+            term: 'Additive measure',
+            definition: 'A numeric fact (like revenue) that can be correctly summed across every dimension, including time — the simplest and most common type of measure.',
+          },
+          {
+            term: 'Semi-additive measure',
+            definition: 'A numeric fact (like an account balance) that can be summed across most dimensions but not across time, since summing balances across days produces a meaningless number; such measures are typically averaged or taken at a point in time instead.',
+          },
+          {
+            term: 'Slowly changing dimension (SCD) Type 1',
+            definition: 'An SCD technique that overwrites the old attribute value with the new one in place, losing history but keeping the dimension simple — appropriate when historical accuracy for that attribute does not matter.',
+          },
+          {
+            term: 'Slowly changing dimension (SCD) Type 2',
+            definition: 'An SCD technique that inserts a new dimension row with an effective-date range whenever an attribute changes, preserving full history so facts can be correctly joined to the attribute value that was true at the time of the event.',
+          },
+          {
+            term: 'Conformed dimension',
+            definition: 'A dimension (like Date or Customer) that is built once with a consistent structure and meaning, then shared across multiple fact tables and subject areas so reports agree with each other.',
+          },
+          {
+            term: 'Junk dimension',
+            definition: 'A dimension table that groups several small, low-cardinality flags or indicators together into a single table, avoiding the clutter of many tiny separate dimensions in the fact table.',
+          },
+        ],
+        additionalExercises: [
+          {
+            id: 'de100-t1-ex2',
+            type: 'multiple-choice',
+            question: 'A fact table has a grain of "one row per order" but a new requirement needs line-item-level discount data. What is the correct fix?',
+            options: [
+              'Add the discount as a new column averaged across all line items',
+              'Change the grain to one row per order line item, or create a separate fact table at that finer grain',
+              'Store the discount in the customer dimension instead',
+              'Ignore the requirement since the fact table already exists',
+            ],
+            correctAnswer: 'Change the grain to one row per order line item, or create a separate fact table at that finer grain',
+            explanation: 'Adding a finer-grained measure to a coarser-grained fact table breaks the one-clear-meaning-per-row rule. The grain must match the data being stored, so either the existing table is re-graded to line-item level or a new fact table is created at that grain.',
+          },
+          {
+            id: 'de100-t1-ex3',
+            type: 'free-response',
+            question: 'Explain why a normalized (3NF) schema, which works well for a transactional order-entry system, is usually a poor fit for an analytical dashboard that aggregates millions of orders.',
+            explanation: 'A normalized schema minimizes redundancy and optimizes for fast, safe single-row writes, which requires many small tables and joins to reconstruct a full record. Analytical queries instead scan and aggregate large numbers of rows, where many joins across normalized tables become slow; a denormalized star schema reduces the number of joins needed for typical analytical queries.',
+          },
+          {
+            id: 'de100-t1-ex4',
+            type: 'multiple-choice',
+            question: 'Why use a surrogate key instead of a source system\'s natural key (like a customer email address) as a dimension\'s primary key?',
+            options: [
+              'Surrogate keys are always shorter to type',
+              'Natural keys can change, be reused, or be null, while surrogate keys remain stable and are unaffected by source-system changes',
+              'Surrogate keys are required by SQL syntax',
+              'Natural keys cannot be indexed',
+            ],
+            correctAnswer: 'Natural keys can change, be reused, or be null, while surrogate keys remain stable and are unaffected by source-system changes',
+            explanation: 'Business keys can be reassigned, corrected, merged, or missing, which would break foreign-key relationships built directly on them. A warehouse-generated surrogate key provides a stable join target unaffected by upstream data quality or business-process changes.',
+          },
+        ],
+        readingQuestions: [
+          'What evidence would demonstrate that dimensional modeling and warehouse schema design works as intended?',
+          'Which assumptions or failure modes should be documented before deployment?',
+          'Why does defining the grain of a fact table before writing any DDL prevent downstream aggregation bugs?',
+          'How would you decide between a Type 1 and Type 2 slowly changing dimension for a given attribute?',
+          'What practical query-performance difference would you expect between a star schema and a snowflake schema on the same data, and why?',
+          'Why do conformed dimensions matter when an organization has multiple fact tables covering different business processes?',
         ],
         primaryText: {
           id: 'book-kimball-dimensional-modeling-techniques',
@@ -264,14 +335,14 @@ const definitions: DeCourseDefinition[] = [
         objective:
           'Design an idempotent, monitored data pipeline with explicit data-quality gates and a documented backfill strategy.',
         concepts: [
-          'ETL vs ELT',
-          'Idempotency',
-          'DAG orchestration',
-          'Schema evolution',
-          'Backfills',
-          'Data quality checks',
-          'Pipeline monitoring',
-          'Data lineage',
+          'ETL (extract, transform, load) transforms data before it reaches the warehouse, while ELT (extract, load, transform) loads raw data first and transforms it inside the warehouse using its compute power — the right choice depends on where transformation compute is cheapest and how raw data needs to be preserved.',
+          'Idempotency means re-running the same pipeline step with the same input always produces the same result, which is what makes it safe to retry a failed job without manually cleaning up partial or duplicated data first.',
+          'DAG (directed acyclic graph) orchestration models a pipeline as tasks with explicit dependencies and no cycles, letting an orchestrator like Airflow determine execution order, parallelism, and what to retry on failure.',
+          'Schema evolution is the process of handling changes to a data source\'s structure (added, removed, or renamed columns) over time without silently corrupting or losing data already flowing through the pipeline.',
+          'Backfills are the process of reprocessing historical data — after a bug fix, a schema change, or a new metric definition — so that historical output is consistent with current pipeline logic.',
+          'Data quality checks are automated, codified assertions about data (row counts, null rates, referential integrity, freshness) that catch bad data before it reaches dashboards or downstream consumers.',
+          'Pipeline monitoring tracks the operational health of a pipeline itself (run duration, failure rate, data freshness) so that failures are caught by alerts rather than discovered by a confused business stakeholder.',
+          'Data lineage traces how a given piece of data moved and transformed from its source to its final destination, which is essential for debugging, impact analysis, and compliance.',
         ],
         prerequisites: ['Dimensional modeling'],
         exercise: {
@@ -303,8 +374,10 @@ const definitions: DeCourseDefinition[] = [
           'Specify what gets alerted on and who is notified when a quality gate fails',
         ],
         misconceptions: [
-          'A pipeline that ran successfully once will always produce correct output',
-          'Schema evolution can be handled by silently dropping unrecognized columns',
+          'Misconception: A pipeline that ran successfully once will always produce correct output. Reality: upstream source changes, schema drift, and edge cases in rarely-seen data can silently break a previously working pipeline, which is why ongoing data-quality checks and monitoring are necessary, not just an initial validation.',
+          'Misconception: Schema evolution can be handled by silently dropping unrecognized columns. Reality: silently dropping columns can quietly delete data a downstream consumer depends on without anyone noticing until a report looks wrong; schema changes should be detected, logged, and explicitly handled (or the pipeline should fail loudly) rather than dropped silently.',
+          'Misconception: Idempotency just means "the pipeline does not crash on a retry." Reality: idempotency specifically means a retry produces the exact same output as a single successful run — a retry that appends duplicate rows without crashing is not idempotent, even though it "succeeded."',
+          'Misconception: ELT is simply a newer, strictly better replacement for ETL. Reality: ELT shifts transformation cost and complexity into the warehouse, which works well when the warehouse has abundant compute, but ETL can still be preferable when transformations must happen before data lands (e.g., for compliance-driven masking) or when the warehouse\'s compute is a bottleneck.',
         ],
         glossary: [
           {
@@ -312,6 +385,76 @@ const definitions: DeCourseDefinition[] = [
             definition:
               'A property where running the same pipeline step multiple times with the same input produces the same result as running it once, making retries safe.',
           },
+          {
+            term: 'DAG (directed acyclic graph)',
+            definition: 'A set of tasks connected by dependency edges with no cycles, used to represent a pipeline\'s execution order so an orchestrator knows what can run in parallel and what must wait.',
+          },
+          {
+            term: 'Backfill',
+            definition: 'The controlled reprocessing of historical data through updated pipeline logic, so that past output matches what the current logic would have produced.',
+          },
+          {
+            term: 'Upsert / MERGE',
+            definition: 'A database operation that inserts a row if it does not exist or updates it if it does, based on a key — a common technique for making a load step idempotent.',
+          },
+          {
+            term: 'Data freshness',
+            definition: 'A measure of how up to date a dataset is relative to its source, typically tracked as the time elapsed since the most recent successful load.',
+          },
+          {
+            term: 'Referential integrity check',
+            definition: 'A data-quality check confirming that foreign-key-like references in a dataset (e.g., every order\'s customer_id) actually correspond to an existing record in the referenced table.',
+          },
+          {
+            term: 'Dead-letter queue',
+            definition: 'A holding location for records that fail processing or validation, so they can be inspected and reprocessed later instead of silently being dropped or crashing the whole pipeline.',
+          },
+          {
+            term: 'Data lineage graph',
+            definition: 'A visual or structured representation of how data flows and transforms from source tables through intermediate steps to final outputs, used for debugging and impact analysis.',
+          },
+        ],
+        additionalExercises: [
+          {
+            id: 'de100-t2-ex2',
+            type: 'multiple-choice',
+            question: 'Which load pattern makes a daily pipeline step idempotent?',
+            options: [
+              'Always run INSERT INTO fact_orders SELECT ... FROM staging',
+              'DELETE FROM fact_orders WHERE load_date = :date, then INSERT the day\'s data (or use MERGE/UPSERT on the natural key)',
+              'Append new rows without checking whether the date has already been loaded',
+              'Truncate the entire fact table before every run, regardless of date',
+            ],
+            correctAnswer: 'DELETE FROM fact_orders WHERE load_date = :date, then INSERT the day\'s data (or use MERGE/UPSERT on the natural key)',
+            explanation: 'Deleting the specific partition before inserting (or using an upsert keyed on the natural/business key) means re-running the same day\'s load produces the same final state every time, rather than duplicating rows on retry.',
+          },
+          {
+            id: 'de100-t2-ex3',
+            type: 'free-response',
+            question: 'A source system silently renames a column from "cust_id" to "customer_id". Describe what should happen in a well-designed pipeline when this occurs, versus what happens in a fragile one.',
+            explanation: 'A well-designed pipeline detects the schema change (via a schema-validation step) and either fails loudly with a clear error, routes the affected batch to a dead-letter queue for review, or has an explicit, tested mapping step to handle the rename. A fragile pipeline either silently drops the now-unrecognized old column\'s data or crashes with an unhelpful error deep in downstream transformation logic, making the root cause hard to diagnose.',
+          },
+          {
+            id: 'de100-t2-ex4',
+            type: 'multiple-choice',
+            question: 'Why is a backfill considered risky if the pipeline\'s load steps are not idempotent?',
+            options: [
+              'Backfills are never risky regardless of idempotency',
+              'A non-idempotent backfill re-run can duplicate or corrupt data that was already correctly loaded, rather than cleanly replacing it',
+              'Backfills only affect future data, not historical data',
+              'Idempotency has no relationship to backfills',
+            ],
+            correctAnswer: 'A non-idempotent backfill re-run can duplicate or corrupt data that was already correctly loaded, rather than cleanly replacing it',
+            explanation: 'A backfill is fundamentally a controlled re-run of historical processing; if the underlying load step is not idempotent, re-running it over already-loaded historical partitions will duplicate or otherwise corrupt data instead of safely producing the corrected result.',
+          },
+        ],
+        readingQuestions: [
+          'What evidence would demonstrate that pipeline orchestration, data quality, and reliability engineering works as intended?',
+          'Which assumptions or failure modes should be documented before deployment?',
+          'Why does idempotency matter specifically for retry behavior, and what could go wrong in a pipeline that lacks it?',
+          'How would a DAG-based orchestrator decide which tasks can run in parallel versus which must wait for a dependency?',
+          'What is the difference between a pipeline failing loudly on a schema change versus silently adapting to it, and which is usually safer?',
+          'Why is data lineage useful even when a pipeline is running successfully, not just when something breaks?',
         ],
         primaryText: {
           id: 'book-cloudera-orchestrate-workflows-airflow',

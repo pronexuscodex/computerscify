@@ -26,10 +26,25 @@ interface ComputerfyDB extends DBSchema {
       savedAt: string;
     };
   };
+  offlineFiles: {
+    key: string;
+    value: OfflineFileRecord;
+  };
+}
+
+export interface OfflineFileRecord {
+  /** The resource's raw (pre-CORS-proxy) URL — the stable dedupe key used across the app. */
+  url: string;
+  title: string;
+  kind: 'book' | 'paper';
+  mimeType: string;
+  sizeBytes: number;
+  blob: Blob;
+  cachedAt: string;
 }
 
 const DB_NAME = 'computerfy_db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let dbPromise: Promise<IDBPDatabase<ComputerfyDB>> | null = null;
 
@@ -45,6 +60,9 @@ function getDB() {
         }
         if (!db.objectStoreNames.contains('labDrafts')) {
           db.createObjectStore('labDrafts', { keyPath: 'labId' });
+        }
+        if (!db.objectStoreNames.contains('offlineFiles')) {
+          db.createObjectStore('offlineFiles', { keyPath: 'url' });
         }
       },
     });
@@ -180,6 +198,53 @@ export async function getLabDraft(labId: string): Promise<string | null> {
   } catch (err) {
     console.error('Failed to get lab draft:', err);
     return null;
+  }
+}
+
+export async function putOfflineFile(record: OfflineFileRecord): Promise<void> {
+  try {
+    const db = await getDB();
+    await db.put('offlineFiles', record);
+  } catch (err) {
+    console.error('Failed to save offline file:', err);
+  }
+}
+
+export async function getOfflineFile(url: string): Promise<OfflineFileRecord | undefined> {
+  try {
+    const db = await getDB();
+    return await db.get('offlineFiles', url);
+  } catch (err) {
+    console.error('Failed to read offline file:', err);
+    return undefined;
+  }
+}
+
+export async function deleteOfflineFile(url: string): Promise<void> {
+  try {
+    const db = await getDB();
+    await db.delete('offlineFiles', url);
+  } catch (err) {
+    console.error('Failed to delete offline file:', err);
+  }
+}
+
+export async function listOfflineFiles(): Promise<OfflineFileRecord[]> {
+  try {
+    const db = await getDB();
+    return await db.getAll('offlineFiles');
+  } catch (err) {
+    console.error('Failed to list offline files:', err);
+    return [];
+  }
+}
+
+export async function clearAllOfflineFiles(): Promise<void> {
+  try {
+    const db = await getDB();
+    await db.clear('offlineFiles');
+  } catch (err) {
+    console.error('Failed to clear offline files:', err);
   }
 }
 

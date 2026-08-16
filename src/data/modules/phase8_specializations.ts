@@ -37,11 +37,13 @@ export const phase8SpecializationModules: CurriculumModule[] = [
           learningObjective: 'Analyze trade-offs in distributed systems, prove safety under network partitions, and trace Raft leader election state machines.',
           prerequisites: ['Networking fundamentals', 'Operating Systems and Data Structures'],
           coreConcepts: [
-            'Distributed Systems Challenges: Asynchronous Networks, Clock Skew, Partial Failures',
-            'CAP Theorem: Consistency, Availability, Partition Tolerance',
-            'Logical Clocks & Vector Clocks for Causal Ordering',
-            'Consensus Problem and Raft Protocol State Machine (Follower, Candidate, Leader)',
-            'Log Replication, Heartbeats, and Quorum Voting'
+            'Distributed Systems Challenges: Asynchronous Networks, Clock Skew, Partial Failures: Unlike a single machine, a distributed system must tolerate messages arriving out of order or not at all, clocks on different nodes drifting apart, and individual nodes crashing while others keep running — designing correct algorithms under these conditions, rather than assuming a synchronous, reliable network, is the central challenge of distributed systems and directly underlies how large-scale ML training and serving clusters stay correct and available.',
+            'CAP Theorem: Consistency, Availability, Partition Tolerance: The CAP theorem proves that when a network partition occurs (unavoidable at scale), a distributed data store must choose between returning the most recent write (Consistency) or always responding to requests even with possibly stale data (Availability) — it cannot guarantee both simultaneously, so understanding this trade-off is essential for choosing the right database or coordination service for a given system\'s requirements.',
+            'Logical Clocks & Vector Clocks for Causal Ordering: Because physical clocks on different machines cannot be perfectly synchronized, distributed systems use logical clocks (like Lamport timestamps) or vector clocks to establish a causally-correct ordering of events across nodes without relying on wall-clock time, which is what lets systems detect whether one event happened-before another or whether they were truly concurrent.',
+            'Consensus Problem and Raft Protocol State Machine (Follower, Candidate, Leader): The consensus problem asks how a cluster of nodes, some of which may fail, can agree on a single value or sequence of operations; Raft solves this by having nodes cycle through Follower, Candidate, and Leader states with randomized election timers, decomposing consensus into understandable sub-problems (leader election, log replication, safety) that were historically much harder to reason about in the equivalent Paxos protocol.',
+            'Log Replication, Heartbeats, and Quorum Voting: Once a leader is elected, it replicates every state-changing operation as an entry in an append-only log to a majority (quorum) of followers before considering it committed, while periodic heartbeat messages both keep followers from starting new elections and let the leader detect follower failures — this majority-quorum requirement is what guarantees the cluster stays consistent even if a minority of nodes are down or partitioned.',
+            'Split-Brain and Network Partitions: A network partition can split a cluster into two or more groups of nodes that can each communicate internally but not with each other, risking a "split-brain" scenario where more than one group believes it is authoritative; Raft\'s majority-quorum requirement prevents this by guaranteeing at most one partition can contain a majority of nodes at any given term.',
+            'Trade-offs Between Consensus Protocols (Raft vs. Paxos vs. PBFT): Raft and Paxos both assume nodes may crash but not act maliciously (the "crash-fault-tolerant" model) and both require a simple majority quorum, while Byzantine Fault Tolerant protocols like PBFT tolerate nodes that actively lie or behave arbitrarily at the cost of needing a larger supermajority and significantly higher message complexity — the right choice depends on the trust model of the deployment environment.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p8-m19-t1'] as any,
           primaryText: {
@@ -82,6 +84,44 @@ export const phase8SpecializationModules: CurriculumModule[] = [
               options: ['3 nodes', '5 nodes', '2 nodes', '4 nodes'],
               correctAnswer: 0,
               explanation: 'Quorum size is floor(N/2) + 1. For N = 5, floor(5/2) + 1 = 2 + 1 = 3 nodes.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p8-2',
+              question: 'During a network partition, a distributed database configured for strong consistency refuses to serve read requests on the minority side of the partition until connectivity is restored. Which CAP theorem trade-off does this represent?',
+              options: [
+                'Choosing Consistency over Availability (CP)',
+                'Choosing Availability over Consistency (AP)',
+                'Achieving both Consistency and Availability simultaneously',
+                'Opting out of Partition Tolerance'
+              ],
+              correctAnswer: 0,
+              explanation: 'By refusing to serve potentially stale reads during the partition, the system prioritizes Consistency (CP) at the cost of Availability on the minority side. An AP system would instead keep serving reads/writes on both sides, risking stale or conflicting data.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p8-3',
+              question: 'Derive the general formula for the minimum quorum size in an N-node Raft cluster, and explain why a quorum-based approach guarantees that two independently elected leaders can never both believe they hold a majority in the same term.',
+              explanation: 'Minimum quorum size is floor(N/2) + 1. Proof sketch: any two subsets of nodes each of size at least floor(N/2)+1 must overlap by at least one node, since 2*(floor(N/2)+1) > N for any N. Because Raft requires a candidate to receive votes from a quorum before becoming leader, and each node votes for at most one candidate per term, any two quorums formed in the same term must share at least one common voter — that shared voter cannot have voted for two different candidates in the same term, so at most one candidate can win a majority per term, preventing two simultaneous leaders.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p8-4',
+              question: 'In a 5-node Raft cluster, an engineer observes that leader elections repeatedly fail with vote splits (no candidate reaches quorum) whenever the current leader crashes. What mechanism does Raft use to reduce the likelihood of repeated split votes, and how does it work?',
+              explanation: 'Raft uses randomized election timeouts: each follower waits a randomly chosen duration (drawn from a fixed range, e.g., 150-300ms) before becoming a candidate and starting a new election. Randomization makes it statistically unlikely that multiple followers time out and become candidates simultaneously in the same term, so usually only one candidate requests votes first and wins a majority before others time out, resolving elections quickly. If a split vote does happen, each affected candidate simply waits out another randomized timeout and retries in a new term.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p8-5',
+              question: 'Node A has vector clock [2,1,0] and Node B has vector clock [1,2,0] (for nodes A, B, C respectively). What can you conclude about the relationship between the events these vector clocks represent?',
+              options: [
+                'The events are concurrent (neither happened-before the other), since neither vector clock is element-wise greater than or equal to the other',
+                'Event A definitely happened before Event B',
+                'Event B definitely happened before Event A',
+                'The vector clocks indicate a network partition occurred'
+              ],
+              correctAnswer: 0,
+              explanation: 'One vector clock happened-before another only if it is less than or equal to the other in every component and strictly less in at least one. Here [2,1,0] vs [1,2,0]: A\'s clock has a larger first component but a smaller second component than B\'s, so neither dominates the other — the events are concurrent, meaning neither is causally derived from the other.',
               type: 'multiple-choice'
             }
           ],
@@ -136,7 +176,11 @@ print(f"Term {node_0.current_term} Election Result: Votes = {votes}/{cluster_siz
           },
           readingQuestions: [
             'Why cannot a distributed database guarantee both Strict Consistency and High Availability during a network partition (CAP Theorem)?',
-            'How does the Raft election timer prevent split-vote deadlocks during leader elections?'
+            'How does the Raft election timer prevent split-vote deadlocks during leader elections?',
+            'Why is a strict majority (rather than any fixed number) required for a Raft quorum, and how does that guarantee prevent two leaders from being elected in the same term?',
+            'How do vector clocks let a distributed system distinguish concurrent events from causally ordered events without synchronized physical clocks?',
+            'What is the practical difference between a crash-fault-tolerant protocol like Raft and a Byzantine-fault-tolerant protocol like PBFT, and when would you need the latter?',
+            'Why does Raft guarantee safety (no two conflicting committed entries) even though it may temporarily sacrifice liveness (progress) during a network partition?'
           ],
           masteryChecklist: [
             'Explain the trade-offs defined by the CAP Theorem.',
@@ -147,11 +191,23 @@ print(f"Term {node_0.current_term} Election Result: Votes = {votes}/{cluster_siz
           estimatedStudyMinutes: 240,
           difficulty: 'advanced',
           glossary: [
-            { term: 'Raft Consensus', definition: 'A consensus algorithm designed for manageability and fault-tolerance in replicated state machines.' },
-            { term: 'CAP Theorem', definition: 'States that any distributed data store can simultaneously provide at most two of three guarantees: Consistency, Availability, and Partition Tolerance.' }
+            { term: 'Raft Consensus', definition: 'A consensus algorithm designed for understandability and fault tolerance in replicated state machines, decomposing consensus into leader election, log replication, and safety.' },
+            { term: 'CAP Theorem', definition: 'States that any distributed data store experiencing a network partition can provide at most two of three guarantees simultaneously: Consistency, Availability, and Partition Tolerance; since partitions are unavoidable at scale, this is effectively a choice between Consistency and Availability during a partition.' },
+            { term: 'Quorum', definition: 'The minimum number of nodes (typically a strict majority, floor(N/2)+1) that must agree before an operation such as a leader election or log commit is considered valid, guaranteeing that any two quorums in a cluster must overlap by at least one node.' },
+            { term: 'Leader Election', definition: 'The process by which nodes in a distributed cluster agree on a single coordinating node (the leader) responsible for handling client requests and replicating the log, typically triggered when followers stop receiving heartbeats from the current leader within a randomized election timeout.' },
+            { term: 'Log Replication', definition: 'The process of a consensus leader appending each state-changing operation to its local log and then propagating that entry to follower nodes, considering the entry committed only once a quorum of nodes has stored it durably.' },
+            { term: 'Vector Clock', definition: 'A data structure consisting of one counter per node that is incremented on local events and merged on message receipt, used to determine the partial causal ordering of events across a distributed system without relying on synchronized physical clocks.' },
+            { term: 'Network Partition', definition: 'A failure scenario in which a network fault splits a cluster into subgroups of nodes that can communicate within their own subgroup but not across subgroups, which is the exact condition the CAP theorem\'s "Partition Tolerance" guarantee addresses.' },
+            { term: 'Byzantine Fault Tolerance (BFT)', definition: 'The property of a distributed system that continues to function correctly even when some nodes fail arbitrarily or maliciously (e.g., sending conflicting information to different peers), as opposed to the weaker crash-fault-tolerance model assumed by protocols like Raft and Paxos.' },
+            { term: 'Idempotency', definition: 'A property where applying the same operation multiple times produces the same result as applying it once; distributed systems rely on idempotent operations to safely retry requests after timeouts or failures without corrupting state.' },
+            { term: 'Eventual Consistency', definition: 'A consistency model in which, if no new updates are made to a given data item, all replicas will eventually converge to the same value, trading immediate consistency for higher availability and lower latency — the opposite end of the spectrum from the strong consistency Raft provides.' }
           ],
           commonMisconceptions: [
-            'Misconception: A system can "choose" Partition Tolerance off in a distributed network. Reality: Network partitions are physical realities; systems must choose between Consistency or Availability during partitions.'
+            'Misconception: A system can "choose" Partition Tolerance off in a distributed network. Reality: Network partitions are physical realities that any system spanning multiple nodes or data centers must eventually face, so real design decisions are about choosing Consistency or Availability during a partition, not whether to tolerate partitions at all.',
+            'Misconception: Raft and Paxos guarantee the system will always make progress. Reality: Consensus protocols guarantee safety (nodes never disagree on committed values) but can pause making progress (liveness) during extended network partitions or repeated split votes, by design — sacrificing availability to preserve correctness.',
+            'Misconception: A larger cluster is always more fault-tolerant. Reality: Fault tolerance depends on quorum size relative to cluster size (a cluster tolerates floor((N-1)/2) failures), and larger clusters also increase the number of nodes that must participate in every quorum vote, which can increase latency and the chance of a majority partition failing — cluster size must be balanced against these costs, not simply maximized.',
+            'Misconception: Vector clocks and physical timestamps solve the same problem. Reality: Physical clocks measure wall-clock time and are subject to drift and skew across machines, while vector clocks capture causal (happened-before) relationships between events regardless of clock synchronization — two events can have vector clocks that are incomparable (concurrent) even if their physical timestamps differ.',
+            'Misconception: Once a Raft leader is elected, it can immediately consider any log entry it appends as committed. Reality: A log entry is only committed once it has been replicated to and acknowledged by a majority (quorum) of nodes in the cluster; an entry that exists only on the leader can still be lost if the leader crashes before replicating it.'
           ],
           connectionsToLaterModules: [
             'Capstone synthesis connecting Computer Science, Systems, and Scalable MLOps.'

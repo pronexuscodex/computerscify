@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Settings, Save, Trash2, Download, Shield, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Settings, Save, Trash2, Download, Shield, CheckCircle2, CloudDownload, FileText } from 'lucide-react';
 import { LearnerProgress } from '../../types/curriculum';
 import { clearAllLocalData } from '../../services/storage';
+import { clearAllOfflineResources, formatBytes, getOfflineStorageStats } from '../../services/offlineResourceCache';
 import { ThemeSwitcher } from '../ui/ThemeSwitcher';
 import { Dialog } from '../common';
 
@@ -20,6 +21,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [reducedMotion, setReducedMotion] = useState(progress.reducedMotion);
   const [isSaved, setIsSaved] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [showClearOfflineConfirm, setShowClearOfflineConfirm] = useState(false);
+  const [offlineStats, setOfflineStats] = useState<{ count: number; totalBytes: number }>({ count: 0, totalBytes: 0 });
+
+  useEffect(() => {
+    getOfflineStorageStats().then(setOfflineStats);
+  }, []);
 
   const handleSave = () => {
     const updated: LearnerProgress = {
@@ -46,6 +53,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const handleClearData = async () => {
     await clearAllLocalData();
     window.location.reload();
+  };
+
+  const handleClearOfflineFiles = async () => {
+    await clearAllOfflineResources();
+    setOfflineStats({ count: 0, totalBytes: 0 });
+    setShowClearOfflineConfirm(false);
   };
 
   return (
@@ -139,6 +152,34 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
       </div>
 
+      {/* Offline Content Section */}
+      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-6 space-y-4">
+        <h2 className="font-display font-black text-lg uppercase flex items-center gap-2 text-[#000000] dark:text-[#F6EFEF]">
+          <CloudDownload className="w-5 h-5 text-[#000000] dark:text-[#F2C94C]" /> Offline Content
+        </h2>
+        <p className="text-xs text-[#000000]/80 dark:text-[#F6EFEF]/80 font-bold leading-relaxed">
+          Books and research papers you save for offline reading are stored as files in your browser's IndexedDB, the
+          same local-first storage used for your progress. Use the "Save Offline" button on any reading, or
+          "Save Readings Offline" on a module page, to download it.
+        </p>
+        <div className="flex flex-wrap items-center gap-3 pt-2">
+          <span className="px-3 py-2 rounded bg-[#DFD9D8] dark:bg-stone-800 text-[#000000] dark:text-[#F6EFEF] text-xs font-black border-2 border-[#000000] flex items-center gap-1.5">
+            <FileText className="w-3.5 h-3.5" /> {offlineStats.count} file{offlineStats.count === 1 ? '' : 's'} saved
+          </span>
+          <span className="px-3 py-2 rounded bg-[#DFD9D8] dark:bg-stone-800 text-[#000000] dark:text-[#F6EFEF] text-xs font-black border-2 border-[#000000]">
+            {formatBytes(offlineStats.totalBytes)} used
+          </span>
+          {offlineStats.count > 0 && (
+            <button
+              onClick={() => setShowClearOfflineConfirm(true)}
+              className="px-4 py-2.5 bg-[#FFDAD6] text-[#000000] hover:bg-red-300 border-2 border-[#000000] rounded text-xs font-black uppercase tracking-wider flex items-center gap-2 min-h-[44px]"
+            >
+              <Trash2 className="w-4 h-4" /> Clear Offline Files
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Data Backup & Clear Section */}
       <div className="bg-[#F2C94C] text-[#000000] border-4 border-[#000000] neo-shadow rounded p-6 space-y-4">
         <h2 className="font-display font-black text-lg uppercase flex items-center gap-2">
@@ -187,6 +228,34 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       >
         <p className="text-xs text-[#000000] dark:text-[#F6EFEF] leading-relaxed font-bold">
           Are you sure you want to proceed? All your offline activity, quiz results, and topic progress will be erased from local storage.
+        </p>
+      </Dialog>
+
+      {/* Clear Offline Files Confirmation Dialog */}
+      <Dialog
+        isOpen={showClearOfflineConfirm}
+        onClose={() => setShowClearOfflineConfirm(false)}
+        title="Clear All Offline Files?"
+        description="This deletes every book and research paper you've saved for offline reading. Your progress, notes, and bookmarks are not affected — you can download any of them again later."
+        footer={
+          <>
+            <button
+              onClick={() => setShowClearOfflineConfirm(false)}
+              className="px-4 py-2 bg-[#FEF8F7] text-[#000000] border-2 border-[#000000] rounded text-xs font-black uppercase"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleClearOfflineFiles}
+              className="px-4 py-2 bg-[#FFDAD6] text-[#000000] border-2 border-[#000000] rounded text-xs font-black uppercase"
+            >
+              Yes, Clear Offline Files
+            </button>
+          </>
+        }
+      >
+        <p className="text-xs text-[#000000] dark:text-[#F6EFEF] leading-relaxed font-bold">
+          {offlineStats.count} file{offlineStats.count === 1 ? '' : 's'} ({formatBytes(offlineStats.totalBytes)}) will be removed from local storage.
         </p>
       </Dialog>
     </div>

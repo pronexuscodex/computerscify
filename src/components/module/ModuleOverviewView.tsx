@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   BookOpen,
   CheckCircle2,
@@ -8,9 +8,12 @@ import {
   ArrowLeft,
   ListChecks,
   ChevronRight,
-  GraduationCap
+  GraduationCap,
+  CloudDownload,
+  Loader2,
 } from 'lucide-react';
 import { CurriculumModule, LearnerProgress } from '../../types/curriculum';
+import { downloadResourcesForOffline, getTopicBookAndPaperResources } from '../../services/offlineResourceCache';
 
 interface ModuleOverviewViewProps {
   module: CurriculumModule;
@@ -27,6 +30,29 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
 }) => {
   const completedTopics = module.topics.filter(t => progress.completedTopicIds.includes(t.id));
   const percentComplete = Math.round((completedTopics.length / module.topics.length) * 100);
+
+  const moduleResources = useMemo(
+    () => module.topics.flatMap(getTopicBookAndPaperResources),
+    [module]
+  );
+  const uniqueResourceCount = useMemo(
+    () => new Set(moduleResources.map((r) => r.url)).size,
+    [moduleResources]
+  );
+
+  const [bulkDownloadState, setBulkDownloadState] = useState<
+    { status: 'idle' } | { status: 'downloading'; completed: number; total: number } | { status: 'done'; succeeded: number; failed: number; skipped: number }
+  >({ status: 'idle' });
+
+  const handleDownloadAll = () => {
+    if (bulkDownloadState.status === 'downloading' || moduleResources.length === 0) return;
+    setBulkDownloadState({ status: 'downloading', completed: 0, total: uniqueResourceCount });
+    downloadResourcesForOffline(moduleResources, {
+      onOverallProgress: (completed, total) => setBulkDownloadState({ status: 'downloading', completed, total }),
+    }).then(({ succeeded, failed, skipped }) => {
+      setBulkDownloadState({ status: 'done', succeeded, failed, skipped });
+    });
+  };
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 animate-fade-in w-full min-w-0 overflow-x-hidden text-[#1D1B1B] dark:text-[#F6EFEF]">
@@ -71,13 +97,41 @@ export const ModuleOverviewView: React.FC<ModuleOverviewViewProps> = ({
             </span>
           </div>
 
-          <button
-            onClick={() => onSelectTopic(module.topics[0].id)}
-            className="px-6 py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] neo-btn flex items-center justify-center gap-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            {percentComplete > 0 ? 'Resume Module' : 'Start Module'}
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            {moduleResources.length > 0 && (
+              <button
+                onClick={handleDownloadAll}
+                disabled={bulkDownloadState.status === 'downloading'}
+                title="Download every book and research paper in this module so you can read them offline"
+                className="px-4 py-2.5 bg-[#FFFFFF] dark:bg-[#2B2929] hover:bg-[#F2C94C]/20 text-[#000000] dark:text-[#F6EFEF] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] flex items-center justify-center gap-2 disabled:opacity-70"
+              >
+                {bulkDownloadState.status === 'downloading' ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Downloading {bulkDownloadState.completed}/{bulkDownloadState.total}
+                  </>
+                ) : bulkDownloadState.status === 'done' ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4" />
+                    {bulkDownloadState.succeeded + bulkDownloadState.skipped}/{uniqueResourceCount} Saved Offline
+                  </>
+                ) : (
+                  <>
+                    <CloudDownload className="w-4 h-4" />
+                    Save {uniqueResourceCount} Reading{uniqueResourceCount === 1 ? '' : 's'} Offline
+                  </>
+                )}
+              </button>
+            )}
+
+            <button
+              onClick={() => onSelectTopic(module.topics[0].id)}
+              className="px-6 py-2.5 bg-[#F2C94C] hover:bg-[#ffe08b] text-[#000000] font-black text-xs uppercase tracking-wider rounded border-2 border-[#000000] neo-btn flex items-center justify-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-current" />
+              {percentComplete > 0 ? 'Resume Module' : 'Start Module'}
+            </button>
+          </div>
         </div>
       </div>
 

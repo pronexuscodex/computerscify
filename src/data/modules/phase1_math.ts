@@ -37,11 +37,12 @@ export const phase1MathModules: CurriculumModule[] = [
           learningObjective: 'Analyze mathematical functions, manipulate logarithms, and quantify growth rates for algorithmic efficiency.',
           prerequisites: ['Arithmetic fluency'],
           coreConcepts: [
-            'Formal Definition of Function: Domain, Codomain, Range, Injective, Surjective, Bijective',
-            'Exponents and Logarithmic Identities (Base-2, Base-e, Base-10)',
-            'Inverse Functions and Logarithmic Compression',
-            'Polynomials, Rational Functions, and Asymptotes',
-            'Comparing Growth Rates: O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n)'
+            'Formal Definition of Function: Domain, Codomain, Range, Injective, Surjective, Bijective: a function is a precise rule pairing every input in a domain to exactly one output, and the injective/surjective/bijective classification tells you whether that rule can be reliably reversed — a property that matters directly for whether operations like decompression or decryption are even possible.',
+            'Exponents and Logarithmic Identities (Base-2, Base-e, Base-10): exponentiation models repeated multiplication and describes phenomena that grow proportionally to their current size (like compound interest or viral spread), while logarithms are its exact inverse, letting you solve for "how many times" growth must repeat to reach a target — a calculation that appears constantly in algorithm analysis and information theory.',
+            'Inverse Functions and Logarithmic Compression: an inverse function undoes exactly what the original function did, and because logarithms are the inverse of exponentiation, they compress enormous ranges of numbers (like population counts or probabilities) into small, manageable scales, which is why log scales appear throughout science and engineering.',
+            'Polynomials, Rational Functions, and Asymptotes: polynomials are sums of terms built from a variable raised to whole-number powers, and understanding their end behavior and asymptotes (values a function approaches but never reaches) is essential for predicting how a function behaves at extreme input values, including how an algorithm’s runtime behaves as input size grows without bound.',
+            'Comparing Growth Rates: O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n): this hierarchy ranks how quickly different families of functions grow as their input n increases, and it is the mathematical backbone of Big-O notation, which is how computer scientists formally compare the scalability of different algorithms.',
+            'Function Composition: combining two functions so that the output of one becomes the input of the next, a building block for describing complex transformations and for understanding how layered systems like neural networks or multi-stage algorithms are analyzed piece by piece.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p1-m2-t1'] as any,
           primaryText: {
@@ -84,6 +85,33 @@ export const phase1MathModules: CurriculumModule[] = [
               correctAnswer: 0,
               explanation: 'log_2(32) = 5, log_2(8) = 3, log_2(4) = 2. So 5 + 3 - 2 = 6. Alternatively using log properties: log_2((32 * 8) / 4) = log_2(64) = 6.',
               type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p1-2',
+              question: 'Which of the following functions f: R -> R is bijective (both injective and surjective)?',
+              options: [
+                'f(x) = x^3',
+                'f(x) = x^2',
+                'f(x) = |x|',
+                'f(x) = sin(x)'
+              ],
+              correctAnswer: 0,
+              explanation: 'f(x) = x^3 is strictly increasing across all real numbers, so it never repeats an output value (injective), and its range covers all real numbers since cube roots of any real number exist (surjective). f(x) = x^2 and f(x) = |x| both fail injectivity (e.g., f(2) = f(-2)), and f(x) = sin(x) fails both injectivity and surjectivity over all reals since it repeats values periodically and its range is limited to [-1, 1].',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p1-5',
+              question: 'An algorithm’s running time is described as O(n log n). Explain in your own words what this means and why it is considered much more scalable than an O(n^2) algorithm.',
+              explanation: 'O(n log n) means the algorithm’s running time grows proportionally to n multiplied by the logarithm of n, as an upper bound, ignoring constant factors. Because log n grows extremely slowly compared to n itself, n log n grows far more slowly than n^2 as n increases — for example, at n = 1,000,000, n log n is roughly 20 million operations, while n^2 is a trillion operations. This is why algorithms like merge sort (O(n log n)) vastly outperform algorithms like bubble sort (O(n^2)) on large datasets.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p1-6',
+              question: 'Solve for x: 2^x = 64.',
+              options: ['6', '5', '32', '8'],
+              correctAnswer: 0,
+              explanation: 'We need the exponent to which 2 must be raised to yield 64. Since 2^6 = 64, x = 6. Equivalently, x = log_2(64) = 6.',
+              type: 'multiple-choice'
             }
           ],
           interactiveLab: {
@@ -111,7 +139,10 @@ compute_growth_table([10, 100, 1000, 10000])
           },
           readingQuestions: [
             'Why does log2(N) grow extremely slowly even when N reaches billions?',
-            'What is the inverse function of f(x) = e^x?'
+            'What is the inverse function of f(x) = e^x?',
+            'Why must a function be bijective in order to guarantee it has a well-defined inverse?',
+            'How would you use the change-of-base formula to compute log_2(100) using only a calculator that has a base-10 log button?',
+            'Why does an O(n log n) sorting algorithm scale so much better than an O(n^2) sorting algorithm as the amount of data grows into the millions?'
           ],
           masteryChecklist: [
             'Apply logarithmic product, quotient, and power rules fluently.',
@@ -122,11 +153,22 @@ compute_growth_table([10, 100, 1000, 10000])
           estimatedStudyMinutes: 180,
           difficulty: 'beginner',
           glossary: [
-            { term: 'Logarithm', definition: 'The exponent or power to which a base must be raised to yield a given number.' },
-            { term: 'Bijective Function', definition: 'A function that is both injective (one-to-one) and surjective (onto), possessing an exact inverse function.' }
+            { term: 'Function', definition: 'A rule that assigns to every element of an input set (the domain) exactly one element of an output set (the codomain); no valid input may map to more than one output.' },
+            { term: 'Domain', definition: 'The complete set of valid input values for which a function is defined.' },
+            { term: 'Range', definition: 'The set of all actual output values a function produces; it is always a subset of (but not necessarily equal to) the codomain.' },
+            { term: 'Injective (One-to-One)', definition: 'A property of a function in which every distinct input maps to a distinct output, meaning no two different inputs ever produce the same result.' },
+            { term: 'Surjective (Onto)', definition: 'A property of a function in which every element of the codomain is hit by at least one input, meaning the range equals the entire codomain.' },
+            { term: 'Bijective Function', definition: 'A function that is both injective (one-to-one) and surjective (onto), which guarantees it has an exact, well-defined inverse function.' },
+            { term: 'Logarithm', definition: 'The exponent or power to which a fixed base must be raised to produce a given number; log_b(x) = y means b^y = x.' },
+            { term: 'Asymptote', definition: 'A line that a function’s graph approaches arbitrarily closely as the input (or output) grows without bound, but which the graph never actually touches or crosses in that limit.' },
+            { term: 'Big-O Notation', definition: 'A mathematical notation used to describe an upper bound on how an algorithm’s running time or memory usage grows as its input size n increases, ignoring constant factors and lower-order terms.' },
+            { term: 'Polynomial', definition: 'An expression built from a sum of terms, each consisting of a variable raised to a non-negative whole-number exponent multiplied by a coefficient, such as 3x^2 + 2x - 5.' }
           ],
           commonMisconceptions: [
-            'Misconception: log(a + b) = log(a) + log(b). Reality: Logarithms split products, so log(a * b) = log(a) + log(b).'
+            'Misconception: log(a + b) = log(a) + log(b). Reality: Logarithms convert products into sums, so it is log(a * b) that equals log(a) + log(b); there is no simple identity for the logarithm of a sum.',
+            'Misconception: An algorithm that is O(n^2) is always slower in practice than one that is O(n log n), for every input size. Reality: Big-O describes asymptotic behavior as n grows toward infinity; for small n, constant factors and lower-order terms can make the "worse" complexity class run faster in practice.',
+            'Misconception: Every function has an inverse function. Reality: Only bijective functions (both injective and surjective) have a true inverse function; functions that are not one-to-one, like f(x) = x^2 over all real numbers, cannot be inverted without restricting the domain.',
+            'Misconception: log_2(n) grows roughly as fast as n itself once n is large. Reality: Logarithmic growth is dramatically slower than linear growth; log_2 of one billion is under 30, while linear growth of one billion is one billion — the gap widens without bound as n increases.'
           ],
           connectionsToLaterModules: [
             'Direct prerequisite for Big-O analysis in Phase 3',
@@ -173,11 +215,12 @@ compute_growth_table([10, 100, 1000, 10000])
           learningObjective: 'Construct valid logical arguments, analyze set structures, and prove mathematical theorems using induction and contradiction.',
           prerequisites: ['Algebra and Functions'],
           coreConcepts: [
-            'Propositional Logic: Truth Tables, Implication (P -> Q), Contrapositive',
-            'De Morgan’s Laws for Logic and Sets',
-            'Set Theory: Union, Intersection, Complement, Cartesian Product, Power Set',
-            'Proof Methods: Direct Proof, Proof by Contradiction, Proof by Contrapositive',
-            'Mathematical Induction: Base Step, Inductive Hypothesis, Inductive Step'
+            'Propositional Logic: Truth Tables, Implication (P -> Q), Contrapositive: propositional logic gives a precise, mechanical way to determine whether compound statements are true or false based only on the truth values of their parts, and it is the mathematical foundation underlying every conditional statement and boolean expression in real computer programs.',
+            'De Morgan’s Laws for Logic and Sets: these laws describe exactly how negation distributes over AND/OR (and over set union/intersection), and they are essential for correctly simplifying complex conditional expressions in code as well as for manipulating logical proofs without introducing errors.',
+            'Set Theory: Union, Intersection, Complement, Cartesian Product, Power Set: sets are the basic language for describing collections of objects and their relationships, and operations like union and intersection formalize ideas (combining, filtering, comparing groups) that appear constantly in databases, algorithms, and probability.',
+            'Proof Methods: Direct Proof, Proof by Contradiction, Proof by Contrapositive: these are the standard rigorous templates mathematicians and computer scientists use to establish that a claim is unconditionally true, and mastering them is what allows you to verify — rather than merely guess — that an algorithm or theorem actually works in every case.',
+            'Mathematical Induction: Base Step, Inductive Hypothesis, Inductive Step: induction is a proof technique for establishing that a statement holds for every natural number by proving it for a starting case and then showing each case implies the next, a pattern that mirrors (and justifies the correctness of) recursive algorithms and loops in programming.',
+            'Quantifiers: Universal (For All) and Existential (There Exists): these symbols let you state precisely whether a property must hold for every element of a set or merely for at least one element, a distinction that is a frequent source of subtle logical errors if left ambiguous.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p1-m3-t1'] as any,
           primaryText: {
@@ -225,6 +268,26 @@ compute_growth_table([10, 100, 1000, 10000])
               correctAnswer: 0,
               explanation: 'An implication P -> Q is logically equivalent to its contrapositive ~Q -> ~P.',
               type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p1-7',
+              question: 'Given A = {1, 2, 3} and B = {2, 3, 4}, compute A ∪ B, A ∩ B, and A - B (elements in A but not in B).',
+              explanation: 'A ∪ B combines every element appearing in either set (without duplicates): {1, 2, 3, 4}. A ∩ B contains only elements present in both sets: {2, 3}. A - B contains elements in A that are not also in B: {1}, since 2 and 3 are removed because they also appear in B.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p1-8',
+              question: 'What is the base case and inductive step needed to prove, by induction, that the sum of the first n positive integers equals n(n+1)/2?',
+              explanation: 'The base case verifies the formula for n = 1: the sum of the first 1 integer is 1, and 1(1+1)/2 = 1, so it holds. The inductive step assumes the formula holds for some arbitrary k (the inductive hypothesis: 1 + 2 + ... + k = k(k+1)/2), and then proves it must also hold for k + 1 by adding (k+1) to both sides: k(k+1)/2 + (k+1) = (k+1)(k+2)/2, which is exactly the formula evaluated at n = k+1. Since the base case holds and each case implies the next, the formula holds for all positive integers by induction.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p1-9',
+              question: 'How many elements are in the power set of a set with 5 elements?',
+              options: ['32', '25', '10', '5'],
+              correctAnswer: 0,
+              explanation: 'A set with n elements has a power set of size 2^n, because each of the n elements can independently either be included or excluded from a given subset. For n = 5, that is 2^5 = 32 total subsets, including the empty set and the full set itself.',
+              type: 'multiple-choice'
             }
           ],
           interactiveLab: {
@@ -252,7 +315,10 @@ truth_table()
           },
           readingQuestions: [
             'What is the difference between proof by contrapositive and proof by contradiction?',
-            'How does the base case in mathematical induction ensure the proof holds for all n >= 0?'
+            'How does the base case in mathematical induction ensure the proof holds for all n >= 0?',
+            'Why is the converse of a true implication not guaranteed to also be true, and can you construct a real-world example that illustrates this?',
+            'How does De Morgan’s law for sets, complement(A ∪ B) = complement(A) ∩ complement(B), mirror the logical version for AND/OR?',
+            'Why does mathematical induction resemble the way a recursive function or a while-loop is proven correct in computer science?'
           ],
           masteryChecklist: [
             'Construct truth tables for arbitrary logical propositions.',
@@ -263,11 +329,22 @@ truth_table()
           estimatedStudyMinutes: 240,
           difficulty: 'intermediate',
           glossary: [
-            { term: 'Contrapositive', definition: 'The logical proposition ~Q -> ~P derived from P -> Q, sharing the exact same truth value.' },
-            { term: 'Induction', definition: 'A mathematical proof technique used to prove that a statement holds for all natural numbers.' }
+            { term: 'Proposition', definition: 'A declarative statement that is unambiguously either true or false, but never both, such as "7 is a prime number."' },
+            { term: 'Implication (P -> Q)', definition: 'A logical statement asserting that if P is true, then Q must also be true; it is only considered false in the single case where P is true and Q is false.' },
+            { term: 'Contrapositive', definition: 'The logical proposition ~Q -> ~P derived by negating and swapping the parts of P -> Q; it is logically equivalent to the original implication, always sharing the same truth value.' },
+            { term: 'Converse', definition: 'The logical proposition Q -> P formed by swapping the hypothesis and conclusion of P -> Q; unlike the contrapositive, the converse is not logically equivalent to the original statement.' },
+            { term: 'De Morgan’s Laws', definition: 'A pair of rules stating that ~(P AND Q) is equivalent to (~P OR ~Q), and ~(P OR Q) is equivalent to (~P AND ~Q); the set-theory analogue states that the complement of a union equals the intersection of complements, and vice versa.' },
+            { term: 'Union (A ∪ B)', definition: 'The set containing every element that belongs to A, to B, or to both.' },
+            { term: 'Intersection (A ∩ B)', definition: 'The set containing only the elements that belong to both A and B simultaneously.' },
+            { term: 'Power Set', definition: 'The set of all possible subsets of a given set, including the empty set and the set itself; a set with n elements has a power set containing 2^n elements.' },
+            { term: 'Mathematical Induction', definition: 'A proof technique for establishing that a statement holds for every natural number by proving a base case (usually n = 0 or n = 1) and an inductive step showing that if the statement holds for n, it must also hold for n + 1.' },
+            { term: 'Proof by Contradiction', definition: 'A proof technique that assumes the negation of the statement to be proved, then derives a logical impossibility from that assumption, thereby concluding the original statement must be true.' }
           ],
           commonMisconceptions: [
-            'Misconception: Assuming P -> Q means Q -> P is true. Reality: The converse Q -> P is a logical fallacy.'
+            'Misconception: Assuming P -> Q means Q -> P is true. Reality: The converse Q -> P is a logically distinct statement that is not guaranteed by the original implication; only the contrapositive ~Q -> ~P is guaranteed equivalent.',
+            'Misconception: Proof by contradiction and proof by contrapositive are the same technique. Reality: Proof by contrapositive proves P -> Q by directly proving ~Q -> ~P, while proof by contradiction assumes both P and ~Q are true simultaneously and derives an outright logical impossibility from that combined assumption.',
+            'Misconception: Mathematical induction proves a statement is true "because it worked for the first few cases." Reality: Induction is rigorous precisely because the inductive step proves the implication holds for every n, not just the ones checked; skipping the inductive step and only checking examples is not a valid proof.',
+            'Misconception: The empty set is "nothing" and therefore not really a set, or is not a subset of every set. Reality: The empty set is a well-defined set containing zero elements, and by the formal definition of subset, it is a subset of every set, including itself.'
           ],
           connectionsToLaterModules: [
             'Essential for Database relational calculus in Phase 2 & 3',
@@ -314,11 +391,12 @@ truth_table()
           learningObjective: 'Visualize and compute linear combinations, dot products, matrix multiplications, determinants, and linear span.',
           prerequisites: ['Algebra and Functions'],
           coreConcepts: [
-            'Vectors as Points and Directed Segments in R^n Space',
-            'Dot Product, Norms (L1, L2), and Geometric Cosine Angle',
-            'Linear Independence, Span, Basis, and Vector Space Dimension',
-            'Matrices as Linear Transformations (Scaling, Rotation, Projection)',
-            'Matrix Multiplication, Transpose, Inverse, and Matrix Rank'
+            'Vectors as Points and Directed Segments in R^n Space: a vector can be understood both as a point’s coordinates and as an arrow with magnitude and direction, and this dual view is what lets linear algebra describe everything from physical motion to abstract data features (like the pixels of an image or the words in a document) using the same mathematical toolkit.',
+            'Dot Product, Norms (L1, L2), and Geometric Cosine Angle: the dot product combines two vectors into a single number that measures how much they point in the same direction, norms measure a vector’s length under different definitions of "distance," and together these tools quantify similarity and magnitude — concepts that power everything from search-result ranking to machine learning distance metrics.',
+            'Linear Independence, Span, Basis, and Vector Space Dimension: a set of vectors is linearly independent if none can be built from a combination of the others, the span is every point reachable by combining a set of vectors, and a basis is a minimal independent set that spans an entire space — these ideas formalize exactly how much "genuinely new" information a set of directions or data features actually contains.',
+            'Matrices as Linear Transformations (Scaling, Rotation, Projection): a matrix is not just a grid of numbers but a compact description of a function that maps every vector in a space to a new vector, and recognizing operations like scaling, rotation, and projection as matrices is the geometric key to understanding graphics, robotics, and neural network layers.',
+            'Matrix Multiplication, Transpose, Inverse, and Matrix Rank: matrix multiplication composes two linear transformations into one, the inverse undoes a transformation (when possible), and the rank measures how many independent directions a transformation actually preserves — together these operations are the computational engine behind solving systems of equations and behind nearly every machine learning model.',
+            'Eigenvalues and Eigenvectors: an eigenvector of a matrix is a special direction that the transformation only stretches or shrinks (by a factor called the eigenvalue) rather than rotates away from, and finding these special directions reveals a matrix’s most fundamental behavior, which is central to techniques like PageRank and Principal Component Analysis.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p1-m4-t1'] as any,
           primaryText: {
@@ -360,6 +438,31 @@ truth_table()
               correctAnswer: 0,
               explanation: 'Dot product = (2*3) + (-1*5) + (4*-2) = 6 - 5 - 8 = -7.',
               type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p1-10',
+              question: 'What does it mean geometrically if the determinant of a 2x2 matrix is 0?',
+              options: [
+                'The transformation collapses the plane onto a line or point, so it has no inverse.',
+                'The transformation rotates every vector by 90 degrees.',
+                'The transformation doubles the area of every shape it is applied to.',
+                'The matrix must be the identity matrix.'
+              ],
+              correctAnswer: 0,
+              explanation: 'The determinant measures the area-scaling factor of the linear transformation a matrix represents. A determinant of 0 means the transformation squashes all of 2D space down into a line (or a single point), destroying a dimension of information; because information is lost, the transformation cannot be reversed, so the matrix has no inverse.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p1-11',
+              question: 'Explain why matrix multiplication is generally not commutative (A * B != B * A) using the idea of composing transformations.',
+              explanation: 'Each matrix represents a specific linear transformation (such as a rotation or a scaling along one axis), and multiplying two matrices A * B means "first apply transformation B, then apply transformation A" to a vector. Just as rotating an object and then stretching it along the x-axis generally produces a different result than stretching it first and then rotating it, applying two different geometric transformations in a different order usually produces a different overall transformation, so A * B and B * A are generally different matrices.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p1-12',
+              question: 'Are the vectors u = [1, 2] and v = [2, 4] linearly independent? Justify your answer.',
+              explanation: 'No, they are linearly dependent. Notice that v = 2u, meaning v can be written entirely as a scalar multiple of u. Because one vector is completely redundant given the other (it adds no new direction), the set {u, v} is linearly dependent and spans only a one-dimensional line rather than the full 2D plane.',
+              type: 'free-response'
             }
           ],
           interactiveLab: {
@@ -399,7 +502,10 @@ print("A x B =", matmul(A, B))
           },
           readingQuestions: [
             'Why does matrix multiplication represent composition of linear transformations?',
-            'What does a determinant of 0 signify regarding matrix invertibility and volume scaling?'
+            'What does a determinant of 0 signify regarding matrix invertibility and volume scaling?',
+            'Why does the dot product of two perpendicular (orthogonal) vectors always equal zero?',
+            'How does the concept of a "basis" let you describe every point in a space using the fewest possible independent directions?',
+            'Why does an eigenvector remain on the same line through the origin after a linear transformation is applied, while most other vectors do not?'
           ],
           masteryChecklist: [
             'Perform vector dot products, cross products, and matrix multiplication.',
@@ -410,11 +516,24 @@ print("A x B =", matmul(A, B))
           estimatedStudyMinutes: 240,
           difficulty: 'intermediate',
           glossary: [
-            { term: 'Linear Transformation', definition: 'A mapping between vector spaces that preserves vector addition and scalar multiplication.' },
-            { term: 'Eigenvector', definition: 'A non-zero vector whose direction remains unchanged when a linear transformation is applied.' }
+            { term: 'Vector', definition: 'An ordered list of numbers that can represent a point in space, a direction with magnitude, or a set of features; formally, an element of a vector space.' },
+            { term: 'Dot Product', definition: 'An operation that takes two vectors of equal length and returns a single scalar number, computed by multiplying corresponding components and summing the results; it measures how much two vectors point in the same direction.' },
+            { term: 'Norm', definition: 'A function that assigns a non-negative length or magnitude to a vector; the L2 norm (Euclidean length) is the square root of the sum of squared components, while the L1 norm is the sum of absolute values of the components.' },
+            { term: 'Linear Independence', definition: 'A property of a set of vectors in which no vector in the set can be written as a linear combination (weighted sum) of the others.' },
+            { term: 'Span', definition: 'The set of all possible vectors obtainable by taking linear combinations of a given set of vectors.' },
+            { term: 'Basis', definition: 'A linearly independent set of vectors that spans an entire vector space; every vector in that space can be written uniquely as a combination of basis vectors.' },
+            { term: 'Matrix', definition: 'A rectangular array of numbers arranged in rows and columns that can represent, among other things, a linear transformation between vector spaces.' },
+            { term: 'Linear Transformation', definition: 'A mapping between vector spaces that preserves vector addition and scalar multiplication, meaning it can always be represented by matrix multiplication.' },
+            { term: 'Determinant', definition: 'A single scalar value computed from a square matrix that indicates, among other things, how much the matrix’s linear transformation scales area or volume, and whether the matrix is invertible (a determinant of zero means it is not).' },
+            { term: 'Eigenvector', definition: 'A non-zero vector whose direction remains unchanged (only scaled) when a given linear transformation (matrix) is applied to it.' },
+            { term: 'Eigenvalue', definition: 'The scalar factor by which an eigenvector is stretched or shrunk when its corresponding linear transformation is applied.' },
+            { term: 'Matrix Rank', definition: 'The number of linearly independent rows (equivalently, columns) in a matrix, which equals the dimension of the space spanned by its columns.' }
           ],
           commonMisconceptions: [
-            'Misconception: Matrix multiplication is commutative (A * B = B * A). Reality: Matrix multiplication is generally non-commutative (A * B != B * A).'
+            'Misconception: Matrix multiplication is commutative (A * B = B * A). Reality: Matrix multiplication is generally non-commutative (A * B != B * A); the order in which transformations are composed changes the result.',
+            'Misconception: Every square matrix has an inverse. Reality: A square matrix has an inverse only if its determinant is nonzero; matrices with a zero determinant are called singular and collapse space into a lower dimension, which cannot be undone.',
+            'Misconception: A vector’s dot product with itself measures its direction. Reality: The dot product of a vector with itself gives the square of its L2 norm (length), not a direction; direction requires comparing angles between distinct vectors.',
+            'Misconception: Every matrix has real eigenvalues and eigenvectors. Reality: Some matrices (for example, rotation matrices in 2D) have only complex eigenvalues, because there is no real, non-zero vector whose direction is preserved under a pure rotation.'
           ],
           connectionsToLaterModules: [
             'Crucial foundation for NumPy vectorization in Phase 2',

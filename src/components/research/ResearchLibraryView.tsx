@@ -28,6 +28,8 @@ import type {
   ResearchSafetyLabel,
 } from '../../types/researchLibrary';
 import { InAppPdfReader } from '../reader/InAppPdfReader';
+import { OfflineSaveButton } from '../common/OfflineSaveButton';
+import { toOfflineableResource } from '../../services/offlineResourceCache';
 
 interface ResearchLibraryViewProps {
   progress: LearnerProgress;
@@ -354,7 +356,8 @@ const PaperCard: React.FC<PaperCardProps> = ({ paper, isRead, collections, onTog
           <button type="button" onClick={onToggleRead} className={`inline-flex min-h-10 items-center gap-1.5 rounded-[var(--ds-radius-md)] border px-3 text-xs font-black ${isRead ? 'border-[var(--ds-success)] bg-[var(--ds-success-soft)]' : 'border-[var(--ds-border)]'}`}>
             <CheckCircle2 className="h-4 w-4" /> {isRead ? 'Read' : 'Mark read'}
           </button>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <OfflineSaveButton resource={toOfflineableResource(paper)} variant="ds" />
             <button type="button" onClick={onOpenDetails} className="min-h-10 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] px-3 text-xs font-black">Details & notes</button>
             <button type="button" onClick={onRead} className="inline-flex min-h-10 items-center gap-1.5 rounded-[var(--ds-radius-md)] bg-[var(--ds-primary)] px-3 text-xs font-black text-[var(--ds-on-primary)]"><BookOpen className="h-4 w-4" /> Read</button>
             <a href={paper.canonicalUrl ?? paper.openAccessUrl} target="_blank" rel="noopener noreferrer" aria-label="Open canonical paper source" className="flex min-h-10 min-w-10 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)]"><ExternalLink className="h-4 w-4" /></a>

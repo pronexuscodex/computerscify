@@ -2,99 +2,24 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, Plugin} from 'vite';
+import {VitePWA} from 'vite-plugin-pwa';
 
 import correctedManifest from './academic-resource-report.corrected.json';
+import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from './scripts/pdfProxyAllowlist';
 
-const ALLOWED_HOSTS = new Set([
-  'raw.githubusercontent.com',
-  'people.math.harvard.edu',
-  'arxiv.org',
-  'd2l.ai',
-  'ocw.mit.edu',
-  'pages.cs.wisc.edu',
-  'resources.saylor.org',
-  'opendatastructures.org',
-  'www.statlearning.com',
-  'greenteapress.com',
-  'www.cs.virginia.edu',
-  'dsf.berkeley.edu',
-  'homepages.dcc.ufmg.br',
-  'www.seas.upenn.edu',
-  'ir.cwi.nl',
-  'www.biostat.jhsph.edu',
-  'www.exp-platform.com',
-  'papers.neurips.cc',
-  'research.google.com',
-  'web.stanford.edu',
-  'www.cs.cmu.edu',
-  'jhanley.biostat.mcgill.ca',
-  'people.eecs.berkeley.edu',
-  'courses.cs.duke.edu',
-  'www.cs.utexas.edu',
-  'www.stat.cmu.edu',
-  'davidcard.berkeley.edu',
-  'www.cis.upenn.edu',
-  'www.microsoft.com',
-  'wstomv.win.tue.nl',
-  'textbookequity.org',
-  'jeapostrophe.github.io',
-  'llvm.org',
-  'files.boazbarak.org',
-  'www.cs.toronto.edu',
-  'crypto.stanford.edu',
-  'ee.stanford.edu',
-  'www.vldb.org',
-  'vldb.org',
-  'peerj.com',
-  'numpy.org',
-  'abseil.io',
-  'docs.getdbt.com',
-  'szeliski.org',
-  'mixtape.scunning.com',
-  'info.deeplearning.ai',
-  'mlsysbook.ai',
-  'otexts.com',
-  'danluu.com',
-  'rasmuspagh.net',
-  'mml-book.github.io',
-  'jstatsoft.org',
-  'nand2tetris.org',
-  'distributed-systems.net',
-  'nasa.gov',
-  'nvlpubs.nist.gov',
-  'csrc.nist.gov',
-  'hai.stanford.edu',
-  'ic3.gov',
-  'www.ic3.gov',
-  'cisecurity.org',
-  'www.cisecurity.org',
-  'owasp.org',
-  'genai.owasp.org',
-  'kimballgroup.com',
-  'www.kimballgroup.com',
-  'docs.cloudera.com',
-  'elib.dlr.de',
-]);
-
+// Shared between `vite dev` (configureServer) and `vite preview` (configurePreviewServer) so
+// PDF fetching works the same way in both — `vite preview` serves the real production build and
+// is the closest local approximation to a deployed site, so it must not silently lose the proxy.
 function pdfProxyPlugin(): Plugin {
-  return {
-    name: 'pdf-proxy-plugin',
-    configureServer(server) {
-      server.middlewares.use('/api/pdf-proxy', async (req, res) => {
+  function registerProxyMiddleware(server: { middlewares: { use: Function } }) {
+    server.middlewares.use('/api/pdf-proxy', async (req: any, res: any) => {
         try {
           const urlObj = new URL(req.url || '', `http://${req.headers.host || 'localhost'}`);
           const resourceId = urlObj.searchParams.get('resourceId');
           let targetUrl = urlObj.searchParams.get('url');
 
           if (resourceId) {
-            for (const t of correctedManifest.topics) {
-              for (const r of t.resources) {
-                if ((r as { id?: string }).id === resourceId || resourceId.includes(t.topicId)) {
-                  targetUrl = r.url;
-                  break;
-                }
-              }
-            }
+            targetUrl = resolveResourceIdToUrl(correctedManifest, resourceId) || targetUrl;
           }
 
           if (!targetUrl) {
@@ -112,11 +37,7 @@ function pdfProxyPlugin(): Plugin {
             return;
           }
 
-          const isAllowedHost = Array.from(ALLOWED_HOSTS).some(
-            (ah) => parsedHost === ah || parsedHost.endsWith('.' + ah)
-          );
-
-          if (!isAllowedHost) {
+          if (!isAllowedPdfProxyHost(parsedHost)) {
             res.statusCode = 403;
             res.setHeader('Content-Type', 'text/plain');
             res.end(`Forbidden: Host '${parsedHost}' is not in the server-side registry allowlist.`);
@@ -166,7 +87,12 @@ function pdfProxyPlugin(): Plugin {
           );
         }
       });
-    },
+  }
+
+  return {
+    name: 'pdf-proxy-plugin',
+    configureServer: registerProxyMiddleware,
+    configurePreviewServer: registerProxyMiddleware,
   };
 }
 
@@ -179,7 +105,10 @@ const CONTENT_SECURITY_POLICY = [
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data:",
   "connect-src 'self' https://export.arxiv.org https://raw.githubusercontent.com https://mozilla.github.io https://cdn.jsdelivr.net https://cdnjs.cloudflare.com",
-  "frame-src https://www.youtube-nocookie.com https://docs.google.com",
+  // 'self' + blob: are required for the PDF reader's Simple View iframe (which loads /api/pdf-proxy
+  // and, for offline-saved documents, a same-origin blob: URL) — without them the browser silently
+  // blocks the iframe whenever the reader falls back from Rich View.
+  "frame-src 'self' blob: https://www.youtube-nocookie.com https://docs.google.com",
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
@@ -203,7 +132,42 @@ function cspPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), pdfProxyPlugin(), cspPlugin()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      pdfProxyPlugin(),
+      cspPlugin(),
+      VitePWA({
+        // public/app.webmanifest + its <link> tag in index.html already exist; don't generate a second one.
+        manifest: false,
+        registerType: 'autoUpdate',
+        injectRegister: false,
+        // Service worker is inert during `vite dev` (devOptions.enabled defaults to false) so it never
+        // interferes with HMR; it only activates in `vite build` / `vite preview` output.
+        workbox: {
+          // pdf.worker.min-*.mjs (react-pdf's worker) must be precached: without it, the PDF reader
+          // cannot render any document — cached or not — while offline.
+          globPatterns: ['**/*.{js,mjs,css,html,ico,png,svg,webmanifest}'],
+          globIgnores: ['**/pyodide/**'],
+          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+          navigateFallback: '/index.html',
+          cleanupOutdatedCaches: true,
+          runtimeCaching: [
+            {
+              // Pyodide's Python runtime is large and only needed for interactive code labs, so it's
+              // cached the first time it's used rather than forced into the initial SW install.
+              urlPattern: ({ url }) => url.pathname.startsWith('/pyodide/'),
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'pyodide-runtime',
+                expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] },
+              },
+            },
+          ],
+        },
+      }),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

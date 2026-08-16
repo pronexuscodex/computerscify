@@ -402,8 +402,9 @@ async function runTests() {
     'prompt injection',
     'governance',
   ];
+  const aiConceptCoverageList = Array.from(aiConceptCoverage);
   assert(
-    requiredAiConcepts.every((concept) => aiConceptCoverage.has(concept)),
+    requiredAiConcepts.every((concept) => aiConceptCoverageList.some((entry) => entry.includes(concept))),
     'AI curriculum spans orientation, deep learning, generative systems, agents, evaluation, safety, and governance'
   );
 

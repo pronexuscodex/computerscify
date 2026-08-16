@@ -37,11 +37,12 @@ export const phase4DSModules: CurriculumModule[] = [
           learningObjective: 'Design randomized controlled A/B experiments, calculate sample sizes, and evaluate statistical significance using Z-tests and T-tests.',
           prerequisites: ['Probability and Statistics fundamentals'],
           coreConcepts: [
-            'Null Hypothesis (H0) vs Alternative Hypothesis (H1)',
-            'Type I Error (Alpha, False Positive) vs Type II Error (Beta, False Negative) and Statistical Power',
-            'Z-Test for Proportions and Student’s t-Test for Means',
-            'P-Value Interpretation and 95% Confidence Interval Derivation',
-            'A/B Testing Pitfalls: Peeking, Multiple Testing Corrections (Bonferroni), Novelty Effects'
+            'Null Hypothesis (H0) vs Alternative Hypothesis (H1): H0 is the default claim of "no effect" or "no difference" that we assume true until evidence says otherwise, and H1 is the competing claim we adopt when the data are inconsistent with H0; every hypothesis test in this topic (and every A/B test run in industry) is structured as a decision between these two statements based on observed sample data.',
+            'Type I Error (Alpha, False Positive) vs Type II Error (Beta, False Negative) and Statistical Power: Alpha is the probability of rejecting a true H0 (a false alarm) and beta is the probability of failing to reject a false H0 (a missed effect), with statistical power (1 - beta) measuring the test\'s ability to detect a real effect when one exists; balancing these two error rates against sample size is the central design problem of any experiment, and directly determines the sample size calculations used later in the capstone A/B testing framework.',
+            'Z-Test for Proportions and Student\'s t-Test for Means: The Z-test compares sample proportions (e.g., conversion rates) using the standard normal distribution and is valid when sample sizes are large, while the t-test compares sample means using the heavier-tailed t-distribution to correctly account for the extra uncertainty of estimating variance from small samples; choosing the right test statistic for the data type (proportion vs continuous mean) and sample size is a foundational skill for feature engineering and later causal inference.',
+            'P-Value Interpretation and 95% Confidence Interval Derivation: The p-value is the probability of observing data at least as extreme as what was measured, assuming H0 is true, while a 95% confidence interval is the range of parameter values that would not be rejected by a hypothesis test at the 5% significance level; both quantify uncertainty from the same sampling distribution and are frequently reported together to communicate both statistical significance and practical effect size.',
+            'A/B Testing Pitfalls: Peeking, Multiple Testing Corrections (Bonferroni), Novelty Effects: Repeatedly checking significance before the experiment ends ("peeking") inflates the true false-positive rate far above the nominal alpha, testing many metrics simultaneously without correction (e.g., Bonferroni) multiplies the chance of a spurious significant result, and novelty effects can make a new feature appear to perform better temporarily simply because it is new; recognizing these pitfalls is essential for building trustworthy experimentation pipelines rather than statistically invalid ones.',
+            'Statistical Power and Sample Size Determination: Before running an experiment, the minimum detectable effect, desired power (commonly 80%), and significance level alpha jointly determine the required sample size per group; underpowered experiments systematically fail to detect real effects, which is why sample size planning is a prerequisite step in the capstone ETL and experimentation pipeline.'
           ],
           primaryLecture: VERIFIED_VIDEOS['p4-m15-t1'] as any,
           primaryText: {
@@ -87,6 +88,46 @@ export const phase4DSModules: CurriculumModule[] = [
               ],
               correctAnswer: 0,
               explanation: 'Since p-value (0.03) < alpha (0.05), we reject the null hypothesis H0 in favor of the alternative hypothesis H1.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p4-2',
+              question: 'Derive the standard error (SE) used in the pooled two-proportion Z-test for comparing conversion rates pA (group A, size nA) and pB (group B, size nB), starting from the variance of each sample proportion under H0 (equal true proportions p_pooled). Why is the pooled proportion used instead of pA and pB separately?',
+              explanation: 'Under H0, both groups are assumed to share the same true conversion rate p, estimated by pooling: p_pooled = (conv_A + conv_B) / (n_A + n_B). For a sample proportion, Var(p_hat) = p(1-p)/n, and since the two groups are independent samples, Var(pB_hat - pA_hat) = Var(pB_hat) + Var(pA_hat) = p_pooled(1-p_pooled)/n_A + p_pooled(1-p_pooled)/n_B = p_pooled(1-p_pooled) * (1/n_A + 1/n_B). Taking the square root gives SE = sqrt(p_pooled(1-p_pooled)(1/n_A + 1/n_B)), matching the formula in the interactive lab. Pooling is used (rather than plugging in the separately observed pA and pB) because the Z-test statistic must be computed under the null hypothesis\'s assumption that there is no true difference, so the best single estimate of the shared population proportion is the combined pooled rate.',
+              type: 'free-response'
+            },
+            {
+              id: 'ex-p4-3',
+              question: 'A product team wants to detect an absolute lift from a 10% baseline conversion rate to 12% (a minimum detectable effect of 2 percentage points), with a two-tailed alpha of 0.05 (z ≈ 1.96) and 80% power (z ≈ 0.84). Using the approximate two-proportion sample size formula n ≈ 2*p*(1-p)*(z_alpha/2 + z_beta)^2 / delta^2, what is the approximate required sample size per group?',
+              options: ['~880 per group', '~1,568 per group', '~3,528 per group', '~7,056 per group'],
+              correctAnswer: 2,
+              explanation: 'Plugging in p = 0.10, delta = 0.02, and (z_alpha/2 + z_beta)^2 = (1.96 + 0.84)^2 = 2.8^2 = 7.84: n ≈ 2 * 0.10 * 0.90 * 7.84 / (0.02)^2 = 0.18 * 7.84 / 0.0004 = 1.4112 / 0.0004 ≈ 3,528 per group. Smaller minimum detectable effects require quadratically larger sample sizes, since delta appears squared in the denominator.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p4-4',
+              question: 'A data scientist runs an experiment tracking 10 different metrics (click-through rate, revenue, session length, etc.) and finds that exactly one metric, "time on page," is significant at p = 0.04. Should this be reported as a significant finding without further correction?',
+              options: [
+                'Yes, any p-value below 0.05 is significant regardless of how many metrics were tested.',
+                'No — with 10 simultaneous comparisons, a Bonferroni-corrected threshold of 0.05/10 = 0.005 should be used, and 0.04 would not clear it.',
+                'No — the experiment should be discarded entirely because multiple metrics were measured.',
+                'Yes, because only one metric out of ten was significant, which proves it is a real effect.'
+              ],
+              correctAnswer: 1,
+              explanation: 'Testing 10 metrics simultaneously without correction means the family-wise probability of at least one false positive is much higher than 5% even if every null hypothesis is true. The Bonferroni correction controls this by dividing alpha by the number of comparisons (0.05/10 = 0.005); since 0.04 > 0.005, this result would not be considered significant after correction, and is plausibly a false positive from multiple testing.',
+              type: 'multiple-choice'
+            },
+            {
+              id: 'ex-p4-5',
+              question: 'In the interactive lab\'s `ab_test_z_score` function, what would happen to the computed Z-score and p-value if `n_A` and `n_B` were both doubled while `conv_A` and `conv_B` were also both doubled (keeping the observed conversion rates pA and pB identical)?',
+              options: [
+                'The Z-score would stay exactly the same, since the conversion rates are unchanged.',
+                'The Z-score would increase in magnitude (become more significant), because the standard error shrinks as sample size grows while the observed rate difference stays the same.',
+                'The Z-score would decrease in magnitude, because more data always adds more noise.',
+                'The p-value would become undefined due to division by zero.'
+              ],
+              correctAnswer: 1,
+              explanation: 'The standard error SE = sqrt(p_pooled(1-p_pooled)(1/n_A + 1/n_B)) shrinks as n_A and n_B grow, while the numerator (pB - pA) is unchanged since the rates are identical. A smaller denominator with the same numerator produces a larger-magnitude Z-score and therefore a smaller p-value — this is precisely why larger sample sizes make it easier to detect the same true effect size with statistical confidence.',
               type: 'multiple-choice'
             }
           ],
@@ -134,7 +175,11 @@ print("Result:", "Statistically Significant Difference (Reject H0)" if p < 0.05 
           },
           readingQuestions: [
             'Why does "peeking" at A/B test results repeatedly inflate the Type I error rate above 5%?',
-            'What is the relationship between sample size N and the minimum detectable effect (MDE)?'
+            'What is the relationship between sample size N and the minimum detectable effect (MDE)?',
+            'Why does the Student\'s t-distribution converge to the standard normal distribution as sample size (and degrees of freedom) grows, and why does this matter for choosing between a Z-test and a t-test?',
+            'How would you explain the difference between statistical significance and practical significance to a stakeholder who wants to ship a feature based purely on a small p-value?',
+            'Why does pooling the conversion rate across both groups (rather than using each group\'s own observed rate) matter when computing the standard error for a two-proportion Z-test under the null hypothesis?',
+            'If a team wants to keep monitoring an experiment continuously without inflating the false-positive rate, what statistical approaches (beyond simply waiting until a fixed sample size is reached) might address the peeking problem?'
           ],
           masteryChecklist: [
             'Formulate H0 and H1 hypotheses for business experiment scenarios.',
@@ -145,11 +190,23 @@ print("Result:", "Statistically Significant Difference (Reject H0)" if p < 0.05 
           estimatedStudyMinutes: 210,
           difficulty: 'intermediate',
           glossary: [
-            { term: 'P-Value', definition: 'The probability of obtaining test results at least as extreme as the observed results under the assumption that the null hypothesis is true.' },
-            { term: 'Type I Error', definition: 'The incorrect rejection of a true null hypothesis (False Positive).' }
+            { term: 'P-Value', definition: 'The probability of obtaining test results at least as extreme as the observed results under the assumption that the null hypothesis is true; a small p-value indicates the observed data would be unusual if H0 were true.' },
+            { term: 'Type I Error', definition: 'The incorrect rejection of a true null hypothesis (a false positive), whose probability is controlled by the chosen significance level alpha.' },
+            { term: 'Type II Error', definition: 'The failure to reject a false null hypothesis (a false negative, probability beta), which occurs when a test lacks sufficient power or sample size to detect a real effect.' },
+            { term: 'Statistical Power', definition: 'The probability (1 - beta) that a hypothesis test correctly rejects a false null hypothesis; power increases with larger sample sizes, larger true effect sizes, and higher significance thresholds.' },
+            { term: 'Confidence Interval', definition: 'A range of values, computed from sample data, that would contain the true population parameter in a specified proportion (e.g., 95%) of repeated samples; it quantifies the precision of a point estimate.' },
+            { term: 'Significance Level (Alpha)', definition: 'The pre-chosen probability threshold (commonly 0.05) below which a p-value is considered small enough to reject the null hypothesis; it directly sets the long-run Type I error rate of the test.' },
+            { term: "Student's t-Distribution", definition: 'A probability distribution similar to the standard normal but with heavier tails, used when estimating the mean of a normally distributed population from a small sample with unknown population variance; it converges to the standard normal as degrees of freedom (N-1) grows.' },
+            { term: 'Bonferroni Correction', definition: 'A multiple-testing correction that divides the significance threshold alpha by the number of comparisons m (using alpha/m per test) to control the family-wise error rate when multiple hypotheses are tested simultaneously.' },
+            { term: 'Minimum Detectable Effect (MDE)', definition: 'The smallest true effect size that an experiment is powered to reliably detect at a given sample size, significance level, and power; smaller MDEs require larger sample sizes to detect.' },
+            { term: 'Peeking (Optional Stopping)', definition: 'The practice of repeatedly checking a test\'s p-value before the pre-planned sample size is reached and stopping as soon as significance is observed, which inflates the true Type I error rate well above the nominal alpha.' }
           ],
           commonMisconceptions: [
-            'Misconception: A p-value of 0.03 means there is a 97% probability that the alternative hypothesis is true. Reality: P-value measures data likelihood under H0, not hypothesis posterior probability.'
+            'Misconception: A p-value of 0.03 means there is a 97% probability that the alternative hypothesis is true. Reality: P-value measures data likelihood under H0, not hypothesis posterior probability; interpreting it as P(H1 is true) confuses a frequentist likelihood statement with a Bayesian posterior probability.',
+            'Misconception: Failing to reject the null hypothesis proves the null hypothesis is true. Reality: A non-significant result only means the test lacked sufficient evidence (or power) to detect an effect; it does not establish that no effect exists.',
+            'Misconception: A statistically significant result is automatically practically or business-meaningful. Reality: With a large enough sample size, even a trivially small effect can produce a very small p-value, so statistical significance must always be paired with an examination of effect size and confidence interval width.',
+            'Misconception: Checking A/B test results daily and stopping as soon as p < 0.05 is a valid way to run the experiment faster. Reality: This "peeking" behavior inflates the true false-positive rate far above the nominal 5%, because each additional look gives the test another chance to cross the significance threshold purely by random chance.',
+            'Misconception: Running many metrics or segment comparisons in one experiment and reporting whichever ones came out significant is a fair use of the data. Reality: Without a multiple-testing correction like Bonferroni, testing many hypotheses simultaneously sharply increases the probability that at least one comparison appears significant purely by chance.'
           ],
           connectionsToLaterModules: [
             'Prerequisite for Model Evaluation & Causal Inference in Phase 5',
