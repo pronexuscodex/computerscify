@@ -6,6 +6,7 @@ import {
   BookOpenCheck,
   Terminal,
   Award,
+  FolderGit2,
   BarChart3,
   Settings,
   Flame,
@@ -56,19 +57,45 @@ export const NavigationRail: React.FC<NavigationRailProps> = ({
 
   const isCollapsed = mode === 'collapsed' || mode === 'compact' || mode === 'hidden';
 
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'roadmap', label: 'Curriculum Roadmap', icon: Map },
-    { id: 'academies', label: 'Academies', icon: Compass },
-    { id: 'research', label: 'Research Library', icon: BookOpenCheck },
-    { id: 'lab', label: 'Practice Arena', icon: Terminal },
-    { id: 'spaced-review', label: 'Spaced Review', icon: Flame },
-    { id: 'mistake-journal', label: 'Mistake Journal', icon: ShieldCheck },
-    { id: 'portfolio', label: 'Project Portfolio', icon: Award },
-    { id: 'capstones', label: 'Capstones', icon: Award },
-    { id: 'progress', label: 'Progress & Notes', icon: BarChart3 },
-    { id: 'resource-health', label: 'Resource Health', icon: ShieldCheck },
-    { id: 'settings', label: 'Preferences', icon: Settings },
+  // Grouped to match the mobile bottom nav's Learn/Explore/Library/Account model, so a learner
+  // builds one mental map of the app regardless of screen size. "Resource Health" and "Audit"
+  // are internal verification dashboards, not learner-facing tools — deliberately left out of
+  // primary navigation (still reachable directly, and linked from Settings for anyone who needs them).
+  const navGroups = [
+    {
+      label: 'Learn',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'roadmap', label: 'Curriculum Roadmap', icon: Map },
+        { id: 'academies', label: 'Academies', icon: Compass },
+      ],
+    },
+    {
+      label: 'Practice',
+      items: [
+        { id: 'lab', label: 'Practice Arena', icon: Terminal },
+        { id: 'spaced-review', label: 'Spaced Review', icon: Flame },
+        { id: 'mistake-journal', label: 'Mistake Journal', icon: ShieldCheck },
+      ],
+    },
+    {
+      label: 'Build',
+      items: [
+        { id: 'portfolio', label: 'Project Portfolio', icon: FolderGit2 },
+        { id: 'capstones', label: 'Capstones', icon: Award },
+      ],
+    },
+    {
+      label: 'Research',
+      items: [{ id: 'research', label: 'Research Library', icon: BookOpenCheck }],
+    },
+    {
+      label: 'You',
+      items: [
+        { id: 'progress', label: 'Progress & Notes', icon: BarChart3 },
+        { id: 'settings', label: 'Preferences', icon: Settings },
+      ],
+    },
   ] as const;
 
   return (
@@ -107,40 +134,54 @@ export const NavigationRail: React.FC<NavigationRailProps> = ({
         </button>
       </div>
 
-      {/* Navigation Links */}
-      <nav className="flex-1 p-2.5 space-y-2 overflow-y-auto min-h-0 overflow-x-hidden">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = currentView === item.id;
-          const navButton = (
-            <button
-              key={item.id}
-              onClick={() => onNavigate(item.id as NavView)}
-              aria-label={item.label}
-              aria-current={isActive ? 'page' : undefined}
-              className={`w-full flex items-center ${
-                isCollapsed ? 'justify-center px-2 py-3' : 'gap-3 px-3.5 py-2.5'
-              } rounded font-black text-xs uppercase tracking-wider transition-all text-left group relative ${
-                isActive
-                  ? 'bg-[#F2C94C] text-[#000000] neo-border neo-shadow'
-                  : 'text-[#1D1B1B] dark:text-[#F6EFEF] border-2 border-transparent hover:border-[#000000] hover:bg-[#F9F2F1] dark:hover:bg-[#2B2929]'
-              }`}
-            >
-              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#000000]' : 'text-[#1D1B1B] dark:text-[#F6EFEF]'}`} />
-              {!isCollapsed && <span className="truncate">{item.label}</span>}
-            </button>
-          );
+      {/* Navigation Links, grouped by task so a 12-view app doesn't read as one flat list */}
+      <nav className="flex-1 p-2.5 space-y-1 overflow-y-auto min-h-0 overflow-x-hidden">
+        {navGroups.map((group, groupIdx) => (
+          <div
+            key={group.label}
+            className={groupIdx > 0 ? 'pt-3 mt-2 border-t-2 border-[#000000]/10 dark:border-white/10' : ''}
+          >
+            {!isCollapsed && (
+              <p className="px-3.5 pb-1 text-[10px] font-black uppercase tracking-widest text-[#1D1B1B]/45 dark:text-[#F6EFEF]/40">
+                {group.label}
+              </p>
+            )}
+            <div className="space-y-1">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const isActive = currentView === item.id;
+                const navButton = (
+                  <button
+                    key={item.id}
+                    onClick={() => onNavigate(item.id as NavView)}
+                    aria-label={item.label}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`w-full flex items-center ${
+                      isCollapsed ? 'justify-center px-2 py-3' : 'gap-3 px-3.5 py-2.5'
+                    } rounded font-black text-xs uppercase tracking-wider transition-all text-left group relative ${
+                      isActive
+                        ? 'bg-[#F2C94C] text-[#000000] neo-border neo-shadow'
+                        : 'text-[#1D1B1B] dark:text-[#F6EFEF] border-2 border-transparent hover:border-[#000000] hover:bg-[#F9F2F1] dark:hover:bg-[#2B2929]'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#000000]' : 'text-[#1D1B1B] dark:text-[#F6EFEF]'}`} />
+                    {!isCollapsed && <span className="truncate">{item.label}</span>}
+                  </button>
+                );
 
-          if (isCollapsed) {
-            return (
-              <Tooltip key={item.id} content={item.label} position="right">
-                {navButton}
-              </Tooltip>
-            );
-          }
+                if (isCollapsed) {
+                  return (
+                    <Tooltip key={item.id} content={item.label} position="right">
+                      {navButton}
+                    </Tooltip>
+                  );
+                }
 
-          return navButton;
-        })}
+                return navButton;
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Learner Progress Footer */}

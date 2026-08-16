@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { NavigationRail, NavView } from './NavigationRail';
 import { TopBar } from './TopBar';
 import { Breadcrumbs } from './Breadcrumbs';
@@ -308,18 +308,24 @@ const AppShellContent: React.FC = () => {
           ref={mainScrollRef}
           className="flex-1 overflow-y-auto pb-12 w-full min-w-0 overflow-x-hidden relative"
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeProgram}-${currentView}`}
-              initial={progress.reducedMotion ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{
-                duration: progress.reducedMotion ? 0 : 0.22,
-                ease: [0.25, 1, 0.5, 1],
-              }}
-              className="w-full h-full min-w-0"
-            >
+          {/*
+            No AnimatePresence/exit animation here on purpose: an exit-coordinated crossfade only
+            mounts the next view after the previous one's exit animation resolves via
+            requestAnimationFrame, which is throttled or paused entirely in backgrounded/hidden
+            tabs — a learner who switches tabs mid-navigation could come back to what looks like a
+            frozen app. Without an `exit` prop, React swaps views immediately on key change and
+            this only animates the new view's own entrance, so navigation is never gated on rAF.
+          */}
+          <motion.div
+            key={`${activeProgram}-${currentView}`}
+            initial={progress.reducedMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: progress.reducedMotion ? 0 : 0.22,
+              ease: [0.25, 1, 0.5, 1],
+            }}
+            className="w-full h-full min-w-0"
+          >
               <ErrorBoundary resetKey={`${activeProgram}-${currentView}`}>
               <Suspense fallback={<ViewLoadingFallback />}>
               {currentView === 'dashboard' && (
@@ -433,7 +439,6 @@ const AppShellContent: React.FC = () => {
               </Suspense>
               </ErrorBoundary>
             </motion.div>
-          </AnimatePresence>
         </main>
       </div>
 

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Settings, Save, Trash2, Download, Shield, CheckCircle2, CloudDownload, FileText } from 'lucide-react';
+import { Settings, Save, Trash2, Download, Shield, CheckCircle2, CloudDownload, FileText, Wrench, ExternalLink } from 'lucide-react';
 import { LearnerProgress } from '../../types/curriculum';
 import { clearAllLocalData } from '../../services/storage';
 import { clearAllOfflineResources, formatBytes, getOfflineStorageStats } from '../../services/offlineResourceCache';
+import { formatViewURL } from '../../utils/routes';
 import { ThemeSwitcher } from '../ui/ThemeSwitcher';
 import { Dialog } from '../common';
 
@@ -200,6 +201,29 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           >
             <Trash2 className="w-4 h-4" /> Reset Local Data
           </button>
+        </div>
+      </div>
+
+      {/* Internal Tools — deliberately not in the main sidebar (see NavigationRail.tsx); these are
+          verification dashboards, not learner-facing features, but stay reachable here for anyone
+          checking resource health or curriculum integrity. */}
+      <div className="border-t-2 border-dashed border-[#000000]/20 dark:border-white/15 pt-6 space-y-2">
+        <h2 className="text-xs font-black uppercase tracking-wider text-[#000000]/50 dark:text-[#F6EFEF]/40 flex items-center gap-1.5">
+          <Wrench className="w-3.5 h-3.5" /> Internal Tools
+        </h2>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={`#${formatViewURL(progress.selectedProgram, 'resource-health')}`}
+            className="px-3 py-2 text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/60 border border-[#000000]/20 dark:border-white/15 rounded hover:bg-[#FEF8F7] dark:hover:bg-[#2B2929] flex items-center gap-1.5"
+          >
+            Resource Health Dashboard <ExternalLink className="w-3 h-3" />
+          </a>
+          <a
+            href="#/audit"
+            className="px-3 py-2 text-xs font-bold text-[#000000]/70 dark:text-[#F6EFEF]/60 border border-[#000000]/20 dark:border-white/15 rounded hover:bg-[#FEF8F7] dark:hover:bg-[#2B2929] flex items-center gap-1.5"
+          >
+            Curriculum Audit <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
 
