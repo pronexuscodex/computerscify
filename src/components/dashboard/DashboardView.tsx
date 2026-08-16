@@ -235,19 +235,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setPaperIndex(prev => (prev > 0 ? prev - 1 : papers.length - 1))}
-                        className="flex h-11 w-11 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)]"
+                        className="flex h-7 w-7 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)] hover:bg-[#000000] hover:text-[#FFFFFF] transition-colors"
                         aria-label="Previous paper"
                       >
-                        <ChevronLeft className="w-3.5 h-3.5 text-[#000000]" />
+                        <ChevronLeft className="w-3.5 h-3.5" />
                       </button>
-                      <span className="px-1 text-xs font-black">{paperIndex + 1}/{papers.length}</span>
+                      <span className="px-1 text-[11px] font-black tabular-nums">{paperIndex + 1}/{papers.length}</span>
                       <button
                         type="button"
                         onClick={() => setPaperIndex(prev => (prev < papers.length - 1 ? prev + 1 : 0))}
-                        className="flex h-11 w-11 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)]"
+                        className="flex h-7 w-7 items-center justify-center rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] shadow-[var(--ds-shadow-sm)] hover:bg-[#000000] hover:text-[#FFFFFF] transition-colors"
                         aria-label="Next paper"
                       >
-                        <ChevronRight className="w-3.5 h-3.5 text-[#000000]" />
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   )}
