@@ -68,30 +68,37 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Milen Patel',
     fallbacks: [
       { videoId: '8mAITcNt710', title: 'CS50 Lecture 0 - Computational Thinking', institution: 'Harvard CS50', instructor: 'David J. Malan' },
-      { videoId: 'zOjov-2OZ0E', title: 'Introduction to Programming and Computer Science', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' }
+      { videoId: 'zOjov-2OZ0E', title: 'Introduction to Programming and Computer Science', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' },
+      { videoId: '7P-LGEJS3A8', title: 'L01: The Digital Abstraction', institution: 'MIT OpenCourseWare', instructor: 'Silvina Hanono Wachman' }
     ]
   }),
+  // Promoted primary: the previous primary (26QPDBe-NB8) is an ~11-minute CrashCourse survey episode
+  // despite the entry claiming 90 minutes — verified via oEmbed to be a mismatch. This full UC Berkeley
+  // CS162 lecture is a genuine, comprehensive match for "Operating Systems & Memory Abstractions."
   'p0-m1-t2': makeVerifiedVideo({
-    id: 'lec-mit-6004',
+    id: 'lec-berkeley-cs162',
     title: 'Operating Systems & Memory Abstractions',
-    institution: 'CrashCourse / MIT OCW',
-    videoId: '26QPDBe-NB8',
-    durationMinutes: 90,
-    instructor: 'CrashCourse Computer Science',
+    institution: 'UC Berkeley',
+    videoId: 'pPzVV2kkGHc',
+    durationMinutes: 75,
+    instructor: 'John Kubiatowicz',
     fallbacks: [
-      { videoId: 'k6U-i4gXkLM', title: 'Lec 1 | MIT 6.00 Intro to Computer Science', institution: 'MIT OpenCourseWare', instructor: 'Eric Grimson' },
-      { videoId: 'ZA-tUyM_y7s', title: 'Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
+      { videoId: '26QPDBe-NB8', title: 'Operating Systems: Crash Course Computer Science #18', institution: 'CrashCourse', instructor: 'Carrie Anne Philbin' },
+      { videoId: 'db0H0U13YsA', title: 'CS50x - Lecture 4 - Memory', institution: 'Harvard CS50', instructor: 'David J. Malan' }
     ]
   }),
 
   // Phase 1
+  // Promoted primary: the previous primary (WUvTyaaNkzM) is actually 3Blue1Brown's "Essence of
+  // Calculus" series trailer (verified via oEmbed) — it belongs correctly to math101-t1, not here.
+  // This MIT lecture is specifically on exponential/logarithmic functions.
   'p1-m2-t1': makeVerifiedVideo({
-    id: 'lec-math-alg',
+    id: 'lec-mit-1801-logs',
     title: 'Functions, Exponents, and Logarithms in Computing',
-    institution: '3Blue1Brown',
-    videoId: 'WUvTyaaNkzM',
-    durationMinutes: 45,
-    instructor: 'Grant Sanderson',
+    institution: 'MIT OpenCourseWare',
+    videoId: '9v25gg2qJYE',
+    durationMinutes: 50,
+    instructor: 'David Jerison',
     fallbacks: [
       { videoId: 'KbB0FjPg0mw', title: 'Lecture 1: Probability and Counting | Statistics 110', institution: 'Harvard University', instructor: 'Joe Blitzstein' },
       { videoId: 'L3LMbpZIKhQ', title: 'MIT 6.042J Mathematics for Computer Science', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' }
@@ -106,7 +113,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Tom Leighton',
     fallbacks: [
       { videoId: 'z8HKWUWS-lA', title: 'Lec 2 | MIT 6.042J Mathematics for Computer Science', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' },
-      { videoId: 'ZA-tUyM_y7s', title: '1. Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
+      { videoId: 'ZA-tUyM_y7s', title: '1. Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' },
+      { videoId: 'NuGDkmwEObM', title: 'Lec 3 | MIT 6.042J Mathematics for Computer Science (Strong Induction)', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' }
     ]
   }),
   'p1-m4-t1': makeVerifiedVideo({
@@ -118,7 +126,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Gilbert Strang',
     fallbacks: [
       { videoId: 'QVKj3LADCnA', title: '2. Elimination with Matrices | MIT 18.06', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' },
-      { videoId: '7UJ4CFRGd-U', title: 'An Interview with Gilbert Strang on Teaching Linear Algebra', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' }
+      { videoId: '7UJ4CFRGd-U', title: 'An Interview with Gilbert Strang on Teaching Linear Algebra', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' },
+      { videoId: 'YrHlHbtiSM0', title: 'Intro: A New Way to Start Linear Algebra', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' }
     ]
   }),
 
@@ -132,7 +141,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'David J. Malan',
     fallbacks: [
       { videoId: 't8pPdKYpowI', title: 'Python Tutorial for Beginners - Learn Python in 5 Hours', institution: 'TechWorld with Nana', instructor: 'Nana Janashia' },
-      { videoId: 'eWRfhZUzrAc', title: 'Python for Beginners – Full Course', institution: 'freeCodeCamp.org', instructor: 'Beau Carnes' }
+      { videoId: 'eWRfhZUzrAc', title: 'Python for Beginners – Full Course', institution: 'freeCodeCamp.org', instructor: 'Beau Carnes' },
+      { videoId: 'xAcTmDO6NTI', title: 'Lecture 1: Introduction to CS and Programming Using Python', institution: 'MIT OpenCourseWare', instructor: 'Ana Bell' }
     ]
   }),
   'p2-m10-t1': makeVerifiedVideo({
@@ -156,7 +166,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Andy Pavlo',
     fallbacks: [
       { videoId: 'HXV3zeQKqGY', title: 'SQL Tutorial - Full Database Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' },
-      { videoId: 'qw--VYLpxG4', title: 'Learn PostgreSQL Tutorial - Full Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' }
+      { videoId: 'qw--VYLpxG4', title: 'Learn PostgreSQL Tutorial - Full Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' },
+      { videoId: '6VCHuLqfmV8', title: '#02 - Advanced SQL (CMU Databases Systems)', institution: 'Carnegie Mellon University', instructor: 'Andy Pavlo' }
     ]
   }),
 
@@ -170,7 +181,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Erik Demaine',
     fallbacks: [
       { videoId: 'HtSuA80QTyo', title: 'Lecture 1: Algorithmic Thinking, Peak Finding', institution: 'MIT OpenCourseWare', instructor: 'Srini Devadas' },
-      { videoId: 'L3LMbpZIKhQ', title: 'MIT 6.042J Mathematics for Computer Science', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' }
+      { videoId: 'L3LMbpZIKhQ', title: 'MIT 6.042J Mathematics for Computer Science', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' },
+      { videoId: '2P-yW7LQr08', title: '1. Course Overview, Interval Scheduling (MIT 6.046J)', institution: 'MIT OpenCourseWare' }
     ]
   }),
 
@@ -184,7 +196,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Joe Blitzstein',
     fallbacks: [
       { videoId: 'XepXtl9YKwc', title: 'Maximum Likelihood, clearly explained!!!', institution: 'StatQuest', instructor: 'Josh Starmer' },
-      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
+      { videoId: 'j9WZyLZCBzs', title: '1. Probability Models and Axioms (MIT 6.041)', institution: 'MIT OpenCourseWare', instructor: 'John Tsitsiklis' }
     ]
   }),
 
@@ -198,7 +211,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Andrew Ng',
     fallbacks: [
       { videoId: 'aircAruvnKk', title: 'But what is a neural network? | Deep learning chapter 1', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
-      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' }
+      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' },
+      { videoId: '0xaLT4Svzgo', title: 'Lecture 1: Basics (MIT 6.036 Machine Learning)', institution: 'MIT OpenCourseWare', instructor: 'Tamara Broderick' }
     ]
   }),
 
@@ -212,21 +226,27 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Fei-Fei Li / Andrej Karpathy',
     fallbacks: [
       { videoId: 'aircAruvnKk', title: 'But what is a neural network? | Deep learning chapter 1', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
-      { videoId: 'kCc8FmEb1nY', title: 'Let\'s build GPT: from scratch, in code, spelled out.', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' }
+      { videoId: 'kCc8FmEb1nY', title: 'Let\'s build GPT: from scratch, in code, spelled out.', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' },
+      { videoId: 'PySo_6S4ZAg', title: 'Lecture 1 - Class Introduction & Logistics (Stanford CS230)', institution: 'Stanford Online', instructor: 'Andrew Ng' },
+      { videoId: '5tvmMX8r_OM', title: 'MIT 6.S191 (2021): Introduction to Deep Learning', institution: 'MIT', instructor: 'Alexander Amini' }
     ]
   }),
 
   // Phase 7
+  // Promoted primary: the previous primary (06-AZXmwHjo) is an informal "chat," not a structured
+  // lecture, and is reused generically across three different topic entries in this registry. This
+  // is an actual lecture from the "Full Stack Deep Learning" course, on the exact subject
+  // (production ML deployment) named in the topic title.
   'p7-m18-t1': makeVerifiedVideo({
-    id: 'lec-mlops-deploy',
+    id: 'lec-fsdl-deploy',
     title: 'Full Stack Deep Learning & MLOps Deployment',
-    institution: 'DeepLearningAI / Andrew Ng',
-    videoId: '06-AZXmwHjo',
+    institution: 'Full Stack Deep Learning',
+    videoId: 'jFflwpx4iK0',
     durationMinutes: 60,
-    instructor: 'Andrew Ng',
     fallbacks: [
-      { videoId: 'kCc8FmEb1nY', title: 'Let\'s build GPT: from scratch, in code, spelled out.', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' },
-      { videoId: 'HXV3zeQKqGY', title: 'SQL Tutorial - Full Database Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' }
+      { videoId: 'fGxWfEuUu0w', title: 'Lecture 1: Deep Learning Fundamentals (Full Stack Deep Learning)', institution: 'Full Stack Deep Learning' },
+      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' },
+      { videoId: 'kCc8FmEb1nY', title: 'Let\'s build GPT: from scratch, in code, spelled out.', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' }
     ]
   }),
 
@@ -240,7 +260,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Robert Morris',
     fallbacks: [
       { videoId: '26QPDBe-NB8', title: 'Operating Systems: Crash Course Computer Science #18', institution: 'CrashCourse', instructor: 'Carrie Anne Philbin' },
-      { videoId: 'ZA-tUyM_y7s', title: '1. Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
+      { videoId: 'ZA-tUyM_y7s', title: '1. Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' },
+      { videoId: 'gA4YXUJX7t8', title: 'Lecture 2: RPC and Threads (MIT 6.824)', institution: 'MIT 6.824: Distributed Systems' }
     ]
   }),
 
@@ -254,17 +275,22 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Milen Patel',
     fallbacks: [
       { videoId: '8mAITcNt710', title: 'CS50 Lecture 0 - Computational Thinking', institution: 'Harvard CS50', instructor: 'David J. Malan' },
-      { videoId: 'k6U-i4gXkLM', title: 'MIT 6.00 Intro to CS', institution: 'MIT OpenCourseWare', instructor: 'Eric Grimson' }
+      { videoId: 'k6U-i4gXkLM', title: 'MIT 6.00 Intro to CS', institution: 'MIT OpenCourseWare', instructor: 'Eric Grimson' },
+      { videoId: 'O5nskjZ_GoI', title: 'Early Computing: Crash Course Computer Science #1', institution: 'CrashCourse', instructor: 'Carrie Anne Philbin' }
     ]
   }),
+  // Promoted primary: the previous primary (k6U-i4gXkLM) actually oEmbeds as "Lec 1 | MIT 6.00
+  // Introduction to Computer Science and Programming, Fall 2008" — a different, older course than
+  // the "MIT 6.0001" this entry claims. This is the genuine MIT 6.0001 Lecture 1.
   'cs101-extra-mit': makeVerifiedVideo({
     id: 'cs101-lec-mit',
     title: 'MIT 6.0001: Intro to CS and Programming',
     institution: 'MIT OpenCourseWare',
-    videoId: 'k6U-i4gXkLM',
+    videoId: 'nykOeWgQcHM',
     durationMinutes: 50,
-    instructor: 'Eric Grimson',
+    instructor: 'Ana Bell',
     fallbacks: [
+      { videoId: 'k6U-i4gXkLM', title: 'Lec 1 | MIT 6.00 Introduction to Computer Science and Programming', institution: 'MIT OpenCourseWare', instructor: 'Eric Grimson' },
       { videoId: '8mAITcNt710', title: 'Harvard CS50', institution: 'freeCodeCamp.org', instructor: 'David J. Malan' },
       { videoId: 'zOjov-2OZ0E', title: 'Intro to CS', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' }
     ]
@@ -278,7 +304,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Julie Zelenski',
     fallbacks: [
       { videoId: 'nLRL_NcnK-4', title: 'Harvard CS50’s Intro to Programming with Python', institution: 'freeCodeCamp.org', instructor: 'David J. Malan' },
-      { videoId: 'eWRfhZUzrAc', title: 'Python for Beginners – Full Course', institution: 'freeCodeCamp.org', instructor: 'Beau Carnes' }
+      { videoId: 'eWRfhZUzrAc', title: 'Python for Beginners – Full Course', institution: 'freeCodeCamp.org', instructor: 'Beau Carnes' },
+      { videoId: 'wmiD5J8Dw9E', title: 'Lecture 2 | Programming Abstractions', institution: 'Stanford University', instructor: 'Julie Zelenski' }
     ]
   }),
   'math101-t1': makeVerifiedVideo({
@@ -290,19 +317,23 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Grant Sanderson',
     fallbacks: [
       { videoId: 'J7DzL2_Na80', title: 'MIT 18.06 Geometry of Linear Equations', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' },
-      { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' }
+      { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' },
+      { videoId: '7K1sB05pE0A', title: 'Lec 1 | MIT 18.01 Single Variable Calculus', institution: 'MIT OpenCourseWare', instructor: 'David Jerison' }
     ]
   }),
+  // Promoted primary: the previous primary (ZA-tUyM_y7s) is actually MIT 6.006's general
+  // "Algorithms and Computation" intro lecture — it has no hashing content, a mismatch with this
+  // entry's own "Hashing and Hash Tables" title. This is the genuine hashing lecture from the same course.
   'cs201-t1': makeVerifiedVideo({
-    id: 'cs201-lec-1',
+    id: 'cs201-lec-hashing',
     title: 'MIT 6.006: Hashing and Hash Tables',
     institution: 'MIT OpenCourseWare',
-    videoId: 'ZA-tUyM_y7s',
+    videoId: '0M_kIqhwbFo',
     durationMinutes: 50,
     instructor: 'Erik Demaine',
     fallbacks: [
-      { videoId: 'HtSuA80QTyo', title: 'Lecture 1: Algorithmic Thinking, Peak Finding', institution: 'MIT OpenCourseWare', instructor: 'Srini Devadas' },
-      { videoId: 'L3LMbpZIKhQ', title: 'MIT 6.042J Mathematics for CS', institution: 'MIT OpenCourseWare', instructor: 'Tom Leighton' }
+      { videoId: 'rvdJDijO2Ro', title: 'Lecture 10: Open Addressing, Cryptographic Hashing', institution: 'MIT OpenCourseWare', instructor: 'Srini Devadas' },
+      { videoId: 'ZA-tUyM_y7s', title: '1. Algorithms and Computation | MIT 6.006', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
     ]
   }),
   'math201-t1': makeVerifiedVideo({
@@ -314,7 +345,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Kutz',
     fallbacks: [
       { videoId: 'J7DzL2_Na80', title: '1. The Geometry of Linear Equations | MIT 18.06', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' },
-      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
+      { videoId: 'TX_vooSnhm8', title: '29. Singular Value Decomposition', institution: 'MIT OpenCourseWare', instructor: 'Gilbert Strang' }
     ]
   }),
   'cs204-t1': makeVerifiedVideo({
@@ -326,17 +358,22 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Dan Garcia / Borivoje Nikolic',
     fallbacks: [
       { videoId: '26QPDBe-NB8', title: 'Operating Systems: Crash Course Computer Science #18', institution: 'CrashCourse', instructor: 'Carrie Anne Philbin' },
-      { videoId: '8mAITcNt710', title: 'Harvard CS50', institution: 'freeCodeCamp.org', instructor: 'David J. Malan' }
+      { videoId: '8mAITcNt710', title: 'Harvard CS50', institution: 'freeCodeCamp.org', instructor: 'David J. Malan' },
+      { videoId: '7P-LGEJS3A8', title: 'L01: The Digital Abstraction (MIT 6.004)', institution: 'MIT OpenCourseWare', instructor: 'Silvina Hanono Wachman' }
     ]
   }),
+  // Promoted primary: the previous primary (26QPDBe-NB8) is a ~15-minute CrashCourse survey episode
+  // — too thin for a degree-level "Operating Systems & Kernel Architecture" course. Same promotion
+  // applied at p0-m1-t2, which covers the same underlying subject.
   'cs301-t1': makeVerifiedVideo({
-    id: 'cs301-lec-1',
+    id: 'cs301-lec-berkeley-cs162',
     title: 'Operating Systems & Kernel Architecture Mechanics',
-    institution: 'CrashCourse Computer Science',
-    videoId: '26QPDBe-NB8',
-    durationMinutes: 15,
-    instructor: 'Carrie Anne Philbin',
+    institution: 'UC Berkeley',
+    videoId: 'pPzVV2kkGHc',
+    durationMinutes: 75,
+    instructor: 'John Kubiatowicz',
     fallbacks: [
+      { videoId: '26QPDBe-NB8', title: 'Operating Systems: Crash Course Computer Science #18', institution: 'CrashCourse', instructor: 'Carrie Anne Philbin' },
       { videoId: 'cQP8WApzIQQ', title: 'MIT 6.824 Distributed Systems Lecture 1', institution: 'MIT 6.824', instructor: 'Robert Morris' },
       { videoId: 'ZA-tUyM_y7s', title: 'MIT 6.006 Algorithms Lecture 1', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
     ]
@@ -350,19 +387,22 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Andrej Karpathy',
     fallbacks: [
       { videoId: 'aircAruvnKk', title: 'But what is a neural network? | Deep learning chapter 1', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
-      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' }
+      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' },
+      { videoId: 'd02VkQ9MP44', title: 'MIT 6.S191: Recurrent Neural Networks, Transformers, and Attention', institution: 'MIT', instructor: 'Alexander Amini' }
     ]
   }),
+  // Promoted primary: the previous primary (XepXtl9YKwc) is StatQuest's "Maximum Likelihood,
+  // clearly explained!!!" — unrelated to differential privacy, a mismatch with this entry's title.
   'cs404-t1': makeVerifiedVideo({
-    id: 'cs404-lec-1',
+    id: 'cs404-lec-diffpriv',
     title: 'Differential Privacy & Algorithmic Ethics in Data Systems',
-    institution: 'StatQuest with Josh Starmer',
-    videoId: 'XepXtl9YKwc',
-    durationMinutes: 20,
-    instructor: 'Josh Starmer',
+    institution: 'Simons Institute for the Theory of Computing',
+    videoId: 'ekIL65D0R3o',
+    durationMinutes: 60,
+    instructor: 'Katrina Ligett',
     fallbacks: [
       { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' },
-      { videoId: '8mAITcNt710', title: 'Harvard CS50', institution: 'freeCodeCamp.org', instructor: 'David J. Malan' }
+      { videoId: 'XepXtl9YKwc', title: 'Maximum Likelihood, clearly explained!!!', institution: 'StatQuest', instructor: 'Josh Starmer' }
     ]
   }),
 
@@ -400,31 +440,37 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Josh Starmer',
     fallbacks: [
       { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' },
-      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
+      { videoId: '0Va2dOLqUfM', title: '5. Maximum Likelihood Estimation (cont.) — MIT 18.650', institution: 'MIT OpenCourseWare', instructor: 'Philippe Rigollet' }
     ]
   }),
+  // Promoted primary: the previous primary (7NPIENPr-zk) actually oEmbeds as CMU's "#01 -
+  // Relational Model & Algebra" — a basics lecture, mismatched with this entry's "Advanced
+  // Relational SQL" title. This is the course's actual "Modern SQL" lecture (window functions, etc.).
   'ds202-t1': makeVerifiedVideo({
-    id: 'ds202-lec-1',
+    id: 'ds202-lec-modernsql',
     title: 'CMU 15-445: Database Systems (Advanced Relational SQL)',
     institution: 'Carnegie Mellon University / CMU Database Group',
-    videoId: '7NPIENPr-zk',
+    videoId: 'MzigBKf84aY',
     durationMinutes: 80,
     instructor: 'Andy Pavlo',
     fallbacks: [
-      { videoId: 'HXV3zeQKqGY', title: 'SQL Tutorial - Full Database Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' },
-      { videoId: 'qw--VYLpxG4', title: 'Learn PostgreSQL Tutorial - Full Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'freeCodeCamp' }
+      { videoId: '7NPIENPr-zk', title: '#01 - Relational Model & Algebra (CMU 15-445)', institution: 'Carnegie Mellon University', instructor: 'Andy Pavlo' },
+      { videoId: 'HXV3zeQKqGY', title: 'SQL Tutorial - Full Database Course for Beginners', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' }
     ]
   }),
+  // Promoted primary: the previous primary is a general probability-intro lecture, a weak fit for
+  // "Causal Inference" specifically. This Stanford-affiliated talk is directly on-topic.
   'ds302-t1': makeVerifiedVideo({
-    id: 'ds302-lec-1',
+    id: 'ds302-lec-athey',
     title: 'Causal Inference & Statistical Modeling Foundations',
-    institution: 'Harvard University',
-    videoId: 'KbB0FjPg0mw',
-    durationMinutes: 50,
-    instructor: 'Joe Blitzstein',
+    institution: 'NBER (Stanford GSB)',
+    videoId: 'RrOPYZ164wo',
+    durationMinutes: 60,
+    instructor: 'Susan Athey',
     fallbacks: [
-      { videoId: 'XepXtl9YKwc', title: 'Maximum Likelihood, clearly explained!!!', institution: 'StatQuest', instructor: 'Josh Starmer' },
-      { videoId: 'WUvTyaaNkzM', title: 'The essence of calculus', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' },
+      { videoId: 'XepXtl9YKwc', title: 'Maximum Likelihood, clearly explained!!!', institution: 'StatQuest', instructor: 'Josh Starmer' }
     ]
   }),
   'ds305-t1': makeVerifiedVideo({
@@ -436,19 +482,22 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Josh Starmer',
     fallbacks: [
       { videoId: '8b1JEDvenQU', title: 'XGBoost Part 2 (of 4): Classification', institution: 'StatQuest', instructor: 'Josh Starmer' },
-      { videoId: '3CC4N4z3GJc', title: 'Gradient Boost Part 1 (of 4): Regression', institution: 'StatQuest', instructor: 'Josh Starmer' }
+      { videoId: '3CC4N4z3GJc', title: 'Gradient Boost Part 1 (of 4): Regression', institution: 'StatQuest', instructor: 'Josh Starmer' },
+      { videoId: 'QNnayf--_yk', title: '8.1 Tree-Based Methods (Statistical Learning)', institution: 'Stanford Online', instructor: 'Trevor Hastie' }
     ]
   }),
+  // Promoted primary: the previous primary is a 12-minute general-audience science video, only
+  // tangentially related to ML ethics specifically. This is a full, on-topic MIT lecture.
   'ds404-t1': makeVerifiedVideo({
-    id: 'ds404-lec-1',
+    id: 'ds404-lec-mit-bias',
     title: 'Data Governance, Privacy, and Ethics in Machine Learning',
-    institution: 'minutephysics',
-    videoId: 'pT19VwBAqKA',
-    durationMinutes: 12,
-    instructor: 'Henry Reich',
+    institution: 'MIT',
+    videoId: 'wmyVODy_WD8',
+    durationMinutes: 50,
+    instructor: 'Ava Soleimany',
     fallbacks: [
       { videoId: 'XepXtl9YKwc', title: 'Maximum Likelihood, clearly explained!!!', institution: 'StatQuest', instructor: 'Josh Starmer' },
-      { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Lecture 1', institution: 'Harvard University', instructor: 'Joe Blitzstein' }
+      { videoId: 'pT19VwBAqKA', title: 'Data Privacy & Cryptographic Hash Functions', institution: 'minutephysics', instructor: 'Henry Reich' }
     ]
   }),
   'cs302-t1': makeVerifiedVideo({
@@ -460,28 +509,35 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Robert Morris',
     fallbacks: [
       { videoId: '26QPDBe-NB8', title: 'Operating Systems & Memory Abstractions', institution: 'CrashCourse', instructor: 'CrashCourse' },
-      { videoId: 'ZA-tUyM_y7s', title: 'MIT OCW 6.006: Introduction to Algorithms', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
+      { videoId: 'ZA-tUyM_y7s', title: 'MIT OCW 6.006: Introduction to Algorithms', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' },
+      { videoId: 'EpIgvowZr00', title: 'Lecture 3: GFS (MIT 6.824)', institution: 'MIT 6.824: Distributed Systems' },
+      { videoId: '4r8Mz3MMivY', title: 'Lecture 7: Fault Tolerance: Raft (2) (MIT 6.824)', institution: 'MIT 6.824: Distributed Systems' }
     ]
   }),
+  // Promoted primary: the previous primary (VJ6tuX5bBf4) actually oEmbeds as "[CS61C FA20] Weekly
+  // Lecture 01 - Great Ideas in Computer Architecture" — Berkeley architecture content, not Stanford
+  // compilers, and duplicated verbatim from cs204-t1. This is a real MIT compilers lecture; the
+  // Coursera fallback is the actual Alex Aiken Stanford Compilers course named in the original entry.
   'cs303-t1': makeVerifiedVideo({
-    id: 'cs303-lec-1',
+    id: 'cs303-lec-mit6035',
     title: 'Stanford CS143: Compilers, Lexing & Abstract Syntax Trees',
-    institution: 'Stanford University',
-    videoId: 'VJ6tuX5bBf4',
-    durationMinutes: 75,
-    instructor: 'Alex Aiken',
+    institution: 'MIT OpenCourseWare',
+    videoId: 'k-bpyDgBxAo',
+    durationMinutes: 80,
     fallbacks: [
-      { videoId: '26QPDBe-NB8', title: 'Operating Systems & Memory Abstractions', institution: 'CrashCourse', instructor: 'CrashCourse' },
-      { videoId: 'VJ6tuX5bBf4', title: 'UC Berkeley CS61C: Great Ideas in Computer Architecture', institution: 'UC Berkeley', instructor: 'Dan Garcia' }
+      { videoId: 'sm0QQO-WZlM', title: 'Compilers with Alex Aiken', institution: 'Stanford University (via Coursera)', instructor: 'Alex Aiken' }
     ]
   }),
+  // Promoted primary: the previous primary (zOjov-2OZ0E) is freeCodeCamp's generic "Introduction to
+  // Programming and Computer Science" — not software-architecture specific. This CMU lecture,
+  // taught by a well-known software-architecture author, is directly on-topic.
   'cs304-t1': makeVerifiedVideo({
-    id: 'cs304-lec-1',
+    id: 'cs304-lec-cmu-arch',
     title: 'Software Engineering & System Architecture Principles',
-    institution: 'freeCodeCamp.org',
-    videoId: 'zOjov-2OZ0E',
-    durationMinutes: 60,
-    instructor: 'freeCodeCamp',
+    institution: 'Carnegie Mellon University',
+    videoId: '5aG2LvFDVQU',
+    durationMinutes: 50,
+    instructor: 'George Fairbanks',
     fallbacks: [
       { videoId: 'HXV3zeQKqGY', title: 'Database Design & Relational Modeling', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' },
       { videoId: 'cQP8WApzIQQ', title: 'Distributed System Architecture', institution: 'MIT OpenCourseWare', instructor: 'Robert Morris' }
@@ -499,25 +555,32 @@ export const VERIFIED_VIDEOS = {
       { videoId: 'cQP8WApzIQQ', title: 'MIT 6.824: Distributed Systems', institution: 'MIT OpenCourseWare', instructor: 'Robert Morris' }
     ]
   }),
+  // Promoted primary: the previous primary (L3LMbpZIKhQ) actually oEmbeds as "Lec 1 | MIT 6.042J
+  // Mathematics for Computer Science" (discrete math/proofs), duplicated verbatim from p1-m3-t1 —
+  // not automata theory, a mismatch with this entry's title. This is the genuine automata-theory
+  // lecture from MIT's actual Theory of Computation course.
   'cs402-t1': makeVerifiedVideo({
-    id: 'cs402-lec-1',
+    id: 'cs402-lec-sipser',
     title: 'MIT OCW 6.045J: Automata, Formal Languages & Computability',
     institution: 'MIT OpenCourseWare',
-    videoId: 'L3LMbpZIKhQ',
+    videoId: '9syvZr-9xwk',
     durationMinutes: 80,
-    instructor: 'Tom Leighton',
+    instructor: 'Michael Sipser',
     fallbacks: [
-      { videoId: 'ZA-tUyM_y7s', title: 'MIT 6.006 Algorithms & Theory', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' },
-      { videoId: 'WUvTyaaNkzM', title: 'Mathematics for Computing', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'oNsscmUwjMU', title: '2. Nondeterminism, Closure Properties, Conversion of Regular Expressions to FA', institution: 'MIT OpenCourseWare', instructor: 'Michael Sipser' },
+      { videoId: 'ZA-tUyM_y7s', title: 'MIT 6.006 Algorithms & Theory', institution: 'MIT OpenCourseWare', instructor: 'Erik Demaine' }
     ]
   }),
+  // Promoted primary: the previous primary (26QPDBe-NB8) is CrashCourse's "Operating Systems"
+  // episode, duplicated verbatim from cs301-t1 — completely unrelated to cryptography/security, a
+  // mismatch with this entry's title. This is MIT's actual computer-security course.
   'cs403-t1': makeVerifiedVideo({
-    id: 'cs403-lec-1',
+    id: 'cs403-lec-mit6858',
     title: 'Applied Cryptography & Zero-Trust Network Security',
-    institution: 'freeCodeCamp.org / Stanford',
-    videoId: '26QPDBe-NB8',
-    durationMinutes: 60,
-    instructor: 'freeCodeCamp',
+    institution: 'MIT OpenCourseWare',
+    videoId: 'M2gc6b1hmk8',
+    durationMinutes: 80,
+    instructor: 'Nickolai Zeldovich',
     fallbacks: [
       { videoId: 'pT19VwBAqKA', title: 'Data Privacy & Cryptographic Hash Functions', institution: 'minutephysics', instructor: 'Henry Reich' },
       { videoId: '8mAITcNt710', title: 'Harvard CS50 Security Lecture', institution: 'Harvard CS50', instructor: 'David J. Malan' }
@@ -532,18 +595,20 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Mike Dane',
     fallbacks: [
       { videoId: '7NPIENPr-zk', title: 'CMU 15-445 Database Systems', institution: 'Carnegie Mellon University', instructor: 'Andy Pavlo' },
-      { videoId: 'QUT1VHiLmmI', title: 'NumPy & Data Transformations', institution: 'freeCodeCamp.org', instructor: 'Keith Galli' }
+      { videoId: 'QUT1VHiLmmI', title: 'NumPy & Data Transformations', institution: 'freeCodeCamp.org', instructor: 'Keith Galli' },
+      { videoId: 'O5gU9NQjCAs', title: '#02 - Modern SQL + dbt Database Talk (CMU Intro to Database Systems)', institution: 'Carnegie Mellon University', instructor: 'Andy Pavlo' }
     ]
   }),
+  // Promoted primary: the previous primary (XepXtl9YKwc) is StatQuest's "Maximum Likelihood,
+  // clearly explained!!!" — unrelated to time series analysis, a mismatch with this entry's title.
   'ds304-t1': makeVerifiedVideo({
-    id: 'ds304-lec-1',
+    id: 'ds304-lec-mit-timeseries',
     title: 'Applied Time Series Analysis, ARIMA & Decomposition',
-    institution: 'StatQuest with Josh Starmer',
-    videoId: 'XepXtl9YKwc',
-    durationMinutes: 45,
-    instructor: 'Josh Starmer',
+    institution: 'MIT OpenCourseWare',
+    videoId: 'uBeM1FUk4Ps',
+    durationMinutes: 80,
+    instructor: 'Peter Kempthorne',
     fallbacks: [
-      { videoId: 'OtD8wVaFm6E', title: 'Gradient Boosting & Time Series Features', institution: 'StatQuest', instructor: 'Josh Starmer' },
       { videoId: 'KbB0FjPg0mw', title: 'Harvard Stat 110 Probability', institution: 'Harvard University', instructor: 'Joe Blitzstein' }
     ]
   }),
@@ -556,31 +621,40 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Andrew Ng',
     fallbacks: [
       { videoId: 'zOjov-2OZ0E', title: 'UC Berkeley Data 8 Data Pipelines', institution: 'freeCodeCamp.org', instructor: 'John DeNero' },
-      { videoId: 'OtD8wVaFm6E', title: 'Machine Learning Model Benchmarking', institution: 'StatQuest', instructor: 'Josh Starmer' }
+      { videoId: 'OtD8wVaFm6E', title: 'Machine Learning Model Benchmarking', institution: 'StatQuest', instructor: 'Josh Starmer' },
+      { videoId: 'jFflwpx4iK0', title: 'Lecture 11A: Deploying ML Models (Full Stack Deep Learning)', institution: 'Full Stack Deep Learning' }
     ]
   }),
+  // Promoted primary: the previous primary ("A Chat with Andrew on MLOps") is an informal chat, not
+  // a structured lecture, and is reused generically across three different topic entries in this
+  // registry. This is an actual "Full Stack Deep Learning" course lecture specifically on deploying,
+  // monitoring, and containerizing ML models — the exact subject of this entry's title.
   'ds402-t1': makeVerifiedVideo({
-    id: 'ds402-lec-1',
+    id: 'ds402-lec-fsdl-deploy',
     title: 'Full Stack MLOps: Model Deployment, Monitoring & Containerization',
-    institution: 'DeepLearningAI',
-    videoId: '06-AZXmwHjo',
+    institution: 'Full Stack Deep Learning',
+    videoId: 'jFflwpx4iK0',
     durationMinutes: 60,
-    instructor: 'Andrew Ng',
     fallbacks: [
-      { videoId: 'kCc8FmEb1nY', title: 'Transformers & Self-Attention Mechanics', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' },
-      { videoId: 'HXV3zeQKqGY', title: 'SQL & Data Infrastructure', institution: 'freeCodeCamp.org', instructor: 'Mike Dane' }
+      { videoId: 'fGxWfEuUu0w', title: 'Lecture 1: Deep Learning Fundamentals (Full Stack Deep Learning)', institution: 'Full Stack Deep Learning' },
+      { videoId: 'dPmH3G9NQtY', title: 'Build ML Production Grade Projects For Free | MLOps Course For Beginners', institution: 'Ayush Singh' },
+      { videoId: '06-AZXmwHjo', title: 'A Chat with Andrew on MLOps', institution: 'DeepLearningAI', instructor: 'Andrew Ng' }
     ]
   }),
+  // Promoted primary: the previous primary (kCc8FmEb1nY) actually oEmbeds as Andrej Karpathy's own
+  // "Let's build GPT" video (verified) — not a Stanford CS224N recording, despite this entry's title
+  // claiming so. This is the genuine Stanford CS224N Lecture 1, taught by the course's actual professor.
   'ds403-t1': makeVerifiedVideo({
-    id: 'ds403-lec-1',
+    id: 'ds403-lec-cs224n',
     title: 'Stanford CS224N: Natural Language Processing with Deep Learning & Transformers',
-    institution: 'Stanford University / Andrej Karpathy',
-    videoId: 'kCc8FmEb1nY',
-    durationMinutes: 110,
-    instructor: 'Andrej Karpathy',
+    institution: 'Stanford Online',
+    videoId: 'rmVRLeJRkl4',
+    durationMinutes: 80,
+    instructor: 'Christopher Manning',
     fallbacks: [
       { videoId: 'aircAruvnKk', title: 'Deep Learning & Neural Networks', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
-      { videoId: 'vT1JzLTH4G4', title: 'Stanford CS231n Deep Learning', institution: 'Stanford University', instructor: 'Fei-Fei Li' }
+      { videoId: 'vT1JzLTH4G4', title: 'Stanford CS231n Deep Learning', institution: 'Stanford University', instructor: 'Fei-Fei Li' },
+      { videoId: 'kCc8FmEb1nY', title: 'Let\'s build GPT: from scratch, in code, spelled out.', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' }
     ]
   }),
   'ds405-t1': makeVerifiedVideo({
@@ -592,7 +666,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Fei-Fei Li',
     fallbacks: [
       { videoId: 'kCc8FmEb1nY', title: 'Deep Neural Network Architectures', institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' },
-      { videoId: 'aircAruvnKk', title: 'Neural Networks & Convolutions', institution: '3Blue1Brown', instructor: 'Grant Sanderson' }
+      { videoId: 'aircAruvnKk', title: 'Neural Networks & Convolutions', institution: '3Blue1Brown', instructor: 'Grant Sanderson' },
+      { videoId: 'oGpzWAlP5p0', title: 'MIT 6.S191 (2025): Convolutional Neural Networks', institution: 'MIT', instructor: 'Alexander Amini' }
     ]
   }),
 
@@ -617,7 +692,9 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Bernhardt Trout, Svetozar Minkov',
     fallbacks: [
       { videoId: 'N-UfNqGg6f8', title: "AI Hallucinations Explained: Why It's Not a Bug but a Feature", institution: 'endjin' },
-      { videoId: 'gV0_raKR2UQ', title: 'Algorithmic Bias and Fairness: Crash Course AI #18', institution: 'CrashCourse' }
+      { videoId: 'gV0_raKR2UQ', title: 'Algorithmic Bias and Fairness: Crash Course AI #18', institution: 'CrashCourse' },
+      { videoId: 'wmyVODy_WD8', title: 'MIT 6.S191: AI Bias and Fairness', institution: 'MIT', instructor: 'Ava Soleimany' },
+      { videoId: 'SxtSkKxxO3Q', title: 'AI & Inequality: Implicit Bias and Social Ethics', institution: 'Harvard Business School', instructor: 'Mahzarin Banaji' }
     ]
   }),
   'ai410-t1': makeVerifiedVideo({
@@ -641,7 +718,8 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Grant Sanderson',
     fallbacks: [
       { videoId: 'HGwBXDKFk9I', title: 'Neural Networks Part 8: Image Classification with Convolutional Neural Networks (CNNs)', institution: 'StatQuest with Josh Starmer' },
-      { videoId: 'PSs6nxngL6k', title: 'Attention for Neural Networks, Clearly Explained!!!', institution: 'StatQuest with Josh Starmer' }
+      { videoId: 'PSs6nxngL6k', title: 'Attention for Neural Networks, Clearly Explained!!!', institution: 'StatQuest with Josh Starmer' },
+      { videoId: 'fKMB5UlVY1E', title: 'CS25: V4 I Overview of Transformers', institution: 'Stanford Online' }
     ]
   }),
   'ai420-t1': makeVerifiedVideo({
@@ -652,7 +730,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 12,
     fallbacks: [
       { videoId: 'Cm_qmhSEFgs', title: 'LLM Basics 1: How AI Reads Text: Tokenization Explained Simply (with Real Code!)', institution: 'Asim Munawar' },
-      { videoId: 'O4SourCAu54', title: 'What is a Context Window in AI and Why Does It Matter?', institution: 'koombea' }
+      { videoId: 'O4SourCAu54', title: 'What is a Context Window in AI and Why Does It Matter?', institution: 'koombea' },
+      { videoId: 'zduSFxRajkE', title: "Let's build the GPT Tokenizer", institution: 'Andrej Karpathy', instructor: 'Andrej Karpathy' }
     ]
   }),
   'ai420-t2': makeVerifiedVideo({
@@ -664,25 +743,39 @@ export const VERIFIED_VIDEOS = {
     instructor: 'Marina Danilevsky',
     fallbacks: [
       { videoId: 'xPMQ2cVbUTI', title: 'What Is RAG? Retrieval-Augmented Generation Explained Simply', institution: 'Redis' },
-      { videoId: 'gweRh5Xtkq0', title: 'Retrieval-Augmented Generation (RAG) in 10 minutes (beginner-friendly)', institution: 'Prof. Ryan Ahmed' }
+      { videoId: 'gweRh5Xtkq0', title: 'Retrieval-Augmented Generation (RAG) in 10 minutes (beginner-friendly)', institution: 'Prof. Ryan Ahmed' },
+      { videoId: 'mE7IDf2SmJg', title: 'CS25: V3 I Retrieval Augmented Language Models', institution: 'Stanford Online', instructor: 'Douwe Kiela' },
+      { videoId: 'KfQaYk4k9eM', title: 'Advanced NLP (10): Retrieval and RAG', institution: 'Carnegie Mellon University', instructor: 'Graham Neubig' }
     ]
   }),
+  // Promoted primary: Shunyu Yao is the actual first author of the ReAct paper this topic is named
+  // after; this official UC Berkeley lecture covers ReAct's history and mechanics directly, more
+  // authoritative than the previous primary (a 10-minute solo-creator explainer).
   'ai430-t1': makeVerifiedVideo({
-    id: 'ai430-lec-1',
+    id: 'ai430-lec-berkeley-react',
     title: 'ReAct AI Agents, clearly explained!',
-    institution: 'Akshay Pachaar',
-    videoId: 'vFdIrZyKEwQ',
-    durationMinutes: 10,
+    institution: 'UC Berkeley (Berkeley RDI)',
+    videoId: 'RM6ZArd2nVc',
+    durationMinutes: 75,
+    instructor: 'Shunyu Yao',
     fallbacks: [
+      { videoId: 'vFdIrZyKEwQ', title: 'ReAct AI Agents, clearly explained!', institution: 'Akshay Pachaar' },
       { videoId: 'sWH0T4Zez6I', title: 'Multi Agent Systems Explained: How AI Agents & LLMs Work Together', institution: 'IBM Technology' }
     ]
   }),
+  // Promoted primary: Dawn Song is a UC Berkeley security professor; this full academic lecture is
+  // devoted specifically to agentic-AI safety/security, substantially more comprehensive than the
+  // previous primary (a 9-minute IBM explainer on the same subject).
   'ai430-t2': makeVerifiedVideo({
-    id: 'ai430-t2-lec-1',
+    id: 'ai430-t2-lec-berkeley-safety',
     title: 'Top 10 Security Risks in AI Agents Explained',
-    institution: 'IBM Technology',
-    videoId: 'soFWS8NBcSU',
-    durationMinutes: 9
+    institution: 'UC Berkeley (Berkeley RDI)',
+    videoId: 'CvZDJxd4LKM',
+    durationMinutes: 75,
+    instructor: 'Dawn Song',
+    fallbacks: [
+      { videoId: 'soFWS8NBcSU', title: 'Top 10 Security Risks in AI Agents Explained', institution: 'IBM Technology' }
+    ]
   }),
   'ai440-t1': makeVerifiedVideo({
     id: 'ai440-lec-1',
@@ -713,7 +806,10 @@ export const VERIFIED_VIDEOS = {
     title: 'AI Supply Chain Attacks & Model Poisoning Explained',
     institution: 'ConvoCourses',
     videoId: 'L8iH9foFdOs',
-    durationMinutes: 15
+    durationMinutes: 15,
+    fallbacks: [
+      { videoId: 'h9jf1ikcGyk', title: 'Poisoning Web-Scale Training Datasets | Stanford MLSys #75', institution: 'Stanford MLSys Seminars', instructor: 'Nicholas Carlini' }
+    ]
   }),
 
   // Cybersecurity (cyber-100 through cyber-420) — oEmbed-verified title/channel before adding
@@ -725,7 +821,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 12,
     fallbacks: [
       { videoId: 'SBcDGb9l6yo', title: 'The CIA Triad - CompTIA Security+ SY0-701 - 1.2', institution: 'Professor Messer' },
-      { videoId: 'zC_Pndpg8-c', title: 'Zero Trust - CompTIA Security+ SY0-701 - 1.2', institution: 'Professor Messer' }
+      { videoId: 'zC_Pndpg8-c', title: 'Zero Trust - CompTIA Security+ SY0-701 - 1.2', institution: 'Professor Messer' },
+      { videoId: 'GqmQg-cszw4', title: '1. Introduction, Threat Models (MIT 6.858 Computer Systems Security)', institution: 'MIT OpenCourseWare', instructor: 'Nickolai Zeldovich' }
     ]
   }),
   'cyber100-t2': makeVerifiedVideo({
@@ -736,7 +833,9 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 45,
     fallbacks: [
       { videoId: 'jwnvKOjmtEA', title: 'sudo = POWER!! (managing users in Linux) // Linux for Hackers // EP4', institution: 'NetworkChuck' },
-      { videoId: 'LfC6pv8VISk', title: 'KILL Linux processes!! (also manage them) // Linux for Hackers // EP 7', institution: 'NetworkChuck' }
+      { videoId: 'LfC6pv8VISk', title: 'KILL Linux processes!! (also manage them) // Linux for Hackers // EP 7', institution: 'NetworkChuck' },
+      { videoId: 'lpB9dnaeKck', title: 'A Taste of Linux - CS50 New Year\'s Seminars', institution: 'Harvard CS50' },
+      { videoId: 'BnJ013X02b8', title: 'Command Line - CS50 Shorts', institution: 'Harvard CS50' }
     ]
   }),
   'cyber210-t1': makeVerifiedVideo({
@@ -747,7 +846,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 6,
     fallbacks: [
       { videoId: 'VgNyh4HEqSU', title: 'Firewalls - CompTIA Security+ SY0-701 - 4.5', institution: 'Professor Messer' },
-      { videoId: 'uOfonONtIuk', title: 'How DNS Works - Computerphile', institution: 'Computerphile' }
+      { videoId: 'uOfonONtIuk', title: 'How DNS Works - Computerphile', institution: 'Computerphile' },
+      { videoId: 'BZTWXl9QNK8', title: '12. Network Security (MIT 6.858)', institution: 'MIT OpenCourseWare' }
     ]
   }),
   'cyber210-t2': makeVerifiedVideo({
@@ -758,7 +858,9 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 8,
     fallbacks: [
       { videoId: 'wUaeKEl1RCw', title: 'OWASP Top 10 Web Application Security Risks', institution: 'Telusko' },
-      { videoId: 'pdC3H8SX-F4', title: '1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)', institution: 'Hussein Nasser' }
+      { videoId: 'pdC3H8SX-F4', title: '1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)', institution: 'Hussein Nasser' },
+      { videoId: 'XTcqlOFhpPI', title: 'Web Security - Lecture 06 - Cross-Site Scripting (XSS)', institution: 'Stanford University (CS253)', instructor: 'Feross Aboukhadijeh' },
+      { videoId: '6HhmIlbE0l0', title: '6.858 Fall 2014 Lecture 9: Securing Web Applications', institution: 'MIT OpenCourseWare', instructor: 'Nickolai Zeldovich' }
     ]
   }),
   'cyber310-t1': makeVerifiedVideo({
@@ -769,7 +871,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 20,
     fallbacks: [
       { videoId: 'rEnJYNkUde0', title: 'STRIDE Threat Modeling for Beginners - In 20 Minutes', institution: 'Netsec Explained' },
-      { videoId: 'wqErjqFgEa0', title: 'The Ultimate SAST Guide: What is Static Application Security Testing?', institution: 'Aikido Security' }
+      { videoId: 'wqErjqFgEa0', title: 'The Ultimate SAST Guide: What is Static Application Security Testing?', institution: 'Aikido Security' },
+      { videoId: 'pDzgwrqWNvY', title: '6.858 Fall 2014 Lecture 3: Buffer Overflow Exploits and Defenses', institution: 'MIT OpenCourseWare', instructor: 'Nickolai Zeldovich' }
     ]
   }),
   'cyber310-t2': makeVerifiedVideo({
@@ -835,7 +938,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 17,
     instructor: 'Dr Mike Pound',
     fallbacks: [
-      { videoId: 'kaD54VXxGrI', title: 'Fuzzing Programs to Find Bugs - Computerphile', institution: 'Computerphile' }
+      { videoId: 'kaD54VXxGrI', title: 'Fuzzing Programs to Find Bugs - Computerphile', institution: 'Computerphile' },
+      { videoId: 'xSQxaie_h1o', title: '3. Buffer Overflow Exploits and Defenses (MIT 6.858)', institution: 'MIT OpenCourseWare', instructor: 'James Mickens' }
     ]
   }),
   'cyber420-t2': makeVerifiedVideo({
@@ -859,7 +963,8 @@ export const VERIFIED_VIDEOS = {
     durationMinutes: 15,
     fallbacks: [
       { videoId: '4dEKvxEy9Oo', title: 'Data Modeling Explained: Star vs. Snowflake Schema', institution: 'The Data and AI Guy' },
-      { videoId: '1JswR_4XUdU', title: 'Slowly Changing Dimensions (SCD) | Types 0, 1, 2, 3, 4 Explained with Real Examples', institution: 'SleekData' }
+      { videoId: '1JswR_4XUdU', title: 'Slowly Changing Dimensions (SCD) | Types 0, 1, 2, 3, 4 Explained with Real Examples', institution: 'SleekData' },
+      { videoId: 't6dpjpQxwmw', title: '23 - Distributed OLAP Databases (CMU Intro to Database Systems)', institution: 'Carnegie Mellon University', instructor: 'Andy Pavlo' }
     ]
   }),
   'de100-t2': makeVerifiedVideo({
