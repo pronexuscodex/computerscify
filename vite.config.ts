@@ -184,7 +184,14 @@ export default defineConfig(() => {
             ) {
               return 'pdf-viewer';
             }
-            if (normalizedId.includes('/src/data/modules/')) {
+            // The full curriculum (phase modules, degree programs, AI/security/data-eng courses,
+            // the glossary, video/resource registries) is reachable synchronously from route
+            // resolution (NavigationContext validates the topic/course on every URL change), so it
+            // can't be behind a lazy() boundary — but nothing requires it to share a chunk with
+            // app-shell code either. Splitting it out keeps the entry chunk cacheable independently
+            // of curriculum content edits (which are far more frequent) and lets browsers fetch it
+            // in parallel instead of parsing one ~1MB blocking bundle.
+            if (normalizedId.includes('/src/data/') || normalizedId.includes('/src/curriculum/')) {
               return 'curriculum-content';
             }
             if (normalizedId.includes('/node_modules/')) {

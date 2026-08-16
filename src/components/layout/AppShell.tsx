@@ -5,7 +5,6 @@ import { TopBar } from './TopBar';
 import { Breadcrumbs } from './Breadcrumbs';
 import { MobileBottomNav } from './MobileBottomNav';
 import { DashboardView } from '../dashboard/DashboardView';
-import { SearchCommandModal } from '../search/SearchCommandModal';
 import {
   LearnerProgress,
   ProgramType,
@@ -30,6 +29,13 @@ import {
 } from '../../services/uiPreferences';
 import { NavigationProvider, useNavigation } from '../../context/NavigationContext';
 import { ErrorBoundary } from '../common/ErrorBoundary';
+
+// Not on the initial critical path — opened only via Cmd/Ctrl+K or the search button — and it's
+// the sole consumer of the (large, curriculum-content-chunked) glossary index, so keeping it lazy
+// avoids evaluating that search-index-building work until a learner actually opens search.
+const SearchCommandModal = lazy(() =>
+  import('../search/SearchCommandModal').then((module) => ({ default: module.SearchCommandModal }))
+);
 
 const RoadmapView = lazy(() =>
   import('../roadmap/RoadmapView').then((module) => ({ default: module.RoadmapView }))
@@ -464,14 +470,18 @@ const AppShellContent: React.FC = () => {
         onNavigate={(v) => navigateToView(v)}
       />
 
-      {/* Global Search Modal */}
-      <SearchCommandModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        onSelectTopic={(t) => selectTopic(t)}
-        onSelectModule={(m) => selectModule(m)}
-        onSelectPaper={() => navigateToView('research')}
-      />
+      {/* Global Search Modal — only mounted (and its chunk fetched) once actually opened */}
+      {isSearchOpen && (
+        <Suspense fallback={null}>
+          <SearchCommandModal
+            isOpen={isSearchOpen}
+            onClose={() => setIsSearchOpen(false)}
+            onSelectTopic={(t) => selectTopic(t)}
+            onSelectModule={(m) => selectModule(m)}
+            onSelectPaper={() => navigateToView('research')}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };
