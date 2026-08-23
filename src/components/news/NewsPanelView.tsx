@@ -19,25 +19,32 @@ function timeAgo(iso: string | null): string {
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-const NewsCard: React.FC<{ item: NewsItem }> = ({ item }) => (
+// A single row in the feed river — the layout real news apps use: a scannable vertical list, not
+// a grid of boxed cards. Field tag + source/time sits above the headline so it reads left-to-right
+// like a news ticker entry.
+const NewsRow: React.FC<{ item: NewsItem; lead?: boolean }> = ({ item, lead = false }) => (
   <a
     href={item.link}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex min-w-0 flex-col justify-between gap-3 rounded-[var(--ds-radius-lg)] border-2 border-[var(--ds-border-strong)] bg-[var(--ds-surface)] p-5 shadow-[var(--ds-shadow-sm)] transition-transform hover:-translate-y-0.5"
+    className="group flex min-w-0 items-start gap-3 py-4 transition-colors hover:bg-[var(--ds-surface-muted)] sm:gap-4 sm:px-2 sm:-mx-2 rounded-[var(--ds-radius-md)]"
   >
-    <div className="min-w-0 space-y-2">
-      <div className="flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-wide">
-        <span className="rounded-full bg-[var(--ds-text)] px-2.5 py-1 text-[var(--ds-background)]">{labelForField(item.field)}</span>
+    <div className="min-w-0 flex-1 space-y-1.5">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-black uppercase tracking-wide">
+        <span className="rounded-full bg-[var(--ds-text)] px-2.5 py-0.5 text-[var(--ds-background)]">{labelForField(item.field)}</span>
         <span className="text-[var(--ds-text-muted)]">{item.source}</span>
         {item.publishedAt && <span className="text-[var(--ds-text-muted)]">· {timeAgo(item.publishedAt)}</span>}
       </div>
-      <h3 className="break-words text-base font-black leading-snug">{item.title}</h3>
-      {item.summary && <p className="line-clamp-3 text-sm leading-relaxed text-[var(--ds-text-muted)]">{item.summary}</p>}
+      <h3 className={`break-words font-black leading-snug group-hover:underline ${lead ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'}`}>
+        {item.title}
+      </h3>
+      {item.summary && (
+        <p className={`text-[var(--ds-text-muted)] leading-relaxed ${lead ? 'text-sm line-clamp-3' : 'text-xs line-clamp-2'}`}>
+          {item.summary}
+        </p>
+      )}
     </div>
-    <span className="inline-flex items-center gap-1 text-xs font-black text-[var(--ds-primary)]">
-      Read more <ExternalLink className="h-3.5 w-3.5" />
-    </span>
+    <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-[var(--ds-text-muted)] transition-colors group-hover:text-[var(--ds-primary)]" />
   </a>
 );
 
@@ -88,6 +95,11 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
       <div className="flex items-center gap-2">
         <Newspaper className="h-5 w-5 text-[var(--ds-primary)]" />
         <h2 className={compact ? 'text-lg font-black' : 'text-2xl font-black'}>Field News</h2>
+        {status === 'ready' && (
+          <span className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--ds-security-soft)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[var(--ds-security)]">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--ds-security)]" /> Live
+          </span>
+        )}
       </div>
       {!compact && (
         <button
@@ -104,11 +116,15 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
 
   if (status === 'loading') {
     return (
-      <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-6xl mx-auto space-y-6'}>
+      <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-3xl mx-auto space-y-6'}>
         {header}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}>
+        <div className="divide-y divide-[var(--ds-border)]">
           {Array.from({ length: compact ? 3 : 6 }).map((_, i) => (
-            <div key={i} className="h-32 rounded-[var(--ds-radius-lg)] border-2 border-[var(--ds-border)] bg-[var(--ds-surface-muted)] animate-pulse" />
+            <div key={i} className="py-4 space-y-2">
+              <div className="h-3 w-24 rounded-full bg-[var(--ds-surface-muted)] animate-pulse" />
+              <div className="h-4 w-3/4 rounded bg-[var(--ds-surface-muted)] animate-pulse" />
+              <div className="h-3 w-full rounded bg-[var(--ds-surface-muted)] animate-pulse" />
+            </div>
           ))}
         </div>
       </div>
@@ -117,7 +133,7 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
 
   if (status === 'error') {
     return (
-      <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-6xl mx-auto space-y-6'}>
+      <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-3xl mx-auto space-y-6'}>
         {header}
         <div className="flex items-center gap-2 rounded-[var(--ds-radius-lg)] border-2 border-[var(--ds-warning)] bg-[var(--ds-surface-muted)] p-4 text-sm font-bold">
           <AlertCircle className="h-4 w-4 shrink-0 text-[var(--ds-warning)]" />
@@ -128,15 +144,15 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
   }
 
   return (
-    <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-6xl mx-auto space-y-6'}>
+    <div className={compact ? 'space-y-3' : 'p-4 md:p-8 max-w-3xl mx-auto space-y-6'}>
       {header}
 
       {!compact && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 sm:flex-wrap sm:overflow-visible">
           <button
             type="button"
             onClick={() => setActiveField('all')}
-            className={`min-h-9 rounded-full border px-3 text-xs font-black uppercase ${
+            className={`min-h-9 shrink-0 rounded-full border px-3 text-xs font-black uppercase ${
               activeField === 'all' ? 'border-[var(--ds-primary)] bg-[var(--ds-surface-muted)]' : 'border-[var(--ds-border)] text-[var(--ds-text-muted)]'
             }`}
           >
@@ -147,7 +163,7 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
               key={f.id}
               type="button"
               onClick={() => setActiveField(f.id)}
-              className={`min-h-9 rounded-full border px-3 text-xs font-black uppercase ${
+              className={`min-h-9 shrink-0 rounded-full border px-3 text-xs font-black uppercase ${
                 activeField === f.id ? 'border-[var(--ds-primary)] bg-[var(--ds-surface-muted)]' : 'border-[var(--ds-border)] text-[var(--ds-text-muted)]'
               }`}
             >
@@ -160,9 +176,9 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
       {filtered.length === 0 ? (
         <p className="text-sm text-[var(--ds-text-muted)] font-bold">No stories in this category right now — try again shortly.</p>
       ) : (
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}>
-          {filtered.map((item) => (
-            <NewsCard key={item.id} item={item} />
+        <div className="divide-y divide-[var(--ds-border)]">
+          {filtered.map((item, idx) => (
+            <NewsRow key={item.id} item={item} lead={!compact && idx === 0} />
           ))}
         </div>
       )}

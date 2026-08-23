@@ -11,8 +11,6 @@ import {
   BookOpen,
   Filter,
   ChevronRight,
-  Timer,
-  Pause,
   Brain,
   HelpCircle
 } from 'lucide-react';
@@ -46,18 +44,16 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
   const [result, setResult] = useState<ExecutionResult | null>(null);
   const [activeTab, setActiveTab] = useState<'console' | 'tests' | 'hints' | 'ai'>('console');
   
-  // Filter states
+  // Filter states — the picker itself stays collapsed until asked for, since it's a secondary
+  // "browse other exercises" tool, not something that belongs permanently above the active lab.
   const [filterLevel, setFilterLevel] = useState<string>('all');
   const [filterLang, setFilterLang] = useState<string>('all');
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   // View & UI controls
   const [isInstructionsOpen, setIsInstructionsOpen] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [fontSize, setFontSize] = useState<number>(13);
-
-  // Timer states
-  const [timerSeconds, setTimerSeconds] = useState<number>(45 * 60); // 45 minutes default
-  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
 
   // AI Explanation generation
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
@@ -87,23 +83,6 @@ export const LabWorkspaceView: React.FC<LabWorkspaceViewProps> = ({
       isMounted = false;
     };
   }, [selectedLab]);
-
-  // Ticking Study Timer
-  useEffect(() => {
-    let interval: any = null;
-    if (isTimerRunning && timerSeconds > 0) {
-      interval = setInterval(() => {
-        setTimerSeconds((prev) => Math.max(0, prev - 1));
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isTimerRunning, timerSeconds]);
-
-  const formatTimer = (totalSecs: number) => {
-    const mins = Math.floor(totalSecs / 60);
-    const secs = totalSecs % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
 
   // Run Code logic
   const handleRun = useCallback(async () => {
@@ -236,9 +215,9 @@ Next step
       }`}
     >
       {/* Top Academic Neo-Brutalist Navigation & Breadcrumbs Bar */}
-      <div className="bg-[#DFD9D8] dark:bg-[#111010] border-b-4 border-[#000000] px-3 sm:px-5 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-[#000000] dark:text-[#F6EFEF]">
+      <div className="bg-[#DFD9D8] dark:bg-[#111010] border-b-4 border-[#000000] px-3 sm:px-5 py-3 flex items-center gap-3 text-xs text-[#000000] dark:text-[#F6EFEF] overflow-x-auto">
         {/* Breadcrumb Path */}
-        <div className="flex items-center gap-1.5 font-mono text-[11px] font-black text-[#000000] dark:text-[#F6EFEF] flex-wrap">
+        <div className="flex items-center gap-1.5 font-mono text-[11px] font-black text-[#000000] dark:text-[#F6EFEF] whitespace-nowrap">
           <span className="px-2 py-0.5 rounded bg-[#F2C94C] text-[#000000] font-black uppercase border border-[#000000]">
             CS / ComputerSciFy
           </span>
@@ -250,19 +229,6 @@ Next step
           <span className="font-black underline decoration-[#F2C94C] decoration-2 truncate max-w-[180px]">
             {selectedLab.title}
           </span>
-        </div>
-
-        {/* Study Session Timer Widget */}
-        <div className="flex items-center gap-2 bg-[#000000] text-[#FFFFFF] px-3 py-1 rounded border-2 border-[#000000] neo-shadow-sm font-mono text-xs font-black shrink-0">
-          <Timer className="w-4 h-4 text-[#F2C94C] animate-pulse" />
-          <span>{formatTimer(timerSeconds)}</span>
-          <button
-            onClick={() => setIsTimerRunning((r) => !r)}
-            className="p-1 hover:text-[#F2C94C] transition-colors"
-            title={isTimerRunning ? 'Pause Timer' : 'Resume Timer'}
-          >
-            {isTimerRunning ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 fill-current" />}
-          </button>
         </div>
       </div>
 
@@ -378,58 +344,70 @@ Next step
         </div>
       </div>
 
-      {/* Exercise Path Filter Toolbar */}
-      <div className="bg-[#111010] border-b-4 border-[#000000] px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs text-[#F6EFEF]">
-        <div className="flex items-center gap-3 flex-wrap">
+      {/* Exercise Path Filter — collapsed by default; this is a secondary "browse other exercises"
+          tool and shouldn't permanently occupy space above the lab someone actually came here for. */}
+      <div className="bg-[#111010] border-b-4 border-[#000000] px-4 py-2 text-xs text-[#F6EFEF]">
+        <button
+          type="button"
+          onClick={() => setIsFilterOpen((o) => !o)}
+          aria-expanded={isFilterOpen}
+          className="flex w-full items-center justify-between gap-3 py-1 text-left"
+        >
           <span className="flex items-center gap-1.5 font-black text-[#F2C94C] uppercase shrink-0">
-            <Filter className="w-3.5 h-3.5" /> Filter Exercises:
+            <Filter className="w-3.5 h-3.5" /> Browse Exercises
+            {(filterLevel !== 'all' || filterLang !== 'all') && (
+              <span className="ml-1 h-1.5 w-1.5 rounded-full bg-[#F2C94C]" aria-label="Filters active" />
+            )}
           </span>
+          <span className="font-mono text-[11px] text-[#F6EFEF]/70 font-bold shrink-0">
+            {isFilterOpen ? 'Hide' : `${filteredExercises.length} available`}
+          </span>
+        </button>
 
-          <Select
-            value={filterLevel}
-            onChange={(val) => setFilterLevel(val)}
-            options={[
-              { value: 'all', label: 'All Levels' },
-              { value: 'level-0', label: 'Level 0 · First Interaction', description: 'Run code & syntax error basics' },
-              { value: 'level-1', label: 'Level 1 · Beginner', description: 'Variables, loops & functions' },
-              { value: 'level-2', label: 'Level 2 · Developing', description: 'Collections, recursion & complexity' },
-              { value: 'level-3', label: 'Level 3 · Intermediate', description: 'OOP, functional & SQL joins' },
-              { value: 'level-4', label: 'Level 4 · Advanced', description: 'Dynamic programming & algorithms' },
-              { value: 'level-5', label: 'Level 5 · Professional', description: 'Multi-file simulations & TDD' },
-            ]}
-            ariaLabel="Filter by Level"
-          />
+        {isFilterOpen && (
+          <div className="flex flex-wrap items-center gap-3 pt-2 pb-1">
+            <Select
+              value={filterLevel}
+              onChange={(val) => setFilterLevel(val)}
+              options={[
+                { value: 'all', label: 'All Levels' },
+                { value: 'level-0', label: 'Level 0 · First Interaction', description: 'Run code & syntax error basics' },
+                { value: 'level-1', label: 'Level 1 · Beginner', description: 'Variables, loops & functions' },
+                { value: 'level-2', label: 'Level 2 · Developing', description: 'Collections, recursion & complexity' },
+                { value: 'level-3', label: 'Level 3 · Intermediate', description: 'OOP, functional & SQL joins' },
+                { value: 'level-4', label: 'Level 4 · Advanced', description: 'Dynamic programming & algorithms' },
+                { value: 'level-5', label: 'Level 5 · Professional', description: 'Multi-file simulations & TDD' },
+              ]}
+              ariaLabel="Filter by Level"
+            />
 
-          <Select
-            value={filterLang}
-            onChange={(val) => setFilterLang(val)}
-            options={[
-              { value: 'all', label: 'All Languages' },
-              { value: 'python', label: 'Python 3' },
-              { value: 'javascript', label: 'JavaScript (Node)' },
-              { value: 'typescript', label: 'TypeScript' },
-              { value: 'c', label: 'C / C++' },
-              { value: 'sql', label: 'SQL' },
-            ]}
-            ariaLabel="Filter by Language"
-          />
+            <Select
+              value={filterLang}
+              onChange={(val) => setFilterLang(val)}
+              options={[
+                { value: 'all', label: 'All Languages' },
+                { value: 'python', label: 'Python 3' },
+                { value: 'javascript', label: 'JavaScript (Node)' },
+                { value: 'typescript', label: 'TypeScript' },
+                { value: 'c', label: 'C / C++' },
+                { value: 'sql', label: 'SQL' },
+              ]}
+              ariaLabel="Filter by Language"
+            />
 
-          {(filterLevel !== 'all' || filterLang !== 'all') && (
-            <button
-              onClick={() => {
-                setFilterLevel('all');
-                setFilterLang('all');
-              }}
-              className="px-2.5 py-1 rounded bg-[#000000] hover:bg-stone-800 text-[#F2C94C] font-black text-[11px] uppercase transition-colors border border-[#000000]"
-            >
-              Reset filters
-            </button>
-          )}
-        </div>
-
-        <span className="font-mono text-[11px] text-[#F6EFEF]/70 font-bold shrink-0">
-          Showing {filteredExercises.length} Exercises
-        </span>
+            {(filterLevel !== 'all' || filterLang !== 'all') && (
+              <button
+                onClick={() => {
+                  setFilterLevel('all');
+                  setFilterLang('all');
+                }}
+                className="px-2.5 py-1 rounded bg-[#000000] hover:bg-stone-800 text-[#F2C94C] font-black text-[11px] uppercase transition-colors border border-[#000000]"
+              >
+                Reset filters
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Main Workspace Split Screen */}
@@ -489,8 +467,8 @@ Next step
                     }
                   : null
               }
-              minHeight="380px"
-              maxHeight="580px"
+              minHeight="clamp(260px, 42vh, 380px)"
+              maxHeight="clamp(340px, 55vh, 580px)"
               fontSize={fontSize}
               ariaLabel={`Code editor for ${selectedLab.title}`}
             />
@@ -596,7 +574,10 @@ Next step
               ) : (
                 <div className="text-stone-300 font-bold py-16 text-center space-y-2 uppercase">
                   <Terminal className="w-8 h-8 mx-auto text-[#F2C94C] mb-2" />
-                  <p>Click "Run Code" above or press Ctrl+Enter to execute the program and view logs.</p>
+                  <p>
+                    Tap "Run Code" above to execute the program and view logs.
+                    <span className="hidden sm:inline"> (Or press Ctrl+Enter.)</span>
+                  </p>
                 </div>
               )}
             </div>

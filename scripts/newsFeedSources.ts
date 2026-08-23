@@ -57,6 +57,21 @@ function stripHtml(input: unknown): string {
     .trim();
 }
 
+// hnrss.org (and similar link-aggregator feeds) publish a fixed metadata block as the item
+// "description" instead of any real article text — e.g. "Article URL: https://... Comments URL:
+// https://... Points: 123 # Comments: 45" — which otherwise shows up verbatim as the story's
+// summary. Strip that known boilerplate; if nothing else is left, leave the summary empty rather
+// than showing raw metadata.
+function stripAggregatorBoilerplate(text: string): string {
+  return text
+    .replace(/Article URL:\s*\S+/gi, '')
+    .replace(/Comments URL:\s*\S+/gi, '')
+    .replace(/Points:\s*\d+/gi, '')
+    .replace(/#?\s*Comments:\s*\d+/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
 function textOf(node: unknown): string {
   if (node == null) return '';
   if (typeof node === 'string') return node;
@@ -107,7 +122,7 @@ export function parseFeedXml(xml: string, source: NewsFeedSource): NormalizedNew
       const link = linkOf(item.link) || (typeof item.guid === 'string' ? item.guid : textOf(item.guid));
       if (!link) return null;
       const summaryRaw = textOf(item.description) || textOf(item.summary) || textOf(item.content) || '';
-      const summary = stripHtml(summaryRaw).slice(0, 320);
+      const summary = stripAggregatorBoilerplate(stripHtml(summaryRaw)).slice(0, 320);
       const pubDateRaw = textOf(item.pubDate) || textOf(item.published) || textOf(item.updated) || null;
       const publishedAt = pubDateRaw ? new Date(pubDateRaw).toISOString() : null;
 
