@@ -115,6 +115,7 @@ export function parseRoutePath(pathStr: string, defaultProgram: ProgramType = 'c
     'settings',
     'resource-health',
     'audit',
+    'news',
   ];
 
   if (knownViews.includes(cleanPath as NavView)) {

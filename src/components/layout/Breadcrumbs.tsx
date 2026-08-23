@@ -14,6 +14,7 @@ import {
   FileWarning,
   FolderGit2,
   Layers3,
+  Newspaper,
 } from 'lucide-react';
 import { useNavigation } from '../../context/NavigationContext';
 import { ProgramType } from '../../types/curriculum';
@@ -125,6 +126,18 @@ export const Breadcrumbs: React.FC = () => {
       items.push({
         label: 'Research Papers & Texts',
         icon: <FileText className="w-3.5 h-3.5" />,
+        isCurrent: true,
+      });
+      break;
+
+    case 'news':
+      items.push({
+        label: 'Explore',
+        onClick: () => navigateToView('news'),
+      });
+      items.push({
+        label: 'Field News',
+        icon: <Newspaper className="w-3.5 h-3.5" />,
         isCurrent: true,
       });
       break;

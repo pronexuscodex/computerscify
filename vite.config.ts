@@ -6,6 +6,7 @@ import {VitePWA} from 'vite-plugin-pwa';
 
 import correctedManifest from './academic-resource-report.corrected.json';
 import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from './scripts/pdfProxyAllowlist';
+import { fetchAllFeeds, NewsField } from './scripts/newsFeedSources';
 
 // Shared between `vite dev` (configureServer) and `vite preview` (configurePreviewServer) so
 // PDF fetching works the same way in both — `vite preview` serves the real production build and
@@ -96,6 +97,42 @@ function pdfProxyPlugin(): Plugin {
   };
 }
 
+// Local dev/preview equivalent of netlify/functions/news-feed.ts. Fetching RSS/Atom feeds from the
+// browser directly would fail for most sources (no CORS headers) and would leak each reader's IP to
+// every source on every page view, so this proxies and normalizes them server-side, same as production.
+function newsFeedProxyPlugin(): Plugin {
+  const VALID_FIELDS: NewsField[] = ['ai', 'data-science', 'data-engineering', 'cybersecurity', 'computer-science'];
+
+  function registerNewsMiddleware(server: { middlewares: { use: Function } }) {
+    server.middlewares.use('/api/news-feed', async (req: any, res: any) => {
+      try {
+        const urlObj = new URL(req.url || '', `http://${req.headers.host || 'localhost'}`);
+        const fieldsParam = urlObj.searchParams.get('fields');
+        const requestedFields = fieldsParam
+          ? fieldsParam.split(',').filter((f): f is NewsField => VALID_FIELDS.includes(f as NewsField))
+          : undefined;
+
+        const items = await fetchAllFeeds(requestedFields);
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'public, max-age=1800');
+        res.end(JSON.stringify({ items, fetchedAt: new Date().toISOString() }));
+      } catch (err: unknown) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ error: err instanceof Error ? err.message : 'Unknown error', items: [] }));
+      }
+    });
+  }
+
+  return {
+    name: 'news-feed-proxy-plugin',
+    configureServer: registerNewsMiddleware,
+    configurePreviewServer: registerNewsMiddleware,
+  };
+}
+
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   // Pyodide's wasm module requires this; no script executes from anywhere but our own origin.
@@ -136,6 +173,7 @@ export default defineConfig(() => {
       react(),
       tailwindcss(),
       pdfProxyPlugin(),
+      newsFeedProxyPlugin(),
       cspPlugin(),
       VitePWA({
         // public/app.webmanifest + its <link> tag in index.html already exist; don't generate a second one.

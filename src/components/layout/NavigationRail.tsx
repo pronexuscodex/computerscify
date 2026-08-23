@@ -11,6 +11,7 @@ import {
   Settings,
   Flame,
   ShieldCheck,
+  Newspaper,
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react';
@@ -34,7 +35,8 @@ export type NavView =
   | 'topic-player'
   | 'module-overview'
   | 'resource-health'
-  | 'audit';
+  | 'audit'
+  | 'news';
 
 interface NavigationRailProps {
   currentView: NavView;
@@ -86,8 +88,11 @@ export const NavigationRail: React.FC<NavigationRailProps> = ({
       ],
     },
     {
-      label: 'Research',
-      items: [{ id: 'research', label: 'Research Library', icon: BookOpenCheck }],
+      label: 'Explore',
+      items: [
+        { id: 'research', label: 'Research Library', icon: BookOpenCheck },
+        { id: 'news', label: 'Field News', icon: Newspaper },
+      ],
     },
     {
       label: 'You',

@@ -45,6 +45,35 @@ export const phase6DLModules: CurriculumModule[] = [
             'Multi-Head Attention and Positional Encoding: Multi-head attention runs several scaled dot-product attention operations in parallel with different learned projections, letting the model attend to different types of relationships (e.g., syntactic vs. semantic) simultaneously; because attention itself has no notion of order, positional encodings are added to input embeddings so the model can still distinguish the first token from the last.',
             'Residual (Skip) Connections and Layer Normalization in Transformer Blocks: Each Transformer sub-layer wraps its output in a residual connection (output = x + Sublayer(x)) followed by layer normalization, giving gradients an unimpeded path directly back to earlier layers and stabilizing the distribution of activations — together these are what make it possible to stack dozens of Transformer blocks without the network becoming untrainable.'
           ],
+          simpleExplanation: `Imagine a machine built entirely out of knobs — thousands, then millions of them — each one nudging a number up or down by a tiny amount. You feed a picture or a sentence in one end, the knobs combine and recombine the numbers as it flows through, and something comes out the other end: a guess. At first the knobs are set randomly, so the guesses are terrible. The whole game of training a neural network is turning the right knobs by the right amount so the guesses get better.
+
+But how do you know which knobs to turn, and by how much? This is where backpropagation comes in, and the best analogy is a chef tasting a ruined dish and tracing the blame backward. Suppose a soup tastes too salty. You didn't dump in all the salt at once — you added a little during the base, a splash of soy sauce halfway through, and a sprinkle at the end. To fix the recipe, you work backward from the final taste, asking at each stage "how much did this step contribute to the saltiness?" Backpropagation does exactly this with math: starting from the network's final wrong answer, it walks backward through every layer asking "how much did this knob's setting contribute to the error?" using a calculus shortcut called the chain rule. Every knob gets its own personalized nudge, all worked out in one efficient backward sweep.
+
+Some of the networks in this topic are also given a peculiar new sense: attention. Picture a group project where, to write one sentence of a shared report, each person is allowed to peek at everyone else's notes and decide how much weight to give each one before writing their own line. That is self-attention: every word in a sentence looks at every other word, decides which ones matter most to it right now (a pronoun like "it" pays a lot of attention to whichever noun it's standing in for), and blends their information together accordingly. Doing this for every word at once, instead of reading left to right one word at a time the way older networks did, is what makes modern language models both fast to train and good at connecting words that are far apart in a paragraph.
+
+Stack many of these attention layers on top of each other, and give each one a shortcut path that lets information skip straight past it when needed — so instructions don't get garbled like a whisper passed down a long hallway — and you get a Transformer, the architecture behind essentially every major AI language model built since 2017.`,
+          realWorldApplications: [
+            {
+              title: 'ChatGPT and the GPT model family (OpenAI)',
+              description: 'ChatGPT is built from dozens of stacked Transformer blocks that use multi-head self-attention to weigh the relevance of every prior word when predicting the next one, with all of its billions of parameters tuned through backpropagation during training.'
+            },
+            {
+              title: "Google's BERT in Search ranking",
+              description: 'Google incorporated the Transformer-based BERT model into search ranking so queries and page content are understood using self-attention, letting the system weigh how each word in a query relates to the others rather than reading it in strict left-to-right isolation.'
+            },
+            {
+              title: "DeepMind's AlphaFold protein structure predictor",
+              description: 'AlphaFold uses attention-based neural network modules to weigh relationships between pairs of amino acids when predicting how a protein chain folds into its 3D shape, a problem that stumped biologists for decades.'
+            },
+            {
+              title: "Tesla Autopilot's camera vision networks",
+              description: "Tesla's driving-assistance networks are deep multi-layer networks trained via backpropagation on millions of miles of camera footage, adjusting internal weights so the model recognizes lanes, vehicles, and pedestrians from raw pixels."
+            },
+            {
+              title: 'GitHub Copilot code completion',
+              description: "Copilot's underlying model is a Transformer that applies self-attention over the code already open in your editor, deciding which earlier lines and variable names are most relevant before suggesting the next line."
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p6-m17-t1'] as any,
           primaryText: {
             id: 'book-deep-learning',

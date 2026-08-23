@@ -47,7 +47,31 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Grammar of Graphics: the layered framework (data, aesthetic mappings, geometric objects, statistical transformations, scales, facets) underlying libraries like ggplot2, explaining why matplotlib/seaborn charts are built by composing layers rather than selecting a single fixed chart type.',
                 'Outlier Detection via the Interquartile Range (IQR): flagging points more than 1.5x the IQR below Q1 or above Q3 as potential outliers, a robust rule of thumb that determines where box plot whiskers end and whether a value warrants investigation before being dropped.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds101-t1'] as any,
+              simpleExplanation: `Imagine your family's receipts from a whole year of shopping are all crumpled up in a shoebox. Some are on tiny thermal paper, some are handwritten, and the same item might be called "milk," "MILK 2%," or "whole milk" on different slips. Before you could answer even a simple question like "how much did we spend on groceries in June?" you'd first have to dump them all onto a table and organize them into neat rows and columns: one row per purchase, one column for the date, one for the item, one for the price. That act of organizing is called "tidying" your data, and it's the first and most important step in almost anything a data scientist does, because every tool afterward — charts, averages, statistics — assumes the data already looks like a neat table.
+
+Once the receipts are in a tidy table, you can start asking group questions. Suppose you want to know the average amount spent per store. You'd sort all the receipts into little piles, one pile per store, add up each pile, and divide by how many receipts are in it. That's exactly what a "group-by" does to a dataset: split it into groups based on some category, do a calculation on each group separately, and then bring the results back together into a summary table. A computer can do this for millions of rows in the blink of an eye, but the idea is the same as sorting receipts into piles on your kitchen table.
+
+Now, how do you turn that summary table into a picture a human can understand at a glance? Think of building a chart the way you'd build with LEGO bricks: you start with a base plate (the data), snap on a layer that decides where things go on the page (an x-axis for date, a y-axis for spending), then snap on a layer that decides what shape represents each data point (dots, bars, lines), and finally a layer of color or labels to add extra meaning. This "stack of layers" idea is called the grammar of graphics, and it's why chart-making tools let you build almost any kind of chart by combining a small number of building blocks rather than picking from a fixed menu of chart types.
+
+Finally, once you have your neat table and your chart, you'll often spot a few points that look strange — maybe one receipt says you spent $10,000 on bananas. Outlier detection is just a formal way of asking "does this number look wildly different from its neighbors?" using the middle 50% of the data as a ruler for what "normal" looks like, so you know which receipts are worth double-checking for a typo versus which ones are simply an unusually expensive shopping trip.`,
+              realWorldApplications: [
+                {
+                  title: 'The New York Times graphics desk',
+                  description: 'Data journalists there use tidy-data practices and layered chart-building (the same grammar of graphics popularized by ggplot2) to turn messy government datasets into the polished interactive charts that accompany news stories.'
+                },
+                {
+                  title: 'Spotify Wrapped',
+                  description: 'Spotify\'s year-end Wrapped feature relies on grouping and aggregating billions of rows of listening events (one row per song play) by user, artist, and genre to compute each listener\'s top songs, minutes streamed, and top genres.'
+                },
+                {
+                  title: 'Airbnb\'s internal analytics tooling',
+                  description: 'Airbnb has publicly written about building internal tools on top of tidy, standardized event tables so that thousands of analysts can group and visualize booking and search data consistently without re-cleaning it each time.'
+                },
+                {
+                  title: 'Johns Hopkins COVID-19 Dashboard',
+                  description: 'The widely used Johns Hopkins CSSE dashboard aggregated raw case-report data from many inconsistent sources into a tidy table (one row per region per day) so it could be grouped by country/state and charted as the now-familiar case curves.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds101-1',
                 title: 'Python for Data Analysis (3rd Ed)',
@@ -212,7 +236,31 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Memory Contiguity (C-order vs Fortran-order): whether array elements are laid out row-major (C order, default) or column-major (Fortran order) in memory, which determines which access pattern is cache-friendly and therefore fast.',
                 'Views vs Copies: basic slicing returns a view that shares the original array\'s memory buffer, while fancy indexing (boolean masks, integer arrays) returns a new copy; conflating the two is a common source of subtle bugs when mutating "sliced" data.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds102-t1'] as any,
+              simpleExplanation: `Picture two ways of handing out candy to a line of 1,000 kids. In the slow way, you walk up to each kid one at a time, reach into your bag, and place one candy in their hand — one trip, one kid, repeat a thousand times. In the fast way, you have a machine that dumps candy into all 1,000 hands simultaneously in one motion. Regular Python loops work like the slow way: for every single number in a list, Python does a bunch of bookkeeping (checking its type, unwrapping it, doing the math, wrapping the result back up) before moving to the next one. NumPy's vectorization is the fast way — it hands the entire list of numbers to a tightly optimized block of code, written in a lower-level language, that processes them all in one coordinated sweep, skipping all that per-item bookkeeping.
+
+This is only possible because NumPy stores its numbers differently than a normal Python list does. A Python list is like a row of lockers, each one holding a note that says "go look over there for the actual number." A NumPy array is like a single shelf where all the numbers sit right next to each other, packed tightly, all the same size and type. Because the computer knows exactly how big each number is and that they're all lined up in a row, it can grab huge chunks of them at once instead of chasing down a separate note for every single value — this is why vectorized code is dramatically faster.
+
+Broadcasting solves a different, related puzzle: what happens when you want to add a small set of numbers to a bigger set that doesn't quite match in size? Think of a recipe card that lists ingredient amounts "per serving," and you want to scale it for a table of 8 people who each ordered a different number of servings. Instead of writing out the recipe eight separate times, broadcasting is the rule that lets NumPy automatically "stretch" the smaller recipe card across every person's serving count, as long as the shapes are compatible in a specific, predictable way — no wasted copies, just implied repetition.
+
+Finally, there's a subtlety about "views" versus "copies" that trips up almost every beginner. If you slice out a piece of a NumPy array — like pointing at a section of that shelf of numbers — you usually get a window looking at the very same shelf, not a new shelf. So if you change a number through that window, you've actually changed the original array too, the same way scribbling on a photocopy that's actually just a see-through overlay would mark up the original page underneath it.`,
+              realWorldApplications: [
+                {
+                  title: 'NASA\'s JPL spacecraft trajectory calculations',
+                  description: 'Mission engineering teams have used NumPy\'s vectorized array math for orbital mechanics and trajectory simulations, since propagating thousands of state vectors through physics equations is far faster as batched array operations than as Python loops.'
+                },
+                {
+                  title: 'Instagram\'s backend image and feed-ranking pipelines',
+                  description: 'Instagram engineers have described NumPy and its vectorized array operations as core to the Python-heavy parts of their backend, where numerical scoring and image-related computations need to run over large batches efficiently.'
+                },
+                {
+                  title: 'Every major deep learning framework (PyTorch, TensorFlow)',
+                  description: 'PyTorch and TensorFlow tensors are direct descendants of the NumPy array model, using the same contiguous-memory-plus-broadcasting design so that operations across millions of neural network weights run as fast, vectorized batch computations rather than slow Python loops.'
+                },
+                {
+                  title: 'Pandas itself',
+                  description: 'The pandas DataFrame library used throughout data science is built directly on top of NumPy arrays, inheriting vectorization and broadcasting so that operations like adding two columns together happen as one fast array operation instead of a per-row Python loop.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds102-1',
                 title: 'Python Data Science Handbook (2nd Ed)',
@@ -376,7 +424,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'P-value: the probability, computed under the assumption that the null hypothesis is true, of observing a test statistic at least as extreme as the one actually observed; it is a statement about the data given the null, not a statement about the probability that the null itself is true.',
                 'Likelihood Ratio Test: a hypothesis test comparing a restricted (null) model to a more general (alternative) model by computing -2 log(L_null / L_alt), which is asymptotically chi-squared distributed under the null, giving a principled way to test whether added model complexity is statistically justified.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['stat201-t1'] as any,
+              simpleExplanation: `Imagine you find a mystery coin on the sidewalk and want to know how biased it is — does it land heads 50% of the time, like a fair coin, or is it weighted to land heads 80% of the time? You flip it 10 times and get 8 heads. Maximum likelihood estimation is the strategy of asking: "out of every possible bias the coin could have, which one makes the outcome I actually observed — 8 heads out of 10 — the LEAST surprising?" You're not guessing blindly; you're working backward from the evidence to the explanation that best accounts for it. In this case, a coin biased toward 80% heads makes "8 heads out of 10" a very unsurprising, likely result, while a fair 50% coin makes that same result comparatively surprising — so 80% is your maximum likelihood estimate.
+
+Under the hood, "how surprising" is measured with something called a likelihood function, which is really just a formula that answers "if the true bias were X, how probable would my exact observed data have been?" for every possible value of X. Because probabilities multiply and get astronomically tiny very fast (imagine multiplying together the probabilities of a thousand coin flips), statisticians almost always take the logarithm of that formula first — logs turn multiplication into addition, which is both easier to compute and easier for a computer to search through without running out of decimal precision.
+
+Once you have a best-fitting explanation, a natural next question is: "is this fancier explanation actually earning its keep, or would a simpler explanation have worked just as well?" That's what the likelihood ratio test is for. Think of two doctors examining your fussy coin: one says "it's just a normal fair coin" (the simple, restricted explanation) and the other says "it has a specific unusual bias" (the fancier, more flexible explanation). The likelihood ratio test compares how much better the fancier doctor's explanation fits the data than the simple doctor's — and if the improvement isn't bigger than what could plausibly happen by chance alone, you stick with the simpler explanation, following the general statistical principle of not adding complexity unless the data clearly demands it.`,
+              realWorldApplications: [
+                {
+                  title: 'Pharmaceutical clinical trial analysis (FDA-regulated drug approvals)',
+                  description: 'Maximum likelihood estimation is the standard method statisticians use to fit dose-response and survival models to clinical trial data, estimating parameters like a drug\'s effect size from the observed patient outcomes.'
+                },
+                {
+                  title: 'Insurance actuarial pricing models',
+                  description: 'Actuaries at insurers fit loss distributions (for claim sizes and frequencies) to historical claims data using maximum likelihood estimation, directly shaping the premiums a policyholder is charged.'
+                },
+                {
+                  title: 'Google\'s and Meta\'s A/B testing platforms',
+                  description: 'Internal experimentation platforms use likelihood-ratio-style tests to decide whether a more complex model of user behavior (e.g., one where a new feature changes click rates) is statistically justified over the simpler "no effect" baseline.'
+                },
+                {
+                  title: 'Genome-wide association studies (GWAS) in genetics research',
+                  description: 'Researchers use likelihood ratio tests to determine whether a genetic variant\'s association with a disease trait is statistically significant, comparing a model that includes the variant against a null model that excludes it.'
+                }
+              ],
               primaryText: {
                 id: 'bk-stat201-1',
                 title: 'All of Statistics: A Concise Course in Statistical Inference',
@@ -543,7 +613,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'B-Tree Index: a balanced tree data structure that most relational databases use by default to support fast equality and range lookups (e.g., WHERE id = 5 or WHERE date BETWEEN ...), trading extra storage and slower writes for faster reads.',
                 'Query Execution Plan (EXPLAIN ANALYZE): the concrete sequence of operations (scans, joins, sorts) the database\'s query optimizer chooses to execute a query, and the primary tool for diagnosing why a query is slow — for instance revealing an unexpected full table scan where an index should have been used.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds202-t1'] as any,
+              simpleExplanation: `Picture a school-wide 100-meter race where every student from every grade runs together, and afterward you want to know: "who came in 1st place within their own grade?" — not across the whole school, just among their own classmates. A regular SQL aggregation, like a plain GROUP BY, can only tell you something like the average finishing time per grade — it collapses all the individual runners into one summary number and you lose each kid's personal result. A window function is different: it lets you rank, average, or compare each runner against the others "in their own lane" (their own grade) while still keeping every single runner as their own row in the results. Nobody gets erased or merged away.
+
+Concretely, a window function does this by defining a "window" — a specific slice of rows that are relevant to each individual row, like "everyone in the same grade as me," or "everyone who ran in the last 30 days." Then it computes something over just that slice: a rank, a running total, a moving average, a comparison to the row before or after. This is why window functions are the tool of choice for things like "show me each customer's order alongside their running total spend so far" or "flag whether this month's revenue was higher or lower than last month's" — questions that need both the detail (one row per event) and a group-level calculation at the same time.
+
+Behind the scenes, when you send a query like this to a database, it doesn't just blindly run it top to bottom — it first builds a plan, similar to how a GPS doesn't just start driving but first figures out the best route considering traffic and road closures. The database's query optimizer looks at your tables, considers whether there's a fast shortcut (like an index — think of it as a book's index that lets you jump straight to a topic instead of reading every page) versus scanning through every single row, and picks whichever route it believes will get to the answer fastest. Reading that plan (via EXPLAIN ANALYZE) is like popping the hood to see exactly which route the GPS chose, and figuring out why a query might be taking longer than expected — say, discovering it's reading the whole book page by page when an index shortcut was sitting right there unused.`,
+              realWorldApplications: [
+                {
+                  title: 'Amazon\'s and Uber\'s internal leaderboard and ranking dashboards',
+                  description: 'Analytics teams commonly use window functions like RANK() and ROW_NUMBER() to compute "top N per category" reports — for example, top-selling products within each region — without collapsing the underlying row-level detail.'
+                },
+                {
+                  title: 'Stripe\'s and Square\'s transaction analytics',
+                  description: 'Payment platforms use window functions to compute running totals and period-over-period comparisons (like month-over-month revenue change) directly in SQL against their transaction warehouses, a textbook use of the LAG/LEAD and running-sum window patterns.'
+                },
+                {
+                  title: 'Snowflake and BigQuery query optimizers',
+                  description: 'Modern cloud data warehouses like Snowflake and Google BigQuery expose EXPLAIN plans that show exactly which scan, join, and sort strategies the optimizer chose, which analytics engineers inspect to diagnose slow dashboards and multi-terabyte queries.'
+                },
+                {
+                  title: 'Spotify\'s listening-streak and personal-stats features',
+                  description: 'Computing a user\'s consecutive-day listening streaks or their rank among friends for a given artist is a classic window-function pattern (partitioning by user, ordering by date) used throughout consumer analytics products like Spotify Wrapped.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds202-1',
                 title: 'Designing Data-Intensive Applications (DDIA)',
@@ -717,7 +809,31 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Difference-in-Differences (DiD) Estimator: computed as (Y_treatment,post - Y_treatment,pre) - (Y_control,post - Y_control,pre), this estimator differences out both the pre-existing gap between groups and any common time trend, isolating the treatment effect under the parallel trends assumption.',
                 'Causal DAGs & the Backdoor Criterion: directed acyclic graphs that encode assumed causal relationships between variables, used with the backdoor criterion to formally determine the minimal set of variables that must be conditioned on to block all confounding "backdoor paths" between treatment and outcome without accidentally conditioning on a collider.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds302-t1'] as any,
+              simpleExplanation: `You step outside, open your umbrella, and a few minutes later the rain stops. Did opening the umbrella cause the rain to stop? Obviously not — it was going to stop anyway, and the umbrella just happened to come out around the same time. This is the central puzzle of causal inference: just because two things happened together, or one followed the other, doesn't mean one caused the other. The entire field is about designing clever comparisons that let you tell "the umbrella caused it" apart from "it was going to happen regardless."
+
+Difference-in-differences is one such trick. Imagine two nearly identical towns, and one of them raises its minimum wage while the other doesn't. If you only looked at the town that raised wages, before and after, you couldn't tell how much of any change in employment was due to the wage hike versus just the economy naturally drifting up or down that year. So instead, you track both towns over the same time period and look at how much each one changed. If the town that didn't raise wages went up by 2% and the town that did went up by only 1%, the "difference of the differences" (1% minus 2% = -1%) is your best estimate of the wage hike's true effect, because it cancels out whatever was happening to both towns anyway, like a shared economic tide lifting or lowering both boats. This only works if the two towns would have moved in parallel had neither changed anything, an assumption called "parallel trends" that researchers examine very carefully.
+
+Propensity score matching tackles a different obstacle: comparing groups that aren't naturally similar to begin with. Imagine trying to measure whether a new medicine helps, but the doctors gave it mostly to their sicker patients. A raw comparison would unfairly make the medicine look bad, because the treated group started off worse. Propensity score matching first estimates, for every patient, "how likely were they to have received the medicine given everything we know about them?" and then pairs up treated and untreated patients who had a very similar likelihood — essentially finding each treated patient's "statistical twin" among the untreated group, so the comparison becomes closer to a fair, apples-to-apples one.
+
+Underlying all of this is the idea of drawing out your assumptions as a causal diagram — arrows pointing from causes to effects — so you can see exactly which other variables might be secretly influencing both your suspected cause and its effect (called confounders), and figure out precisely which ones you need to account for versus which ones would actually introduce new bias if you controlled for them.`,
+              realWorldApplications: [
+                {
+                  title: 'Card and Krueger\'s New Jersey minimum wage study',
+                  description: 'This landmark study compared fast-food employment in New Jersey (which raised its minimum wage) against neighboring Pennsylvania (which didn\'t) using difference-in-differences, becoming one of the most cited applications of the method in empirical economics.'
+                },
+                {
+                  title: 'Netflix\'s and Airbnb\'s product experimentation teams',
+                  description: 'When a true randomized A/B test isn\'t possible (e.g., a feature was rolled out to only some markets), tech companies commonly use difference-in-differences on the affected versus unaffected regions to estimate the feature\'s causal impact on metrics like retention.'
+                },
+                {
+                  title: 'The RAND Health Insurance Experiment and later observational health studies',
+                  description: 'Propensity score matching is a standard tool in health economics and epidemiology for estimating a treatment\'s effect from observational (non-randomized) hospital or insurance-claims data, by matching treated and untreated patients with similar characteristics.'
+                },
+                {
+                  title: 'Federal Reserve and academic economists\' minimum-wage and policy research',
+                  description: 'Difference-in-differences remains the workhorse method economists use at agencies and universities to evaluate the effect of policy changes (minimum wage laws, tax credits, program eligibility rules) that roll out in some states or regions but not others.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds302-1',
                 title: 'Causal Inference: The Mixtape',
@@ -885,7 +1001,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Bagging vs. Boosting: bagging (used by Random Forests) trains many trees independently and in parallel on bootstrap-resampled data and averages them to reduce variance, whereas boosting trains trees sequentially, each one targeting the previous ensemble\'s errors, which primarily reduces bias but requires careful regularization to control variance.',
                 'Learning Rate (Shrinkage): a multiplier (typically 0.01-0.3) applied to each new tree\'s contribution before adding it to the ensemble; smaller learning rates require more trees but generally produce better-generalizing models by taking smaller, more conservative steps toward fitting the residuals.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds305-t1'] as any,
+              simpleExplanation: `Imagine you're trying to guess someone's weight just by looking at them, and you're not very good at it yet. Your first guess is off by 15 pounds. Instead of throwing away your guess and starting over, imagine you brought in a second friend whose only job is to look at how wrong your first guess was and try to predict THAT error — not the weight itself, just how much and in which direction you missed by. Then a third friend looks at how wrong the combination of you and friend two still is, and tries to correct that remaining mistake, and so on. Each new friend isn't trying to solve the whole problem from scratch; they're specifically patching up whatever mistakes are left over after everyone before them has had their say. That's the core idea of gradient boosting: build one weak, simple predictor (a small decision tree — basically a flowchart of yes/no questions), see where it went wrong, then build another small tree whose entire purpose is to correct those specific errors, and keep stacking correction after correction.
+
+Why decision trees and not something else? A single decision tree is easy to picture: it's a series of yes/no splits, like "is the person taller than 5'8\"? If yes, ask if they're male; if no, ask something else," eventually landing on a guess. One tree alone tends to be either too simple to capture real patterns or so detailed it just memorizes quirks of the specific people it was trained on (like memorizing your classmates' exact weights instead of learning general rules about height and weight). Boosting works around this by using many small, deliberately weak trees rather than one giant one, and layering them so their combined guess is far better than any single tree could manage alone.
+
+There's an important dial called the learning rate that controls how much each new "correcting friend" is allowed to influence the final answer. If you let every new tree fully commit to fixing the previous mistake, the whole system can overreact and start chasing noise — like overcorrecting your steering after a small bump and swerving into the other lane. Instead, boosting algorithms usually only let each new tree contribute a small fraction of its suggested correction (a shrinkage factor, often as small as 1-10%), meaning it takes many trees working together in small, careful steps to reach a good answer — slower, but much more stable and less prone to memorizing noise in the training data.`,
+              realWorldApplications: [
+                {
+                  title: 'Kaggle competition-winning models',
+                  description: 'XGBoost became famous for winning a large share of structured-data machine learning competitions on Kaggle throughout the mid-2010s, often outperforming more complex neural network approaches on tabular datasets.'
+                },
+                {
+                  title: 'Credit scoring and loan default prediction at major banks',
+                  description: 'Gradient boosted trees are widely used in financial services to predict the probability a loan applicant will default, since they handle mixed numeric/categorical features well and provide feature-importance scores that support regulatory explainability requirements.'
+                },
+                {
+                  title: 'Airbnb\'s search ranking system',
+                  description: 'Airbnb has publicly described using gradient boosted decision trees (and later neural rankers) as part of the models that rank search results, blending signals like price, location, and past booking behavior to predict which listings a guest is likely to book.'
+                },
+                {
+                  title: 'LightGBM at Microsoft',
+                  description: 'Microsoft developed LightGBM, a gradient boosting framework optimized for speed and memory on very large datasets, which is now used broadly across the industry for click-through-rate prediction, fraud detection, and other large-scale tabular prediction problems.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds305-1',
                 title: 'The Elements of Statistical Learning (ESL 2nd Ed)',
@@ -1052,7 +1190,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Differential Privacy (epsilon): a formal mathematical guarantee that the presence or absence of any single individual\'s record changes the probability of any output by at most a factor of e^epsilon, where smaller epsilon means stronger privacy protection at the cost of more noise (and thus less statistical utility).',
                 'Impossibility of Simultaneous Fairness: the formal result (Chouldechova 2017; Kleinberg, Mullainathan & Raghavan 2016) that demographic parity, equalized odds, and calibration cannot all be satisfied simultaneously except in degenerate cases (equal base rates or a perfect classifier), meaning practitioners must explicitly choose which fairness definition matters most for a given use case.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds404-t1'] as any,
+              simpleExplanation: `Imagine a robot teacher that grades essays and learns what a "good essay" looks like by studying thousands of essays that human teachers graded in the past. If those human teachers happened to unconsciously favor one writing style over another, the robot won't invent that bias out of nowhere — it will faithfully learn and repeat whatever pattern was already sitting in the examples it was shown, even the parts nobody intended to teach it. This is the heart of algorithmic bias: a model trained on historical decisions can absorb and then automate any unfairness baked into that history, often in ways that are hard to spot until you specifically go looking for them.
+
+The tricky part is that there isn't just one single way to define "fair." Imagine three different referees judging whether a talent show is fair: one insists that winners should be picked in equal numbers from every neighborhood in town (equal outcomes), another insists that among everyone who's actually skilled, the same fraction from each neighborhood should win (equal true-positive rates), and a third insists that "6 out of 10 stars" should mean the same actual talent level no matter which neighborhood the contestant is from (calibration). It turns out — and this is a real, proven mathematical result, not just an opinion — that you generally cannot satisfy all three referees at once unless the underlying talent happens to be distributed identically across every neighborhood to begin with. So building a "fair" system always involves consciously choosing which kind of fairness matters most for that specific decision, rather than assuming one magic fix covers everything.
+
+Differential privacy addresses a related but different worry: how do you let researchers learn useful patterns from a big pile of personal data — say, hospital records — without any single person's information being exposed or reconstructed? The trick is to deliberately add a carefully calibrated amount of random "static" or noise to the answers a system gives out, similar to a teacher announcing the average test score for the whole class but never revealing individual scores, and specifically fuzzing that average just enough that no one can work backward and guess exactly what any one student got. The clever mathematical guarantee behind differential privacy is that the noise is tuned so precisely that the released information barely changes whether or not any single specific person's data was included in the dataset at all — protecting each individual while still letting the overall pattern shine through.`,
+              realWorldApplications: [
+                {
+                  title: 'COMPAS recidivism risk scores used in U.S. courts',
+                  description: 'A widely cited ProPublica investigation found that the COMPAS criminal risk-assessment tool exhibited different false-positive rates across racial groups, becoming the canonical real-world example motivating the equalized-odds versus calibration fairness debate.'
+                },
+                {
+                  title: 'Amazon\'s scrapped internal recruiting tool',
+                  description: 'Amazon reportedly discontinued an experimental hiring algorithm after discovering it had learned to penalize resumes containing words like "women\'s" (as in "women\'s chess club captain"), because it was trained on a decade of resumes submitted mostly by men.'
+                },
+                {
+                  title: 'The U.S. Census Bureau\'s 2020 Census',
+                  description: 'The Census Bureau adopted differential privacy to protect individual respondents\' data in published statistics, adding carefully calibrated noise so that population counts remain useful for redistricting and funding decisions while making it mathematically harder to re-identify any individual.'
+                },
+                {
+                  title: 'Apple\'s and Google\'s on-device usage analytics',
+                  description: 'Apple has used differential privacy in iOS to collect aggregate usage statistics (like popular emoji or typing patterns) from millions of devices while adding noise to each individual data point before it ever leaves the phone, so no single user\'s exact behavior is exposed.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds404-1',
                 title: 'Fairness and Machine Learning: Limitations and Opportunities',
@@ -1219,7 +1379,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'ELT vs. ETL: the modern data stack pattern of Extracting and Loading raw data into the warehouse first, then Transforming it in-place using the warehouse\'s own compute (via dbt), which is what allows transformation logic to be iterated on quickly without re-running slow, brittle upstream extraction pipelines.',
                 'Layered Architecture (Staging / Intermediate / Marts): the convention of organizing dbt models into staging models (thin, 1:1 cleanup of a raw source), intermediate models (reusable business logic), and marts (final, wide, business-user-facing tables), which isolates changes to raw source schemas from the logic and consumers built on top of them.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds303-t1'] as any,
+              simpleExplanation: `Think about how a restaurant kitchen turns raw ingredients into a finished dish that gets served to a customer. Nobody hands the customer a raw onion and a slab of uncooked meat — there's a whole assembly line: ingredients get washed and chopped (prep station), combined into sauces or bases (the line cooks), and finally plated into the specific dish the customer ordered (the pass). Analytics engineering is that same assembly line, but for data instead of food. Raw data lands in a warehouse looking messy and inconsistent — mismatched column names, weird formats, duplicate rows — and analytics engineers build a series of transformation steps that clean it up, combine it with other ingredients, and finally plate it into a tidy, reliable table that a business analyst or dashboard can consume directly.
+
+The tool at the center of this world, dbt, treats each transformation step as if it were a recipe card written mostly in plain SQL, with two superpowers layered on top. First, it lets you write a recipe once and reference it by name elsewhere, the same way a recipe for "tomato sauce" gets reused across a dozen different pasta dishes instead of being retyped from scratch every time — this means if you fix a mistake in one shared recipe, every dish that depends on it gets fixed automatically too. Second, it automatically figures out the correct cooking order: it knows the sauce has to be made before the pasta dish that uses it, the same way dbt understands that a "staging" table must be built before an "intermediate" table that depends on it, before a final "mart" table that depends on that.
+
+Layering the kitchen this way — prep station, then line cooks, then the pass — means that if a supplier suddenly changes how they package the onions (the raw data source changes format), you only need to fix the prep station step; everything downstream that was built assuming clean, chopped onions doesn't need to change at all. This separation between "raw and messy" and "clean and business-ready" is exactly why staging, intermediate, and mart layers exist: it isolates the shock of any single messy raw source from all the polished, trustworthy tables the rest of the company relies on.`,
+              realWorldApplications: [
+                {
+                  title: 'dbt Labs and its widespread adoption at companies like GitLab and JetBlue',
+                  description: 'dbt (data build tool) pioneered the practice of applying software-engineering discipline — version control, testing, modularity — to SQL transformations, and is now used by thousands of companies to build their staging-to-mart data pipelines.'
+                },
+                {
+                  title: 'Snowflake\'s and Databricks\' modern data stack ecosystem',
+                  description: 'The "modern data stack" pattern (load raw data first, then transform it inside the warehouse with tools like dbt) became the dominant analytics architecture at cloud warehouse vendors like Snowflake and Databricks throughout the 2020s, replacing older pre-warehouse transformation pipelines.'
+                },
+                {
+                  title: 'GitLab\'s publicly documented data team handbook',
+                  description: 'GitLab famously publishes its own internal data team handbook and dbt project structure openly, which became a widely referenced real-world example of staging/intermediate/marts layering in a production analytics engineering setup.'
+                },
+                {
+                  title: 'Kimball-style dimensional modeling at retailers like Walmart and Target',
+                  description: 'Large retailers have long organized their sales data warehouses using the "marts" concept from dimensional modeling — wide, business-friendly fact and dimension tables — which is the direct ancestor of the mart layer in modern dbt projects.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds303-1',
                 title: 'The Data Warehouse Toolkit (3rd Ed)',
@@ -1386,7 +1568,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Augmented Dickey-Fuller (ADF) Test: a formal hypothesis test for the presence of a unit root (a specific form of non-stationarity) in a series, where the null hypothesis is that a unit root is present (non-stationary); rejecting the null gives statistical evidence supporting stationarity.',
                 'Differencing: transforming a series by subtracting each value from its previous value (y_t - y_t-1), which removes a linear trend and is the standard way to make a non-stationary series stationary before fitting an ARMA-type model; the number of differencing steps needed is the "I" (Integrated) order in ARIMA.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds304-t1'] as any,
+              simpleExplanation: `Imagine tracking a kid's height every month from birth to age 18. There's an obvious overall upward trend (they keep growing), a seasonal wiggle if you're measuring something like ice cream sales instead (spikes every summer, dips every winter), and then random day-to-day noise on top of both. Time series decomposition is simply the practice of pulling those three layers apart — trend, seasonality, and leftover noise — the way you might separate a smoothie back into "fruit," "ice," and "a splash of juice" so you can study each ingredient on its own instead of only ever seeing the blended result.
+
+Before you can build a solid forecasting model, statisticians care a lot about whether a series is "stationary," meaning its average level and its wiggliness stay roughly constant over time rather than drifting. This matters because most classic forecasting math assumes you're always describing the same underlying process, the way a recipe for chocolate chip cookies assumes the oven temperature stays constant throughout baking — if the oven keeps heating up as you bake, none of your timing instructions are reliable anymore. A rising trend is exactly this kind of drift, so statisticians often "difference" the series — literally just subtracting each value from the one before it, similar to tracking a child's monthly height GAIN instead of their raw height — which frequently flattens out a wandering trend into something much more stable and predictable.
+
+Once a series is reasonably stable, an ARIMA model predicts the next value using two intuitive ingredients: how much recent values have been trending (the autoregressive part — "yesterday and the day before give me a hint about tomorrow") and how much recent prediction errors have been running high or low (the moving-average part — "I've been consistently over- or under-guessing lately, so let me correct for that"). Combined with the differencing step, ARIMA is essentially a disciplined, mathematical version of "look at the recent pattern, look at how wrong you've recently been, and use both to make your best guess about what happens next."`,
+              realWorldApplications: [
+                {
+                  title: 'Federal Reserve economic forecasting',
+                  description: 'Central banks like the U.S. Federal Reserve use ARIMA and related time series models as standard tools for forecasting economic indicators such as inflation and unemployment, decomposing series into trend and seasonal components before modeling.'
+                },
+                {
+                  title: 'Meta\'s Prophet forecasting library',
+                  description: 'Meta (Facebook) open-sourced Prophet, a forecasting tool built around the same trend-plus-seasonality decomposition idea, originally created to let non-experts on its business teams forecast metrics like ad demand and infrastructure capacity.'
+                },
+                {
+                  title: 'Retail demand forecasting at Walmart and Target',
+                  description: 'Major retailers rely on time series forecasting with explicit seasonal components to predict demand for products around holidays and seasons, directly driving inventory and supply chain decisions.'
+                },
+                {
+                  title: 'Electric utility load forecasting',
+                  description: 'Power grid operators use ARIMA-family and seasonal decomposition models to forecast electricity demand hours to days ahead, accounting for daily and weekly seasonal patterns (higher usage on weekday evenings, lower on weekends) to plan generation capacity.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds304-1',
                 title: 'Time Series Analysis and Its Applications (4th Ed)',
@@ -1560,7 +1764,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Data/Concept Drift Monitoring: tracking whether the statistical properties of incoming data (data drift) or the underlying relationship between features and target (concept drift) change after deployment, since a model validated once at training time can silently degrade as the real world shifts away from the training distribution.',
                 'Reproducibility & Technical Debt: ensuring the entire pipeline can be re-run and independently verified (fixed seeds, versioned data and code, documented environment) while deliberately avoiding the anti-patterns — glue code, hidden feedback loops, undeclared configuration — identified as major sources of long-term risk in production ML systems.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds401-t1'] as any,
+              simpleExplanation: `Building a single machine learning model that works well on your laptop is a bit like a chef inventing a great recipe in their own home kitchen. It tastes great, but that's a completely different challenge from opening a restaurant that has to make that exact same dish, correctly, thousands of times a day, with different staff, different suppliers, and customers who need it fast and consistent every single time. A capstone data science project is about making that leap: not just proving a model can work once, but building the whole surrounding system — the pipeline that gets fresh ingredients (data) in, the steps that prepare and cook them (cleaning, feature engineering, training) the same way every time, and a reliable way to serve the finished dish (predictions) to real users without the kitchen catching fire.
+
+A huge part of this is reproducibility — making sure that if you, or a teammate, or you-six-months-from-now, re-run the exact same recipe with the exact same ingredients, you get the exact same dish. In cooking terms, that means writing down precise measurements instead of "a pinch of this," using the same brand of ingredients every time, and keeping careful notes about substitutions. In data science, that means locking down random number "seeds" so experiments aren't randomly different each run, keeping careful version records of exactly which data and exactly which code produced a given result, and documenting the kitchen's equipment (the software environment) so nothing behaves differently on a different machine.
+
+The final, often underappreciated danger is what's sometimes called technical debt — the invisible cost of shortcuts. Imagine a kitchen where, instead of a clean, written-down recipe, half the steps live only in one cook's head, ingredients get substituted on the fly without telling anyone, and the sauce recipe secretly depends on leftover scraps from yesterday's different dish. It works today, but the moment that one cook goes on vacation, or the leftover scraps run out, the whole thing breaks in a way nobody can quickly diagnose. Real production pipelines accumulate exactly this kind of hidden fragility — tangled dependencies, undocumented configuration, feedback loops where a model's own outputs quietly influence the data it's later trained on — and a good capstone project is judged not just on accuracy, but on whether it avoids leaving these invisible landmines for whoever maintains it next.`,
+              realWorldApplications: [
+                {
+                  title: 'Google\'s "Hidden Technical Debt in Machine Learning Systems" paper',
+                  description: 'This widely cited Google paper formalized the idea that only a small fraction of real-world ML systems is the model itself, with the surrounding data pipelines, configuration, and monitoring infrastructure accounting for the vast majority of the engineering and long-term maintenance risk.'
+                },
+                {
+                  title: 'Netflix\'s Metaflow framework',
+                  description: 'Netflix built and open-sourced Metaflow specifically to help its data scientists take a model from a notebook prototype to a reliable, reproducible, versioned production pipeline without needing to become full-time infrastructure engineers.'
+                },
+                {
+                  title: 'Kaggle competition-to-production gap widely discussed in industry',
+                  description: 'It is well documented across the ML engineering community that a model winning a Kaggle competition is a very different achievement from a model running reliably in production, since competitions optimize purely for accuracy on a fixed dataset with no pipeline, drift, or reproducibility concerns.'
+                },
+                {
+                  title: 'DVC (Data Version Control) adoption across ML teams',
+                  description: 'Tools like DVC are used by data science teams to version large datasets and model artifacts alongside code in Git, directly addressing the reproducibility challenge of tying a specific model result back to the exact data and code that produced it.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds401-1',
                 title: 'Designing Data-Intensive Applications',
@@ -1732,7 +1958,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Model Registry & Versioning: the practice of assigning every trained model artifact a unique, immutable version and lifecycle stage, so a specific model can be rolled back to, audited, or compared against a previous version without ambiguity about exactly which weights and training data produced it.',
                 'Kubernetes Orchestration & Horizontal Scaling: running multiple replicas of a containerized model server behind a load balancer and automatically adding or removing replicas based on traffic, which lets a service absorb variable request volume without a human manually provisioning servers.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds402-t1'] as any,
+              simpleExplanation: `Imagine you've perfected a recipe in your own kitchen, and now you want to sell that exact dish at food trucks parked in a hundred different cities. The problem is, your home kitchen has a specific stove, specific pots, specific water pressure — and a food truck in another city might have slightly different equipment, meaning your recipe could turn out differently or fail outright. A "container" solves this by packing not just the recipe, but a complete miniature kitchen — the exact stove, the exact pots, all the exact ingredients — into a sealed, self-contained box that can be dropped into any truck in any city and behave identically every time, regardless of what's different about that truck's surroundings. That's what Docker containers do for software: they package a model along with everything it needs to run (code, libraries, settings) so it behaves the same on a developer's laptop as it does on a server thousands of miles away.
+
+Now imagine demand for your food truck's dish suddenly spikes — maybe there's a festival in town and ten times the usual number of customers show up. One food truck can't possibly serve them all fast enough, so you'd want a system that automatically calls in more trucks when a line gets too long, and sends some trucks home when things quiet back down, without a manager having to notice and react manually every time. That's what orchestration tools like Kubernetes do for deployed models: they watch how much traffic (requests) is coming in, and automatically spin up more copies of your containerized model — or shut extra ones down — so the service stays fast under heavy load without wasting resources when it's quiet.
+
+Finally, deploying the model once isn't the end of the story — food trucks need regular health inspections, and a good operator watches whether ingredients are still fresh even after opening day. Model monitoring plays that role: watching whether the incoming data starts looking meaningfully different from what the model was trained on (like a food truck's regular ingredients suddenly being swapped out) — a phenomenon called drift — so a team can catch a silently degrading model before it starts serving customers bad predictions instead of a bad meal.`,
+              realWorldApplications: [
+                {
+                  title: 'Uber\'s Michelangelo ML platform',
+                  description: 'Uber built and published details about Michelangelo, an internal MLOps platform that standardizes how models across the company are trained, containerized, deployed, and monitored for drift, letting thousands of models run reliably in production.'
+                },
+                {
+                  title: 'Docker and Kubernetes as the industry-standard deployment stack',
+                  description: 'Docker containers combined with Kubernetes orchestration have become the default way companies of all sizes package and auto-scale machine learning inference services, letting a model handle traffic spikes (like a viral product launch) without manual server provisioning.'
+                },
+                {
+                  title: 'Netflix\'s recommendation-serving infrastructure',
+                  description: 'Netflix has written about running thousands of containerized microservices, including recommendation and personalization models, behind auto-scaling infrastructure that adjusts capacity in real time to viewing traffic patterns across time zones.'
+                },
+                {
+                  title: 'FastAPI-based model-serving endpoints at countless startups',
+                  description: 'Wrapping a trained model behind a lightweight FastAPI web server, containerizing it with Docker, and deploying it to a cloud platform is one of the most common real-world patterns for taking a data science model from a notebook to something other software can actually call.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds402-1',
                 title: 'Designing Machine Learning Systems',
@@ -1905,7 +2153,31 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'Vector Database RAG (Retrieval-Augmented Generation): embedding a document corpus into dense vectors, storing them in a vector database that supports fast approximate nearest-neighbor search, and retrieving the top-k most similar chunks to a user\'s query to inject as context into an LLM prompt, grounding generation in retrievable facts rather than relying solely on knowledge memorized during pretraining.',
                 'Word Embeddings (Distributional Semantics): dense vector representations of words (e.g., Word2Vec) learned so that words occurring in similar contexts end up with similar vectors, operationalizing the distributional hypothesis ("a word is characterized by the company it keeps") into arithmetic that supports similarity search and, famously, vector analogies like king - man + woman ~ queen.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds403-t1'] as any,
+              simpleExplanation: `Read this sentence: "The trophy didn't fit in the suitcase because it was too big." What was too big — the trophy or the suitcase? You instantly know it's the trophy, but notice how you had to glance back at other words in the sentence to figure out what "it" refers to. That's exactly the problem self-attention solves for computers reading text. For every single word, self-attention asks: "which other words in this sentence should I look back at to understand what THIS word really means here?" and it lets the model weigh some words much more heavily than others — the way your brain paid much more attention to "trophy" and "suitcase" than to "the" or "because" when resolving what "it" meant.
+
+Before this idea took over, older language models processed sentences strictly one word at a time, left to right, like reading through a keyhole where you can only see one word and have to remember everything before it purely from memory — which gets shaky and forgetful the longer the sentence runs on. Self-attention instead lets every word look at every other word in the sentence all at once, directly, no matter how far apart they are, which is why it's so much better at handling long sentences and tricky references like "it," "they," or "the former."
+
+To make this concrete, imagine everyone in a group project holding up two cards: one card describes "what kind of help I'm looking for" (a query) and another describes "what kind of help I can offer" (a key). Self-attention works by having every word compare its "what I'm looking for" card against every other word's "what I can offer" card, and words whose cards match well get paid much closer attention to. Whichever words come out as the best matches get blended together more strongly into that word's final understanding — mathematically weighted, but conceptually just "listen more closely to the words that are most relevant to me."
+
+Underneath all of this, words themselves first get converted into long lists of numbers — embeddings — arranged so that words used in similar contexts end up with similar number patterns, the digital equivalent of grouping words by "the company they keep." This is why the famous trick of "king minus man plus woman" landing near "queen" works: the numerical pattern that represents "royalty" and the numerical pattern that represents "gender" both get encoded consistently enough that basic arithmetic on the number lists lines up with basic arithmetic on the underlying meanings.`,
+              realWorldApplications: [
+                {
+                  title: 'Google Translate\'s transformer-based translation models',
+                  description: 'Google Translate moved to transformer architectures built on self-attention, allowing the system to weigh distant words in a sentence when producing a translation instead of processing strictly word-by-word, substantially improving translation quality for long or ambiguous sentences.'
+                },
+                {
+                  title: 'Anthropic\'s Claude and OpenAI\'s GPT models',
+                  description: 'Modern large language models like Claude and GPT are built almost entirely from stacks of self-attention layers, the same "Attention Is All You Need" architecture from the original 2017 transformer paper, scaled up dramatically.'
+                },
+                {
+                  title: 'GitHub Copilot\'s code completion',
+                  description: 'Code-completion tools like GitHub Copilot use transformer models with self-attention to look across an entire file (variable names, function definitions used earlier) when predicting what code should come next, similar to how it resolves references in natural language.'
+                },
+                {
+                  title: 'Google\'s BERT in Google Search',
+                  description: 'Google incorporated BERT, a transformer-based language model, directly into its search ranking system to better understand the intent behind ambiguous, conversational search queries by weighing how words in a query relate to one another.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds403-1',
                 title: 'Speech and Language Processing (3rd Ed)',
@@ -2079,7 +2351,29 @@ export const DATA_SCIENCE_COURSES: Course[] = [
                 'U-Net Segmentation: an encoder-decoder architecture with skip connections directly linking corresponding encoder and decoder layers, letting the network combine coarse, high-level semantic context from deep layers with fine-grained spatial detail preserved from early layers, producing pixel-precise segmentation masks.',
                 'Spatial Autocorrelation: a statistical measure (e.g., Moran\'s I) of whether observations that are geographically near each other tend to have similar values, the geospatial analogue of temporal autocorrelation and the basis for detecting spatial clustering, hotspots, and violations of the independence assumption that standard statistical models rely on.'
               ],
-              primaryLecture: VERIFIED_VIDEOS['ds405-t1'] as any,
+              simpleExplanation: `Imagine teaching a child to recognize a cat, not by describing "a cat" in words, but by handing them a small magnifying glass and having them slide it across a photo, patch by patch — first noticing a tiny patch has an edge, then noticing a few edges nearby form a curve, then noticing a few curves form a pointy shape like an ear, then noticing two pointy ears plus whiskers plus a nose add up to "cat." Convolutional neural networks (CNNs) work through a strikingly similar layered process: an early layer's "magnifying glass" (a small filter) slides across the image looking only for very simple things like edges and color changes, the next layer combines those into slightly bigger patterns like curves and corners, and layer by layer the patterns get more complex until the final layers are recognizing whole meaningful shapes and objects.
+
+The reason this "sliding magnifying glass" trick works so well, instead of just feeding every single pixel into the model independently, is that it respects something true about images: a cat's ear looks like a cat's ear whether it appears in the top-left or bottom-right of the photo. By reusing the exact same small filter as it slides across every part of the image, a CNN only has to learn "what an edge looks like" once, and it can then recognize that same edge anywhere in the picture — a huge shortcut compared to learning "an edge in the top-left corner" and "an edge in the bottom-right corner" as two totally separate, unrelated facts.
+
+Spatial analytics extends a similar "nearby things tend to be related" intuition beyond photographs into maps and geography. If one neighborhood has high crime rates, its immediate neighbor is statistically more likely to also have elevated crime rates than a neighborhood clear across the city — location itself carries information, the same way a pixel's neighbors carry information about what shape they're jointly part of. Spatial autocorrelation is simply the formal, measurable version of that intuition: a statistic that tells you whether nearby places really do tend to look alike more than random chance alone would predict, which matters because many standard statistical techniques secretly assume every data point is independent of its neighbors — an assumption that geography routinely, and importantly, breaks.`,
+              realWorldApplications: [
+                {
+                  title: 'Tesla\'s and Waymo\'s self-driving perception systems',
+                  description: 'Self-driving car systems use convolutional neural networks to process camera feeds in real time, detecting pedestrians, other vehicles, lane markings, and traffic signs by recognizing the same kinds of learned edge-to-shape-to-object visual hierarchies.'
+                },
+                {
+                  title: 'Google Photos\' and Apple Photos\' automatic tagging',
+                  description: 'Photo apps use CNN-based image classifiers to automatically detect and group photos by content (faces, pets, landmarks) without a human ever manually labeling each picture, relying on the same layered feature-detection approach originally proven by architectures like ResNet.'
+                },
+                {
+                  title: 'Radiology AI tools used in hospitals (e.g., for detecting tumors in CT/MRI scans)',
+                  description: 'FDA-cleared diagnostic imaging tools use CNNs trained on large sets of labeled medical scans to flag suspicious regions such as tumors or fractures, assisting radiologists by highlighting areas warranting closer review.'
+                },
+                {
+                  title: 'The CDC\'s and public health researchers\' disease-hotspot mapping',
+                  description: 'Public health researchers use spatial autocorrelation statistics like Moran\'s I to detect statistically significant disease clusters (hotspots) on a map, distinguishing a true localized outbreak from what would just be expected random geographic scatter.'
+                }
+              ],
               primaryText: {
                 id: 'bk-ds405-1',
                 title: 'Computer Vision: Algorithms and Applications (2nd Ed)',

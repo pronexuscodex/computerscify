@@ -13,6 +13,14 @@ import { MemoryResearchCache } from '../src/services/researchCache';
 import { getResearchPublicationStatus, getResearchSafetyLabel, matchesResearchMetadata } from '../src/services/researchLibrary';
 import { INITIAL_PROGRESS } from '../src/services/storage';
 
+// Detects actual model-SDK/network-integration *code* (imports, client construction, API calls,
+// API-key env vars) — deliberately narrower than a bare "openai"/"anthropic" substring match, which
+// would also flag legitimate educational prose naming real AI products/companies as real-world
+// examples (e.g. "OpenAI's function calling", "Anthropic's Responsible Scaling Policy") that these
+// curriculum files are expected to contain now that topics include real-world-application content.
+const LIVE_MODEL_INTEGRATION_PATTERN =
+  /fetch\s*\(|@google\/genai|child_process|spawn\s*\(|exec\s*\(|WebSocket|from\s*['"](openai|@anthropic-ai\/sdk)['"]|require\(\s*['"](openai|@anthropic-ai\/sdk)['"]|new\s+(OpenAI|Anthropic)\s*\(|\.chat\.completions\.create\s*\(|\.messages\.create\s*\(|OPENAI_API_KEY|ANTHROPIC_API_KEY/;
+
 async function runTests() {
   console.log('====================================================');
   console.log('  COMPUTERSCIFY AUTOMATED TEST SUITE');
@@ -427,7 +435,7 @@ async function runTests() {
     'utf8'
   );
   assert(
-    !/fetch\s*\(|@google\/genai|openai|anthropic/i.test(aiCourseSource),
+    !LIVE_MODEL_INTEGRATION_PATTERN.test(aiCourseSource),
     'AI curriculum contains no model SDK, network call, chatbot, or agent runtime integration'
   );
 
@@ -572,7 +580,7 @@ async function runTests() {
     fs.readFileSync(new URL('../src/data/aiSecurityBenchmarkRegistry.ts', import.meta.url), 'utf8'),
   ].join('\n');
   assert(
-    !/fetch\s*\(|child_process|spawn\s*\(|exec\s*\(|WebSocket|@google\/genai|openai|anthropic/i.test(aiSecuritySources),
+    !LIVE_MODEL_INTEGRATION_PATTERN.test(aiSecuritySources),
     'AI-security module contains no model SDK, autonomous runtime, network client, subprocess, or exploit runner'
   );
 

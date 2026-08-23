@@ -44,6 +44,35 @@ export const phase4DSModules: CurriculumModule[] = [
             'A/B Testing Pitfalls: Peeking, Multiple Testing Corrections (Bonferroni), Novelty Effects: Repeatedly checking significance before the experiment ends ("peeking") inflates the true false-positive rate far above the nominal alpha, testing many metrics simultaneously without correction (e.g., Bonferroni) multiplies the chance of a spurious significant result, and novelty effects can make a new feature appear to perform better temporarily simply because it is new; recognizing these pitfalls is essential for building trustworthy experimentation pipelines rather than statistically invalid ones.',
             'Statistical Power and Sample Size Determination: Before running an experiment, the minimum detectable effect, desired power (commonly 80%), and significance level alpha jointly determine the required sample size per group; underpowered experiments systematically fail to detect real effects, which is why sample size planning is a prerequisite step in the capstone ETL and experimentation pipeline.'
           ],
+          simpleExplanation: `Imagine you run a lemonade stand, and one day you wonder whether putting up a bright yellow sign makes more people stop and buy a cup. You can't just try the sign for one afternoon and declare victory — maybe that day was simply sunnier, or a nearby school let out early and flooded the sidewalk with thirsty kids. So instead, for every person who walks by, you flip a coin: heads, they see the yellow sign; tails, they see the plain stand. After a week you count how many people from each group bought lemonade. That's an A/B test — and the "default" boring assumption you start with, that the sign makes no real difference at all, is called the null hypothesis. Your hope that the sign actually helps is the alternative hypothesis.
+
+Here's the tricky part: even if the sign truly does nothing, the two groups will still come out a little different just by chance, the same way flipping a coin 100 times rarely lands exactly 50-50. So the real question isn't "is there any difference," it's "is the difference bigger than what pure chance would typically produce?" A p-value answers exactly that: it's like asking "if the sign really did nothing at all, how surprising would results this lopsided be?" A tiny p-value means "extremely surprising if nothing were going on" — which is evidence the sign is doing something real. Statisticians usually draw the "surprising enough" line at results that would happen less than 5% of the time by chance alone. When you're comparing rates of something (like the percentage who bought a cup), you use a tool called a Z-test; when you're comparing average amounts from a small group (like average dollars spent), you use a close cousin called a t-test, which is a bit more forgiving about how little you actually know from a small sample.
+
+But two kinds of mistakes can sneak in. You might get excited by a lucky streak and conclude the sign works when it actually did nothing — like seeing a face in the clouds that isn't really there. That's called a Type I error, a false alarm. Or the sign might genuinely help a little, but your week of watching was too short and noisy to notice it — you missed a real effect entirely, a Type II error. How good your test is at catching a real effect when one truly exists is called its power, and the reliable way to boost power is to watch more passersby — a bigger sample size — rather than hoping to get lucky.
+
+One last trap: if you keep peeking at your tally jar every hour and stop the moment it looks good, you're stacking the deck in your own favor, because you're far more likely to catch a lucky streak at some point during the week than to still see one at the very end — this is called "peeking," and it quietly inflates your false-alarm rate. And if you test ten different sign designs at once and report whichever one happened to look best, you're almost guaranteed that at least one will look good purely by luck, the way rolling enough dice eventually turns up a double-six. That's why statisticians use a correction — dividing the surprise threshold by the number of things being compared — so a random fluke doesn't get mistaken for a genuine discovery.`,
+          realWorldApplications: [
+            {
+              title: "Netflix's UI and thumbnail experimentation platform",
+              description: 'Netflix runs continuous randomized A/B tests on artwork, thumbnails, and UI layout changes, using hypothesis testing and statistical significance thresholds to decide whether a variant genuinely improves engagement before rolling it out to all members.'
+            },
+            {
+              title: "Booking.com's large-scale experimentation culture",
+              description: 'Booking.com is well known for running thousands of concurrent A/B tests on its website, relying on rigorous p-value and confidence-interval analysis (and awareness of multiple-testing and peeking pitfalls) to decide which changes actually move booking conversion rates.'
+            },
+            {
+              title: "Guinness Brewery's quality control (birthplace of the t-test)",
+              description: "William Sealy Gosset, a statistician working at the Guinness brewery in Dublin, developed the Student's t-distribution (published under the pseudonym \"Student\") specifically to draw reliable conclusions about beer quality from the small sample batches available in brewing."
+            },
+            {
+              title: 'FDA-regulated clinical drug trials',
+              description: 'Pharmaceutical trials use null/alternative hypothesis framing and p-value thresholds (with corrections for testing multiple endpoints) to determine whether a new drug produces a statistically significant improvement over placebo before regulators approve it.'
+            },
+            {
+              title: "A/B tests behind Google Search ranking changes",
+              description: "Google evaluates proposed changes to its search ranking algorithm through controlled experiments that split users into treatment and control groups, using statistical significance testing to decide whether a ranking change measurably improves user outcomes."
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p4-m15-t1'] as any,
           primaryText: {
             id: 'book-openintro-stats',

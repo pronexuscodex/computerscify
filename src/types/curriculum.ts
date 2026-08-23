@@ -179,10 +179,25 @@ export interface PracticeExercise {
   type: 'multiple-choice' | 'free-response' | 'code-snippet';
 }
 
+export interface RealWorldApplication {
+  /** A specific, named system/product/situation — not a generic category. */
+  title: string;
+  /** 1-3 sentences on how this topic's concept is actually used there. */
+  description: string;
+}
+
 export interface MasteryPack {
   learningObjective: string;
   prerequisites: string[];
   coreConcepts: string[];
+  /**
+   * A ground-up, no-jargon explanation of the topic — written so someone with zero background
+   * could follow it, using concrete analogies rather than restating the formal definition more
+   * simply. Multiple paragraphs, separated by a blank line.
+   */
+  simpleExplanation?: string;
+  /** Concrete, named real-world systems/products/situations where this topic is actually used. */
+  realWorldApplications?: RealWorldApplication[];
   primaryLecture?: VideoResource;
   primaryText?: BookResource;
   recommendedChapter: string;

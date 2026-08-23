@@ -44,6 +44,31 @@ export const phase3CSModules: CurriculumModule[] = [
             'Graph Traversal & Shortest Path: BFS, DFS, Dijkstra\'s Algorithm: Breadth-First Search explores a graph level by level using a queue and guarantees the shortest path in an unweighted graph, Depth-First Search explores as far as possible along each branch using a stack (or recursion) and is suited to tasks like cycle detection and topological sorting, and Dijkstra\'s algorithm generalizes shortest-path search to weighted graphs with non-negative edges by greedily expanding the closest unvisited vertex using a min-heap priority queue.',
             'Trie (Prefix Tree) Data Structure: a trie stores strings by sharing common prefixes along root-to-node paths, so looking up, inserting, or checking a prefix of a string of length k takes O(k) time regardless of how many other strings are stored, which is why tries power autocomplete and spell-check systems far more efficiently than scanning a list of strings.'
           ],
+          simpleExplanation: `Big-O is a way of predicting how much longer something will take as the job gets bigger, without caring exactly how fast your computer is. Imagine looking for a friend's name in a phone book. If you check every name one by one from the start, doubling the size of the phone book roughly doubles how long you'll be searching — that's "O(n)," growing in a straight line with the input. But if you open to the middle, check whether your name comes before or after, and repeat in whichever half is left, doubling the phone book barely adds any extra work — that's the "O(log n)" behavior of binary search, and it's why organized data structures are worth the trouble of keeping them organized.
+
+A Binary Search Tree is basically that phone-book trick turned into a living structure: every entry has at most two children, everything smaller sits to the left, everything bigger to the right, so you zero in on any value by repeatedly asking "left or right?" The catch is that if you build this tree by inserting names that were already in alphabetical order, you don't get a nice bushy tree — you get a long, droopy chain, because each new entry only ever goes further right. Self-balancing trees like AVL or Red-Black trees are like a librarian who periodically reshuffles the shelves as new books arrive, keeping the tree from ever getting lopsided no matter what order things were added in. A related shape called a trie is used for things like autocomplete: instead of storing whole words, it stores one letter per step down a shared path, so "cat" and "car" share the same first two steps and only branch apart at the third letter — letting you look up any word, or every word starting with a given prefix, in exactly as many steps as the word is long.
+
+A heap solves a different problem: "what's the smallest (or biggest) thing in this pile, right now?" Picture a single-elimination tournament bracket where every match's winner has to be "smaller" than whoever they beat, all the way up to the champion at the top. Whoever's at the top is guaranteed to be the smallest item in the whole tournament, and you can find them instantly. Adding a new player or removing the champion only requires fixing the handful of matches directly above or below the change, not re-running the whole tournament — that's why heaps stay fast (logarithmic time) even though they don't keep everything else neatly sorted.
+
+Finally, think of a graph — like a map of cities connected by roads — and two very different ways of exploring it. BFS is like ripples spreading out from a stone dropped in a pond: you visit everything one step away first, then everything two steps away, which is exactly why it's guaranteed to find the shortest route when every road takes the same time to travel. DFS is more like a single explorer racing down one road as far as it possibly goes before doubling back to try a different fork. Dijkstra's algorithm is what you get when roads have different travel times: instead of exploring in strict step-order, it always continues from whichever reachable city currently has the cheapest known travel time so far — using a heap to instantly know which city that is — which is exactly how GPS apps figure out your fastest route.`,
+          realWorldApplications: [
+            {
+              title: "Google Maps' turn-by-turn navigation",
+              description: 'Finding the fastest route through a road network is a classic real-world application of Dijkstra-style shortest-path search over a graph of intersections and roads weighted by travel time.'
+            },
+            {
+              title: "Search-engine autocomplete, such as Google Search's typeahead suggestions",
+              description: "Typeahead suggestions are commonly implemented with trie-like prefix trees so that matches for what you've typed so far can be found in time proportional to how many characters you've typed, not how many possible queries exist."
+            },
+            {
+              title: "LinkedIn's and Facebook's mutual-connections features",
+              description: '"People you may know" and "N mutual connections" style features are built on BFS-style graph traversal, finding people within a small number of hops from your existing connections in your social graph.'
+            },
+            {
+              title: "The Linux kernel's process scheduler",
+              description: 'Operating systems commonly use heap-like priority queue structures to decide which waiting process to run next, giving close to logarithmic-time selection of the highest-priority task rather than scanning every process each time.'
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p3-m13-t1'] as any,
           primaryText: {
             id: 'book-clrs',

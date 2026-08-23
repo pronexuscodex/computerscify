@@ -22,7 +22,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       id: 'academies',
       label: 'Explore',
       icon: Compass,
-      views: ['academies', 'lab', 'research'],
+      views: ['academies', 'lab', 'research', 'news'],
     },
     {
       id: 'portfolio',

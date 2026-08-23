@@ -1,0 +1,170 @@
+import { XMLParser } from 'fast-xml-parser';
+
+// Curated, verified RSS/Atom feeds (checked live before inclusion — real HTTP 200 responses with
+// actual <item>/<entry> content, not guessed URLs) grouped by curriculum field. Shared between the
+// Vite dev-server middleware (vite.config.ts) and the Netlify function (netlify/functions/news-feed.ts)
+// so local dev and production never drift out of sync — mirrors scripts/pdfProxyAllowlist.ts's role.
+export type NewsField = 'ai' | 'data-science' | 'data-engineering' | 'cybersecurity' | 'computer-science';
+
+export interface NewsFeedSource {
+  id: string;
+  name: string;
+  url: string;
+  field: NewsField;
+}
+
+export const NEWS_FEED_SOURCES: NewsFeedSource[] = [
+  { id: 'mit-ai', name: 'MIT News — Artificial Intelligence', url: 'https://news.mit.edu/rss/topic/artificial-intelligence2', field: 'ai' },
+  { id: 'bair', name: 'Berkeley Artificial Intelligence Research (BAIR)', url: 'https://bair.berkeley.edu/blog/feed.xml', field: 'ai' },
+  { id: 'openai', name: 'OpenAI News', url: 'https://openai.com/blog/rss.xml', field: 'ai' },
+
+  { id: 'kdnuggets', name: 'KDnuggets', url: 'https://kdnuggets.com/feed', field: 'data-science' },
+  { id: 'mit-data', name: 'MIT News — Data', url: 'https://news.mit.edu/rss/topic/data', field: 'data-science' },
+
+  { id: 'netflix-eng', name: 'Netflix Tech Blog', url: 'https://netflixtechblog.com/feed', field: 'data-engineering' },
+  { id: 'oreilly-radar', name: "O'Reilly Radar", url: 'https://www.oreilly.com/radar/feed/index.xml', field: 'data-engineering' },
+
+  { id: 'krebs', name: 'Krebs on Security', url: 'https://krebsonsecurity.com/feed/', field: 'cybersecurity' },
+  { id: 'schneier', name: 'Schneier on Security', url: 'https://www.schneier.com/feed/atom/', field: 'cybersecurity' },
+
+  { id: 'hn-frontpage', name: 'Hacker News — Front Page', url: 'https://hnrss.org/frontpage', field: 'computer-science' },
+  { id: 'mit-techreview', name: 'MIT Technology Review', url: 'https://www.technologyreview.com/feed/', field: 'computer-science' },
+];
+
+export interface NormalizedNewsItem {
+  id: string;
+  title: string;
+  link: string;
+  summary: string;
+  publishedAt: string | null;
+  source: string;
+  sourceId: string;
+  field: NewsField;
+}
+
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+  cdataPropName: '__cdata',
+  textNodeName: '__text',
+});
+
+function stripHtml(input: unknown): string {
+  if (typeof input !== 'string') return '';
+  return input
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function textOf(node: unknown): string {
+  if (node == null) return '';
+  if (typeof node === 'string') return node;
+  if (typeof node === 'object') {
+    const obj = node as Record<string, unknown>;
+    if (typeof obj.__cdata === 'string') return obj.__cdata;
+    if (typeof obj.__text === 'string') return obj.__text;
+  }
+  return '';
+}
+
+function linkOf(node: unknown): string {
+  if (typeof node === 'string') return node;
+  if (Array.isArray(node)) {
+    // Atom feeds: prefer rel="alternate" or the first entry with an href.
+    const alt = node.find((l) => typeof l === 'object' && l !== null && (l as Record<string, unknown>)['@_rel'] !== 'self');
+    const chosen = (alt ?? node[0]) as Record<string, unknown> | undefined;
+    return (chosen?.['@_href'] as string) || '';
+  }
+  if (node && typeof node === 'object') {
+    return ((node as Record<string, unknown>)['@_href'] as string) || textOf(node);
+  }
+  return '';
+}
+
+/** Parses either RSS 2.0 (<rss><channel><item>) or Atom (<feed><entry>) XML into normalized items. */
+export function parseFeedXml(xml: string, source: NewsFeedSource): NormalizedNewsItem[] {
+  let parsed: any;
+  try {
+    parsed = xmlParser.parse(xml);
+  } catch {
+    return [];
+  }
+
+  const rssItems = parsed?.rss?.channel?.item;
+  const atomEntries = parsed?.feed?.entry;
+  const rawItems: any[] = Array.isArray(rssItems) ? rssItems : rssItems ? [rssItems] : Array.isArray(atomEntries) ? atomEntries : atomEntries ? [atomEntries] : [];
+
+  // Some sources (e.g. openai.com/blog/rss.xml) publish their entire historical archive in one feed
+  // rather than just recent posts — capping keeps a "news" panel about what's recent, and keeps one
+  // large feed from drowning out every other source in the same field.
+  const MAX_ITEMS_PER_SOURCE = 20;
+
+  return rawItems
+    .slice(0, MAX_ITEMS_PER_SOURCE)
+    .map((item, idx): NormalizedNewsItem | null => {
+      const title = stripHtml(textOf(item.title)) || 'Untitled';
+      const link = linkOf(item.link) || (typeof item.guid === 'string' ? item.guid : textOf(item.guid));
+      if (!link) return null;
+      const summaryRaw = textOf(item.description) || textOf(item.summary) || textOf(item.content) || '';
+      const summary = stripHtml(summaryRaw).slice(0, 320);
+      const pubDateRaw = textOf(item.pubDate) || textOf(item.published) || textOf(item.updated) || null;
+      const publishedAt = pubDateRaw ? new Date(pubDateRaw).toISOString() : null;
+
+      return {
+        id: `${source.id}-${idx}-${link}`,
+        title,
+        link,
+        summary,
+        publishedAt: publishedAt && !Number.isNaN(new Date(publishedAt).getTime()) ? publishedAt : null,
+        source: source.name,
+        sourceId: source.id,
+        field: source.field,
+      };
+    })
+    .filter((item): item is NormalizedNewsItem => item !== null);
+}
+
+const FETCH_TIMEOUT_MS = 12000;
+
+async function fetchOnce(source: NewsFeedSource): Promise<NormalizedNewsItem[] | null> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(source.url, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'ComputerSciFyNewsBot/1.0 (+https://github.com/pronexuscodex/computerscify)' },
+    });
+    if (!response.ok) return null;
+    const xml = await response.text();
+    return parseFeedXml(xml, source);
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/**
+ * Fetches and parses one feed, never throwing — a single dead/slow source must not break the panel.
+ * One retry: under concurrent load (11 feeds fetched in parallel), an individual slow-but-healthy
+ * source can occasionally miss the timeout window even though it would succeed on its own.
+ */
+export async function fetchOneFeed(source: NewsFeedSource): Promise<NormalizedNewsItem[]> {
+  const first = await fetchOnce(source);
+  if (first !== null) return first;
+  const retry = await fetchOnce(source);
+  return retry ?? [];
+}
+
+export async function fetchAllFeeds(fields?: NewsField[]): Promise<NormalizedNewsItem[]> {
+  const sources = fields?.length ? NEWS_FEED_SOURCES.filter((s) => fields.includes(s.field)) : NEWS_FEED_SOURCES;
+  const results = await Promise.all(sources.map(fetchOneFeed));
+  return results
+    .flat()
+    .sort((a, b) => {
+      const at = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const bt = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return bt - at;
+    });
+}

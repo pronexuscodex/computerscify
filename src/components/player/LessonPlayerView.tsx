@@ -25,7 +25,9 @@ import {
   PlayCircle,
   Code2,
   XCircle,
-  ShieldAlert
+  ShieldAlert,
+  Lightbulb,
+  Globe2
 } from 'lucide-react';
 import { Topic, LearnerProgress } from '../../types/curriculum';
 import { getModuleById } from '../../data/curriculumData';
@@ -321,6 +323,19 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
             </p>
           </div>
 
+          {mp.simpleExplanation && (
+            <div className="bg-[#82E0AA]/25 dark:bg-[#1B3323] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-base uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
+                <Lightbulb className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Explain It Simply
+              </h3>
+              <div className="space-y-3 text-sm text-[#000000] dark:text-[#F6EFEF] font-semibold leading-relaxed">
+                {mp.simpleExplanation.split('\n\n').map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5">
             <h3 className="font-display font-black text-base uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
               <ListChecks className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Core Concepts
@@ -336,6 +351,22 @@ export const LessonPlayerView: React.FC<LessonPlayerViewProps> = ({
               ))}
             </div>
           </div>
+
+          {mp.realWorldApplications && mp.realWorldApplications.length > 0 && (
+            <div className="bg-[#B4C5FF]/30 dark:bg-[#1A2140] border-4 border-[#000000] neo-shadow rounded p-5">
+              <h3 className="font-display font-black text-base uppercase text-[#000000] dark:text-[#F6EFEF] mb-3 flex items-center gap-2">
+                <Globe2 className="w-4 h-4 text-[#000000] dark:text-[#F2C94C]" /> Where This Shows Up In Real Life
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {mp.realWorldApplications.map((app, i) => (
+                  <div key={i} className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-2 border-[#000000] rounded p-3.5">
+                    <p className="font-black text-xs uppercase text-[#000000] dark:text-[#F2C94C] mb-1">{app.title}</p>
+                    <p className="text-xs text-[#000000]/80 dark:text-[#F6EFEF]/80 font-semibold leading-relaxed">{app.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow rounded p-5">

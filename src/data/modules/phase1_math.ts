@@ -44,6 +44,35 @@ export const phase1MathModules: CurriculumModule[] = [
             'Comparing Growth Rates: O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n): this hierarchy ranks how quickly different families of functions grow as their input n increases, and it is the mathematical backbone of Big-O notation, which is how computer scientists formally compare the scalability of different algorithms.',
             'Function Composition: combining two functions so that the output of one becomes the input of the next, a building block for describing complex transformations and for understanding how layered systems like neural networks or multi-stage algorithms are analyzed piece by piece.'
           ],
+          simpleExplanation: `Picture a function as a vending machine. You press a specific button (that's your input), and every single time you press that exact button, the exact same snack drops out (that's the output). It never gives you a surprise — press B4 today or tomorrow, you always get the same chips. The set of buttons that actually work is called the domain, and the set of snacks that can actually come out is called the range.
+
+Some vending machines are "reversible" and some aren't. Imagine you found a snack lying on the ground and wanted to know which button produced it. If two different buttons can produce the exact same snack, you could never be sure which one was pressed — that machine isn't reversible. A function where every output could only have come from one specific input is called injective. If, on top of that, every single snack in the machine is reachable by pressing some button (nothing is stuck, unreachable, or a display-only decoy), the function is also surjective. A function that is both is bijective, and only bijective functions can have a true "reverse vending machine" built for them — an inverse function that takes a snack and tells you, with certainty, exactly which button made it.
+
+Exponents and logarithms are a similar reversible pair, but for growth instead of buttons. Imagine a rumor that doubles in size every hour: 1 person tells 2, who tell 4, who tell 8, and so on — that explosive doubling pattern is exponential growth. A logarithm answers the reverse question: "given how many people know the rumor now, how many doubling-hours did it take to get here?" Because logarithms undo runaway growth, they're brilliant at squeezing enormous ranges of numbers down into small, comfortable ones — the same way an odometer only needs a few digits to represent a car that's driven a truly enormous distance.
+
+Big-O notation uses this same growth intuition to compare algorithms, like judging racers over an ever-longer racetrack instead of a single sprint. A racer whose effort barely increases as the track lengthens (like log n) barely breaks a sweat even on an enormous track. A racer whose effort grows exactly with the track length (n) tires proportionally. But a racer whose effort must be squared every time the track gets longer (n^2) gets utterly crushed once the track becomes huge — which is exactly why computer scientists care so much about which growth category an algorithm falls into, since it predicts how badly it will struggle as the amount of data grows into the millions or billions.`,
+          realWorldApplications: [
+            {
+              title: "Binary search in a phone's contacts or dictionary app",
+              description: 'Binary search repeatedly halves the remaining search space, giving it O(log n) growth, which is why looking up a name among millions of contacts takes only a handful of comparisons instead of scanning every entry.'
+            },
+            {
+              title: "Timsort, the default sorting algorithm in Python and Java",
+              description: 'Timsort guarantees O(n log n) worst-case performance, the same growth class analyzed in this topic, which is why sorting a list of a million items finishes in a fraction of a second rather than grinding to a halt.'
+            },
+            {
+              title: "The Richter/moment magnitude scale for earthquakes",
+              description: 'Earthquake magnitude is defined using a base-10 logarithm of ground-motion amplitude, so a magnitude 7 quake releases roughly 32 times more energy than a magnitude 6 — logarithms compress that vast energy range into small, comparable numbers.'
+            },
+            {
+              title: "The decibel (dB) scale for sound loudness",
+              description: 'Decibels measure sound intensity on a logarithmic scale because human hearing spans such an enormous range of physical sound power that a plain linear scale would be unusable for everyday description.'
+            },
+            {
+              title: "Compound interest and loan calculators in banking apps",
+              description: 'Balances grow exponentially with compound interest, and banking apps use logarithms behind the scenes to solve for unknowns like "how many years until this investment doubles," the same exponential/logarithmic inverse relationship covered here.'
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p1-m2-t1'] as any,
           primaryText: {
             id: 'book-openstax-algebra',
@@ -222,6 +251,35 @@ compute_growth_table([10, 100, 1000, 10000])
             'Mathematical Induction: Base Step, Inductive Hypothesis, Inductive Step: induction is a proof technique for establishing that a statement holds for every natural number by proving it for a starting case and then showing each case implies the next, a pattern that mirrors (and justifies the correctness of) recursive algorithms and loops in programming.',
             'Quantifiers: Universal (For All) and Existential (There Exists): these symbols let you state precisely whether a property must hold for every element of a set or merely for at least one element, a distinction that is a frequent source of subtle logical errors if left ambiguous.'
           ],
+          simpleExplanation: `Propositional logic starts from statements you can label true or false, like "it is raining" or "I bring an umbrella." An implication like "if it's raining, then I bring an umbrella" is a promise about the relationship between two such statements — and a truth table is simply a complete checklist of every possible weather-and-umbrella combination, so you can verify exactly when the promise is kept and when it's broken (it's only broken when it rains and no umbrella shows up).
+
+De Morgan's laws are like a bouncer's rulebook. Suppose the rule is "you may not enter wearing both a hat and sneakers" — that's the same rule as "you must be missing the hat, or missing the sneakers, or both." Flipping a rule built from AND into an equivalent rule built from OR (and negating each piece) is exactly what De Morgan's laws formalize, and the very same swap works for sets: "not in either club" is the same as "not in the first club, and not in the second club."
+
+Sets themselves are just clearly defined groups of things, and the classic way to picture them is two overlapping circles at a party. The union is everyone who showed up to either party — combine the guest lists and cross out duplicates. The intersection is only the people who went to both parties — the overlapping sliver in the middle. A power set, meanwhile, is the list of every possible guest list you could make by choosing any subset of a group's members, including the empty list and the full list.
+
+Mathematical induction is best pictured as a long row of dominoes. To prove all of them will fall, you don't need to check every single domino by hand — you only need two things: proof that the first domino falls (the base case), and proof that whenever any one domino falls, it's guaranteed to knock over the next one (the inductive step). Those two facts together guarantee the entire row falls, no matter how long it is — which is exactly why induction can rigorously prove a formula true for every natural number without ever checking them one by one.`,
+          realWorldApplications: [
+            {
+              title: "SQL WHERE clauses and database query optimizers",
+              description: 'Database engines like PostgreSQL evaluate boolean filter conditions (AND, OR, NOT) using the same propositional logic covered here, and their query optimizers apply De Morgan’s laws to rewrite conditions like `NOT (a AND b)` into equivalent, often faster-to-execute forms.'
+            },
+            {
+              title: "AND/OR/NOT/XOR logic gates inside a CPU",
+              description: 'Digital circuit designers build every computation a processor performs out of physical logic gates that directly implement propositional logic operators, so the truth tables studied here are literally the blueprint for how a chip is wired.'
+            },
+            {
+              title: "SQL UNION, INTERSECT, and EXCEPT operators",
+              description: 'These SQL keywords perform the exact set operations of union, intersection, and set difference on the rows returned by two queries, letting developers combine or compare result sets the same way this topic combines and compares sets.'
+            },
+            {
+              title: "Amazon Web Services' use of TLA+ formal verification",
+              description: 'Engineering teams at AWS have published on using the formal specification language TLA+ to write rigorous, proof-like arguments about distributed systems, catching subtle correctness bugs that testing alone would likely miss.'
+            },
+            {
+              title: "Correctness proofs for recursive functions (e.g. factorial or Fibonacci)",
+              description: 'Verifying that a recursive function or loop always produces the right answer typically relies on the same base-case-plus-inductive-step reasoning as mathematical induction, which is why induction is often taught alongside recursion in computer science.'
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p1-m3-t1'] as any,
           primaryText: {
             id: 'book-mcs',
@@ -397,6 +455,35 @@ truth_table()
             'Matrices as Linear Transformations (Scaling, Rotation, Projection): a matrix is not just a grid of numbers but a compact description of a function that maps every vector in a space to a new vector, and recognizing operations like scaling, rotation, and projection as matrices is the geometric key to understanding graphics, robotics, and neural network layers.',
             'Matrix Multiplication, Transpose, Inverse, and Matrix Rank: matrix multiplication composes two linear transformations into one, the inverse undoes a transformation (when possible), and the rank measures how many independent directions a transformation actually preserves — together these operations are the computational engine behind solving systems of equations and behind nearly every machine learning model.',
             'Eigenvalues and Eigenvectors: an eigenvector of a matrix is a special direction that the transformation only stretches or shrinks (by a factor called the eigenvalue) rather than rotates away from, and finding these special directions reveals a matrix’s most fundamental behavior, which is central to techniques like PageRank and Principal Component Analysis.'
+          ],
+          simpleExplanation: `A vector is just a set of directions written as numbers, like telling someone "walk 3 blocks east, then 2 blocks north" to get from one point to another. Written as [3, 2], it can be thought of two ways at once: as an arrow pointing from the start to the destination, or simply as the coordinates of the destination itself. That dual view — arrow and point — is what lets the exact same mathematical toolkit describe a car's motion, a pixel's color, or a sentence's meaning in a document, since all of them can be written down as lists of numbers.
+
+The dot product is a way of measuring how much two vectors "agree" in direction, and the easiest way to picture it is two flashlight beams. Point them in almost the same direction and their light overlaps heavily — a large dot product. Point them at right angles to each other and there's no overlap at all — a dot product of exactly zero. This single number, computed by multiplying matching components together and adding up the results, turns out to be an incredibly useful way to measure similarity between things represented as vectors.
+
+A matrix is best pictured as a transformation machine, like a photocopier with special settings: feed a shape in, and it comes out stretched, rotated, flipped, or squashed according to a fixed recipe. That recipe — the exact instructions for how every possible input point gets moved — is captured entirely by a grid of numbers, the matrix, and "multiplying" a vector by a matrix is just running that vector through the machine. Multiplying two matrices together builds one combined machine that has the same effect as running something through the first machine, then immediately through the second.
+
+Now imagine spinning a rubber sheet with lots of little arrows drawn on it. As you twist the sheet, most arrows swing around to point in completely new directions. But a few special arrows are stubborn: no matter how you stretch or spin the sheet, they keep pointing along the exact same line — they might get longer or shorter, but never rotate away from their original direction. Those stubborn arrows are called eigenvectors, and the amount they get stretched or shrunk by is their eigenvalue. Finding these special, unchanging directions turns out to reveal a transformation's most fundamental behavior — which is exactly why they show up at the heart of techniques as different as ranking web pages and compressing data.`,
+          realWorldApplications: [
+            {
+              title: "Google's original PageRank algorithm",
+              description: "PageRank models the entire web as a giant matrix of links between pages, and a page's long-run importance score comes from computing the dominant eigenvector of that matrix — directly applying the eigenvector concept from this topic."
+            },
+            {
+              title: "3D transform matrices in game engines like Unity and Unreal Engine",
+              description: "Every time a 3D game moves, rotates, or scales a character or camera, the engine multiplies the object's coordinate vectors by transformation matrices, exactly as described by matrices representing scaling, rotation, and projection."
+            },
+            {
+              title: "Netflix-style collaborative filtering recommendation systems",
+              description: "Recommendation engines represent users and movies as vectors and use the dot product to measure how well a user's taste vector aligns with a movie's feature vector, ranking recommendations by that similarity score."
+            },
+            {
+              title: "Neural network layers in frameworks like PyTorch and TensorFlow",
+              description: 'Each layer of a neural network computes its output by multiplying an input vector by a weight matrix, so the matrix multiplication mechanics covered here are the literal computation running underneath every forward pass.'
+            },
+            {
+              title: "Principal Component Analysis (PCA) in tools like scikit-learn",
+              description: "PCA finds the eigenvectors of a dataset's covariance matrix to identify the directions of greatest variation, letting data scientists compress high-dimensional data down to its most informative few dimensions."
+            }
           ],
           primaryLecture: VERIFIED_VIDEOS['p1-m4-t1'] as any,
           primaryText: {

@@ -45,6 +45,35 @@ export const phase7MLOpsModules: CurriculumModule[] = [
             'CI/CD Pipelines for Machine Learning: Continuous integration/continuous deployment for ML extends traditional software CI/CD with ML-specific stages — data validation, model training, offline evaluation against a held-out set, and automated rollback — so a new model version can be tested and promoted to production with the same rigor and speed as an application code change, rather than through slow manual handoffs.',
             'Model Monitoring and Observability: Beyond infrastructure metrics like CPU and latency, production ML systems must log prediction distributions, feature statistics, and (when available) ground-truth outcomes so engineers can distinguish an infrastructure failure from a silent model-quality failure, since a service can return HTTP 200 on every request while the underlying predictions have become useless.'
           ],
+          simpleExplanation: `Imagine a restaurant where, instead of a waiter taking your order verbally, everyone fills out the same standardized order slip: dish name, quantity, special instructions, all in a fixed format the kitchen already understands. A REST API works the same way for computer programs — instead of one app calling another with some ad-hoc, unpredictable message, they agree on a small standard vocabulary (GET for "show me something," POST for "create something," and so on) and a shared format for that "order slip." If the slip is filled out wrong — say the quantity field says "purple" — the kitchen sends it straight back before it ever touches the stove. That is what schema validation and error codes like 400 or 422 do: they catch a bad request before it ever reaches the actual model.
+
+Now imagine you perfected a recipe in your home kitchen, but every restaurant that tries to cook it gets a slightly different result, because their oven runs hotter, they're missing an ingredient, or their measuring cups are calibrated differently. Docker solves this by packing not just the recipe but the exact "oven," exact ingredient versions, and exact tools into a sealed shipping container that can be opened anywhere and produces identical results every time — whether that's a laptop, a test server, or a giant cloud data center.
+
+But even a model that was cooked perfectly can go stale over time. Picture a GPS app that used to get you home perfectly using a map of the city from two years ago. Roads have since been rebuilt, a new neighborhood went up, and a bridge closed — the GPS keeps confidently giving directions, but they're increasingly wrong, because the real world has quietly drifted away from the map it's using. That is model drift: a model trained on last year's data keeps predicting as if the world still looks like last year, even as the real pattern of transactions, images, or user behavior shifts underneath it. Statistical tests like the Population Stability Index measure exactly how far the "new map" (live data) has drifted from the "old map" (training data), giving engineers an early warning instead of a silent failure.
+
+Because a stale model or a bad deployment can be costly, teams roll out changes cautiously — first quietly serving a new version to a handful of "tables" (a canary release) before ever putting it on the full menu, watching closely to make sure nothing goes wrong before scaling it up to everyone.`,
+          realWorldApplications: [
+            {
+              title: "Stripe's Payment API",
+              description: "Stripe's REST API uses a small, standardized set of HTTP methods plus strict JSON schema validation so any client integrating payments gets an immediate, clear error for a malformed request before any money ever moves."
+            },
+            {
+              title: "Spotify's containerized backend services",
+              description: 'Spotify packages many of its backend and data services into Docker containers, so the exact same containerized service behaves identically across a developer laptop, staging, and production infrastructure.'
+            },
+            {
+              title: "Netflix's recommendation model monitoring",
+              description: 'Netflix continuously monitors its personalization and recommendation models for prediction and feature drift, since a model trained on older viewing patterns can silently stop matching current audience behavior.'
+            },
+            {
+              title: "PayPal's real-time fraud-detection systems",
+              description: 'Large-scale fraud-detection pipelines like PayPal\'s track statistical drift in transaction feature distributions (the same idea behind PSI and KS-tests) to catch shifts, such as holiday spending spikes, before fraud models silently degrade.'
+            },
+            {
+              title: "Google's canary deployment practice",
+              description: 'Google popularized canary deployments across its production services, routing a small slice of live traffic to a new service or model version and comparing metrics before a full rollout — now a standard practice across the industry, including ML model serving.'
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p7-m18-t1'] as any,
           primaryText: {
             id: 'book-designing-ml-systems',

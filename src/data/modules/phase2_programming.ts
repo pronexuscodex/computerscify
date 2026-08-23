@@ -45,6 +45,31 @@ export const phase2ProgrammingModules: CurriculumModule[] = [
             'Exception Handling: Try-Except-Else-Finally and Custom Exceptions: wrapping risky operations (file access, parsing, network calls) in try-except blocks lets a program fail gracefully instead of crashing, the optional else clause runs only when no exception occurred, finally always runs for cleanup, and custom exception classes let you signal domain-specific error conditions clearly — directly needed for the capstone\'s "skip corrupted lines with warning logging" requirement.',
             'Modules and the Standard Library: Python ships with batteries-included modules such as `re`, `json`, `csv`, and `argparse` that provide regular expressions, structured data serialization, tabular file parsing, and command-line argument parsing respectively, so idiomatic Python leans on these before reaching for third-party packages.'
           ],
+          simpleExplanation: `Think of a variable as a sticky note you attach to something — a number, a word, a list of things. In Python, you can peel that sticky note off a number and stick it onto a word instead, whenever you want. That's what "dynamic typing" means: the note doesn't lock in what kind of thing it can point at. This is different from languages where you have to pre-label a box as "only for numbers, forever."
+
+Once you're storing lots of stuff, you need good containers. A list is like a numbered locker row — item 1 in locker 1, item 2 in locker 2 — and you can add or remove lockers as you like. A dictionary is more like a library's card catalog: instead of hunting through every book to find the Python section, you look up "Python" in the catalog and it points you straight to the right shelf, instantly, because the catalog is organized by a clever indexing trick (a "hash") rather than by walking through every card one at a time. A set is like a guest list at a party — it only cares whether someone's on the list or not, and it refuses to write the same name twice.
+
+Control flow is just the recipe your program follows: "if the oven is hot, put in the cookies, otherwise wait" is an if-else, and "keep stirring until the batter is smooth" is a loop. Exception handling is your kitchen's smoke detector: instead of the whole house burning down when something goes wrong — like a recipe calling for an ingredient you don't have — Python's try-except lets you say "attempt this risky step, and if it fails in this specific way, calmly run the backup plan instead."
+
+Functions are recipe cards you can write once and hand to a friend: "here's how to make lemonade," and from then on you just say "make lemonade" instead of rewriting the whole recipe every time. Some recipe cards let you bring along however many extra ingredients you want — that's what *args and **kwargs are for — and Python follows a very specific set of rules (called LEGB) to figure out which "lemonade" recipe you meant if there happen to be several with the same name nested inside each other.`,
+          realWorldApplications: [
+            {
+              title: "Instagram's Django backend",
+              description: "One of the largest production Python codebases in the world leans heavily on Python dictionaries (hash tables) to cache and look up objects like sessions and feed data in close to O(1) time, the same mechanism taught here as dict lookups."
+            },
+            {
+              title: "Dropbox's original desktop sync client",
+              description: "Built substantially in Python, it used try/except exception handling extensively so that a single failed file upload or download wouldn't crash the whole sync process, only that one operation."
+            },
+            {
+              title: "Reddit's comment-rendering pipeline",
+              description: "Reddit's backend was originally written in Python and relies on list and dict comprehensions to transform raw comment data into nested comment trees quickly and readably."
+            },
+            {
+              title: "The `argparse`, `json`, and `csv` standard-library modules",
+              description: "These ship with every Python install and are the exact tools this topic's capstone log-analyzer uses — the same modules real engineers reach for to parse CLI arguments and structured log data without adding external dependencies."
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p2-m8-t1'] as any,
           primaryText: {
             id: 'book-python-tutorial',
@@ -235,6 +260,31 @@ print(word_frequencies(sample))
             'Matrix Operations: Dot Products, Transposes, and Aggregations: the dot product (`np.dot` or `@`) computes matrix multiplication central to linear algebra and machine learning, the transpose (`.T`) flips an array\'s axes without copying data, and aggregation functions (`sum`, `mean`, `max`) can be applied along a specific `axis` to collapse rows or columns independently.',
             'The `axis` Parameter and Reduction Operations: many NumPy functions accept an `axis` argument that controls which dimension is collapsed during a reduction — `axis=0` reduces down the rows (producing a per-column result) and `axis=1` reduces across the columns (producing a per-row result), a distinction that is a frequent source of bugs for beginners.'
           ],
+          simpleExplanation: `Picture two ways of making 1,000 paper airplanes. In the first way, you make one airplane completely — fold, fold, throw — then start the next one from scratch, one at a time. That's what a plain Python loop does: it handles one number fully before moving to the next, with a little bit of overhead every single time. The second way is an assembly line: one person does all 1,000 first folds in a row, then all 1,000 second folds, then all 1,000 throws. That's vectorization — NumPy hands the whole batch of numbers to fast, pre-compiled code that processes all of them in one sweep, instead of asking the slower Python interpreter to handle each number individually.
+
+This works so well partly because of how NumPy stores its numbers. A Python list is like a junk drawer — it holds pointers to things scattered all over the house, and each thing could be a different size or type. A NumPy array is more like a carton of eggs: every slot is the exact same size, they're all lined up right next to each other, and the "picker" (the CPU) doesn't have to run around checking what's in each slot — it just slides down the carton grabbing eggs at a steady rhythm. That uniform, packed layout is what "dtype" and "contiguous memory" mean in practice.
+
+Broadcasting is what lets you combine a small array with a big one without writing a loop yourself. Imagine a giant spreadsheet of prices for 100 products across 12 months, and you want to add one "shipping fee" to every single cell. Instead of physically copy-pasting the fee into all 1,200 cells, broadcasting is like telling the spreadsheet "just act as if that one fee were repeated everywhere" — the small array is conceptually stretched to match the big one's shape, but no extra memory is actually spent storing all those copies.
+
+Slicing and the "axis" parameter are about which numbers you're looking at, and which direction you're squashing them. Basic slicing is like looking through a window: it shows a live view of the same underlying data, so if that view changes, the original changes too. A boolean mask is more like circling only the spreadsheet rows where a condition is true (say, "price over $50") and pulling just those out as a brand-new, separate copy. And "axis" simply answers "am I summing down each column, or across each row?" — axis=0 walks down the rows to give one number per column, and axis=1 walks across the columns to give one number per row.`,
+          realWorldApplications: [
+            {
+              title: 'PyTorch and TensorFlow tensor operations',
+              description: "Both deep-learning libraries model their core tensor type on NumPy's ndarray and reuse its exact broadcasting rules, so an operation like adding a bias vector to a batch of neural-network activations works the same way as broadcasting a small NumPy array onto a large one."
+            },
+            {
+              title: "pandas DataFrames",
+              description: 'Every column in a pandas DataFrame is stored internally as a NumPy array, which is why operations like adding a discount column across millions of rows run at vectorized C speed instead of looping in Python.'
+            },
+            {
+              title: "scikit-learn's numerical routines",
+              description: 'Widely used machine learning algorithms in scikit-learn (like computing distances or gradients) are implemented as vectorized NumPy operations under the hood rather than explicit Python loops, which is a large part of why they scale to large datasets.'
+            },
+            {
+              title: 'Scientific imaging pipelines, such as those used to process the first black hole image (Event Horizon Telescope)',
+              description: "Projects like this rely on Python's scientific computing stack, built on NumPy arrays, to process and combine enormous grids of telescope data through vectorized numerical operations rather than element-by-element loops."
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p2-m10-t1'] as any,
           primaryText: {
             id: 'book-numpy-guide',
@@ -421,6 +471,31 @@ print("Distance Matrix:", pairwise_distances(pts))
             'Subqueries, Common Table Expressions (CTEs - WITH clause): a subquery is a query nested inside another query used to compute an intermediate result, and a CTE (defined with `WITH name AS (...)`) names that intermediate result so it can be referenced like a temporary table, making complex multi-step analytical queries far more readable and maintainable than deeply nested subqueries.',
             'Window Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), SUM() OVER (PARTITION BY ... ORDER BY ...): unlike GROUP BY, which collapses rows, window functions compute a value across a "window" of related rows (defined by PARTITION BY) while still returning one row per input row, enabling calculations like running totals, per-category rankings, and moving averages that are central to real-world analytics.',
             'Schema Normalization and ACID Transactions: normalization (1NF, 2NF, 3NF) is the process of organizing tables to eliminate redundant data and update anomalies by ensuring each fact is stored in exactly one place, while ACID (Atomicity, Consistency, Isolation, Durability) properties guarantee that database transactions complete reliably even under concurrent access or system failure.'
+          ],
+          simpleExplanation: `Think of a relational database as a set of very disciplined spreadsheets, called tables. Each row is one "thing" — one customer, one order — and every row gets a primary key, which works like a fingerprint or a library card number: no two rows are allowed to share one, and it's how the database tells rows apart even if everything else looks identical. A foreign key is a sticky note on one row that says "for more details about this, go look at row #47 over in the other spreadsheet" — it's how two tables stay connected without copying each other's information. Keeping every fact stored in exactly one place like this is called normalization, and it's the difference between updating a customer's address in one spot versus having to hunt down and fix every repeated copy of it.
+
+A JOIN is what happens when the information you need is split across two of these spreadsheets — say a "customers" sheet and an "orders" sheet — and you want to line them up by matching a shared column, like a customer ID that appears in both. An INNER JOIN only keeps the rows where both sides have a match, like the overlapping middle of a Venn diagram. A LEFT JOIN is more generous: it keeps every row from the first sheet no matter what, leaving blanks (NULLs) where the second sheet has nothing to offer — useful for something like "show me every customer, even the ones who've never ordered anything."
+
+GROUP BY is like sorting a big pile of mail into labeled bins, one bin per zip code, and then, instead of handing you every letter, just telling you how many letters ended up in each bin. WHERE decides which letters even make it into the sorting room in the first place, filtering individual rows before any bin exists, while HAVING looks at the finished bins afterward and throws out any bin that doesn't meet some condition, like "only show me zip codes with more than 10 letters."
+
+A window function is a different trick: instead of collapsing rows into bins like GROUP BY does, it hands every letter back to its sender, but first stamps each one with extra context — "you're letter #3 of 12 from this zip code" or "here's the running total from your zip code so far." Nothing gets merged away; every original row survives, just with a computed value attached. And underneath all of this, the database makes a promise called ACID: a change either fully happens or doesn't happen at all, even if the power goes out midway through — like a bank transfer where money is never left half-deducted from one account without appearing in the other.`,
+          realWorldApplications: [
+            {
+              title: "Stripe's payment ledger",
+              description: 'Payment processors rely on ACID transactional guarantees so that charging a customer and recording the corresponding ledger entry either both succeed together or both fail together, never leaving the books half-updated.'
+            },
+            {
+              title: "Amazon's order history page",
+              description: 'Showing "all customers, including ones who have never ordered" is the textbook use case for a LEFT JOIN between a customers table and an orders table, keeping every customer row even when there is no matching order.'
+            },
+            {
+              title: "Spotify Wrapped-style listening analytics",
+              description: "Ranking each listener's top artists or tracks without collapsing their individual play events is the kind of calculation window functions like RANK() OVER (PARTITION BY user_id) are built for, in analytics pipelines built on SQL-like query engines."
+            },
+            {
+              title: "GitHub's repository/issue database schema",
+              description: 'Repositories, issues, and pull requests are linked through foreign keys (an issue belongs to exactly one repository), a textbook example of the normalized, join-based relational design this topic teaches.'
+            }
           ],
           primaryLecture: VERIFIED_VIDEOS['p2-m11-t1'] as any,
           primaryText: {

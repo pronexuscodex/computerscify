@@ -66,6 +66,35 @@ export const phase0Modules: CurriculumModule[] = [
             'Character Encodings: ASCII vs UTF-8 Variable-Length Encoding: text must ultimately be stored as numbers, and the mapping chosen between numbers and characters determines whether a program can correctly represent every human language or only a narrow subset, which is why encoding choice has real-world correctness consequences.',
             'Bit-Shift Arithmetic and Its Relationship to Multiplication: shifting a binary number left or right by k positions is mathematically equivalent to multiplying or dividing by 2^k, a shortcut that connects the abstract number system to concrete, fast hardware operations.'
           ],
+          simpleExplanation: `Imagine a computer is really just a giant wall of light switches, and every single switch can only be off or on — there's no dimmer setting, no "sort of on." Each switch is called a bit, and computers build literally everything — numbers, letters, photos, songs — out of long rows of these switches. A byte is just a bundle of 8 switches at a time. Writing out long strings of 0s and 1s gets exhausting for humans to read, so engineers invented hexadecimal: a shorthand where every group of 4 switches gets replaced by one symbol (0-9, then A-F), so a whole byte can be written as just two characters instead of eight.
+
+Now, how do you represent a negative number using only on/off switches? Think of a car's odometer with a fixed number of digits — say it shows 000 to 999 and then wraps back around to 000. If you could drive it backward past zero, it wouldn't display a minus sign; it would roll around to 999. Computers use this exact same "rolling around" trick, called two's complement, to represent negative numbers: instead of storing a separate minus sign, a negative number is stored as a big positive number that has wrapped past zero. The beautiful payoff is that the same simple adding circuit that computes 5 + 3 can also compute 5 - 3, because subtracting is secretly just adding this wrapped-around version — no separate subtraction machinery is needed inside the chip.
+
+Fractions are trickier still. Computers store them the way scientists write very large or very small numbers — like 6.02 x 10^23 — using a movable decimal point instead of a fixed one. This is the idea behind IEEE 754 floating point: it splits a number's switches into a sign, an "exponent" that acts like the zoom level of a ruler, and a "mantissa" that holds the actual significant digits. Because only a fixed number of digit-switches exist, most fractions — even a simple one like 0.1 — can only be approximated, the same way you can never finish writing out 1/3 as a decimal (0.333...). That's why a computer can sometimes claim 0.1 + 0.2 isn't quite 0.3.
+
+Finally, text is stored the same way as everything else: as numbers. Think of it like a phone book that maps a number to a name — ASCII maps the numbers 0 through 127 to English letters, digits, and punctuation. But English isn't the only language on Earth, so UTF-8 extends this idea: common characters still use just one switch-byte (staying compatible with old ASCII software), while rarer characters and emoji quietly use two, three, or four bytes stitched together, all without breaking programs that only expect the simple, old-fashioned one-byte case.`,
+          realWorldApplications: [
+            {
+              title: "x86 and ARM CPU arithmetic circuits",
+              description: 'Every processor in a laptop or phone uses two’s complement so its adder circuit can perform both addition and subtraction instructions without needing a separate, dedicated subtraction unit.'
+            },
+            {
+              title: "The 0.1 + 0.2 rounding quirk in JavaScript and Python",
+              description: 'Both languages store decimal numbers using IEEE 754 double-precision floats, so a fraction like 0.1 cannot be stored exactly in binary, which is why `0.1 + 0.2 === 0.3` famously evaluates to false in JavaScript.'
+            },
+            {
+              title: "UTF-8 as the dominant encoding of the World Wide Web",
+              description: 'The vast majority of web pages declare UTF-8 as their character encoding because it stays byte-for-byte compatible with old ASCII text while still being able to represent every language and emoji on the internet.'
+            },
+            {
+              title: "CSS hex color codes (e.g. #FF5733)",
+              description: 'Web developers write colors as three hexadecimal byte pairs — one each for red, green, and blue intensity — because two hex digits map exactly onto one 8-bit byte, making 0-255 color values compact to read and write.'
+            },
+            {
+              title: "PNG and JPEG file signature bytes",
+              description: 'Operating systems and image libraries identify a file’s true type by checking a fixed sequence of bytes (often shown in hex, like PNG’s 89 50 4E 47) at the very start of the file, regardless of its filename extension.'
+            }
+          ],
           primaryLecture: VERIFIED_VIDEOS['p0-m1-t1'] as any,
           primaryText: {
             id: 'book-nand2tetris',
@@ -263,6 +292,35 @@ print("157 in 8 bits:", int_to_bits(157, 8))
             'Filesystem Structure: Inodes, Directories, and File Descriptors: the filesystem organizes persistent storage into a hierarchy of directories and files, where an inode stores a file’s metadata and location on disk while a file descriptor is the small integer handle a running process uses to reference an open file, understanding which clarifies how programs read, write, and share files safely.',
             'Standard Streams (stdin, stdout, stderr) and Process I/O: nearly every process is automatically connected to three default communication channels for input and output, and understanding this convention explains how command-line tools can be chained together (piped) to build larger workflows from small, single-purpose programs.',
             'Context Switching: the mechanism by which the CPU saves the complete state of one process or thread and loads the state of another, which is what makes multitasking possible but also carries a real performance cost that grows with how often it happens.'
+          ],
+          simpleExplanation: `Think of an operating system like the superintendent of a big apartment building. The superintendent (the kernel) is the only one with a master key to the boiler room, the electrical panel, and the front gate. Tenants (ordinary programs) are never handed those master keys directly — if they need something done with the building's shared systems, like turning up the heat, they have to submit a request at the front desk. That front-desk request is exactly what a system call is: a controlled, safe way for a program to ask the privileged kernel to do something on its behalf, so that one careless or malicious tenant can't accidentally set fire to the whole building.
+
+Inside that analogy, a process is like a fully separate apartment: its own furniture, its own fridge, walled off from every other apartment so residents can't see or touch each other's stuff. A thread is more like a roommate sharing that exact same apartment — several roommates can work on different chores at once, and they all share the same fridge and living room (the process's memory), even though each is doing their own thing and keeping their own personal to-do list (a private call stack). Since there's usually only one "elevator" (a CPU core) but many apartments wanting to use it, the OS scheduler acts like a very fast, fair receptionist deciding, moment to moment, exactly whose turn it is to ride — and the act of pausing one rider and letting the next one on is called a context switch.
+
+Now imagine every tenant believes they have their own enormous, private storage warehouse with boxes numbered 1, 2, 3, and so on forever — even though the real warehouse is shared among everyone and its shelves are scattered and limited. That illusion is virtual memory. Behind the scenes, a ledger called a page table quietly translates each tenant's "box number" into wherever that box actually sits in the real, shared warehouse (physical RAM). If a tenant asks for a box that isn't currently sitting in the easily-reachable front room, the warehouse staff has to fetch it from deep storage (the disk) before handing it over — and that little delay-and-fetch moment is called a page fault.
+
+Finally, files on a disk work like a filing cabinet: an index card called an inode records everything about a file — its size, its permissions, where its pages physically live — while the file's name is really just a label taped to a drawer pointing at that index card. When a program opens a file, it doesn't carry the whole card around; it's handed a small ticket number, called a file descriptor, that it shows whenever it wants to read or write. And nearly every program automatically starts with three such tickets already in hand — one for typed-in input (stdin), one for normal output (stdout), and one just for error messages (stderr) — which is exactly why you can chain small command-line tools together like a factory conveyor belt, piping the output of one straight into the input of the next.`,
+          realWorldApplications: [
+            {
+              title: "Linux kernel system calls (read, write, open)",
+              description: 'Every Linux program, from a text editor to a web server, must ask the kernel via system calls to read a file or send network data, because only the kernel is trusted to touch the disk and hardware directly.'
+            },
+            {
+              title: "Google Chrome's one-process-per-tab architecture",
+              description: 'Chrome runs each browser tab as its own OS process with its own isolated virtual memory space, so that a crash or security bug in one tab cannot directly corrupt the memory of another tab or the browser itself.'
+            },
+            {
+              title: "Virtual memory paging in Windows and macOS",
+              description: 'When physical RAM fills up, both operating systems move rarely-used memory pages out to a page file or swap file on disk and load them back on demand, using the same page-table translation and page-fault mechanism used to explain virtual memory generally.'
+            },
+            {
+              title: "Unix shell pipes (e.g. `ls | grep report | sort`)",
+              description: 'This command chains three small programs by connecting one program’s stdout directly to the next program’s stdin, letting complex tasks be built by composing simple, single-purpose command-line tools.'
+            },
+            {
+              title: "Docker containers",
+              description: 'Docker relies on Linux kernel features (namespaces and cgroups) that give each container the illusion of having its own isolated processes and filesystem, building on the same process-isolation ideas the kernel already uses to separate ordinary programs.'
+            }
           ],
           primaryLecture: VERIFIED_VIDEOS['p0-m1-t2'] as any,
           primaryText: {

@@ -54,6 +54,9 @@ const LessonPlayerView = lazy(() =>
 const ResearchLibraryView = lazy(() =>
   import('../research/ResearchLibraryView').then((module) => ({ default: module.ResearchLibraryView }))
 );
+const NewsPanelView = lazy(() =>
+  import('../news/NewsPanelView').then((module) => ({ default: module.NewsPanelView }))
+);
 const PracticeArenaView = lazy(() =>
   import('../practice/PracticeArenaView').then((module) => ({ default: module.PracticeArenaView }))
 );
@@ -385,6 +388,8 @@ const AppShellContent: React.FC = () => {
                   onSelectPaper={() => navigateToView('research')}
                 />
               )}
+
+              {currentView === 'news' && <NewsPanelView />}
 
               {currentView === 'lab' && (
                 <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">

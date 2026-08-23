@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import {
   Play,
   BookOpen,
@@ -16,6 +16,11 @@ import { ALL_MODULES, ALL_TOPICS, getAllResearchPapers } from '../../data/curric
 import { useNavigation } from '../../context/NavigationContext';
 import { NavView } from '../layout/NavigationRail';
 import { PageContainer } from '../common';
+
+// Lazy so the news-panel UI stays out of the eagerly-loaded Dashboard's own bundle chunk.
+const NewsPanelView = lazy(() =>
+  import('../news/NewsPanelView').then((module) => ({ default: module.NewsPanelView }))
+);
 
 interface DashboardViewProps {
   progress: LearnerProgress;
@@ -290,6 +295,32 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Field News Widget */}
+      <div className="bg-[#FFFFFF] dark:bg-[#1E1C1C] border-4 border-[#000000] neo-shadow p-6 rounded min-w-0 space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="font-display font-black text-lg text-[#000000] dark:text-[#F6EFEF] uppercase">
+            Latest in the Field
+          </h2>
+          <button
+            onClick={() => onNavigate('news')}
+            className="text-xs font-black uppercase tracking-wider text-[#000000] dark:text-[#F2C94C] flex items-center gap-1 hover:underline"
+          >
+            View All News <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <Suspense
+          fallback={
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-28 rounded border-2 border-[#000000]/20 dark:border-white/15 animate-pulse bg-[#DFD9D8]/50 dark:bg-stone-800/50" />
+              ))}
+            </div>
+          }
+        >
+          <NewsPanelView compact hideHeader maxItems={3} />
+        </Suspense>
       </div>
     </PageContainer>
   );
