@@ -327,7 +327,10 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             </div>
 
             {/* Problem Selection List */}
-            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1 min-w-0">
+            {/* Shorter on mobile, where this list stacks above the workspace in one column — a
+                600px cap would make learners scroll through the whole problem list before ever
+                reaching the problem they actually opened. */}
+            <div className="space-y-2 max-h-[320px] lg:max-h-[600px] overflow-y-auto pr-1 min-w-0">
               {filteredProblems.map((prob) => {
                 const isSelected = selectedProblem.id === prob.id;
                 const isSolved = Boolean(progress.labCodes[prob.id]);
@@ -552,8 +555,8 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                     codeDraftsRef.current[getDraftKey()] = starter;
                     setJudgeResult(null);
                   }}
-                  minHeight="320px"
-                  maxHeight="550px"
+                  minHeight="clamp(240px, 40vh, 320px)"
+                  maxHeight="clamp(320px, 50vh, 550px)"
                   fontSize={editorFontSize}
                   testResults={
                     isJudging
