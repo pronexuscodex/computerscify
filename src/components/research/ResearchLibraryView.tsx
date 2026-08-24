@@ -30,6 +30,7 @@ import type {
 import { InAppPdfReader } from '../reader/InAppPdfReader';
 import { OfflineSaveButton } from '../common/OfflineSaveButton';
 import { toOfflineableResource } from '../../services/offlineResourceCache';
+import { Select } from '../common/Select';
 
 interface ResearchLibraryViewProps {
   progress: LearnerProgress;
@@ -305,13 +306,20 @@ export const ResearchLibraryView: React.FC<ResearchLibraryViewProps> = ({
   );
 };
 
+// Uses the app's own Select component (styled dropdown, portal menu) rather than a raw <select>,
+// which renders with the OS's native dropdown chrome — visually inconsistent with the design
+// system everywhere else this app uses a dropdown.
 const FilterSelect: React.FC<{ label: string; value: string; options: string[]; onChange: (value: string) => void; optionLabel?: (value: string) => string }> = ({ label, value, options, onChange, optionLabel = labelText }) => (
-  <label className="shrink-0 text-xs font-bold text-[var(--ds-text-muted)]">
-    <span className="sr-only">{label}</span>
-    <select aria-label={label} value={value} onChange={(event) => onChange(event.target.value)} className="min-h-10 rounded-[var(--ds-radius-md)] border border-[var(--ds-border)] bg-[var(--ds-surface)] px-3 font-bold capitalize text-[var(--ds-text)] outline-none focus:border-[var(--ds-focus)]">
-      {options.map((option) => <option key={option} value={option}>{option === 'all' ? `All ${label.toLowerCase()}` : optionLabel(option)}</option>)}
-    </select>
-  </label>
+  <Select
+    ariaLabel={label}
+    value={value}
+    onChange={onChange}
+    className="shrink-0 !w-auto"
+    options={options.map((option) => ({
+      value: option,
+      label: option === 'all' ? `All ${label.toLowerCase()}` : optionLabel(option),
+    }))}
+  />
 );
 
 interface PaperCardProps {
