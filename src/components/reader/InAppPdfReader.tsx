@@ -437,10 +437,12 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           : 'relative rounded-2xl border border-stone-800 shadow-2xl overflow-hidden min-h-[680px]'
       }`}
     >
-      {/* Top Controls Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[#1e1b1b] border-b border-stone-800 px-3 sm:px-4 py-2.5 text-xs select-none">
+      {/* Top Controls Toolbar — a single horizontally-scrollable row below the `md` breakpoint
+          instead of wrapping, since wrapping three control clusters onto their own lines on a
+          phone-width screen ate up to half the visible viewport before any page content showed. */}
+      <div className="flex flex-nowrap items-center gap-2.5 overflow-x-auto bg-[#1e1b1b] border-b border-stone-800 px-3 sm:px-4 py-2.5 text-xs select-none md:flex-wrap md:justify-between md:overflow-visible">
         {/* Title & Panel Toggle */}
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 shrink-0">
           {/* Desktop Panel Toggle */}
           <button
             type="button"
@@ -473,7 +475,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
               {offlineObjectUrl && (
                 <span
                   title="Reading from your offline copy — no internet connection needed"
-                  className="shrink-0 px-1.5 py-0.5 rounded-full bg-[#82E0AA]/20 border border-[#82E0AA]/50 text-[#82E0AA] text-[10px] font-bold uppercase tracking-wide hidden sm:inline-block"
+                  className="shrink-0 px-1.5 py-0.5 rounded-full bg-[#82E0AA]/20 border border-[#82E0AA]/50 text-[#82E0AA] text-[10px] font-bold uppercase tracking-wide"
                 >
                   Offline
                 </span>
@@ -494,7 +496,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
         </div>
 
         {/* Center Page Controls & View Mode Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {/* Continuous vs Single Page Mode */}
           <div className="flex items-center bg-stone-900 border border-stone-800 p-0.5 rounded-xl">
             <button
@@ -562,7 +564,7 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
         </div>
 
         {/* Right Toolbar Actions */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Viewer mode: only surfaced when the current mode isn't the default Rich View, so
               troubleshooting controls don't compete for attention during normal reading. */}
           {readerMode !== 'canvas' && (
@@ -682,9 +684,11 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
           {onClose && (
             <button
               onClick={onClose}
-              className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-xl text-xs font-medium"
+              aria-label="Close reader"
+              className="flex items-center gap-1 p-2 sm:px-3 sm:py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-xl text-xs font-medium"
             >
-              Close
+              <X className="w-4 h-4 sm:hidden" />
+              <span className="hidden sm:inline">Close</span>
             </button>
           )}
         </div>
@@ -951,6 +955,12 @@ export const InAppPdfReader: React.FC<InAppPdfReaderProps> = ({
                     className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors"
                   >
                     Try Rich View
+                  </button>
+                  <button
+                    onClick={handleOpenGoogleViewer}
+                    className="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-[11px] font-bold border border-stone-700 transition-colors hidden sm:inline-flex"
+                  >
+                    Compatibility
                   </button>
                   <a
                     href={initialRawUrl}
