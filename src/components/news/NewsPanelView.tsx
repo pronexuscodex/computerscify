@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, Newspaper, RefreshCw, AlertCircle } from 'lucide-react';
+import { ChevronRight, Newspaper, RefreshCw, AlertCircle } from 'lucide-react';
 import { fetchNews } from '../../services/newsService';
 import { NEWS_FIELDS, labelForField } from '../../data/newsFieldMeta';
 import { NewsField, NewsItem } from '../../types/news';
+import { ArticleReaderModal } from './ArticleReaderModal';
 
 function timeAgo(iso: string | null): string {
   if (!iso) return '';
@@ -21,13 +22,13 @@ function timeAgo(iso: string | null): string {
 
 // A single row in the feed river — the layout real news apps use: a scannable vertical list, not
 // a grid of boxed cards. Field tag + source/time sits above the headline so it reads left-to-right
-// like a news ticker entry.
-const NewsRow: React.FC<{ item: NewsItem; lead?: boolean }> = ({ item, lead = false }) => (
-  <a
-    href={item.link}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group flex min-w-0 items-start gap-3 py-4 transition-colors hover:bg-[var(--ds-surface-muted)] sm:gap-4 sm:px-2 sm:-mx-2 rounded-[var(--ds-radius-md)]"
+// like a news ticker entry. Opens the story in the in-app reader (ArticleReaderModal) rather than
+// a new tab — the site's own footer link is still there for anyone who wants the original page.
+const NewsRow: React.FC<{ item: NewsItem; lead?: boolean; onOpen: (item: NewsItem) => void }> = ({ item, lead = false, onOpen }) => (
+  <button
+    type="button"
+    onClick={() => onOpen(item)}
+    className="group flex w-full min-w-0 items-start gap-3 py-4 text-left transition-colors hover:bg-[var(--ds-surface-muted)] sm:gap-4 sm:px-2 sm:-mx-2 rounded-[var(--ds-radius-md)]"
   >
     <div className="min-w-0 flex-1 space-y-1.5">
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-black uppercase tracking-wide">
@@ -44,8 +45,8 @@ const NewsRow: React.FC<{ item: NewsItem; lead?: boolean }> = ({ item, lead = fa
         </p>
       )}
     </div>
-    <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-[var(--ds-text-muted)] transition-colors group-hover:text-[var(--ds-primary)]" />
-  </a>
+    <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-[var(--ds-text-muted)] transition-colors group-hover:text-[var(--ds-primary)] group-hover:translate-x-0.5" />
+  </button>
 );
 
 interface NewsPanelViewProps {
@@ -62,6 +63,7 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [activeField, setActiveField] = useState<NewsField | 'all'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [activeItem, setActiveItem] = useState<NewsItem | null>(null);
 
   const load = (force = false) => {
     setStatus((prev) => (prev === 'ready' ? prev : 'loading'));
@@ -178,7 +180,7 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
       ) : (
         <div className="divide-y divide-[var(--ds-border)]">
           {filtered.map((item, idx) => (
-            <NewsRow key={item.id} item={item} lead={!compact && idx === 0} />
+            <NewsRow key={item.id} item={item} lead={!compact && idx === 0} onOpen={setActiveItem} />
           ))}
         </div>
       )}
@@ -188,6 +190,8 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
           Updated {new Date(fetchedAt).toLocaleString()} · Sources: MIT News, BAIR, OpenAI, KDnuggets, Netflix Tech Blog, O'Reilly Radar, Krebs on Security, Schneier on Security, Hacker News, MIT Technology Review
         </p>
       )}
+
+      <ArticleReaderModal item={activeItem} onClose={() => setActiveItem(null)} />
     </div>
   );
 };

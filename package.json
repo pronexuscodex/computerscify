@@ -38,8 +38,10 @@
     "validate": "npm run typecheck && npm run test && npm run curriculum:validate && npm run resources:verify && npm run build"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
+    "dompurify": "^3.4.14",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "fast-xml-parser": "^5.11.0",

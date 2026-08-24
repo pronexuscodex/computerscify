@@ -367,6 +367,89 @@
   width: min(100%, var(--ds-reading-width));
 }
 
+/* Typography for Readability-extracted article HTML (src/services/articleReader.ts). The source
+   markup is arbitrary third-party HTML sanitized down to plain structural tags, so it needs its
+   own type scale independent of whatever ambient text size the modal it's rendered in uses. */
+.article-reader-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--ds-text);
+}
+
+.article-reader-content > * + * {
+  margin-top: 1.1em;
+}
+
+.article-reader-content h1,
+.article-reader-content h2,
+.article-reader-content h3,
+.article-reader-content h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.3;
+  margin-top: 1.6em;
+}
+
+.article-reader-content h1 { font-size: 1.5rem; }
+.article-reader-content h2 { font-size: 1.3rem; }
+.article-reader-content h3 { font-size: 1.1rem; }
+
+.article-reader-content a {
+  color: var(--ds-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-reader-content blockquote {
+  border-left: 3px solid var(--ds-border-strong);
+  padding-left: 1em;
+  color: var(--ds-text-muted);
+  font-style: italic;
+}
+
+.article-reader-content ul,
+.article-reader-content ol {
+  padding-left: 1.4em;
+}
+
+.article-reader-content li + li {
+  margin-top: 0.4em;
+}
+
+.article-reader-content pre {
+  overflow-x: auto;
+  padding: 0.9em 1em;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-muted);
+  font-size: 0.85em;
+}
+
+.article-reader-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: var(--ds-surface-muted);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.article-reader-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.article-reader-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.article-reader-content th,
+.article-reader-content td {
+  border: 1px solid var(--ds-border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+
 /* Custom animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(2px); }

@@ -7,6 +7,7 @@ import {VitePWA} from 'vite-plugin-pwa';
 import correctedManifest from './academic-resource-report.corrected.json';
 import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from './scripts/pdfProxyAllowlist';
 import { fetchAllFeeds, NewsField } from './scripts/newsFeedSources';
+import { fetchArticleHtml } from './scripts/articleFetch';
 
 // Shared between `vite dev` (configureServer) and `vite preview` (configurePreviewServer) so
 // PDF fetching works the same way in both — `vite preview` serves the real production build and
@@ -133,6 +134,53 @@ function newsFeedProxyPlugin(): Plugin {
   };
 }
 
+// Local dev/preview equivalent of netlify/functions/article-proxy.ts. Reading a news item inside
+// the app (rather than sending the learner to a new tab) requires the article's raw HTML, which
+// the browser can't fetch directly — almost no news site sends CORS headers. The proxy fetches it
+// server-side under SSRF protections (see scripts/articleFetch.ts); Readability extraction and
+// sanitization happen client-side in src/services/articleReader.ts.
+function articleProxyPlugin(): Plugin {
+  function registerArticleMiddleware(server: { middlewares: { use: Function } }) {
+    server.middlewares.use('/api/article-proxy', async (req: any, res: any) => {
+      if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', '*');
+        res.statusCode = 204;
+        res.end();
+        return;
+      }
+      try {
+        const urlObj = new URL(req.url || '', `http://${req.headers.host || 'localhost'}`);
+        const targetUrl = urlObj.searchParams.get('url');
+
+        if (!targetUrl) {
+          res.statusCode = 400;
+          res.end('Missing url query parameter');
+          return;
+        }
+
+        const { html } = await fetchArticleHtml(targetUrl);
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'public, max-age=1800');
+        res.end(html);
+      } catch (err: unknown) {
+        res.statusCode = 502;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end(`Article Proxy exception: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    });
+  }
+
+  return {
+    name: 'article-proxy-plugin',
+    configureServer: registerArticleMiddleware,
+    configurePreviewServer: registerArticleMiddleware,
+  };
+}
+
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   // Pyodide's wasm module requires this; no script executes from anywhere but our own origin.
@@ -174,6 +222,7 @@ export default defineConfig(() => {
       tailwindcss(),
       pdfProxyPlugin(),
       newsFeedProxyPlugin(),
+      articleProxyPlugin(),
       cspPlugin(),
       VitePWA({
         // public/app.webmanifest + its <link> tag in index.html already exist; don't generate a second one.
