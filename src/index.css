@@ -509,3 +509,17 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Every overflow-x-auto container in the app is a single-row strip (filter chips, tab bars,
+   breadcrumbs, toolbars) meant to be swiped or dragged, not a place where a visible scrollbar
+   thumb is the primary "there's more" cue — a thin grey bar sitting under a row of pill buttons
+   reads as unfinished UI rather than an intentional control. Hide it globally here (same technique
+   as .no-scrollbar above) instead of relying on every call site to opt in individually. */
+.overflow-x-auto {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}

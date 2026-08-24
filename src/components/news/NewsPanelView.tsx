@@ -4,6 +4,7 @@ import { fetchNews } from '../../services/newsService';
 import { NEWS_FIELDS, labelForField } from '../../data/newsFieldMeta';
 import { NewsField, NewsItem } from '../../types/news';
 import { ArticleReaderModal } from './ArticleReaderModal';
+import { loadReadIds, persistReadIds } from '../../services/newsReadState';
 
 function timeAgo(iso: string | null): string {
   if (!iso) return '';
@@ -20,23 +21,47 @@ function timeAgo(iso: string | null): string {
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+// Groups the (already newest-first) feed into day buckets, like a real news app's "Today /
+// Yesterday" sections, so a long river of headlines reads as a timeline instead of a flat list.
+function dayBucket(iso: string | null): string {
+  if (!iso) return 'Undated';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return 'Undated';
+  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const diffDays = Math.round((startOfDay(new Date()) - startOfDay(date)) / 86_400_000);
+  if (diffDays <= 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return 'Earlier This Week';
+  return 'Older';
+}
+
 // A single row in the feed river — the layout real news apps use: a scannable vertical list, not
 // a grid of boxed cards. Field tag + source/time sits above the headline so it reads left-to-right
 // like a news ticker entry. Opens the story in the in-app reader (ArticleReaderModal) rather than
 // a new tab — the site's own footer link is still there for anyone who wants the original page.
-const NewsRow: React.FC<{ item: NewsItem; lead?: boolean; onOpen: (item: NewsItem) => void }> = ({ item, lead = false, onOpen }) => (
+// Once opened, a headline dims to muted/regular weight (like Feedly or visited HN links) so a
+// learner scanning the feed can tell at a glance what's new since their last visit.
+const NewsRow: React.FC<{ item: NewsItem; lead?: boolean; isRead: boolean; onOpen: (item: NewsItem) => void }> = ({ item, lead = false, isRead, onOpen }) => (
   <button
     type="button"
     onClick={() => onOpen(item)}
     className="group flex w-full min-w-0 items-start gap-3 py-4 text-left transition-colors hover:bg-[var(--ds-surface-muted)] sm:gap-4 sm:px-2 sm:-mx-2 rounded-[var(--ds-radius-md)]"
   >
+    <span
+      className={`mt-2 h-2 w-2 shrink-0 rounded-full ${isRead ? '' : 'bg-[var(--ds-primary)]'}`}
+      aria-hidden="true"
+    />
     <div className="min-w-0 flex-1 space-y-1.5">
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-black uppercase tracking-wide">
         <span className="rounded-full bg-[var(--ds-text)] px-2.5 py-0.5 text-[var(--ds-background)]">{labelForField(item.field)}</span>
         <span className="text-[var(--ds-text-muted)]">{item.source}</span>
         {item.publishedAt && <span className="text-[var(--ds-text-muted)]">· {timeAgo(item.publishedAt)}</span>}
       </div>
-      <h3 className={`break-words font-black leading-snug group-hover:underline ${lead ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'}`}>
+      <h3
+        className={`break-words leading-snug group-hover:underline ${lead ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'} ${
+          isRead ? 'font-semibold text-[var(--ds-text-muted)]' : 'font-black'
+        }`}
+      >
         {item.title}
       </h3>
       {item.summary && (
@@ -64,6 +89,18 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
   const [activeField, setActiveField] = useState<NewsField | 'all'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeItem, setActiveItem] = useState<NewsItem | null>(null);
+  const [readIds, setReadIds] = useState<Set<string>>(() => loadReadIds());
+
+  const handleOpenItem = (item: NewsItem) => {
+    setActiveItem(item);
+    setReadIds((prev) => {
+      if (prev.has(item.id)) return prev;
+      const next = new Set(prev);
+      next.add(item.id);
+      persistReadIds(next);
+      return next;
+    });
+  };
 
   const load = (force = false) => {
     setStatus((prev) => (prev === 'ready' ? prev : 'loading'));
@@ -177,11 +214,28 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
 
       {filtered.length === 0 ? (
         <p className="text-sm text-[var(--ds-text-muted)] font-bold">No stories in this category right now — try again shortly.</p>
-      ) : (
+      ) : compact ? (
         <div className="divide-y divide-[var(--ds-border)]">
           {filtered.map((item, idx) => (
-            <NewsRow key={item.id} item={item} lead={!compact && idx === 0} onOpen={setActiveItem} />
+            <NewsRow key={item.id} item={item} lead={idx === 0} isRead={readIds.has(item.id)} onOpen={handleOpenItem} />
           ))}
+        </div>
+      ) : (
+        <div>
+          {filtered.map((item, idx) => {
+            const bucket = dayBucket(item.publishedAt);
+            const showBucketHeader = idx === 0 || bucket !== dayBucket(filtered[idx - 1].publishedAt);
+            return (
+              <div key={item.id} className={!showBucketHeader && idx > 0 ? 'border-t border-[var(--ds-border)]' : ''}>
+                {showBucketHeader && (
+                  <h3 className={`text-xs font-black uppercase tracking-wider text-[var(--ds-text-muted)] ${idx === 0 ? 'pb-2' : 'pt-6 pb-2'}`}>
+                    {bucket}
+                  </h3>
+                )}
+                <NewsRow item={item} lead={idx === 0} isRead={readIds.has(item.id)} onOpen={handleOpenItem} />
+              </div>
+            );
+          })}
         </div>
       )}
 
