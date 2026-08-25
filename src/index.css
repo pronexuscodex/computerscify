@@ -374,6 +374,15 @@
   font-size: 1rem;
   line-height: 1.75;
   color: var(--ds-text);
+  overflow-wrap: anywhere;
+}
+
+/* Safety net for arbitrary third-party HTML: even with img/canvas/style stripped in
+   articleReader.ts, nothing guarantees a source can't leave behind some other block wider than
+   its container. Everything except <pre> (which is meant to scroll horizontally for code) is
+   capped to the reading column's width. */
+.article-reader-content :not(pre) {
+  max-width: 100%;
 }
 
 .article-reader-content > * + * {

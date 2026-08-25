@@ -37,10 +37,18 @@ export async function fetchReadableArticle(url: string): Promise<ReadableArticle
 
   // Images are stripped rather than allowed through: they'd point at arbitrary third-party hosts
   // the app's CSP img-src doesn't (and can't reasonably) allowlist, and many are tracking pixels
-  // rather than content images. Iframes/media are stripped for the same reason plus XSS surface.
+  // rather than content images. Iframes/media/canvas are stripped for the same reason plus XSS
+  // surface — a canvas is also useless without the script that drew it (we strip <script> too),
+  // yet keeps its explicit width/height HTML attributes, which is exactly what overflowed a
+  // mobile reader: a source with an interactive canvas diagram (e.g. ciechanow.ski) left behind a
+  // ~640px-wide empty box no CSS here could shrink, since width/height attributes set a canvas's
+  // intrinsic size directly and aren't overridden by max-width. Inline style attributes are
+  // stripped too, since this container supplies its own typography and third-party inline
+  // widths/positioning have no legitimate reason to survive extraction.
   const contentHtml = DOMPurify.sanitize(parsed.content, {
     ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|tel:|#)/i,
-    FORBID_TAGS: ['img', 'picture', 'source', 'iframe', 'video', 'audio', 'object', 'embed', 'svg'],
+    FORBID_TAGS: ['img', 'picture', 'source', 'iframe', 'video', 'audio', 'object', 'embed', 'svg', 'canvas'],
+    FORBID_ATTR: ['style'],
   });
 
   return {
