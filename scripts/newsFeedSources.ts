@@ -166,10 +166,15 @@ export function parseFeedXml(xml: string, source: NewsFeedSource): NormalizedNew
 }
 
 const FETCH_TIMEOUT_MS = 12000;
+// A retry exists for transient blips (see fetchOneFeed below), not to give a second full-length
+// attempt to a source that's genuinely down — a dead host times out identically on both tries, so
+// waiting another 12s just to confirm that doubles how long one broken source can stall the whole
+// batch (fetchAllFeeds awaits every source before returning anything). Fail the retry fast instead.
+const RETRY_TIMEOUT_MS = 5000;
 
-async function fetchOnce(source: NewsFeedSource): Promise<NormalizedNewsItem[] | null> {
+async function fetchOnce(source: NewsFeedSource, timeoutMs: number): Promise<NormalizedNewsItem[] | null> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(source.url, {
       signal: controller.signal,
@@ -188,12 +193,14 @@ async function fetchOnce(source: NewsFeedSource): Promise<NormalizedNewsItem[] |
 /**
  * Fetches and parses one feed, never throwing — a single dead/slow source must not break the panel.
  * One retry: under concurrent load (11 feeds fetched in parallel), an individual slow-but-healthy
- * source can occasionally miss the timeout window even though it would succeed on its own.
+ * source can occasionally miss the timeout window even though it would succeed on its own. The
+ * retry uses a shorter timeout than the first attempt (see RETRY_TIMEOUT_MS) since by this point
+ * it's a "confirm it's actually down" check, not a second real chance.
  */
 export async function fetchOneFeed(source: NewsFeedSource): Promise<NormalizedNewsItem[]> {
-  const first = await fetchOnce(source);
+  const first = await fetchOnce(source, FETCH_TIMEOUT_MS);
   if (first !== null) return first;
-  const retry = await fetchOnce(source);
+  const retry = await fetchOnce(source, RETRY_TIMEOUT_MS);
   return retry ?? [];
 }
 

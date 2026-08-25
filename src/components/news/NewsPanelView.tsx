@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronRight, Newspaper, RefreshCw, AlertCircle } from 'lucide-react';
-import { fetchNews } from '../../services/newsService';
+import { fetchNews, peekCachedNews } from '../../services/newsService';
 import { NEWS_FIELDS, labelForField } from '../../data/newsFieldMeta';
 import { NewsField, NewsItem } from '../../types/news';
 import { ArticleReaderModal } from './ArticleReaderModal';
@@ -83,9 +83,13 @@ interface NewsPanelViewProps {
 }
 
 export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, maxItems, hideHeader = false }) => {
-  const [items, setItems] = useState<NewsItem[]>([]);
-  const [fetchedAt, setFetchedAt] = useState<string | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  // A returning learner's last-fetched feed (if any) paints instantly instead of a loading
+  // skeleton, while a fresh copy loads silently in the background — see peekCachedNews.
+  const [cachedOnMount] = useState(() => peekCachedNews());
+  const [items, setItems] = useState<NewsItem[]>(cachedOnMount?.items ?? []);
+  const [fetchedAt, setFetchedAt] = useState<string | null>(cachedOnMount?.fetchedAt ?? null);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(cachedOnMount ? 'ready' : 'loading');
+  const [isBackgroundRefreshing, setIsBackgroundRefreshing] = useState(false);
   const [activeField, setActiveField] = useState<NewsField | 'all'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeItem, setActiveItem] = useState<NewsItem | null>(null);
@@ -102,20 +106,29 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
     });
   };
 
-  const load = (force = false) => {
-    setStatus((prev) => (prev === 'ready' ? prev : 'loading'));
+  const load = (force = false, background = false) => {
+    if (background) setIsBackgroundRefreshing(true);
+    else setStatus((prev) => (prev === 'ready' ? prev : 'loading'));
+
     fetchNews({ force })
       .then(({ items: fetched, fetchedAt: at }) => {
         setItems(fetched);
         setFetchedAt(at);
         setStatus('ready');
       })
-      .catch(() => setStatus('error'))
-      .finally(() => setIsRefreshing(false));
+      .catch(() => {
+        // A failed background refresh shouldn't replace perfectly good cached content with an
+        // error screen — only surface the error state when there was nothing to show already.
+        if (!background) setStatus('error');
+      })
+      .finally(() => {
+        setIsRefreshing(false);
+        setIsBackgroundRefreshing(false);
+      });
   };
 
   useEffect(() => {
-    load();
+    load(false, !!cachedOnMount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -134,9 +147,14 @@ export const NewsPanelView: React.FC<NewsPanelViewProps> = ({ compact = false, m
       <div className="flex items-center gap-2">
         <Newspaper className="h-5 w-5 text-[var(--ds-primary)]" />
         <h2 className={compact ? 'text-lg font-black' : 'text-2xl font-black'}>Field News</h2>
-        {status === 'ready' && (
+        {status === 'ready' && !isBackgroundRefreshing && (
           <span className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--ds-security-soft)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[var(--ds-security)]">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--ds-security)]" /> Live
+          </span>
+        )}
+        {status === 'ready' && isBackgroundRefreshing && (
+          <span className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--ds-surface-muted)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[var(--ds-text-muted)]">
+            <RefreshCw className="h-2.5 w-2.5 animate-spin" /> Updating
           </span>
         )}
       </div>
