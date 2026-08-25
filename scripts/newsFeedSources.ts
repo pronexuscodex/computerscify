@@ -49,12 +49,37 @@ const xmlParser = new XMLParser({
   textNodeName: '__text',
 });
 
+// XML parsers decode standard entities in plain text nodes, but content inside a CDATA section —
+// how most WordPress/blog feeds wrap their <description> — is left completely literal by design,
+// so an author's own already-HTML-encoded "&#8217;" for an apostrophe survives untouched and would
+// otherwise show up verbatim in the feed ("today&#8217;s edition"). Decode the small set of named
+// and numeric entities that actually show up in RSS prose; this isn't a full HTML-entity table, but
+// covers everything WordPress's default encoding emits.
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  ndash: '–', mdash: '—', hellip: '…',
+  lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”',
+};
+
+function decodeHtmlEntities(input: string): string {
+  return input.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
+    if (entity[0] === '#') {
+      const codePoint = entity[1]?.toLowerCase() === 'x' ? parseInt(entity.slice(2), 16) : parseInt(entity.slice(1), 10);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : match;
+    }
+    const lower = entity.toLowerCase();
+    return lower in NAMED_ENTITIES ? NAMED_ENTITIES[lower] : match;
+  });
+}
+
 function stripHtml(input: unknown): string {
   if (typeof input !== 'string') return '';
-  return input
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return decodeHtmlEntities(
+    input
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 }
 
 // hnrss.org (and similar link-aggregator feeds) publish a fixed metadata block as the item
