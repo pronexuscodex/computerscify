@@ -2,7 +2,7 @@ import { XMLParser } from 'fast-xml-parser';
 
 // Curated, verified RSS/Atom feeds (checked live before inclusion — real HTTP 200 responses with
 // actual <item>/<entry> content, not guessed URLs) grouped by curriculum field. Shared between the
-// Vite dev-server middleware (vite.config.ts) and the Netlify function (netlify/functions/news-feed.ts)
+// Vite dev-server middleware (vite.config.ts) and the Vercel function (api/news-feed.ts)
 // so local dev and production never drift out of sync — mirrors scripts/pdfProxyAllowlist.ts's role.
 export type NewsField = 'ai' | 'data-science' | 'data-engineering' | 'cybersecurity' | 'computer-science';
 
@@ -204,22 +204,23 @@ export async function fetchOneFeed(source: NewsFeedSource): Promise<NormalizedNe
   return retry ?? [];
 }
 
-// Netlify's synchronous Functions have a hard 10s execution limit on the plan this site runs on
-// (the underlying issue behind the "Couldn't load news right now" error learners were hitting in
-// production — fine locally under `vite dev`, which has no such cap). fetchOneFeed's own retry
-// logic can legitimately take up to FETCH_TIMEOUT_MS + RETRY_TIMEOUT_MS (17s) for a single dead
-// source, and Promise.all waits for the slowest one — so one broken source was silently timing
-// out the *entire* feed for every learner, not just degrading that one source's contribution.
-// Race each source against this hard aggregate deadline so a slow/dead source can never delay the
-// response past what Netlify allows; a source that hasn't resolved by then just contributes
-// nothing to this response (its own fetchOneFeed call is abandoned, not cancelled, but that's
-// harmless — the request just isn't awaited).
+// Serverless functions (Vercel included) have a fixed execution time limit — api/news-feed.ts
+// requests extra headroom via `maxDuration`, but this cap is defense-in-depth regardless of
+// platform default (the underlying issue behind the "Couldn't load news right now" error learners
+// were hitting in production — fine locally under `vite dev`, which has no such cap).
+// fetchOneFeed's own retry logic can legitimately take up to FETCH_TIMEOUT_MS + RETRY_TIMEOUT_MS
+// (17s) for a single dead source, and Promise.all waits for the slowest one — so one broken source
+// was silently timing out the *entire* feed for every learner, not just degrading that one
+// source's contribution. Race each source against this hard aggregate deadline so a slow/dead
+// source can never delay the response past the platform's ceiling; a source that hasn't resolved
+// by then just contributes nothing to this response (its own fetchOneFeed call is abandoned, not
+// cancelled, but that's harmless — the request just isn't awaited).
 // Deliberately conservative: local testing showed some sources occasionally need close to 8-9s
-// under concurrent load, but pushing the deadline that high leaves too little margin below
-// Netlify's 10s ceiling once cold-start and response-serialization overhead are added on top in
-// production. A response that's occasionally missing one source's items is graceful degradation;
-// a response that occasionally exceeds Netlify's timeout is a total failure for every learner —
-// the latter is what this whole mechanism exists to prevent, so it gets priority over completeness.
+// under concurrent load, but pushing the deadline that high leaves too little margin once
+// cold-start and response-serialization overhead are added on top in production. A response
+// that's occasionally missing one source's items is graceful degradation; a response that
+// occasionally exceeds the function's timeout is a total failure for every learner — the latter is
+// what this whole mechanism exists to prevent, so it gets priority over completeness.
 const AGGREGATE_DEADLINE_MS = 7500;
 
 export async function fetchAllFeeds(fields?: NewsField[]): Promise<NormalizedNewsItem[]> {

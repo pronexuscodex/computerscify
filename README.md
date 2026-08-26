@@ -4,7 +4,7 @@
 
 ComputerSciFy is a self-contained learning environment that takes a learner from binary logic gates through deep learning, MLOps, and applied AI engineering — structured as two full four-year degree programs (B.S. Computer Science and B.S. Data Science) plus specialized elective tracks in AI Engineering, Cybersecurity, and Data Engineering. Every lesson, exercise, glossary entry, and reading recommendation is human-authored and deterministic — there is no AI model integration, no generated content, and no network calls to any LLM provider anywhere in the curriculum or its tooling.
 
-🔗 **Live demo:** _add your deployed Netlify URL here_
+🔗 **Live demo:** [computerscify.vercel.app](https://computerscify.vercel.app)
 
 ---
 
@@ -32,7 +32,7 @@ ComputerSciFy is a self-contained learning environment that takes a learner from
 | In-browser code execution | Pyodide (Python via WebAssembly) |
 | Offline / PWA | `vite-plugin-pwa` (Workbox-generated service worker) |
 | Build | Vite 6 |
-| Deployment | Netlify (static hosting + a serverless function serving the PDF proxy in production) |
+| Deployment | Vercel (static hosting + serverless functions for the PDF/news/article proxies in production) |
 
 ## Getting started
 
@@ -77,13 +77,13 @@ src/
 ├── context/              # navigation & theme providers
 └── types/                # shared TypeScript types
 
-netlify/functions/       # production PDF proxy (mirrors the local dev-server middleware)
+api/                      # production serverless functions (mirror the local dev-server middleware)
 scripts/                 # curriculum validation, resource audits, test runner
 ```
 
 ## Deployment
 
-The app is a static Vite build deployed on Netlify from the `main` branch, with `netlify.toml` configuring the build, an SPA fallback redirect, and a serverless function (`netlify/functions/pdf-proxy.ts`) that proxies whitelisted academic PDF hosts in production — the same role a small Vite dev-server middleware plays locally, sharing one allowlist module so the two never drift out of sync.
+The app is a static Vite build deployed on Vercel from the `main` branch. Three serverless functions under `api/` proxy content server-side in production — `pdf-proxy.ts` for whitelisted academic PDF hosts, `news-feed.ts` for the curated RSS/Atom sources, and `article-proxy.ts` for reading a news story in-app — each mirroring a Vite dev-server middleware of the same name in `vite.config.ts` so local dev and production never drift out of sync. `vercel.json` sets long-lived immutable caching for hashed assets and a no-cache rule for the service worker.
 
 ## Design principles
 

@@ -10,7 +10,7 @@ export interface ReadableArticle {
 
 /**
  * Fetches an article's raw HTML through the same-origin proxy (/api/article-proxy — a Vite
- * dev-server middleware locally, a Netlify function in production; see scripts/articleFetch.ts)
+ * dev-server middleware locally, a Vercel function in production; see scripts/articleFetch.ts)
  * and extracts a clean, readable version entirely client-side via Readability, so a news item can
  * be read inside the app instead of sending the learner to another tab. The proxy exists because
  * almost no news site sends CORS headers, so a direct browser fetch would fail regardless.

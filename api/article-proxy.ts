@@ -1,23 +1,25 @@
-import type { Config, Context } from '@netlify/functions';
-import { fetchArticleHtml } from '../../scripts/articleFetch';
+import { fetchArticleHtml } from '../scripts/articleFetch';
 
 // Production equivalent of vite.config.ts's articleProxyPlugin. Vite's dev/preview-server
-// middleware only exists locally — a Netlify deploy is a static site with no Node server behind
+// middleware only exists locally — a Vercel deploy is a static site with no Node server behind
 // it, so this serverless function is what actually serves /api/article-proxy once deployed. Keep
 // this logic in sync with vite.config.ts's registerArticleMiddleware; both share fetchArticleHtml.
+//
+// Must run on the Node.js runtime (the default — do not add `export const config = { runtime:
+// 'edge' }` here): fetchArticleHtml's SSRF guard uses node:dns, which Edge Runtime doesn't support.
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
   'Access-Control-Allow-Headers': '*',
 };
 
-export default async (req: Request, _context: Context): Promise<Response> => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: CORS_HEADERS });
-  }
+export function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
 
+export async function GET(request: Request): Promise<Response> {
   try {
-    const requestUrl = new URL(req.url);
+    const requestUrl = new URL(request.url);
     const targetUrl = requestUrl.searchParams.get('url');
 
     if (!targetUrl) {
@@ -39,8 +41,4 @@ export default async (req: Request, _context: Context): Promise<Response> => {
       status: 502,
     });
   }
-};
-
-export const config: Config = {
-  path: '/api/article-proxy',
-};
+}

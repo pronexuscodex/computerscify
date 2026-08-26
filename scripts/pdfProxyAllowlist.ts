@@ -1,6 +1,6 @@
 // Single source of truth for which external hosts the PDF proxy is allowed to fetch from.
-// Shared between the Vite dev/preview server middleware (vite.config.ts) and the Netlify
-// serverless function (netlify/functions/pdf-proxy.ts) that serves the same role in production,
+// Shared between the Vite dev/preview server middleware (vite.config.ts) and the Vercel
+// serverless function (api/pdf-proxy.ts) that serves the same role in production,
 // so the two environments can never drift out of sync with each other.
 export const ALLOWED_PDF_PROXY_HOSTS: readonly string[] = [
   'raw.githubusercontent.com',

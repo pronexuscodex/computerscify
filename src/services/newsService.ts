@@ -64,7 +64,7 @@ export function peekCachedNews(fields?: NewsField[]): NewsFetchResult | null {
 
 /**
  * Fetches curated field news via the same-origin proxy (/api/news-feed — a Vite dev-server
- * middleware locally, a Netlify function in production; see scripts/newsFeedSources.ts).
+ * middleware locally, a Vercel function in production; see scripts/newsFeedSources.ts).
  * Skips the network entirely when a fresh (<30min) cache entry exists, unless `force` is set.
  */
 export async function fetchNews(options?: { fields?: NewsField[]; force?: boolean }): Promise<NewsFetchResult> {

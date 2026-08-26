@@ -1,6 +1,6 @@
 import dns from 'node:dns/promises';
 
-// Shared between vite.config.ts's dev/preview middleware and netlify/functions/article-proxy.ts
+// Shared between vite.config.ts's dev/preview middleware and api/article-proxy.ts
 // (mirrors the pdf-proxy split in scripts/pdfProxyAllowlist.ts) so local dev and production apply
 // identical fetch rules. Unlike the PDF proxy — which only ever fetches from a fixed, curated
 // allowlist of academic-publisher hosts — news items link to whatever site a curated RSS feed

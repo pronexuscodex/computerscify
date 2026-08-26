@@ -1,11 +1,14 @@
-import type { Config, Context } from '@netlify/functions';
-import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from '../../scripts/pdfProxyAllowlist';
-import correctedManifest from '../../academic-resource-report.corrected.json';
+import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from '../scripts/pdfProxyAllowlist';
+import correctedManifest from '../academic-resource-report.corrected.json';
 
 // Production equivalent of vite.config.ts's pdfProxyPlugin. Vite's dev/preview-server middleware
-// only exists locally — a Netlify deploy is a static site with no Node server behind it, so this
+// only exists locally — a Vercel deploy is a static site with no Node server behind it, so this
 // serverless function is what actually serves /api/pdf-proxy once deployed. Keep this logic in
 // sync with vite.config.ts's registerProxyMiddleware; both share the same allowlist module.
+//
+// Vercel Functions (non-Next.js): any file under /api is deployed as a function at the matching
+// route, routed per HTTP method via named exports (GET/OPTIONS/etc.) rather than Netlify's single
+// default-export-plus-method-check — see https://vercel.com/docs/functions/functions-api-reference.
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -15,13 +18,13 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': '*',
 };
 
-export default async (req: Request, _context: Context): Promise<Response> => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: CORS_HEADERS });
-  }
+export function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
 
+export async function GET(request: Request): Promise<Response> {
   try {
-    const requestUrl = new URL(req.url);
+    const requestUrl = new URL(request.url);
     const resourceId = requestUrl.searchParams.get('resourceId');
     let targetUrl = requestUrl.searchParams.get('url');
 
@@ -76,8 +79,4 @@ export default async (req: Request, _context: Context): Promise<Response> => {
       status: 500,
     });
   }
-};
-
-export const config: Config = {
-  path: '/api/pdf-proxy',
-};
+}

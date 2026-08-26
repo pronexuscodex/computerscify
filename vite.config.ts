@@ -98,7 +98,7 @@ function pdfProxyPlugin(): Plugin {
   };
 }
 
-// Local dev/preview equivalent of netlify/functions/news-feed.ts. Fetching RSS/Atom feeds from the
+// Local dev/preview equivalent of api/news-feed.ts. Fetching RSS/Atom feeds from the
 // browser directly would fail for most sources (no CORS headers) and would leak each reader's IP to
 // every source on every page view, so this proxies and normalizes them server-side, same as production.
 function newsFeedProxyPlugin(): Plugin {
@@ -134,7 +134,7 @@ function newsFeedProxyPlugin(): Plugin {
   };
 }
 
-// Local dev/preview equivalent of netlify/functions/article-proxy.ts. Reading a news item inside
+// Local dev/preview equivalent of api/article-proxy.ts. Reading a news item inside
 // the app (rather than sending the learner to a new tab) requires the article's raw HTML, which
 // the browser can't fetch directly — almost no news site sends CORS headers. The proxy fetches it
 // server-side under SSRF protections (see scripts/articleFetch.ts); Readability extraction and

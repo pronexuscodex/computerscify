@@ -7,5 +7,5 @@ public/pyodide/
 *.log
 .env*
 !.env.example
-.netlify/
+.vercel/
 deno.lock
