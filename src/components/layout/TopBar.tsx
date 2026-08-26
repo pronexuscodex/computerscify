@@ -124,9 +124,11 @@ export const TopBar: React.FC<TopBarProps> = ({
           title="ComputerSciFy Platform Home"
           aria-label="ComputerSciFy Home Dashboard"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--ds-radius-sm)] bg-[var(--ds-learning-soft)] font-mono text-sm font-black text-[var(--ds-learning)] shadow-[var(--ds-shadow-sm)] ring-1 ring-[var(--ds-border)]">
-            &gt;_
-          </div>
+          <img
+            src="/computerscify-icon-192.png"
+            alt=""
+            className="h-9 w-9 shrink-0 rounded-[var(--ds-radius-sm)] object-cover shadow-[var(--ds-shadow-sm)] ring-1 ring-[var(--ds-border)]"
+          />
           <span className="hidden truncate text-lg font-bold tracking-tight text-[var(--ds-text)] sm:inline-block">
             Computer<span className="text-[var(--ds-primary)]">Sci</span><span className="text-[var(--ds-learning)]">Fy</span>
           </span>

@@ -121,11 +121,11 @@ export const NavigationRail: React.FC<NavigationRailProps> = ({
           title="ComputerSciFy Home Dashboard"
           aria-label="ComputerSciFy Home Dashboard"
         >
-          <div
-            className="w-9 h-9 rounded bg-[#F2C94C] border-2 border-[#000000] flex items-center justify-center font-mono font-black text-sm text-[#000000] neo-shadow-sm shrink-0"
-          >
-            &gt;_
-          </div>
+          <img
+            src="/computerscify-icon-192.png"
+            alt=""
+            className="w-9 h-9 rounded border-2 border-[#000000] neo-shadow-sm shrink-0 object-cover"
+          />
           {!isCollapsed && (
             <div className="min-w-0">
               <h1 className="font-display font-black text-lg tracking-tight text-[#000000] dark:text-[#F6EFEF] flex items-center gap-0.5 uppercase">
