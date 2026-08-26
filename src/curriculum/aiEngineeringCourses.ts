@@ -349,6 +349,16 @@ const definitions: AiCourseDefinition[] = [
         researchPapers: [
           { id: 'paper-adam-optimizer', title: 'Adam: A Method for Stochastic Optimization', authors: ['Diederik P. Kingma', 'Jimmy Ba'], year: 2015, venue: 'International Conference on Learning Representations (ICLR) 2015', doiOrArxiv: 'arXiv:1412.6980', openAccessUrl: 'https://arxiv.org/pdf/1412.6980', canonicalUrl: 'https://arxiv.org/abs/1412.6980', paperType: 'seminal', difficulty: 'intermediate', prerequisites: ['Gradient descent', 'Backpropagation'], summary: 'Introduces the Adam optimizer, which combines per-parameter adaptive learning rates with momentum using running estimates of the first and second moments of the gradient.', whyItMatters: 'Adam became the default optimizer for most deep learning training loops because it converges reliably across a wide range of architectures with comparatively little tuning.', sectionsToRead: 'Abstract, Section 2 (Algorithm), and Section 6 (Experiments).', readingQuestions: ['What do the first and second moment estimates approximate?', 'Why does Adam apply bias correction to these estimates?', 'How does the effective per-parameter learning rate change as training progresses?'], relatedTopicIds: ['ai410-t1'], accessStatus: 'open-access', deliveryMode: 'in-app-pdf-candidate' },
         ],
+        primaryText: {
+          id: 'book-deep-learning-goodfellow-ai410t1',
+          title: 'Deep Learning',
+          authors: ['Ian Goodfellow', 'Yoshua Bengio', 'Aaron Courville'],
+          url: 'https://www.deeplearningbook.org/',
+          canonicalUrl: 'https://www.deeplearningbook.org/',
+          recommendedChapter: 'Chapter 6 (Deep Feedforward Networks) and Chapter 8 (Optimization for Training Deep Models)',
+          accessStatus: 'open-access',
+          publisherOrInstitution: 'MIT Press',
+        },
       },
       {
         id: 'ai410-t2', title: 'CNNs, Sequence Models, Attention and Transformers', summary: 'Architectures for images and sequences, attention, transformer blocks, embeddings, and disciplined model evaluation.', objective: 'Select and evaluate a neural architecture for image or text data.', concepts: [
@@ -395,6 +405,16 @@ const definitions: AiCourseDefinition[] = [
         researchPapers: [
           { id: 'paper-attention-is-all-you-need', title: 'Attention Is All You Need', authors: ['Ashish Vaswani', 'Noam Shazeer', 'Niki Parmar', 'Jakob Uszkoreit', 'Llion Jones', 'Aidan N. Gomez', 'Lukasz Kaiser', 'Illia Polosukhin'], year: 2017, venue: 'Neural Information Processing Systems (NeurIPS) 2017', doiOrArxiv: 'arXiv:1706.03762', openAccessUrl: 'https://arxiv.org/pdf/1706.03762', canonicalUrl: 'https://arxiv.org/abs/1706.03762', paperType: 'seminal', difficulty: 'advanced', prerequisites: ['Sequence models', 'Neural network training'], summary: 'Introduces the Transformer, an architecture built entirely on attention mechanisms that dispenses with recurrence and convolution for sequence modeling.', whyItMatters: 'The Transformer is the architectural basis for nearly all modern large language and multimodal models; understanding query-key-value attention here is a prerequisite for the rest of the AI Engineering track.', sectionsToRead: 'Abstract, Section 3 (Model Architecture), and Section 3.2 (Attention).', readingQuestions: ['How does self-attention differ from the convolutional weight sharing used in CNNs?', 'What role do positional encodings play in a model with no recurrence?', 'Why is multi-head attention used instead of a single attention function?'], relatedTopicIds: ['ai410-t2'], accessStatus: 'open-access', deliveryMode: 'in-app-pdf-candidate' },
         ],
+        primaryText: {
+          id: 'book-d2l-ai410t2',
+          title: 'Dive into Deep Learning',
+          authors: ['Aston Zhang', 'Zachary C. Lipton', 'Mu Li', 'Alexander J. Smola'],
+          url: 'https://d2l.ai/',
+          canonicalUrl: 'https://d2l.ai/',
+          recommendedChapter: 'Chapter 7 (Convolutional Neural Networks) and Chapter 11 (Attention Mechanisms and Transformers)',
+          accessStatus: 'open-access',
+          publisherOrInstitution: 'Cambridge University Press',
+        },
       },
     ],
     project: { title: 'Deep Learning Training and Error-Analysis Dashboard', description: 'Build and compare an image or text classifier, then communicate training behavior and representative errors.', constraints: ['Use a bounded local or notebook dataset', 'Report compute assumptions and failed experiments', 'Do not expose private data'], expectedDeliverables: ['Training implementation', 'Evaluation report', 'Error-analysis gallery', 'Training dashboard'], evaluationRubric: [{ criterion: 'Correctness', weight: '35%', description: 'Training and evaluation code is reproducible and technically sound.' }, { criterion: 'Evaluation depth', weight: '40%', description: 'Uses meaningful slices, baselines, and representative errors.' }, { criterion: 'Responsible practice', weight: '25%', description: 'Documents data, compute, privacy, and limitation considerations.' }] },
@@ -895,6 +915,17 @@ const definitions: AiCourseDefinition[] = [
         researchPapers: [
           { id: 'paper-extracting-training-data-llms', title: 'Extracting Training Data from Large Language Models', authors: ['Nicholas Carlini', 'Florian Tramer', 'Eric Wallace', 'et al.'], year: 2020, venue: 'USENIX Security Symposium 2021 (arXiv preprint)', doiOrArxiv: 'arXiv:2012.07805', openAccessUrl: 'https://arxiv.org/pdf/2012.07805', canonicalUrl: 'https://arxiv.org/abs/2012.07805', paperType: 'applied', difficulty: 'advanced', prerequisites: ['Large language models', 'Privacy fundamentals'], summary: 'Demonstrates that an attacker can query a language model to recover verbatim training examples — including personally identifiable information and other sensitive text that appeared only once in training — and shows that larger models are more vulnerable.', whyItMatters: 'This is the primary source for the "privacy leakage" risk this topic asks learners to assurance-plan against, and its finding that model scale increases (not decreases) memorization risk directly motivates treating privacy leakage as a supply-chain and governance concern, not just a training-time one.', sectionsToRead: 'Abstract, Section 3 (Extraction attacks), and Section 6 (Larger models memorize more).', readingQuestions: ['What made some training examples extractable even though they appeared only once in the dataset?', 'Why does the paper find that larger models are more vulnerable to this attack?', 'What mitigations does the paper discuss, and how would you connect them to this course\'s incident-response checklist?'], relatedTopicIds: ['ai450-t2'], accessStatus: 'open-access', deliveryMode: 'in-app-pdf-candidate' },
         ],
+        primaryText: {
+          id: 'book-nist-ai-100-2-ai450t2',
+          title: 'Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (NIST AI 100-2e2025)',
+          authors: ['National Institute of Standards and Technology'],
+          url: 'https://csrc.nist.gov/pubs/ai/100/2/e2025/final',
+          pdfUrl: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf',
+          canonicalUrl: 'https://csrc.nist.gov/pubs/ai/100/2/e2025/final',
+          recommendedChapter: 'Sections on poisoning, privacy attacks, and generative-AI supply-chain risk',
+          accessStatus: 'open-access',
+          publisherOrInstitution: 'NIST',
+        },
       },
     ],
     project: { title: 'AI Security and Governance Assurance Pack', description: 'Produce a threat model, secure tool-gateway design, incident-response checklist, and safety evaluation report.', constraints: ['Defensive design and tabletop analysis only', 'No exploitation of real systems', 'Use fictional or intentionally isolated scenarios'], expectedDeliverables: ['AI threat model', 'Agent permission matrix', 'Secure tool gateway design', 'Incident-response checklist', 'Safety evaluation report'], evaluationRubric: [{ criterion: 'Threat coverage', weight: '35%', description: 'Assets, trust boundaries, abuse cases, and supply-chain risks are complete.' }, { criterion: 'Control quality', weight: '40%', description: 'Controls are enforceable, least-privilege, monitored, and testable.' }, { criterion: 'Response readiness', weight: '25%', description: 'Incident and rollback plans are specific and evidence-preserving.' }] },

@@ -811,6 +811,21 @@ export const VERIFIED_VIDEOS = {
       { videoId: 'h9jf1ikcGyk', title: 'Poisoning Web-Scale Training Datasets | Stanford MLSys #75', institution: 'Stanford MLSys Seminars', instructor: 'Nicholas Carlini' }
     ]
   }),
+  'ai460-t1': makeVerifiedVideo({
+    id: 'ai460-lec-1',
+    title: 'Why Agent Hype can fall short of reality',
+    institution: 'METR',
+    videoId: 'RhfqQKe22ZA',
+    durationMinutes: 22,
+    instructor: 'Joel Becker',
+  }),
+  'ai460-t2': makeVerifiedVideo({
+    id: 'ai460-lec-2',
+    title: 'ExploitGym: Measuring AI Agent Capabilities in Real-World Vulnerability Exploitation',
+    institution: 'UC Berkeley RDI (ExploitGym Benchmark)',
+    videoId: 'Wy8d4msSBM0',
+    durationMinutes: 15,
+  }),
 
   // Cybersecurity (cyber-100 through cyber-420) — oEmbed-verified title/channel before adding
   'cyber100-t1': makeVerifiedVideo({

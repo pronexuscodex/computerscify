@@ -45,6 +45,7 @@ export const ALLOWED_PDF_PROXY_HOSTS: readonly string[] = [
   'peerj.com',
   'numpy.org',
   'abseil.io',
+  'www.mlpowered.com',
   'docs.getdbt.com',
   'szeliski.org',
   'mixtape.scunning.com',

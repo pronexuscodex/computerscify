@@ -37,6 +37,7 @@ export const DATA_SCIENCE_COURSES: Course[] = [
             summary: 'Dataframes, indexing, tidy data principles, group-by aggregations, and matplotlib/seaborn visualization.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds101-t1'] as any,
               learningObjective: 'Clean and visualize dirty real-world datasets with statistical rigor.',
               prerequisites: ['Basic High School Math'],
               coreConcepts: [
@@ -226,6 +227,7 @@ Finally, once you have your neat table and your chart, you'll often spot a few p
             summary: 'N-dimensional arrays, memory strides, C vs Fortran order, broadcasting rules, and ufuncs.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds102-t1'] as any,
               learningObjective: 'Master vectorized array processing to avoid slow Python explicit loops.',
               prerequisites: ['DS 101'],
               coreConcepts: [
@@ -414,6 +416,7 @@ Finally, there's a subtlety about "views" versus "copies" that trips up almost e
             summary: 'Likelihood functions, log-likelihood, derivative score functions, Fisher Information, and hypothesis testing via Likelihood Ratio Test.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['stat201-t1'] as any,
               learningObjective: 'Derive MLE parameter estimations and evaluate goodness-of-fit.',
               prerequisites: ['MATH 101'],
               coreConcepts: [
@@ -603,6 +606,7 @@ Once you have a best-fitting explanation, a natural next question is: "is this f
             summary: 'OVER (PARTITION BY ... ORDER BY ...), lead/lag, rank, dense_rank, CTEs, and B-Tree vs Columnar index engines.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds202-t1'] as any,
               learningObjective: 'Master analytical SQL query framing and execution plan tuning.',
               prerequisites: ['Basic SQL'],
               coreConcepts: [
@@ -799,6 +803,7 @@ Behind the scenes, when you send a query like this to a database, it doesn't jus
             summary: 'Parallel trends assumption, 2x2 DiD estimator, propensity score estimation via logistic regression, and nearest neighbor matching.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds302-t1'] as any,
               learningObjective: 'Estimate causal effects in observational data without randomized controlled trials.',
               prerequisites: ['STAT 201'],
               coreConcepts: [
@@ -991,6 +996,7 @@ Underlying all of this is the idea of drawing out your assumptions as a causal d
             summary: 'Residual learning, loss function Taylor expansion, regularized tree building, feature importance metrics, and early stopping.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds305-t1'] as any,
               learningObjective: 'Master tree ensemble algorithms and gradient boosting mechanics.',
               prerequisites: ['STAT 201'],
               coreConcepts: [
@@ -1180,6 +1186,7 @@ There's an important dial called the learning rate that controls how much each n
             summary: 'Demographic parity, equalized odds, Laplace noise mechanism, and auditing black-box ML models for unfairness.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds404-t1'] as any,
               learningObjective: 'Audit data pipelines for fairness and incorporate differential privacy.',
               prerequisites: ['STAT 201'],
               coreConcepts: [
@@ -1369,6 +1376,7 @@ Differential privacy addresses a related but different worry: how do you let res
             summary: 'Transform raw data with dbt, write Jinja SQL macros, define schema assertions, and build modular data pipelines.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds303-t1'] as any,
               learningObjective: 'Design and deploy analytics engineering pipelines using dbt and modern data warehouses.',
               prerequisites: ['DS 202 Relational Databases'],
               coreConcepts: [
@@ -1558,6 +1566,7 @@ Layering the kitchen this way — prep station, then line cooks, then the pass �
             summary: 'Test stationarity, plot ACF/PACF graphs, fit SARIMAX models, and compute forecast error bounds.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds304-t1'] as any,
               learningObjective: 'Master temporal forecasting and autoregressive time series modeling.',
               prerequisites: ['STAT 201 Probability & Statistics'],
               coreConcepts: [
@@ -1754,6 +1763,7 @@ Once a series is reasonably stable, an ARIMA model predicts the next value using
             summary: 'Formulate hypotheses, extract datasets, build baseline models, and defend technical capstones.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds401-t1'] as any,
               learningObjective: 'Design, implement, and present an end-to-end production data science capstone.',
               prerequisites: ['All Core DS Courses'],
               coreConcepts: [
@@ -1948,6 +1958,7 @@ The final, often underappreciated danger is what's sometimes called technical de
             summary: 'Build REST prediction microservices with FastAPI, containerize with Docker, and track parameters with MLflow.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds402-t1'] as any,
               learningObjective: 'Master MLOps workflows to package, serve, containerize, and monitor machine learning models in production.',
               prerequisites: ['CS 305 Machine Learning'],
               coreConcepts: [
@@ -2142,6 +2153,7 @@ Finally, deploying the model once isn't the end of the story — food trucks nee
             summary: 'Tokenize text, compute scaled dot-product attention, fine-tune LLMs with LoRA, and build RAG vector search pipelines.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds403-t1'] as any,
               learningObjective: 'Master Transformer architectures, self-attention mechanics, and LLM Retrieval-Augmented Generation.',
               prerequisites: ['CS 305 Machine Learning'],
               coreConcepts: [
@@ -2340,6 +2352,7 @@ Underneath all of this, words themselves first get converted into long lists of 
             summary: 'Convolutional neural networks, object detection (YOLO), image segmentation, GIS mapping, and spatial statistics.',
             order: 1,
             masteryPack: {
+              primaryLecture: VERIFIED_VIDEOS['ds405-t1'] as any,
               learningObjective: 'Build and train convolutional neural networks for image classification, object detection, and spatial analytics.',
               prerequisites: ['CS 305 Machine Learning'],
               coreConcepts: [
