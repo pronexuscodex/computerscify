@@ -204,9 +204,34 @@ export async function fetchOneFeed(source: NewsFeedSource): Promise<NormalizedNe
   return retry ?? [];
 }
 
+// Netlify's synchronous Functions have a hard 10s execution limit on the plan this site runs on
+// (the underlying issue behind the "Couldn't load news right now" error learners were hitting in
+// production — fine locally under `vite dev`, which has no such cap). fetchOneFeed's own retry
+// logic can legitimately take up to FETCH_TIMEOUT_MS + RETRY_TIMEOUT_MS (17s) for a single dead
+// source, and Promise.all waits for the slowest one — so one broken source was silently timing
+// out the *entire* feed for every learner, not just degrading that one source's contribution.
+// Race each source against this hard aggregate deadline so a slow/dead source can never delay the
+// response past what Netlify allows; a source that hasn't resolved by then just contributes
+// nothing to this response (its own fetchOneFeed call is abandoned, not cancelled, but that's
+// harmless — the request just isn't awaited).
+// Deliberately conservative: local testing showed some sources occasionally need close to 8-9s
+// under concurrent load, but pushing the deadline that high leaves too little margin below
+// Netlify's 10s ceiling once cold-start and response-serialization overhead are added on top in
+// production. A response that's occasionally missing one source's items is graceful degradation;
+// a response that occasionally exceeds Netlify's timeout is a total failure for every learner —
+// the latter is what this whole mechanism exists to prevent, so it gets priority over completeness.
+const AGGREGATE_DEADLINE_MS = 7500;
+
 export async function fetchAllFeeds(fields?: NewsField[]): Promise<NormalizedNewsItem[]> {
   const sources = fields?.length ? NEWS_FEED_SOURCES.filter((s) => fields.includes(s.field)) : NEWS_FEED_SOURCES;
-  const results = await Promise.all(sources.map(fetchOneFeed));
+  const results = await Promise.all(
+    sources.map((source) =>
+      Promise.race([
+        fetchOneFeed(source),
+        new Promise<NormalizedNewsItem[]>((resolve) => setTimeout(() => resolve([]), AGGREGATE_DEADLINE_MS)),
+      ])
+    )
+  );
   return results
     .flat()
     .sort((a, b) => {
