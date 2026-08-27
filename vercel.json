@@ -12,5 +12,13 @@
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/pdf-proxy.ts": {
+      "includeFiles": "academic-resource-report.corrected.json"
+    },
+    "api/news-feed.ts": {
+      "maxDuration": 15
+    }
+  }
 }

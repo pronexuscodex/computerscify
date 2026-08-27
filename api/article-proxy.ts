@@ -1,4 +1,4 @@
-import { fetchArticleHtml } from '../scripts/articleFetch';
+import { fetchArticleHtml } from '../scripts/articleFetch.js';
 
 // Production equivalent of vite.config.ts's articleProxyPlugin. Vite's dev/preview-server
 // middleware only exists locally — a Vercel deploy is a static site with no Node server behind

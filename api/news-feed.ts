@@ -1,4 +1,4 @@
-import { fetchAllFeeds, NewsField } from '../scripts/newsFeedSources';
+import { fetchAllFeeds, NewsField } from '../scripts/newsFeedSources.js';
 
 // Production equivalent of vite.config.ts's newsFeedProxyPlugin. RSS/Atom feeds are fetched
 // server-side (most sources don't set CORS headers permitting a browser fetch, and fetching from
@@ -13,11 +13,10 @@ const CORS_HEADERS = {
 
 const VALID_FIELDS: NewsField[] = ['ai', 'data-science', 'data-engineering', 'cybersecurity', 'computer-science'];
 
-// fetchAllFeeds internally caps itself at ~7.5s (see AGGREGATE_DEADLINE_MS in newsFeedSources.ts),
-// but that number was tuned against Netlify's fixed 10s ceiling. Vercel's default is also ~10s but
-// is configurable per-function, so give this one real headroom rather than relying on the internal
-// cap alone to land safely under whatever the platform default turns out to be.
-export const config = { maxDuration: 15 };
+// fetchAllFeeds internally caps itself at ~7.5s (see AGGREGATE_DEADLINE_MS in newsFeedSources.ts).
+// maxDuration is set for this function in vercel.json (rather than an `export const config` here,
+// whose exact shape for non-Next.js "other" framework functions isn't consistently documented) to
+// give it real headroom above that internal cap.
 
 export function OPTIONS() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });

@@ -1,5 +1,7 @@
-import { isAllowedPdfProxyHost, resolveResourceIdToUrl } from '../scripts/pdfProxyAllowlist';
-import correctedManifest from '../academic-resource-report.corrected.json';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { isAllowedPdfProxyHost, resolveResourceIdToUrl, PdfProxyResourceManifest } from '../scripts/pdfProxyAllowlist.js';
 
 // Production equivalent of vite.config.ts's pdfProxyPlugin. Vite's dev/preview-server middleware
 // only exists locally — a Vercel deploy is a static site with no Node server behind it, so this
@@ -9,6 +11,17 @@ import correctedManifest from '../academic-resource-report.corrected.json';
 // Vercel Functions (non-Next.js): any file under /api is deployed as a function at the matching
 // route, routed per HTTP method via named exports (GET/OPTIONS/etc.) rather than Netlify's single
 // default-export-plus-method-check — see https://vercel.com/docs/functions/functions-api-reference.
+//
+// This runtime transpiles each .ts file individually rather than bundling (package.json has "type":
+// "module", so the compiled output runs under Node's native, strict ESM loader) — relative imports
+// above need an explicit .js extension or they fail at runtime with ERR_MODULE_NOT_FOUND even
+// though they typecheck fine locally under Vite's bundler-style resolution. The manifest below is
+// read via fs instead of a JSON import for the same reason, sidestepping Node's import-attribute
+// syntax (`with { type: 'json' }`) entirely; see vercel.json's `includeFiles` for how it ships in
+// the deployed function bundle, since a runtime fs.readFileSync path can't be found by Vercel's
+// static import-tracing the way an actual `import` statement can.
+const manifestPath = join(dirname(fileURLToPath(import.meta.url)), '..', 'academic-resource-report.corrected.json');
+const correctedManifest: PdfProxyResourceManifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
