@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-26T12:20:08.033Z",
-  "totalVideos": 100,
-  "verifiedCount": 100,
+  "generatedAt": "2026-08-28T17:44:31.094Z",
+  "totalVideos": 110,
+  "verifiedCount": 110,
   "failedCount": 0,
   "successPercentage": "100.0%",
   "entries": [
@@ -19,7 +19,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.734Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.865Z"
     },
     {
       "id": "lec-berkeley-cs162",
@@ -35,7 +35,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-mit-1801-logs",
@@ -51,7 +51,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-mit-6042j",
@@ -67,7 +67,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-mit-1806",
@@ -83,7 +83,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-cs50p",
@@ -99,7 +99,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-numpy-scipy",
@@ -115,7 +115,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-cmu-15445",
@@ -131,7 +131,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-mit-6006",
@@ -147,7 +147,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-harvard-stat110",
@@ -163,7 +163,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-stanford-cs229",
@@ -179,7 +179,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-stanford-cs231n",
@@ -195,7 +195,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-fsdl-deploy",
@@ -211,7 +211,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "lec-mit-6824",
@@ -227,7 +227,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs101-lec-1",
@@ -243,7 +243,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs102-lec-1",
@@ -259,7 +259,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "math101-lec-1",
@@ -275,7 +275,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds101-lec-1",
@@ -291,7 +291,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs201-lec-hashing",
@@ -307,7 +307,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "math201-lec-1",
@@ -323,7 +323,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "stat201-lec-1",
@@ -339,7 +339,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs204-lec-1",
@@ -355,7 +355,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds202-lec-modernsql",
@@ -371,7 +371,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs301-lec-berkeley-cs162",
@@ -387,7 +387,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds302-lec-athey",
@@ -403,7 +403,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs305-lec-1",
@@ -419,7 +419,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs404-lec-diffpriv",
@@ -435,7 +435,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs401-lec-1",
@@ -451,7 +451,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds401-lec-1",
@@ -467,7 +467,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs302-lec-1",
@@ -483,7 +483,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs303-lec-mit6035",
@@ -499,7 +499,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs304-lec-cmu-arch",
@@ -515,7 +515,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs402-lec-sipser",
@@ -531,7 +531,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "cs403-lec-mit6858",
@@ -547,7 +547,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds303-lec-1",
@@ -563,7 +563,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds304-lec-mit-timeseries",
@@ -579,7 +579,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.867Z"
     },
     {
       "id": "ds402-lec-fsdl-deploy",
@@ -595,7 +595,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds403-lec-cs224n",
@@ -611,7 +611,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds405-lec-1",
@@ -627,7 +627,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai100-lec-1",
@@ -643,7 +643,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai100-lec-2",
@@ -659,7 +659,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai410-lec-1",
@@ -675,7 +675,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai410-lec-2",
@@ -691,7 +691,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai420-lec-1",
@@ -707,7 +707,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai420-lec-2",
@@ -723,7 +723,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai430-lec-berkeley-react",
@@ -739,7 +739,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai430-t2-lec-berkeley-safety",
@@ -755,7 +755,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.736Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai440-lec-1",
@@ -771,7 +771,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai440-lec-2",
@@ -787,7 +787,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai450-lec-1",
@@ -803,7 +803,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai450-lec-2",
@@ -819,7 +819,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai460-lec-1",
@@ -835,7 +835,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ai460-lec-2",
@@ -851,7 +851,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 0,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber100-lec-1",
@@ -867,7 +867,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber100-lec-2",
@@ -883,7 +883,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber210-lec-1",
@@ -899,7 +899,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber210-lec-2",
@@ -915,7 +915,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber310-lec-1",
@@ -931,7 +931,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber310-lec-2",
@@ -947,7 +947,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber320-lec-1",
@@ -963,7 +963,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber320-lec-2",
@@ -979,7 +979,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber410-lec-1",
@@ -995,7 +995,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber410-lec-2",
@@ -1011,7 +1011,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber420-lec-1",
@@ -1027,7 +1027,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cyber420-lec-2",
@@ -1043,7 +1043,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "de100-lec-1",
@@ -1059,7 +1059,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "de100-lec-2",
@@ -1075,7 +1075,167 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa101-t0-lec",
+      "source": "Module: NASA 101: NASA Space Apps Prep: Python for Data Work (nasa-101)",
+      "topicId": "nasa101-t0",
+      "title": "Space Apps Connect | 2025 NASA Space Apps Challenge",
+      "institution": "youtube",
+      "videoId": "Js08rFuWGWI",
+      "rawUrl": "https://www.youtube.com/watch?v=Js08rFuWGWI",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/Js08rFuWGWI",
+      "canonicalUrl": "https://www.youtube.com/watch?v=Js08rFuWGWI",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa101-t1-lec",
+      "source": "Module: NASA 101: NASA Space Apps Prep: Python for Data Work (nasa-101)",
+      "topicId": "nasa101-t1",
+      "title": "Python Tutorial for Beginners 2: Strings - Working with Textual Data",
+      "institution": "youtube",
+      "videoId": "k9TUPpGqYTo",
+      "rawUrl": "https://www.youtube.com/watch?v=k9TUPpGqYTo",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/k9TUPpGqYTo",
+      "canonicalUrl": "https://www.youtube.com/watch?v=k9TUPpGqYTo",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa101-t2-lec",
+      "source": "Module: NASA 101: NASA Space Apps Prep: Python for Data Work (nasa-101)",
+      "topicId": "nasa101-t2",
+      "title": "Python Tutorial for Beginners 4: Lists, Tuples, and Sets",
+      "institution": "youtube",
+      "videoId": "W8KRzm-HUcc",
+      "rawUrl": "https://www.youtube.com/watch?v=W8KRzm-HUcc",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/W8KRzm-HUcc",
+      "canonicalUrl": "https://www.youtube.com/watch?v=W8KRzm-HUcc",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa101-t3-lec",
+      "source": "Module: NASA 101: NASA Space Apps Prep: Python for Data Work (nasa-101)",
+      "topicId": "nasa101-t3",
+      "title": "Python Tutorial for Beginners 8: Functions",
+      "institution": "youtube",
+      "videoId": "9Os0o3wzS_I",
+      "rawUrl": "https://www.youtube.com/watch?v=9Os0o3wzS_I",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/9Os0o3wzS_I",
+      "canonicalUrl": "https://www.youtube.com/watch?v=9Os0o3wzS_I",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa101-t4-lec",
+      "source": "Module: NASA 101: NASA Space Apps Prep: Python for Data Work (nasa-101)",
+      "topicId": "nasa101-t4",
+      "title": "Python OOP Tutorial 1: Classes and Instances",
+      "institution": "youtube",
+      "videoId": "ZDa-Z5JzLYM",
+      "rawUrl": "https://www.youtube.com/watch?v=ZDa-Z5JzLYM",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/ZDa-Z5JzLYM",
+      "canonicalUrl": "https://www.youtube.com/watch?v=ZDa-Z5JzLYM",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa102-t1-lec",
+      "source": "Module: NASA 102: NASA Space Apps Prep: Data Analysis, Statistics & Visualization (nasa-102)",
+      "topicId": "nasa102-t1",
+      "title": "Python NumPy Tutorial for Beginners",
+      "institution": "youtube",
+      "videoId": "QUT1VHiLmmI",
+      "rawUrl": "https://www.youtube.com/watch?v=QUT1VHiLmmI",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
+      "canonicalUrl": "https://www.youtube.com/watch?v=QUT1VHiLmmI",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa102-t2-lec",
+      "source": "Module: NASA 102: NASA Space Apps Prep: Data Analysis, Statistics & Visualization (nasa-102)",
+      "topicId": "nasa102-t2",
+      "title": "Pandas & Python for Data Analysis by Example – Full Course for Beginners",
+      "institution": "youtube",
+      "videoId": "gtjxAH8uaP0",
+      "rawUrl": "https://www.youtube.com/watch?v=gtjxAH8uaP0",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/gtjxAH8uaP0",
+      "canonicalUrl": "https://www.youtube.com/watch?v=gtjxAH8uaP0",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa102-t3-lec",
+      "source": "Module: NASA 102: NASA Space Apps Prep: Data Analysis, Statistics & Visualization (nasa-102)",
+      "topicId": "nasa102-t3",
+      "title": "Pearson's Correlation, Clearly Explained!!!",
+      "institution": "youtube",
+      "videoId": "xZ_z8KWkhXE",
+      "rawUrl": "https://www.youtube.com/watch?v=xZ_z8KWkhXE",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/xZ_z8KWkhXE",
+      "canonicalUrl": "https://www.youtube.com/watch?v=xZ_z8KWkhXE",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa102-t4-lec",
+      "source": "Module: NASA 102: NASA Space Apps Prep: Data Analysis, Statistics & Visualization (nasa-102)",
+      "topicId": "nasa102-t4",
+      "title": "Matplotlib Tutorial (Part 1): Creating and Customizing Our First Plots",
+      "institution": "youtube",
+      "videoId": "UO98lJQ3QGI",
+      "rawUrl": "https://www.youtube.com/watch?v=UO98lJQ3QGI",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/UO98lJQ3QGI",
+      "canonicalUrl": "https://www.youtube.com/watch?v=UO98lJQ3QGI",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
+    },
+    {
+      "id": "nasa102-t5-lec",
+      "source": "Module: NASA 102: NASA Space Apps Prep: Data Analysis, Statistics & Visualization (nasa-102)",
+      "topicId": "nasa102-t5",
+      "title": "Statistical Analysis of Temperature Data | Time Series Analysis in Python | Weather Derivatives",
+      "institution": "youtube",
+      "videoId": "4zV-ZyQHl7s",
+      "rawUrl": "https://www.youtube.com/watch?v=4zV-ZyQHl7s",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/4zV-ZyQHl7s",
+      "canonicalUrl": "https://www.youtube.com/watch?v=4zV-ZyQHl7s",
+      "status": "verified",
+      "embeddable": true,
+      "issues": [],
+      "fallbackCount": 0,
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs101-lec-1",
@@ -1091,7 +1251,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs101-lec-mit",
@@ -1107,7 +1267,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs102-lec-1",
@@ -1123,7 +1283,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "math101-lec-1",
@@ -1139,7 +1299,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs201-lec-hashing",
@@ -1155,7 +1315,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "math201-lec-1",
@@ -1171,7 +1331,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs204-lec-1",
@@ -1187,7 +1347,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs301-lec-berkeley-cs162",
@@ -1203,7 +1363,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs305-lec-1",
@@ -1219,7 +1379,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs404-lec-diffpriv",
@@ -1235,7 +1395,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "stat201-lec-1",
@@ -1251,7 +1411,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds202-lec-modernsql",
@@ -1267,7 +1427,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs302-lec-1",
@@ -1283,7 +1443,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 4,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs303-lec-mit6035",
@@ -1299,7 +1459,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs304-lec-cmu-arch",
@@ -1315,7 +1475,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.737Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs401-lec-1",
@@ -1331,7 +1491,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs402-lec-sipser",
@@ -1347,7 +1507,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "cs403-lec-mit6858",
@@ -1363,7 +1523,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds402-lec-fsdl-deploy",
@@ -1379,7 +1539,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds403-lec-cs224n",
@@ -1395,7 +1555,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds101-lec-1",
@@ -1411,7 +1571,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.868Z"
     },
     {
       "id": "ds102-lec-1",
@@ -1427,7 +1587,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "stat201-lec-1",
@@ -1443,7 +1603,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds202-lec-modernsql",
@@ -1459,7 +1619,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds302-lec-athey",
@@ -1475,7 +1635,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds305-lec-1",
@@ -1491,7 +1651,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds404-lec-mit-bias",
@@ -1507,7 +1667,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 2,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds303-lec-1",
@@ -1523,7 +1683,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds304-lec-mit-timeseries",
@@ -1539,7 +1699,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 1,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds401-lec-1",
@@ -1555,7 +1715,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds402-lec-fsdl-deploy",
@@ -1571,7 +1731,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds403-lec-cs224n",
@@ -1587,7 +1747,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     },
     {
       "id": "ds405-lec-1",
@@ -1603,7 +1763,7 @@
       "embeddable": true,
       "issues": [],
       "fallbackCount": 3,
-      "lastVerifiedAt": "2026-08-26T12:19:56.738Z"
+      "lastVerifiedAt": "2026-08-28T17:44:16.869Z"
     }
   ]
 }

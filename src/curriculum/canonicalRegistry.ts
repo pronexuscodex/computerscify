@@ -4,6 +4,7 @@ import { DATA_SCIENCE_COURSES } from './programs/dataScience';
 import { AI_ENGINEERING_COURSES } from './aiEngineeringCourses';
 import { CYBERSECURITY_COURSES } from './cybersecurityCourses';
 import { DATA_ENGINEERING_COURSES } from './dataEngineeringCourses';
+import { NASA_SPACE_APPS_COURSES } from './nasaSpaceAppsCourses';
 
 /**
  * SPECIALIZATION TRACKS
@@ -100,6 +101,14 @@ export const SPECIALIZATION_TRACKS: SpecializationTrack[] = [
     category: 'ml',
     recommendedCourseIds: ['ds-405'],
   },
+  {
+    id: 'ds-nasa-space-apps',
+    programId: 'data-science',
+    title: 'NASA Space Apps Challenge Prep',
+    description: 'An 11-week guided preparation track for the NASA Space Apps Challenge hackathon. Phase 1 (published here): Python and data-analysis fundamentals — NumPy, Pandas, statistics, and visualization — culminating in the Earth Data Explorer capstone. Later phases (NASA data & APIs, applied ML, full-stack product development, hackathon simulation) arrive as follow-up releases.',
+    category: 'ds',
+    recommendedCourseIds: ['nasa-101', 'nasa-102'],
+  },
 ];
 
 /**
@@ -113,6 +122,7 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
   const aiMap = new Map(AI_ENGINEERING_COURSES.map(c => [c.id, c]));
   const cyberMap = new Map(CYBERSECURITY_COURSES.map(c => [c.id, c]));
   const deMap = new Map(DATA_ENGINEERING_COURSES.map(c => [c.id, c]));
+  const nasaMap = new Map(NASA_SPACE_APPS_COURSES.map(c => [c.id, c]));
 
   // Helper to extract topics, assessments, projects IDs
   const extractAuxiliaryIds = (course: Course) => {
@@ -824,6 +834,23 @@ function buildCanonicalRegistry(): CanonicalCourse[] {
           semester: 7 as const,
           displayCode: course.code,
           specializationId: 'ds-data-eng',
+        },
+      ],
+      ...extractAuxiliaryIds(course),
+    })),
+
+    ...NASA_SPACE_APPS_COURSES.map((course) => ({
+      ...nasaMap.get(course.id)!,
+      academicLevel: 4 as const,
+      sharedProgressKey: `canonical-${course.id}`,
+      programAssignments: [
+        {
+          programId: 'data-science' as const,
+          role: 'specialization' as const,
+          year: 4 as const,
+          semester: 7 as const,
+          displayCode: course.code,
+          specializationId: 'ds-nasa-space-apps',
         },
       ],
       ...extractAuxiliaryIds(course),
